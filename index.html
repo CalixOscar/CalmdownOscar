@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0B101C">
-<title>calmdownoscar — an independent app studio</title>
-<meta name="description" content="calmdownoscar is a one-person app studio. Apps built in the quiet moments between naps and rides.">
+<title>Apps — calmdownoscar</title>
+<meta name="description" content="Apps from calmdownoscar, a one-person app studio building small useful things in the quiet moments between naps and rides.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -32,6 +32,15 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     padding-top:var(--topbar-h);
+  }
+  body.page-enter{ animation:pageEnter .45s cubic-bezier(.2,.7,.3,1) both; }
+  body.page-exit{ animation:pageExit .22s ease both; }
+  @keyframes pageEnter{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:none; }
+  }
+  @keyframes pageExit{
+    to{ opacity:0; transform:translateY(-4px); }
   }
   .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
 
@@ -149,8 +158,13 @@
     margin-left:22px;
     transition:color .2s ease;
   }
-  nav a:hover, nav a:focus-visible{ color:var(--tank); }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--tank); }
   a:focus-visible{ outline:2px solid var(--tank); outline-offset:3px; border-radius:2px; }
+  @media (max-width:520px){
+    .topbar .wrap{ align-items:flex-start; gap:16px; }
+    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
+    nav a{ margin-left:0; }
+  }
 
   /* bike rides the deck */
   .track{
@@ -225,6 +239,18 @@
     position:relative;
   }
   .hero p strong{ color:var(--chrome); font-weight:600; }
+  .hero .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--asphalt);
+    font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    margin-bottom:18px;
+    position:relative;
+  }
+  .hero .kicker::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--tank);
+    box-shadow:0 0 18px rgba(242,88,28,.55);
+  }
 
   .rise{ animation:rise .7s ease-out both; }
   .rise.d1{ animation-delay:.1s; }
@@ -239,6 +265,8 @@
   }
   .reveal.in{ opacity:1; transform:none; }
   .grid .reveal:nth-child(2){ transition-delay:.12s; }
+  .app-grid .reveal:nth-child(3){ transition-delay:.18s; }
+  .app-grid .reveal:nth-child(4){ transition-delay:.24s; }
 
   .section-label{
     font-size:13px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
@@ -249,7 +277,9 @@
   }
   .apps{ padding:24px 0 72px; }
   .grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .app-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  @media (max-width:860px){ .app-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:640px){ .grid, .app-grid{ grid-template-columns:1fr; } }
   .card{
     background:var(--panel);
     border:1px solid var(--edge);
@@ -268,6 +298,22 @@
     display:flex; align-items:center; gap:8px;
   }
   .card.live .status{ color:var(--tank); }
+  .card.progress .status{ color:var(--moonlight); }
+  .badge{
+    align-self:flex-start;
+    display:inline-flex; align-items:center; gap:7px;
+    padding:5px 9px;
+    border:1px solid rgba(244,235,208,.24);
+    border-radius:999px;
+    background:rgba(244,235,208,.06);
+    color:var(--moonlight);
+    font-size:11px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+  }
+  .badge::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:var(--moonlight);
+    animation:pulseMoon 2.6s ease-out infinite;
+  }
   .dot-live{
     width:7px; height:7px; border-radius:50%;
     background:var(--tank);
@@ -277,6 +323,11 @@
     0%{ box-shadow:0 0 0 0 rgba(242,88,28,.55); }
     70%{ box-shadow:0 0 0 9px rgba(242,88,28,0); }
     100%{ box-shadow:0 0 0 0 rgba(242,88,28,0); }
+  }
+  @keyframes pulseMoon{
+    0%{ box-shadow:0 0 0 0 rgba(244,235,208,.4); }
+    70%{ box-shadow:0 0 0 8px rgba(244,235,208,0); }
+    100%{ box-shadow:0 0 0 0 rgba(244,235,208,0); }
   }
   .card.garage{ background:transparent; border-style:dashed; }
   .card.garage .status{ color:var(--asphalt); }
@@ -297,6 +348,30 @@
     transition:transform .25s cubic-bezier(.2,.7,.3,1);
   }
   .card a.applink:hover .arrow{ transform:translateX(5px); }
+  .card .meta{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-top:2px;
+  }
+  .pill{
+    color:var(--asphalt);
+    border:1px solid var(--edge);
+    border-radius:999px;
+    padding:3px 8px;
+    font-size:12px; line-height:1.4;
+  }
+  .apps-page-bg{
+    position:fixed; inset:var(--topbar-h) 0 0;
+    pointer-events:none; z-index:-1; opacity:.34;
+    background:
+      linear-gradient(90deg, transparent 0 23px, rgba(188,217,232,.035) 24px, transparent 25px),
+      linear-gradient(transparent 0 23px, rgba(188,217,232,.026) 24px, transparent 25px);
+    background-size:48px 48px;
+    animation:bgCruise 24s linear infinite;
+  }
+  @keyframes bgCruise{
+    from{ background-position:0 0, 0 0; }
+    to{ background-position:48px 0, 0 48px; }
+  }
 
   .about{ padding:24px 0 96px; }
   .about p{ max-width:60ch; color:var(--asphalt); font-size:18px; }
@@ -319,15 +394,17 @@
   .foot-row a:hover{ color:var(--tank); }
 
   @media (prefers-reduced-motion: reduce){
+    body.page-enter, body.page-exit, .apps-page-bg{ animation:none; }
     .rise{ animation:none; }
     .reveal{ opacity:1; transform:none; transition:none; }
-    .dot-live, .star, .shoot, .cloud, .halo, .beacon, .win-fl{ animation:none; }
+    .dot-live, .badge::before, .star, .shoot, .cloud, .halo, .beacon, .win-fl{ animation:none; }
     .card{ transition:none; }
     html{ scroll-behavior:auto; }
   }
 </style>
 </head>
-<body>
+<body class="page-enter">
+<div class="apps-page-bg" aria-hidden="true"></div>
 
 <header class="topbar">
   <!-- ===== the Skyway scene ===== -->
@@ -446,10 +523,10 @@
   </div>
 
   <div class="wrap">
-    <a class="mark" href="#">calmdown<span>oscar</span></a>
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
     <nav>
-      <a href="#apps">Apps</a>
-      <a href="#about">About</a>
+      <a href="./" aria-current="page">Apps</a>
+      <a href="../#about">About</a>
       <!-- EDIT: your real contact email -->
       <a href="mailto:hello@calmdownoscar.com">Contact</a>
     </nav>
@@ -520,51 +597,61 @@
 <main>
   <section class="hero">
     <div class="wrap">
-      <h1 class="rise">calm down, <span class="oscar-word">oscar</span><span class="oscar-word">.</span></h1>
+      <span class="kicker rise">Apps</span>
+      <h1 class="rise">small apps, <span class="oscar-word">steadily</span> shipped<span class="oscar-word">.</span></h1>
       <p class="rise d1">
-        Apps built in the quiet moments <strong>between naps and rides</strong>.
-        Named after a nine-month-old who has never once calmed down.
+        A growing shelf of useful little things from calmdownoscar.
+        Some are live, some are still up on the lift, all built with the same
+        quiet <strong>between-naps-and-rides</strong> energy.
       </p>
     </div>
   </section>
 
   <section class="apps" id="apps">
     <div class="wrap">
-      <div class="section-label reveal">What's rolling out of the garage</div>
-      <div class="grid">
+      <div class="section-label reveal">Rolling out of the garage</div>
+      <div class="grid app-grid">
 
-        <!-- EDIT: paste your App Store URL into the href below (your existing
-             ClearSpace listing keeps the same URL/id after you rename it) -->
         <div class="card live reveal">
           <span class="status"><i class="dot-live"></i>On the App Store</span>
           <h3>Sorta</h3>
           <p>A faster, friendlier home for your photos. Sort shots into albums Instagram-style, swipe the junk into the trash, and clear it out in batches.</p>
+          <div class="meta">
+            <span class="pill">iOS</span>
+            <span class="pill">Photos</span>
+          </div>
           <a class="applink" href="https://apps.apple.com/">View on the App Store <span class="arrow">→</span></a>
         </div>
 
+        <div class="card progress reveal">
+          <span class="badge">In Progress</span>
+          <h3>Paper Plane Simulator</h3>
+          <p>A lightweight flying toy for testing throws, wind, glide, and timing without needing a gym floor or a perfectly patient afternoon.</p>
+          <div class="meta">
+            <span class="pill">Web</span>
+            <span class="pill">Physics</span>
+          </div>
+          <a class="applink" href="paper-plane-simulator/">Project page soon <span class="arrow">→</span></a>
+        </div>
+
+        <div class="card progress reveal">
+          <span class="badge">In Progress</span>
+          <h3>Wedding Concierge</h3>
+          <p>A calm planning companion for couples, guests, and the tiny decisions that somehow become the whole week.</p>
+          <div class="meta">
+            <span class="pill">Web</span>
+            <span class="pill">Planning</span>
+          </div>
+          <a class="applink" href="wedding-concierge/">Project page soon <span class="arrow">→</span></a>
+        </div>
+
         <div class="card garage reveal">
-          <span class="status">In the garage</span>
+          <span class="status">Next slot open</span>
           <h3>The next one</h3>
-          <p>Currently up on the lift. Parts everywhere. It'll run — they always do, eventually.</p>
+          <p>Future apps can live here as their own pages under <strong>/apps/app-name/</strong>, with the same card pattern and navigation.</p>
         </div>
 
       </div>
-    </div>
-  </section>
-
-  <section class="about" id="about">
-    <div class="wrap">
-      <div class="section-label reveal">Why "calmdownoscar"?</div>
-      <p class="reveal">
-        This studio is one person, a laptop, and an unreasonable number of ideas
-        being built at the same time. It's named after <strong class="oscar">Oscar</strong> —
-        my son, currently nine months old, currently not calm.
-      </p>
-      <p class="reveal">
-        The name is a reminder that goes both ways: a phrase said out loud at 3am,
-        and good advice for his dad, who tends to start ten projects before
-        finishing one. We're both working on it.
-      </p>
     </div>
   </section>
 </main>
@@ -579,6 +666,20 @@
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----- page transitions ----- */
+  document.querySelectorAll('a[href]').forEach(function(link){
+    link.addEventListener('click', function(event){
+      var href = link.getAttribute('href');
+      var isMail = href && href.indexOf('mailto:') === 0;
+      var isHash = href && href.charAt(0) === '#';
+      var isExternal = link.origin && link.origin !== window.location.origin;
+      if (!href || isMail || isHash || isExternal || reduce.matches) return;
+      event.preventDefault();
+      document.body.classList.add('page-exit');
+      setTimeout(function(){ window.location.href = href; }, 180);
+    });
+  });
 
   /* ----- scroll-reveal ----- */
   var revealEls = document.querySelectorAll('.reveal');
@@ -604,22 +705,22 @@
   var wheels  = document.querySelectorAll('.wheel');
 
   var MAX_WHEELIE = 34;
-  var LEGS = 3;
   var BIKE_W = 96;
   var MARGIN = 16;
 
-  var span = 0;
   var angle = 0, av = 0;
   var energy = 0;
-  var lastY = window.scrollY;
   var running = false;
   var frameCount = 0;
   var prevAngle = 0;
-  var bikeX = 0, goingRight = true;
+  var bikeX = MARGIN, goingRight = true;
   var liveParticles = 0;
 
   function measure(){
-    span = Math.max(0, document.documentElement.clientWidth - BIKE_W - MARGIN * 2);
+    bikeX = MARGIN;
+    travel.style.transform = 'translateX(0)';
+    flip.style.transform = 'scaleX(1)';
+    skyline.style.transform = 'translateX(0)';
   }
 
   function spawn(cls, x, dx){
@@ -638,20 +739,6 @@
   function frame(){
     frameCount++;
 
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-    var t = p * LEGS;
-    var leg = Math.min(Math.floor(t), LEGS - 1);
-    var frac = t - leg;
-    goingRight = (leg % 2 === 0);
-    bikeX = MARGIN + (goingRight ? frac * span : (1 - frac) * span);
-
-    travel.style.transform = 'translateX(' + (bikeX - MARGIN) + 'px)';
-    flip.style.transform = goingRight ? 'scaleX(1)' : 'scaleX(-1)';
-
-    /* skyline parallax: the city slides gently against the ride */
-    skyline.style.transform = 'translateX(' + (-(bikeX - MARGIN) / Math.max(span, 1) * 26) + 'px)';
-
     var target = -Math.min(energy, MAX_WHEELIE);
     av += (target - angle) * 0.055;
     av *= 0.86;
@@ -662,7 +749,7 @@
     rider.style.transform = 'rotate(' + (-angle * 0.3) + 'deg)';
     beam.setAttribute('opacity', (0.2 + Math.min(energy / MAX_WHEELIE, 1) * 0.6).toFixed(2));
 
-    var spin = t * span * 1.4;
+    var spin = frameCount * Math.min(energy, 16);
     for (var i = 0; i < wheels.length; i++){
       wheels[i].style.transform = 'rotate(' + spin + 'deg)';
     }
@@ -698,16 +785,8 @@
     if (!running){ running = true; requestAnimationFrame(frame); }
   }
 
-  function onScroll(){
-    if (reduce.matches) return;
-    var dy = Math.abs(window.scrollY - lastY);
-    lastY = window.scrollY;
-    kick(dy * 0.8);
-  }
-
   measure();
   window.addEventListener('resize', measure);
-  window.addEventListener('scroll', onScroll, { passive: true });
 
   if (reduce.matches){
     beam.setAttribute('opacity', '0.2');
