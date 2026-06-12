@@ -33,15 +33,6 @@
     -webkit-font-smoothing:antialiased;
     padding-top:var(--topbar-h);
   }
-  body.page-enter{ animation:pageEnter .45s cubic-bezier(.2,.7,.3,1) both; }
-  body.page-exit{ animation:pageExit .22s ease both; }
-  @keyframes pageEnter{
-    from{ opacity:0; transform:translateY(6px); }
-    to{ opacity:1; transform:none; }
-  }
-  @keyframes pageExit{
-    to{ opacity:0; transform:translateY(-4px); }
-  }
   .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
 
   /* ================= fixed top bar: the Skyway scene ================= */
@@ -160,11 +151,6 @@
   }
   nav a:hover, nav a:focus-visible{ color:var(--tank); }
   a:focus-visible{ outline:2px solid var(--tank); outline-offset:3px; border-radius:2px; }
-  @media (max-width:520px){
-    .topbar .wrap{ align-items:flex-start; gap:16px; }
-    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
-    nav a{ margin-left:0; }
-  }
 
   /* bike rides the deck */
   .track{
@@ -333,7 +319,6 @@
   .foot-row a:hover{ color:var(--tank); }
 
   @media (prefers-reduced-motion: reduce){
-    body.page-enter, body.page-exit{ animation:none; }
     .rise{ animation:none; }
     .reveal{ opacity:1; transform:none; transition:none; }
     .dot-live, .star, .shoot, .cloud, .halo, .beacon, .win-fl{ animation:none; }
@@ -342,7 +327,7 @@
   }
 </style>
 </head>
-<body class="page-enter">
+<body>
 
 <header class="topbar">
   <!-- ===== the Skyway scene ===== -->
@@ -461,9 +446,9 @@
   </div>
 
   <div class="wrap">
-    <a class="mark" href="./">calmdown<span>oscar</span></a>
+    <a class="mark" href="#">calmdown<span>oscar</span></a>
     <nav>
-      <a href="apps/">Apps</a>
+      <a href="#apps">Apps</a>
       <a href="#about">About</a>
       <!-- EDIT: your real contact email -->
       <a href="mailto:hello@calmdownoscar.com">Contact</a>
@@ -595,20 +580,6 @@
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ----- page transitions ----- */
-  document.querySelectorAll('a[href]').forEach(function(link){
-    link.addEventListener('click', function(event){
-      var href = link.getAttribute('href');
-      var isMail = href && href.indexOf('mailto:') === 0;
-      var isHash = href && href.charAt(0) === '#';
-      var isExternal = link.origin && link.origin !== window.location.origin;
-      if (!href || isMail || isHash || isExternal || reduce.matches) return;
-      event.preventDefault();
-      document.body.classList.add('page-exit');
-      setTimeout(function(){ window.location.href = href; }, 180);
-    });
-  });
-
   /* ----- scroll-reveal ----- */
   var revealEls = document.querySelectorAll('.reveal');
   if (reduce.matches || !('IntersectionObserver' in window)){
@@ -633,22 +604,22 @@
   var wheels  = document.querySelectorAll('.wheel');
 
   var MAX_WHEELIE = 34;
+  var LEGS = 3;
   var BIKE_W = 96;
   var MARGIN = 16;
 
+  var span = 0;
   var angle = 0, av = 0;
   var energy = 0;
+  var lastY = window.scrollY;
   var running = false;
   var frameCount = 0;
   var prevAngle = 0;
-  var bikeX = MARGIN, goingRight = true;
+  var bikeX = 0, goingRight = true;
   var liveParticles = 0;
 
   function measure(){
-    bikeX = MARGIN;
-    travel.style.transform = 'translateX(0)';
-    flip.style.transform = 'scaleX(1)';
-    skyline.style.transform = 'translateX(0)';
+    span = Math.max(0, document.documentElement.clientWidth - BIKE_W - MARGIN * 2);
   }
 
   function spawn(cls, x, dx){
@@ -667,6 +638,20 @@
   function frame(){
     frameCount++;
 
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    var t = p * LEGS;
+    var leg = Math.min(Math.floor(t), LEGS - 1);
+    var frac = t - leg;
+    goingRight = (leg % 2 === 0);
+    bikeX = MARGIN + (goingRight ? frac * span : (1 - frac) * span);
+
+    travel.style.transform = 'translateX(' + (bikeX - MARGIN) + 'px)';
+    flip.style.transform = goingRight ? 'scaleX(1)' : 'scaleX(-1)';
+
+    /* skyline parallax: the city slides gently against the ride */
+    skyline.style.transform = 'translateX(' + (-(bikeX - MARGIN) / Math.max(span, 1) * 26) + 'px)';
+
     var target = -Math.min(energy, MAX_WHEELIE);
     av += (target - angle) * 0.055;
     av *= 0.86;
@@ -677,7 +662,7 @@
     rider.style.transform = 'rotate(' + (-angle * 0.3) + 'deg)';
     beam.setAttribute('opacity', (0.2 + Math.min(energy / MAX_WHEELIE, 1) * 0.6).toFixed(2));
 
-    var spin = frameCount * Math.min(energy, 16);
+    var spin = t * span * 1.4;
     for (var i = 0; i < wheels.length; i++){
       wheels[i].style.transform = 'rotate(' + spin + 'deg)';
     }
@@ -713,8 +698,16 @@
     if (!running){ running = true; requestAnimationFrame(frame); }
   }
 
+  function onScroll(){
+    if (reduce.matches) return;
+    var dy = Math.abs(window.scrollY - lastY);
+    lastY = window.scrollY;
+    kick(dy * 0.8);
+  }
+
   measure();
   window.addEventListener('resize', measure);
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   if (reduce.matches){
     beam.setAttribute('opacity', '0.2');
