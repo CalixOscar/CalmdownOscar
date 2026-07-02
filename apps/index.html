@@ -528,7 +528,7 @@
       <a href="./" aria-current="page">Apps</a>
       <a href="../#about">About</a>
       <!-- EDIT: your real contact email -->
-      <a href="mailto:hello@calmdownoscar.com">Contact</a>
+      <a href="mailto:support@calmdownoscar.com">Contact</a>
     </nav>
   </div>
 
@@ -614,13 +614,13 @@
 
         <div class="card live reveal">
           <span class="status"><i class="dot-live"></i>On the App Store</span>
-          <h3>Sorta</h3>
+          <h3>ClearSpace</h3>
           <p>A faster, friendlier home for your photos. Sort shots into albums Instagram-style, swipe the junk into the trash, and clear it out in batches.</p>
           <div class="meta">
             <span class="pill">iOS</span>
             <span class="pill">Photos</span>
           </div>
-          <a class="applink" href="https://apps.apple.com/">View on the App Store <span class="arrow">→</span></a>
+          <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">View on the App Store <span class="arrow">→</span></a>
         </div>
 
         <div class="card progress reveal">
@@ -642,7 +642,7 @@
             <span class="pill">Web</span>
             <span class="pill">Planning</span>
           </div>
-          <a class="applink" href="wedding-concierge/">Project page soon <span class="arrow">→</span></a>
+          <a class="applink" href="https://nuptia.wedding">Visit nuptia.wedding <span class="arrow">→</span></a>
         </div>
 
         <div class="card garage reveal">
@@ -659,7 +659,7 @@
 <footer>
   <div class="wrap foot-row">
     <span>© 2026 calmdownoscar · est. the year Oscar was</span>
-    <a href="mailto:hello@calmdownoscar.com">hello@calmdownoscar.com</a>
+    <a href="mailto:support@calmdownoscar.com">support@calmdownoscar.com</a>
   </div>
 </footer>
 
@@ -705,22 +705,22 @@
   var wheels  = document.querySelectorAll('.wheel');
 
   var MAX_WHEELIE = 34;
+  var LEGS = 3;
   var BIKE_W = 96;
   var MARGIN = 16;
 
+  var span = 0;
   var angle = 0, av = 0;
   var energy = 0;
+  var lastY = window.scrollY;
   var running = false;
   var frameCount = 0;
   var prevAngle = 0;
-  var bikeX = MARGIN, goingRight = true;
+  var bikeX = 0, goingRight = true;
   var liveParticles = 0;
 
   function measure(){
-    bikeX = MARGIN;
-    travel.style.transform = 'translateX(0)';
-    flip.style.transform = 'scaleX(1)';
-    skyline.style.transform = 'translateX(0)';
+    span = Math.max(0, document.documentElement.clientWidth - BIKE_W - MARGIN * 2);
   }
 
   function spawn(cls, x, dx){
@@ -739,6 +739,20 @@
   function frame(){
     frameCount++;
 
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    var t = p * LEGS;
+    var leg = Math.min(Math.floor(t), LEGS - 1);
+    var frac = t - leg;
+    goingRight = (leg % 2 === 0);
+    bikeX = MARGIN + (goingRight ? frac * span : (1 - frac) * span);
+
+    travel.style.transform = 'translateX(' + (bikeX - MARGIN) + 'px)';
+    flip.style.transform = goingRight ? 'scaleX(1)' : 'scaleX(-1)';
+
+    /* skyline parallax: the city slides gently against the ride */
+    skyline.style.transform = 'translateX(' + (-(bikeX - MARGIN) / Math.max(span, 1) * 26) + 'px)';
+
     var target = -Math.min(energy, MAX_WHEELIE);
     av += (target - angle) * 0.055;
     av *= 0.86;
@@ -749,7 +763,7 @@
     rider.style.transform = 'rotate(' + (-angle * 0.3) + 'deg)';
     beam.setAttribute('opacity', (0.2 + Math.min(energy / MAX_WHEELIE, 1) * 0.6).toFixed(2));
 
-    var spin = frameCount * Math.min(energy, 16);
+    var spin = t * span * 1.4;
     for (var i = 0; i < wheels.length; i++){
       wheels[i].style.transform = 'rotate(' + spin + 'deg)';
     }
@@ -785,8 +799,16 @@
     if (!running){ running = true; requestAnimationFrame(frame); }
   }
 
+  function onScroll(){
+    if (reduce.matches) return;
+    var dy = Math.abs(window.scrollY - lastY);
+    lastY = window.scrollY;
+    kick(dy * 0.8);
+  }
+
   measure();
   window.addEventListener('resize', measure);
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   if (reduce.matches){
     beam.setAttribute('opacity', '0.2');
