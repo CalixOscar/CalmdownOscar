@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B101C">
+<title>Rides — calmdownoscar</title>
+<meta name="description" content="Motorcycle riding clips from calmdownoscar. Scroll to roll the film — a clip in the middle of the page plays as you go.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:    #14181C;
+    --panel:    #1B2127;
+    --edge:     #2A323A;
+    --chrome:   #E8EDF0;
+    --asphalt:  #8B97A1;
+    --tank:     #F2581C;
+    --pacifier: #BCD9E8;
+    --moonlight:#F4EBD0;
+    --nav-h: 72px;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--tank); color:#fff; }
+  body{
+    background:var(--night);
+    color:var(--chrome);
+    font-family:'Instrument Sans', system-ui, sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--nav-h);
+  }
+  body.page-enter{ animation:pageEnter .45s cubic-bezier(.2,.7,.3,1) both; }
+  body.page-exit{ animation:pageExit .22s ease both; }
+  @keyframes pageEnter{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:none; }
+  }
+  @keyframes pageExit{
+    to{ opacity:0; transform:translateY(-4px); }
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+
+  /* ================= the ride: a big clip pinned in place while it plays ================= */
+  /* .video-pin is a tall scroll spacer; .video-section sticks inside it just
+     below the fixed nav, staying on screen for the whole spacer's height so
+     the clip can fully scrub through before the page is allowed to move on. */
+  .video-pin{
+    position:relative;
+    height:220vh;
+  }
+  .video-section{
+    position:sticky;
+    top:var(--nav-h);
+    z-index:2;
+    width:100%; height:calc(100vh - var(--nav-h));
+    overflow:hidden;
+    background:var(--night);
+  }
+  /* a blurred, scaled-up copy of the poster fills the space around the
+     letterboxed video so nothing gets cropped, without leaving flat empty bars */
+  .video-section::before{
+    content:"";
+    position:absolute; inset:-40px;
+    background:url(poster.jpg) center/cover no-repeat;
+    filter:blur(46px) brightness(.4) saturate(1.15);
+    transform:scale(1.15);
+  }
+  .video-section video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:contain;
+    display:block;
+    z-index:1;
+  }
+  /* feather all four edges so the clip melts into the page background instead
+     of ending in a hard rectangle (mask-image doesn't render reliably on
+     <video> in all browsers, so this blends it with a gradient overlay instead) */
+  .video-section::after{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    z-index:2;
+    background:
+      linear-gradient(to right, var(--night) 0%, transparent 10%, transparent 90%, var(--night) 100%),
+      linear-gradient(to bottom, var(--night) 0%, transparent 12%, transparent 88%, var(--night) 100%);
+  }
+  /* the headline assembles itself, word by word, over the footage as it plays */
+  .video-heading{
+    position:absolute; z-index:3;
+    right:6%; top:50%; transform:translateY(-50%);
+    text-align:right;
+    max-width:60%;
+    pointer-events:none;
+  }
+  .video-heading h1{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-weight:800;
+    font-size:clamp(30px, 5vw, 64px);
+    line-height:1.05;
+    letter-spacing:-0.03em;
+    color:var(--chrome);
+  }
+  .video-heading .word{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1);
+    text-shadow:0 2px 20px rgba(0,0,0,.7), 0 1px 3px rgba(0,0,0,.85);
+  }
+  .video-heading .word.in{
+    opacity:1;
+    transform:none;
+  }
+  .video-heading .oscar-word{
+    color:var(--tank);
+    text-shadow:0 0 34px rgba(242,88,28,.5), 0 2px 20px rgba(0,0,0,.7);
+  }
+
+  /* nav: fixed at the very top, always visible, full width */
+  .site-header{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--nav-h);
+    display:flex; align-items:center;
+    background:var(--night);
+  }
+  .site-header .wrap{
+    width:100%;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .mark{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-weight:800; font-size:18px; letter-spacing:-0.02em;
+    text-decoration:none; color:var(--chrome);
+  }
+  .mark span{ color:var(--tank); }
+  nav a{
+    color:var(--asphalt); text-decoration:none; font-weight:500; font-size:15px;
+    margin-left:22px;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--tank); }
+  a:focus-visible{ outline:2px solid var(--tank); outline-offset:3px; border-radius:2px; }
+  @media (max-width:520px){
+    .site-header .wrap{ align-items:flex-start; gap:16px; }
+    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
+    nav a{ margin-left:0; }
+  }
+
+  footer{ border-top:1px solid var(--edge); padding:26px 0 40px; }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:10px;
+    font-size:14px; color:var(--asphalt);
+  }
+  .foot-row a{ color:var(--asphalt); transition:color .2s ease; }
+  .foot-row a:hover{ color:var(--tank); }
+
+  @media (prefers-reduced-motion: reduce){
+    body.page-enter, body.page-exit{ animation:none; }
+    .video-heading .word{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body class="page-enter">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="../apps/">Apps</a>
+      <a href="./" aria-current="page">Rides</a>
+      <a href="../#about">About</a>
+      <a href="mailto:support@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="video-pin">
+    <div class="video-section" aria-hidden="true">
+      <!-- Scroll-scrubbed clip, feathered into the background on all sides,
+           shown in full (object-fit:contain, never cropped). To swap it,
+           re-encode onto scrub.mp4 + poster.jpg (all-keyframe H.264 is what
+           makes reverse scrubbing smooth):
+           ffmpeg -i clip.mov -an -vf "fps=30" -c:v libx264 -pix_fmt yuv420p -g 1 -keyint_min 1 -crf 23 -movflags +faststart rides/scrub.mp4
+           ffmpeg -i rides/scrub.mp4 -frames:v 1 -q:v 3 rides/poster.jpg -->
+      <video muted playsinline preload="auto"
+             poster="poster.jpg" src="scrub.mp4"
+             disablepictureinpicture></video>
+      <div class="video-heading">
+        <h1>
+          <span class="word">clips</span>
+          <span class="word">from</span>
+          <span class="word">the</span>
+          <span class="word"><span class="oscar-word">road</span><span class="oscar-word">.</span></span>
+        </h1>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>© 2026 calmdownoscar · est. the year Oscar was</span>
+    <a href="mailto:support@calmdownoscar.com">support@calmdownoscar.com</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----- page transitions -----
+     page-enter animates a transform on <body>. If the class (and its
+     fill-mode:both-held transform) is never removed, <body> keeps an
+     explicit (if identity) transform forever, which makes it a new
+     containing block and breaks position:fixed on .site-header. Clear the
+     class once the animation ends so the fixed nav stays put. */
+  document.body.addEventListener('animationend', function(e){
+    if (e.animationName === 'pageEnter'){ document.body.classList.remove('page-enter'); }
+  });
+  document.querySelectorAll('a[href]').forEach(function(link){
+    link.addEventListener('click', function(event){
+      var href = link.getAttribute('href');
+      var isMail = href && href.indexOf('mailto:') === 0;
+      var isHash = href && href.charAt(0) === '#';
+      var isExternal = link.origin && link.origin !== window.location.origin;
+      if (!href || isMail || isHash || isExternal || reduce.matches) return;
+      event.preventDefault();
+      document.body.classList.add('page-exit');
+      setTimeout(function(){ window.location.href = href; }, 180);
+    });
+  });
+
+  /* ----- video scrub: the clip is pinned (position:sticky) for the whole
+     height of .video-pin, and progress through THAT scroll range — not the
+     whole page — drives both the playhead and the headline's word-by-word
+     reveal, so the clip finishes playing before the page moves on. ----- */
+  var pin = document.querySelector('.video-pin');
+  var videoSection = document.querySelector('.video-section');
+  var words = Array.prototype.slice.call(document.querySelectorAll('.video-heading .word'));
+  var clips = Array.prototype.map.call(document.querySelectorAll('.video-section video'), function(vid){
+    return { vid: vid, dur: 0, target: 0, current: 0, running: false };
+  });
+
+  function clipFrame(c){
+    c.current += (c.target - c.current) * 0.2;
+    if (Math.abs(c.target - c.current) < 0.005){
+      c.current = c.target;
+      c.vid.currentTime = c.current;
+      c.running = false;
+      return;
+    }
+    c.vid.currentTime = c.current;
+    requestAnimationFrame(function(){ clipFrame(c); });
+  }
+
+  function pinProgress(){
+    if (!pin || !videoSection) return 0;
+    var scrollable = pin.offsetHeight - videoSection.offsetHeight;
+    if (scrollable <= 0) return 0;
+    var navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
+    var start = pin.offsetTop - navH;
+    return Math.min(Math.max((window.scrollY - start) / scrollable, 0), 1);
+  }
+
+  function scrub(){
+    if (reduce.matches) return;
+    var p = pinProgress();
+    clips.forEach(function(c){
+      if (!c.dur) return;
+      c.target = p * c.dur;
+      if (!c.running){ c.running = true; clipFrame(c); }
+    });
+    /* words finish assembling a little before the clip's pinned range ends,
+       leaving a beat to read the full line before the page releases it */
+    var revealP = Math.min(p / 0.8, 1);
+    words.forEach(function(w, i){
+      var threshold = (i + 1) / words.length;
+      w.classList.toggle('in', revealP >= threshold);
+    });
+  }
+
+  if (clips.length){
+    clips.forEach(function(c){
+      c.vid.addEventListener('loadedmetadata', function(){
+        c.dur = Math.max(0, c.vid.duration - 0.05);
+        scrub();
+      });
+      c.vid.load();
+    });
+    window.addEventListener('scroll', scrub, { passive: true });
+    window.addEventListener('resize', scrub);
+  }
+})();
+</script>
+
+</body>
+</html>

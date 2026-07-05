@@ -151,6 +151,11 @@
   }
   nav a:hover, nav a:focus-visible{ color:var(--tank); }
   a:focus-visible{ outline:2px solid var(--tank); outline-offset:3px; border-radius:2px; }
+  @media (max-width:520px){
+    .topbar .wrap{ align-items:flex-start; gap:16px; }
+    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
+    nav a{ margin-left:0; }
+  }
 
   /* bike rides the deck */
   .track{
@@ -449,6 +454,7 @@
     <a class="mark" href="#">calmdown<span>oscar</span></a>
     <nav>
       <a href="apps/index.html">Apps</a>
+      <a href="rides/index.html">Rides</a>
       <a href="#about">About</a>
       <a href="mailto:support@calmdownoscar.com">Contact</a>
     </nav>
