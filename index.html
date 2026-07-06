@@ -303,6 +303,41 @@
   }
   .card a.applink:hover .arrow{ transform:translateX(5px); }
 
+  .badge{
+    align-self:flex-start;
+    display:inline-flex; align-items:center; gap:7px;
+    padding:5px 9px;
+    border:1px solid rgba(244,235,208,.24);
+    border-radius:999px;
+    background:rgba(244,235,208,.06);
+    color:var(--moonlight);
+    font-size:11px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+  }
+  .badge::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:var(--moonlight);
+    animation:pulseMoon 2.6s ease-out infinite;
+  }
+  @keyframes pulseMoon{
+    0%{ box-shadow:0 0 0 0 rgba(244,235,208,.4); }
+    70%{ box-shadow:0 0 0 8px rgba(244,235,208,0); }
+    100%{ box-shadow:0 0 0 0 rgba(244,235,208,0); }
+  }
+
+  .apps-footer{
+    margin-top:22px;
+    font-size:15px; font-weight:600;
+    color:var(--asphalt);
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  .apps-footer:hover{ color:var(--tank); }
+  .apps-footer .arrow{
+    display:inline-block;
+    transition:transform .25s cubic-bezier(.2,.7,.3,1);
+  }
+  .apps-footer:hover .arrow{ transform:translateX(5px); }
+
   .about{ padding:24px 0 96px; }
   .about p{ max-width:60ch; color:var(--asphalt); font-size:18px; }
   .about p + p{ margin-top:18px; }
@@ -313,6 +348,20 @@
     padding:1px 6px;
     color:var(--night);
   }
+  .rides-link{
+    display:inline-block;
+    margin-top:22px;
+    font-size:15px; font-weight:600;
+    color:var(--asphalt);
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  .rides-link:hover{ color:var(--tank); }
+  .rides-link .arrow{
+    display:inline-block;
+    transition:transform .25s cubic-bezier(.2,.7,.3,1);
+  }
+  .rides-link:hover .arrow{ transform:translateX(5px); }
 
   footer{ border-top:1px solid var(--edge); padding:26px 0 40px; }
   .foot-row{
@@ -326,7 +375,7 @@
   @media (prefers-reduced-motion: reduce){
     .rise{ animation:none; }
     .reveal{ opacity:1; transform:none; transition:none; }
-    .dot-live, .star, .shoot, .cloud, .halo, .beacon, .win-fl{ animation:none; }
+    .dot-live, .badge::before, .star, .shoot, .cloud, .halo, .beacon, .win-fl{ animation:none; }
     .card{ transition:none; }
     html{ scroll-behavior:auto; }
   }
@@ -526,6 +575,37 @@
   <section class="hero">
     <div class="wrap">
       <h1 class="rise">calm down, <span class="oscar-word">oscar</span><span class="oscar-word">.</span></h1>
+      <p class="rise d1">I build apps for things I couldn't find — then ride to forget the ones that didn't ship.<br><br>
+      <strong>One-person studio out of Manila.</strong> Small, intentional iOS apps built to last. Between builds, I ride the Skyway.</p>
+    </div>
+  </section>
+
+  <section class="apps" id="apps">
+    <div class="wrap">
+      <p class="section-label reveal">Apps</p>
+      <div class="grid">
+        <div class="card reveal">
+          <span class="badge">Launching soon</span>
+          <h3>Nuptia</h3>
+          <p>Wedding planning without the chaos. A concierge for couples who want every detail covered.</p>
+          <a class="applink" href="https://nuptia.wedding" target="_blank" rel="noopener">See Nuptia <span class="arrow">→</span></a>
+        </div>
+        <div class="card live reveal">
+          <span class="status"><span class="dot-live"></span>Free on the App Store</span>
+          <h3>ClearSpace</h3>
+          <p>Quietly declutter your Photos library. Fast, local, private.</p>
+          <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807" target="_blank" rel="noopener">Get ClearSpace <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <a class="apps-footer reveal" href="apps/index.html">See all apps <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <p class="section-label reveal">About</p>
+      <p class="reveal">When I'm not shipping apps, I'm riding. <strong>The Skyway at 5am</strong>, Tagaytay when the weather clears, wherever the road goes.</p>
+      <a class="rides-link reveal" href="rides/index.html">Watch the rides <span class="arrow">→</span></a>
     </div>
   </section>
 
