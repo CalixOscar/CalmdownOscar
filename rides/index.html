@@ -44,81 +44,169 @@
   }
   .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
 
-  /* ================= the ride: a big clip pinned in place while it plays ================= */
-  /* .video-pin is a tall scroll spacer; .video-section sticks inside it just
-     below the fixed nav, staying on screen for the whole spacer's height so
-     the clip can fully scrub through before the page is allowed to move on. */
-  .video-pin{
-    position:relative;
-    height:220vh;
-  }
-  .video-section{
+  /* ================= the ride: two clips stacked into one blended reel ================= */
+  /* Both clips share one centred column so they line up at exactly the same
+     width; the second is pulled up to overlap the bottom of the first, and its
+     top edge is masked to a soft transparent→opaque fade so the two melt
+     together instead of meeting at a hard seam. Each .clip box is locked to its
+     video's exact pixel ratio, so the frame fills it with no crop and no
+     letterbox. As you scroll, each clip scrubs while it travels up the screen. */
+  /* the reel is pinned inside a sticky stage and pans/plays through as you
+     scroll, so the page holds on it and waits before moving on to the cards
+     below. .reel-pin is the tall scroll spacer that sets how long it stays
+     pinned (bigger = slower); .reel-stage is the fixed viewport-height window. */
+  .reel-pin{ position:relative; height:320vh; }
+  .reel-stage{
     position:sticky;
     top:var(--nav-h);
-    z-index:2;
-    width:100%; height:calc(100vh - var(--nav-h));
+    height:calc(100vh - var(--nav-h));
+    overflow:hidden;
+  }
+  .reel{
+    --clip-w: min(600px, 88vw);
+    position:relative;
+    padding-top:2vh;
+    will-change:transform;
+  }
+  .clip{
+    position:relative;
+    width:var(--clip-w);
+    margin-left:auto; margin-right:auto;
     overflow:hidden;
     background:var(--night);
   }
-  /* a blurred, scaled-up copy of the poster fills the space around the
-     letterboxed video so nothing gets cropped, without leaving flat empty bars */
-  .video-section::before{
-    content:"";
-    position:absolute; inset:-40px;
-    background:url(poster.jpg) center/cover no-repeat;
-    filter:blur(46px) brightness(.4) saturate(1.15);
-    transform:scale(1.15);
-  }
-  .video-section video{
+  .clip video{
     position:absolute; inset:0;
     width:100%; height:100%;
-    object-fit:contain;
+    object-fit:cover;            /* the box matches the video's ratio, so nothing is cropped */
     display:block;
+  }
+  /* first clip — 768x1108 */
+  .clip--1{ aspect-ratio:768 / 1108; z-index:0; }
+  /* second clip — 368x640. Pulled up to overlap the first clip's bottom 20%
+     (overlap = 0.2 * clip-w / (768/1108) = clip-w * 0.2885), with its top masked
+     into a transparent→opaque fade so the seam dissolves into the clip above. */
+  .clip--2{
+    aspect-ratio:368 / 640;
     z-index:1;
+    margin-top:calc(var(--clip-w) * -0.1443);   /* overlap first clip's bottom 10% */
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 9%);
+            mask-image:linear-gradient(to bottom, transparent 0%, #000 9%);
   }
-  /* feather all four edges so the clip melts into the page background instead
-     of ending in a hard rectangle (mask-image doesn't render reliably on
-     <video> in all browsers, so this blends it with a gradient overlay instead) */
-  .video-section::after{
-    content:"";
-    position:absolute; inset:0;
-    pointer-events:none;
-    z-index:2;
-    background:
-      linear-gradient(to right, var(--night) 0%, transparent 10%, transparent 90%, var(--night) 100%),
-      linear-gradient(to bottom, var(--night) 0%, transparent 12%, transparent 88%, var(--night) 100%);
-  }
-  /* the headline assembles itself, word by word, over the footage as it plays */
-  .video-heading{
+  /* the headline assembles itself, word by word, over the first clip */
+  /* sits just above the seam where the second clip overlaps (kept on the same
+     side — only the vertical position moves down to the transition) */
+  .clip-heading{
     position:absolute; z-index:3;
-    right:6%; top:50%; transform:translateY(-50%);
+    right:5%; bottom:13%;
     text-align:right;
-    max-width:60%;
+    max-width:82%;
     pointer-events:none;
   }
-  .video-heading h1{
+  .clip-heading h1{
     font-family:'Bricolage Grotesque', sans-serif;
     font-weight:800;
-    font-size:clamp(30px, 5vw, 64px);
+    font-size:clamp(26px, 4.6vw, 46px);
     line-height:1.05;
     letter-spacing:-0.03em;
     color:var(--chrome);
   }
-  .video-heading .word{
+  .clip-heading .word{
     display:inline-block;
     opacity:0;
     transform:translateY(14px);
     transition:opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1);
     text-shadow:0 2px 20px rgba(0,0,0,.7), 0 1px 3px rgba(0,0,0,.85);
   }
-  .video-heading .word.in{
+  .clip-heading .word.in{
     opacity:1;
     transform:none;
   }
-  .video-heading .oscar-word{
+  .clip-heading .oscar-word{
     color:var(--tank);
     text-shadow:0 0 34px rgba(242,88,28,.5), 0 2px 20px rgba(0,0,0,.7);
   }
+
+  /* ================= social clip cards ================= */
+  .social{ padding:64px 24px 24px; }
+  .social-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  @media (max-width:640px){
+    .social-grid{ grid-template-columns:1fr; }
+  }
+  .social-card{
+    position:relative;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    gap:10px;
+    padding:28px 20px;
+    border:1px solid var(--edge);
+    border-radius:16px;
+    background:var(--panel);
+    color:var(--chrome);
+    text-decoration:none;
+    transition:transform .2s cubic-bezier(.2,.7,.3,1), border-color .2s ease, background .2s ease;
+  }
+  /* an empty slot reads as a placeholder: dashed, dimmed, not clickable */
+  .social-card.is-empty{
+    border-style:dashed;
+    opacity:.55;
+    pointer-events:none;
+  }
+  .social-card.is-empty .social-state{ color:var(--asphalt); }
+  .social-card:not(.is-empty):hover{
+    transform:translateY(-4px);
+    border-color:var(--tank);
+    background:#20272E;
+  }
+  .social-icon{
+    width:44px; height:44px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--asphalt);
+    transition:color .2s ease;
+  }
+  .social-card:not(.is-empty):hover .social-icon{ color:var(--tank); }
+  .social-icon svg{ width:100%; height:100%; }
+  .social-name{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-weight:700; font-size:17px; letter-spacing:-0.01em;
+  }
+  .social-state{ font-size:13px; color:var(--asphalt); }
+  /* stretched link: the whole card is clickable, but it stays a real <a> so
+     the "+" button can sit above it as a separate, valid control */
+  .social-link{ position:absolute; inset:0; border-radius:inherit; z-index:1; }
+  .social-card.is-empty .social-link{ pointer-events:none; cursor:default; }
+
+  /* the "+" is only rendered/visible when the page is unlocked in admin mode */
+  .social-add{
+    position:absolute; top:10px; right:10px;
+    width:30px; height:30px; border-radius:50%;
+    display:none; align-items:center; justify-content:center;
+    border:1px solid var(--edge); background:var(--night); color:var(--chrome);
+    font-size:20px; line-height:1; cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, transform .15s ease;
+    z-index:2;
+  }
+  .social-add:hover{ background:var(--tank); border-color:var(--tank); transform:scale(1.08); }
+  body.admin .social-card{ pointer-events:auto; opacity:1; }
+  body.admin .social-card.is-empty{ border-style:dashed; }
+  body.admin .social-add{ display:flex; }
+  /* a small badge so it's obvious you're in edit mode */
+  .admin-flag{
+    position:fixed; left:14px; bottom:14px; z-index:20;
+    display:none; align-items:center; gap:8px;
+    padding:7px 12px; border-radius:999px;
+    background:var(--tank); color:#fff;
+    font-size:12px; font-weight:600;
+    box-shadow:0 6px 20px rgba(0,0,0,.4);
+  }
+  .admin-flag button{
+    background:rgba(0,0,0,.25); border:0; color:#fff;
+    border-radius:999px; padding:2px 8px; font-size:11px; cursor:pointer;
+  }
+  body.admin .admin-flag{ display:flex; }
 
   /* nav: fixed at the very top, always visible, full width */
   .site-header{
@@ -158,10 +246,21 @@
   }
   .foot-row a{ color:var(--asphalt); transition:color .2s ease; }
   .foot-row a:hover{ color:var(--tank); }
+  .foot-note{
+    margin-top:14px;
+    font-size:11px;
+    line-height:1.5;
+    color:var(--asphalt);
+    opacity:.7;
+  }
 
   @media (prefers-reduced-motion: reduce){
     body.page-enter, body.page-exit{ animation:none; }
-    .video-heading .word{ opacity:1; transform:none; transition:none; }
+    .clip-heading .word{ opacity:1; transform:none; transition:none; }
+    /* no pin/pan when motion is reduced — the clips just stack normally */
+    .reel-pin{ height:auto; }
+    .reel-stage{ position:static; height:auto; overflow:visible; }
+    .reel{ transform:none !important; }
     html{ scroll-behavior:auto; }
   }
 </style>
@@ -181,18 +280,22 @@
 </header>
 
 <main>
-  <div class="video-pin">
-    <div class="video-section" aria-hidden="true">
-      <!-- Scroll-scrubbed clip, feathered into the background on all sides,
-           shown in full (object-fit:contain, never cropped). To swap it,
-           re-encode onto scrub.mp4 + poster.jpg (all-keyframe H.264 is what
-           makes reverse scrubbing smooth):
-           ffmpeg -i clip.mov -an -vf "fps=30" -c:v libx264 -pix_fmt yuv420p -g 1 -keyint_min 1 -crf 23 -movflags +faststart rides/scrub.mp4
-           ffmpeg -i rides/scrub.mp4 -frames:v 1 -q:v 3 rides/poster.jpg -->
+  <div class="reel-pin">
+   <div class="reel-stage">
+  <section class="reel" aria-label="Riding clips">
+    <!-- Two scroll-scrubbed clips stacked into one blended column. Each .clip
+         box is locked to its video's exact pixel ratio (see aspect-ratio in the
+         CSS) so the frame fills it with no crop. The second clip overlaps the
+         first's bottom and its top fades in. To swap a clip, re-encode onto
+         scrub*.mp4 + poster*.jpg (all-keyframe H.264 makes reverse scrubbing
+         smooth) and update the matching aspect-ratio in the CSS:
+         ffmpeg -i clip.mov -an -vf "fps=30" -c:v libx264 -pix_fmt yuv420p -g 1 -keyint_min 1 -crf 23 -movflags +faststart rides/scrub.mp4
+         ffmpeg -i rides/scrub.mp4 -frames:v 1 -q:v 3 rides/poster.jpg -->
+    <div class="clip clip--1" aria-hidden="true">
       <video muted playsinline preload="auto"
              poster="poster.jpg" src="scrub.mp4"
              disablepictureinpicture></video>
-      <div class="video-heading">
+      <div class="clip-heading">
         <h1>
           <span class="word">clips</span>
           <span class="word">from</span>
@@ -201,13 +304,63 @@
         </h1>
       </div>
     </div>
+    <div class="clip clip--2" aria-hidden="true">
+      <video muted playsinline preload="auto"
+             poster="poster2.jpg" src="scrub2.mp4"
+             disablepictureinpicture></video>
+    </div>
+  </section>
+   </div>
   </div>
+
+  <!-- ============ social clips: where the real videos live ============ -->
+  <section class="wrap social" aria-label="Watch the clips">
+    <div class="social-grid">
+      <!-- data-key maps each card to a slot in the CLIPS config (see script). -->
+      <div class="social-card is-empty" data-key="youtube" data-label="YouTube">
+        <span class="social-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>
+        </span>
+        <span class="social-name">YouTube</span>
+        <span class="social-state">No clip linked yet</span>
+        <a class="social-link" href="#" target="_blank" rel="noopener"></a>
+      </div>
+
+      <div class="social-card is-empty" data-key="tiktok" data-label="TikTok">
+        <span class="social-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.8 4.8 0 0 1-1.1-3.1h-3.3v13.2a2.6 2.6 0 1 1-2.6-2.6c.27 0 .53.04.78.12V9.9a5.9 5.9 0 1 0 5.13 5.85V9.06a8.1 8.1 0 0 0 4.72 1.5V7.3a4.8 4.8 0 0 1-3.63-1.5Z"/></svg>
+        </span>
+        <span class="social-name">TikTok</span>
+        <span class="social-state">No clip linked yet</span>
+        <a class="social-link" href="#" target="_blank" rel="noopener"></a>
+      </div>
+
+      <div class="social-card is-empty" data-key="facebook" data-label="Facebook Reels">
+        <span class="social-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.88 11.85v-8.38H7.08V12h3.04V9.36c0-3 1.79-4.67 4.53-4.67 1.31 0 2.68.24 2.68.24v2.95h-1.5c-1.49 0-1.96.93-1.96 1.87V12h3.33l-.53 3.47h-2.8v8.38A12 12 0 0 0 24 12Z"/></svg>
+        </span>
+        <span class="social-name">Facebook Reels</span>
+        <span class="social-state">No clip linked yet</span>
+        <a class="social-link" href="#" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </section>
 </main>
+
+<!-- shown only in admin mode -->
+<div class="admin-flag" role="status">
+  <span>Admin mode</span>
+  <button type="button" data-admin="copy">Copy links</button>
+  <button type="button" data-admin="lock">Lock</button>
+</div>
 
 <footer>
   <div class="wrap foot-row">
     <span>© 2026 calmdownoscar · est. the year Oscar was</span>
     <a href="mailto:support@calmdownoscar.com">support@calmdownoscar.com</a>
+  </div>
+  <div class="wrap foot-note">
+    <span>All video clips are the property of their respective owners. calmdownoscar does not own any of the footage shown and claims no rights to it.</span>
   </div>
 </footer>
 
@@ -237,16 +390,23 @@
     });
   });
 
-  /* ----- video scrub: the clip is pinned (position:sticky) for the whole
-     height of .video-pin, and progress through THAT scroll range — not the
-     whole page — drives both the playhead and the headline's word-by-word
-     reveal, so the clip finishes playing before the page moves on. ----- */
-  var pin = document.querySelector('.video-pin');
-  var videoSection = document.querySelector('.video-section');
-  var words = Array.prototype.slice.call(document.querySelectorAll('.video-heading .word'));
-  var clips = Array.prototype.map.call(document.querySelectorAll('.video-section video'), function(vid){
-    return { vid: vid, dur: 0, target: 0, current: 0, running: false };
-  });
+  /* ----- video scrub: the reel is pinned in a sticky stage and, as you scroll
+     through the .reel-pin spacer, it pans upward through that fixed window while
+     the two clips scrub — the first over the first half of the pin, the second
+     over the second half. So the page holds on the reel and plays it through
+     before releasing to the cards below, instead of scrolling away immediately. */
+  var navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
+  var reelPin   = document.querySelector('.reel-pin');
+  var reelStage = document.querySelector('.reel-stage');
+  var reel      = document.querySelector('.reel');
+  var clips = Array.prototype.map.call(document.querySelectorAll('.clip'), function(el){
+    return {
+      el: el,
+      vid: el.querySelector('video'),
+      words: Array.prototype.slice.call(el.querySelectorAll('.clip-heading .word')),
+      dur: 0, target: 0, current: 0, running: false
+    };
+  }).filter(function(c){ return c.vid; });
 
   function clipFrame(c){
     c.current += (c.target - c.current) * 0.2;
@@ -260,30 +420,39 @@
     requestAnimationFrame(function(){ clipFrame(c); });
   }
 
-  function pinProgress(){
-    if (!pin || !videoSection) return 0;
-    var scrollable = pin.offsetHeight - videoSection.offsetHeight;
+  // 0 → 1 across the pinned scroll range (the stage stays fixed the whole time)
+  function reelProgress(){
+    if (!reelPin || !reelStage) return 0;
+    var scrollable = reelPin.offsetHeight - reelStage.offsetHeight;
     if (scrollable <= 0) return 0;
-    var navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
-    var start = pin.offsetTop - navH;
+    var start = reelPin.offsetTop - navH;
     return Math.min(Math.max((window.scrollY - start) / scrollable, 0), 1);
+  }
+
+  function scrubClip(c, cp){
+    if (!c.dur) return;
+    c.target = cp * c.dur;
+    if (!c.running){ c.running = true; clipFrame(c); }
+    /* words finish a little before the clip does, leaving a beat to read it */
+    var revealP = Math.min(cp / 0.85, 1);
+    c.words.forEach(function(w, i){
+      var threshold = (i + 1) / c.words.length;
+      w.classList.toggle('in', revealP >= threshold);
+    });
   }
 
   function scrub(){
     if (reduce.matches) return;
-    var p = pinProgress();
-    clips.forEach(function(c){
-      if (!c.dur) return;
-      c.target = p * c.dur;
-      if (!c.running){ c.running = true; clipFrame(c); }
-    });
-    /* words finish assembling a little before the clip's pinned range ends,
-       leaving a beat to read the full line before the page releases it */
-    var revealP = Math.min(p / 0.8, 1);
-    words.forEach(function(w, i){
-      var threshold = (i + 1) / words.length;
-      w.classList.toggle('in', revealP >= threshold);
-    });
+    var p = reelProgress();
+    // pan the (taller-than-stage) reel up through the fixed window
+    if (reel && reelStage){
+      var pan = reel.offsetHeight - reelStage.offsetHeight;
+      if (pan < 0) pan = 0;
+      reel.style.transform = 'translateY(' + (-(p * pan)).toFixed(1) + 'px)';
+    }
+    // first clip plays over the first half of the pin, second over the latter half
+    if (clips[0]) scrubClip(clips[0], Math.min(p / 0.5, 1));
+    if (clips[1]) scrubClip(clips[1], Math.min(Math.max((p - 0.5) / 0.5, 0), 1));
   }
 
   if (clips.length){
@@ -297,6 +466,178 @@
     window.addEventListener('scroll', scrub, { passive: true });
     window.addEventListener('resize', scrub);
   }
+})();
+
+/* ============ social clips + admin link editor ============
+   CLIPS is the committed source of truth that every visitor loads. Leave a
+   value as "" for an empty placeholder card. The "+" (visible only in admin
+   mode) saves a link to this browser's localStorage for INSTANT PREVIEW only —
+   it does NOT publish. To make links live for everyone: in admin mode click
+   "Copy links", paste the result over the CLIPS block below, and commit/push.
+
+   Admin unlock: open this page at rides/#admin. The first time on a device it
+   asks you to set a passphrase (stored only as a hash in your browser, never
+   in this file); after that it asks for that passphrase. Note: this hides the
+   edit UI, it is not hard security — the page source is public. */
+(function(){
+  var CLIPS = {
+    youtube:  "",
+    tiktok:   "",
+    facebook: ""
+  };
+
+  var LS_LINKS  = 'rides.clips.v1';
+  var LS_HASH   = 'rides.adminHash.v1';
+  var SS_UNLOCK = 'rides.adminUnlocked';
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.social-card'));
+  var flag  = document.querySelector('.admin-flag');
+
+  function loadOverrides(){
+    try { return JSON.parse(localStorage.getItem(LS_LINKS)) || {}; }
+    catch(e){ return {}; }
+  }
+  function saveOverrides(o){
+    try { localStorage.setItem(LS_LINKS, JSON.stringify(o)); } catch(e){}
+  }
+  /* localStorage override (preview) wins over the committed default */
+  function linkFor(key, overrides){
+    var v = overrides[key];
+    if (v === undefined) v = CLIPS[key];
+    return (v || '').trim();
+  }
+  function isValidUrl(u){
+    try { var p = new URL(u); return p.protocol === 'http:' || p.protocol === 'https:'; }
+    catch(e){ return false; }
+  }
+
+  function render(){
+    var overrides = loadOverrides();
+    cards.forEach(function(card){
+      var key   = card.getAttribute('data-key');
+      var label = card.getAttribute('data-label') || key;
+      var url   = linkFor(key, overrides);
+      var link  = card.querySelector('.social-link');
+      var state = card.querySelector('.social-state');
+      if (url && isValidUrl(url)){
+        card.classList.remove('is-empty');
+        link.href = url;
+        link.setAttribute('aria-label', 'Watch on ' + label);
+        state.textContent = 'Watch on ' + label + ' →';
+      } else {
+        card.classList.add('is-empty');
+        link.removeAttribute('href');
+        state.textContent = 'No clip linked yet';
+      }
+    });
+  }
+
+  function addPlusButtons(){
+    cards.forEach(function(card){
+      if (card.querySelector('.social-add')) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'social-add';
+      btn.textContent = '+';
+      btn.setAttribute('aria-label', 'Set link for ' + (card.getAttribute('data-label') || ''));
+      btn.addEventListener('click', function(){ editLink(card); });
+      card.appendChild(btn);
+    });
+  }
+
+  function editLink(card){
+    var key     = card.getAttribute('data-key');
+    var label   = card.getAttribute('data-label') || key;
+    var overrides = loadOverrides();
+    var current = linkFor(key, overrides);
+    var next = window.prompt('Paste the ' + label + ' link (leave blank to remove):', current);
+    if (next === null) return;               // cancelled
+    next = next.trim();
+    if (next && !isValidUrl(next)){
+      window.alert('That doesn’t look like a valid http(s) link.');
+      return;
+    }
+    if (next) overrides[key] = next; else delete overrides[key];
+    saveOverrides(overrides);
+    render();
+  }
+
+  async function sha256(text){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.prototype.map.call(new Uint8Array(buf), function(b){
+      return b.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  function enterAdmin(){
+    document.body.classList.add('admin');
+    addPlusButtons();
+    try { sessionStorage.setItem(SS_UNLOCK, '1'); } catch(e){}
+  }
+  function exitAdmin(){
+    document.body.classList.remove('admin');
+    try { sessionStorage.removeItem(SS_UNLOCK); } catch(e){}
+    if (location.hash === '#admin'){
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  }
+
+  async function unlock(){
+    var stored = null;
+    try { stored = localStorage.getItem(LS_HASH); } catch(e){}
+    if (!stored){
+      var set = window.prompt('Set an admin passphrase for this device:');
+      if (!set) return;
+      var confirm = window.prompt('Confirm the passphrase:');
+      if (set !== confirm){ window.alert('Passphrases didn’t match.'); return; }
+      try { localStorage.setItem(LS_HASH, await sha256(set)); } catch(e){}
+      enterAdmin();
+      return;
+    }
+    var entry = window.prompt('Enter admin passphrase:');
+    if (entry === null) return;
+    if (await sha256(entry) === stored){ enterAdmin(); }
+    else { window.alert('Wrong passphrase.'); }
+  }
+
+  function copyLinks(){
+    var overrides = loadOverrides();
+    var merged = {};
+    ['youtube','tiktok','facebook'].forEach(function(k){ merged[k] = linkFor(k, overrides); });
+    var snippet =
+      'var CLIPS = {\n' +
+      '    youtube:  ' + JSON.stringify(merged.youtube) + ',\n' +
+      '    tiktok:   ' + JSON.stringify(merged.tiktok) + ',\n' +
+      '    facebook: ' + JSON.stringify(merged.facebook) + '\n' +
+      '  };';
+    var msg = 'Paste this over the CLIPS block in rides/index.html, then commit:\n\n' + snippet;
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(snippet).then(
+        function(){ window.alert('Copied to clipboard.\n\n' + msg); },
+        function(){ window.prompt(msg, snippet); }
+      );
+    } else {
+      window.prompt(msg, snippet);
+    }
+  }
+
+  if (flag){
+    flag.addEventListener('click', function(e){
+      var act = e.target && e.target.getAttribute('data-admin');
+      if (act === 'copy') copyLinks();
+      if (act === 'lock') exitAdmin();
+    });
+  }
+
+  render();
+
+  var alreadyUnlocked = false;
+  try { alreadyUnlocked = sessionStorage.getItem(SS_UNLOCK) === '1'; } catch(e){}
+  if (alreadyUnlocked){ enterAdmin(); }
+  else if (location.hash === '#admin'){ unlock(); }
+  window.addEventListener('hashchange', function(){
+    if (location.hash === '#admin' && !document.body.classList.contains('admin')) unlock();
+  });
 })();
 </script>
 
