@@ -36,16 +36,15 @@
   }
   .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
 
-  /* ================= photo background ================= */
-  .bg-photo{
-    position:fixed; inset:-20px; z-index:-2;
-    background:url('assets/Oscar-bg.jpg') center 30%/cover no-repeat;
-    filter:blur(5px) saturate(.95) brightness(1.04);
-    transform:scale(1.02);
+  /* ================= video background ================= */
+  .bg-video{
+    position:fixed; inset:0; z-index:-2;
+    width:100%; height:100%;
+    object-fit:cover; object-position:center 30%;
   }
   .bg-scrim{
     position:fixed; inset:0; z-index:-1;
-    background:rgba(238,242,246,.74);
+    background:rgba(238,242,246,.55);
   }
 
   /* ================= topbar ================= */
@@ -211,7 +210,7 @@
 </style>
 </head>
 <body>
-<div class="bg-photo" aria-hidden="true"></div>
+<video class="bg-video" src="assets/oscar-crawl.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
 <div class="bg-scrim" aria-hidden="true"></div>
 
 <header class="topbar">
@@ -423,6 +422,38 @@
 
 <script>
 (function(){
+  var video = document.querySelector('.bg-video');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (video && !reduceMotion.matches){
+    var ready = false;
+    var ticking = false;
+
+    function scrubToScroll(){
+      ticking = false;
+      if (!ready || !video.duration) return;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      var target = progress * video.duration;
+      if (Math.abs(video.currentTime - target) > 0.02){
+        video.currentTime = target;
+      }
+    }
+
+    function onScroll(){
+      if (!ticking){
+        ticking = true;
+        requestAnimationFrame(scrubToScroll);
+      }
+    }
+
+    video.addEventListener('loadedmetadata', function(){
+      ready = true;
+      scrubToScroll();
+    });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var revealEls = document.querySelectorAll('.reveal');
   if (reduce.matches || !('IntersectionObserver' in window)){
