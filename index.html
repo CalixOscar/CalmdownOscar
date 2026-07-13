@@ -39,18 +39,6 @@
   }
   .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
 
-  /* ================= photo background (behind everything below the topbar) ================= */
-  .bg-photo{
-    position:fixed; inset:-20px; z-index:-2;
-    background:url('assets/Oscar-bg.jpg') center 30%/cover no-repeat;
-    filter:blur(5px) saturate(.95) brightness(1.04);
-    transform:scale(1.02);
-  }
-  .bg-scrim{
-    position:fixed; inset:0; z-index:-1;
-    background:rgba(238,242,246,.74);
-  }
-
   /* ================= fixed top bar: the Skyway scene (unchanged) ================= */
   .topbar{
     position:fixed; top:0; left:0; right:0; z-index:10;
@@ -322,8 +310,6 @@
 </style>
 </head>
 <body>
-<div class="bg-photo" aria-hidden="true"></div>
-<div class="bg-scrim" aria-hidden="true"></div>
 
 <header class="topbar">
   <!-- ===== the Skyway scene ===== -->
