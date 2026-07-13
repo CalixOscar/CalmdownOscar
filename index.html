@@ -252,7 +252,9 @@
     border-bottom:1px solid var(--edge);
     margin-bottom:32px;
   }
-  .apps{ padding:24px 0 72px; }
+  .how{ padding:24px 0 72px; }
+  .how > .wrap > p.reveal{ max-width:58ch; color:var(--asphalt); font-size:18px; margin-bottom:36px; }
+  .how > .wrap > p.reveal strong{ color:var(--chrome); font-weight:600; }
   .grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
   .card{
@@ -268,75 +270,12 @@
     border-color:rgba(242,88,28,.45);
     box-shadow:0 14px 38px rgba(0,0,0,.4), 0 0 0 1px rgba(242,88,28,.12), 0 0 40px rgba(242,88,28,.07);
   }
-  .card .status{
-    font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-    display:flex; align-items:center; gap:8px;
-  }
-  .card.live .status{ color:var(--tank); }
-  .dot-live{
-    width:7px; height:7px; border-radius:50%;
-    background:var(--tank);
-    animation:pulse 2.2s ease-out infinite;
-  }
-  @keyframes pulse{
-    0%{ box-shadow:0 0 0 0 rgba(242,88,28,.55); }
-    70%{ box-shadow:0 0 0 9px rgba(242,88,28,0); }
-    100%{ box-shadow:0 0 0 0 rgba(242,88,28,0); }
-  }
-  .card.garage{ background:transparent; border-style:dashed; }
-  .card.garage .status{ color:var(--asphalt); }
   .card h3{
     font-family:'Bricolage Grotesque', sans-serif;
-    font-weight:700; font-size:24px; letter-spacing:-0.02em;
+    font-weight:700; font-size:22px; letter-spacing:-0.02em;
     color:var(--chrome);
   }
   .card p{ color:var(--asphalt); font-size:16px; }
-  .card a.applink{
-    margin-top:auto; padding-top:12px;
-    color:var(--chrome); font-weight:600; font-size:15px; text-decoration:none;
-    transition:color .2s ease;
-  }
-  .card a.applink:hover{ color:var(--tank); }
-  .card a.applink .arrow{
-    display:inline-block;
-    transition:transform .25s cubic-bezier(.2,.7,.3,1);
-  }
-  .card a.applink:hover .arrow{ transform:translateX(5px); }
-
-  .badge{
-    align-self:flex-start;
-    display:inline-flex; align-items:center; gap:7px;
-    padding:5px 9px;
-    border:1px solid rgba(244,235,208,.24);
-    border-radius:999px;
-    background:rgba(244,235,208,.06);
-    color:var(--moonlight);
-    font-size:11px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
-  }
-  .badge::before{
-    content:""; width:6px; height:6px; border-radius:50%;
-    background:var(--moonlight);
-    animation:pulseMoon 2.6s ease-out infinite;
-  }
-  @keyframes pulseMoon{
-    0%{ box-shadow:0 0 0 0 rgba(244,235,208,.4); }
-    70%{ box-shadow:0 0 0 8px rgba(244,235,208,0); }
-    100%{ box-shadow:0 0 0 0 rgba(244,235,208,0); }
-  }
-
-  .apps-footer{
-    margin-top:22px;
-    font-size:15px; font-weight:600;
-    color:var(--asphalt);
-    text-decoration:none;
-    transition:color .2s ease;
-  }
-  .apps-footer:hover{ color:var(--tank); }
-  .apps-footer .arrow{
-    display:inline-block;
-    transition:transform .25s cubic-bezier(.2,.7,.3,1);
-  }
-  .apps-footer:hover .arrow{ transform:translateX(5px); }
 
   .about{ padding:24px 0 96px; }
   .about p{ max-width:60ch; color:var(--asphalt); font-size:18px; }
@@ -575,36 +514,41 @@
   <section class="hero">
     <div class="wrap">
       <h1 class="rise">calm down, <span class="oscar-word">oscar</span><span class="oscar-word">.</span></h1>
-      <p class="rise d1">I build apps for things I couldn't find — then ride to forget the ones that didn't ship.<br><br>
-      <strong>One-person studio out of Manila.</strong> Small, intentional iOS apps built to last. Between builds, I ride the Skyway.</p>
+      <p class="rise d1">I'm Peter. Oscar is my son — he's the reason this studio has a name, and he's still working on the calm part.<br><br>
+      <strong>One-person studio out of Manila.</strong> My head runs on a hundred ideas a week. Very few of them make it as far as the App Store. This page is for the ones that did, and for a bit of the mess behind them.</p>
     </div>
   </section>
 
-  <section class="apps" id="apps">
+  <section class="how" id="how">
     <div class="wrap">
-      <p class="section-label reveal">Apps</p>
+      <p class="section-label reveal">How I work</p>
+      <p class="reveal">Ideas outrun follow-through by a wide margin, so most of what keeps this studio moving isn't code — it's a system for not losing the thread between one afternoon and the next.</p>
       <div class="grid">
         <div class="card reveal">
-          <span class="badge">Launching soon</span>
-          <h3>Nuptia</h3>
-          <p>Wedding planning without the chaos. A concierge for couples who want every detail covered.</p>
-          <a class="applink" href="https://nuptia.wedding" target="_blank" rel="noopener">See Nuptia <span class="arrow">→</span></a>
+          <h3>A moving target</h3>
+          <p>Today's AI makes reaching the App Store possible for people without a dev team. But the industry moves fast — one tool outperforms the next from week to week. Using three, kept in sync with a shared, persistent memory, is what works for me.</p>
         </div>
         <div class="card reveal">
-          <span class="badge">In Progress</span>
-          <h3>ClearSpace</h3>
-          <p>Quietly declutter your Photos library. Fast, local, private.</p>
-          <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807" target="_blank" rel="noopener">Get ClearSpace <span class="arrow">→</span></a>
+          <h3>Three tools, one job each</h3>
+          <p>One tool plans and reviews, one executes the plan, one catches raw ideas before they're real. Splitting the work like this is what makes "shipping" possible.</p>
+        </div>
+        <div class="card reveal">
+          <h3>An Obsidian vault</h3>
+          <p>Obsidian is just a notes app — plain text files, kept on my own computer. Every project gets one note: what's decided, what's next, where I left off. When I hand something to an AI tool, that note is the first thing it reads, so I never have to explain the same context twice.</p>
+        </div>
+        <div class="card reveal">
+          <h3>A capped memory file</h3>
+          <p>Neither this file nor the vault note above is something I type into by hand. The AI tool itself writes to both, after it finishes a task — deciding what's worth remembering, updating the note, keeping this file short. I just read what comes out.</p>
         </div>
       </div>
-      <a class="apps-footer reveal" href="apps/index.html">See all apps <span class="arrow">→</span></a>
     </div>
   </section>
 
   <section class="about" id="about">
     <div class="wrap">
       <p class="section-label reveal">About</p>
-      <p class="reveal">When I'm not shipping apps, I'm riding. <strong>The Skyway at 5am</strong>, Tagaytay when the weather clears, wherever the road goes.</p>
+      <p class="reveal">Oscar showed up in 2025 and hasn't been calm since. <span class="oscar">calmdownoscar</span> started as a joke about him and became the name for everything I build.</p>
+      <p class="reveal">When I'm not shipping apps, I'm riding — early, before the city's awake.</p>
       <a class="rides-link reveal" href="rides/index.html">Watch the rides <span class="arrow">→</span></a>
     </div>
   </section>
