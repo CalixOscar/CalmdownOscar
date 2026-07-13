@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030607">
+<title>Privacy Policy — ClearSpace</title>
+<meta name="description" content="Privacy policy for ClearSpace, the photo organizing app from calmdownoscar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:      #030607;
+    --panel:   rgba(8,18,20,.62);
+    --edge:    rgba(93,232,255,.22);
+    --edge-hi: rgba(93,232,255,.75);
+    --cyan:    #5DE8FF;
+    --ink:     #DFF9FF;
+    --muted:   #6E8B92;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--cyan); color:#00171B; }
+  body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .scanlines{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(93,232,255,.025) 0 1px, transparent 1px 3px);
+    opacity:.5;
+  }
+  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
+  header{
+    border-bottom:1px solid var(--edge);
+    background:rgba(3,6,7,.88);
+    backdrop-filter:blur(14px);
+  }
+  .nav{ min-height:76px; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+  .mark{
+    font-family:'Orbitron', sans-serif;
+    font-weight:800; font-size:16px; letter-spacing:.04em;
+    color:var(--ink); text-decoration:none; text-transform:uppercase;
+  }
+  .mark span{ color:var(--cyan); text-shadow:0 0 14px rgba(93,232,255,.7); }
+  nav a{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:13px;
+    margin-left:22px;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--cyan); }
+  a:focus-visible{ outline:1px solid var(--cyan); outline-offset:3px; }
+  main{ padding:64px 0 96px; }
+  .kicker{
+    font-family:'JetBrains Mono', monospace;
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--cyan);
+    font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  h1{
+    font-family:'Orbitron', sans-serif;
+    font-weight:800;
+    font-size:clamp(28px, 5.5vw, 42px);
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  .updated{
+    font-family:'JetBrains Mono', monospace;
+    margin-top:14px; color:var(--muted); font-size:13px;
+  }
+  .policy{ margin-top:42px; }
+  .policy h2{
+    font-family:'Orbitron', sans-serif;
+    font-weight:700; font-size:17px; letter-spacing:.01em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    margin:36px 0 12px;
+  }
+  .policy h2:first-child{ margin-top:0; }
+  .policy p, .policy li{ color:var(--muted); font-size:16px; }
+  .policy p + p{ margin-top:12px; }
+  .policy ul{ margin:10px 0 0 20px; }
+  .policy li + li{ margin-top:6px; }
+  .policy strong{ color:var(--ink); font-weight:600; }
+  .policy a{ color:var(--ink); text-decoration:underline; text-decoration-color:var(--edge); }
+  .policy a:hover{ color:var(--cyan); text-decoration-color:var(--cyan); }
+  .card{
+    margin-top:42px;
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-radius:6px;
+    padding:24px 24px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .card a.applink{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--ink); font-weight:500; font-size:14px; text-decoration:none;
+    transition:color .2s ease;
+  }
+  .card a.applink:hover{ color:var(--cyan); }
+  .card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
+  .card a.applink:hover .arrow{ transform:translateX(5px); }
+  .back{
+    font-family:'JetBrains Mono', monospace;
+    display:inline-block; margin-top:34px;
+    color:var(--ink); font-weight:500; text-decoration:none;
+    transition:color .2s ease;
+  }
+  .back:hover{ color:var(--cyan); }
+  footer{
+    border-top:1px solid var(--edge); padding:24px 0 40px;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--muted); font-size:12px;
+  }
+  footer a{ color:var(--muted); transition:color .2s ease; }
+  footer a:hover{ color:var(--cyan); }
+  @media (max-width:640px){
+    .nav{ align-items:flex-start; flex-direction:column; padding:20px 0; }
+    nav a{ margin-left:0; margin-right:18px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="../../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="../">Apps</a>
+      <a href="../../#about">About</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+<div class="scanlines" aria-hidden="true"></div>
+<main>
+  <div class="wrap">
+    <span class="kicker">ClearSpace</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: September 16, 2025</p>
+
+    <div class="policy">
+      <h2>Introduction</h2>
+      <p>calmdownoscar ("we", "us") operates the ClearSpace mobile application. This policy explains how we collect, use, and protect your information when you use it.</p>
+
+      <h2>What we don't collect</h2>
+      <ul>
+        <li><strong>Photos</strong> — we never upload, store, or access your photos on any server. All photo processing happens locally on your device.</li>
+        <li><strong>Personal information</strong> — we don't collect names, emails, or contact details unless you voluntarily reach out for support.</li>
+        <li><strong>Location</strong> — we don't collect or track location data.</li>
+      </ul>
+
+      <h2>What we may collect</h2>
+      <ul>
+        <li>Anonymous app usage analytics (e.g. photos processed, features used)</li>
+        <li>Basic device type and iOS version, for compatibility</li>
+        <li>Purchase transaction records, handled entirely by Apple</li>
+      </ul>
+
+      <h2>Photo privacy</h2>
+      <p>All organizing, deleting, and favoriting happens locally on your device through Apple's PhotoKit framework. We never transmit or store your photos on external servers, and the app only accesses photos you explicitly interact with.</p>
+
+      <h2>How we use information</h2>
+      <p>Only to improve app performance, provide support when requested, and process subscription purchases through Apple's payment system.</p>
+
+      <h2>Data sharing</h2>
+      <p>We don't sell, trade, or share your data with third parties, except with Apple for purchase processing, or if required by law.</p>
+
+      <h2>Data security & retention</h2>
+      <p>App data stays on your device until you delete the app. Anonymous usage analytics may be retained for up to a year for improvement purposes. Support conversations are kept only as long as needed to help you.</p>
+
+      <h2>Children's privacy</h2>
+      <p>ClearSpace is not directed at children under 13, and we don't knowingly collect personal information from them.</p>
+
+      <h2>Your rights</h2>
+      <ul>
+        <li><strong>Delete</strong> — removing the app deletes all associated local data.</li>
+        <li><strong>Access</strong> — contact us to ask what information, if any, we hold about you.</li>
+        <li><strong>Opt out</strong> — disable analytics under iOS Settings → Privacy & Security → Analytics & Improvements.</li>
+      </ul>
+
+      <h2>Third-party services</h2>
+      <p>ClearSpace uses Apple's PhotoKit for photo library access, StoreKit for in-app purchases, and iCloud only insofar as your own account already syncs your photos.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>We may update this policy from time to time. Meaningful changes will be noted through the app or an App Store update.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy or your data: <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></p>
+    </div>
+
+    <div class="card">
+      <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">View ClearSpace on the App Store <span class="arrow">→</span></a>
+      <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">→</span></a>
+    </div>
+
+    <a class="back" href="./">← Back to ClearSpace</a>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+</footer>
+</body>
+</html>
