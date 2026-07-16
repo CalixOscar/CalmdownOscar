@@ -285,6 +285,7 @@
     height: 100%;
     object-fit: contain;
     display: block;
+    filter: blur(12.5px);
   }
   .modal-footer {
     padding: 12px 20px;
@@ -646,11 +647,11 @@
     timerBar.style.transform = 'scaleX(1)';
     timerBar.offsetHeight; // force reflow
 
-    // Animate bar to 0 over 5s
-    timerBar.style.transition = 'transform 5s linear';
+    // Animate bar to 0 over 3s
+    timerBar.style.transition = 'transform 3s linear';
     timerBar.style.transform = 'scaleX(0)';
 
-    var secondsLeft = 5;
+    var secondsLeft = 3;
     timerSeconds.textContent = secondsLeft;
 
     previewInterval = setInterval(function() {
@@ -660,7 +661,7 @@
       }
     }, 1000);
 
-    previewTimeout = setTimeout(closePreviewModal, 5000);
+    previewTimeout = setTimeout(closePreviewModal, 3000);
   }
 
   var trigger = document.querySelector('.preview-trigger');
@@ -698,7 +699,7 @@
       <div class="timer-bar-container">
         <div id="timer-bar" class="timer-bar"></div>
       </div>
-      <span class="timer-text">Closing in <span id="timer-seconds">5</span>s...</span>
+      <span class="timer-text">Closing in <span id="timer-seconds">3</span>s...</span>
     </div>
   </div>
 </div>
