@@ -230,9 +230,9 @@
   <section class="pipeline" id="pipeline">
     <div class="wrap">
       <div class="section-label reveal">The pipeline</div>
-      <p class="section-lede reveal">One prompt, a few tools, one shared memory — roughly how an idea on this page becomes an app.</p>
+      <p class="section-lede reveal">An idea, a few tools, one shared memory — roughly how a concept becomes a final result.</p>
       <div class="diagram reveal">
-        <svg viewBox="0 0 900 548" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a prompt goes to Gemini for brainstorming, to Claude for planning, out to the Obsidian Vault and back, out to ChatGPT or Antigravity for execution, to GitHub, and becomes an app.">
+        <svg viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: an idea goes to Gemini for brainstorming, to Prompt for specification, to Claude for planning, out to the Obsidian Vault and back, out to Codex/Antigravity for execution, to GitHub, and becomes a final result.">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" fill="rgba(32,43,54,.3)"/>
@@ -240,91 +240,86 @@
           </defs>
 
           <!-- traces -->
-          <path id="p1"  class="trace" marker-end="url(#arrow)" d="M450,56 L450,104"/>
-          <path id="p2"  class="trace" marker-end="url(#arrow)" d="M450,148 L450,192"/>
-          <path id="p3"  class="trace" marker-end="url(#arrow)" d="M525,206 L655,206"/>
-          <path id="p4"  class="trace" marker-end="url(#arrow)" d="M655,222 L525,222"/>
-          <path id="p5a" class="trace" marker-end="url(#arrow)" d="M410,236 C380,255 365,265 350,280"/>
-          <path id="p5b" class="trace" marker-end="url(#arrow)" d="M490,236 C520,255 535,265 550,280"/>
-          <path id="p6a" class="trace" marker-end="url(#arrow)" d="M350,322 C370,345 400,358 420,368"/>
-          <path id="p6b" class="trace" marker-end="url(#arrow)" d="M550,322 C530,345 500,358 480,368"/>
-          <path id="p7"  class="trace" marker-end="url(#arrow)" d="M450,410 L450,456"/>
+          <path id="p1" class="trace" marker-end="url(#arrow)" d="M450,56 L450,104"/>
+          <path id="p2" class="trace" marker-end="url(#arrow)" d="M450,148 L450,192"/>
+          <path id="p3" class="trace" marker-end="url(#arrow)" d="M450,232 L450,280"/>
+          <path id="p4" class="trace" marker-end="url(#arrow)" d="M525,294 L655,294"/>
+          <path id="p5" class="trace" marker-end="url(#arrow)" d="M655,310 L525,310"/>
+          <path id="p6" class="trace" marker-end="url(#arrow)" d="M450,324 L450,368"/>
+          <path id="p7" class="trace" marker-end="url(#arrow)" d="M450,412 L450,456"/>
+          <path id="p8" class="trace" marker-end="url(#arrow)" d="M450,498 L450,544"/>
 
           <!-- nodes -->
           <g>
             <rect class="node-box dim" x="380" y="16" width="140" height="40" rx="10"/>
-            <text class="node-label dim" x="450" y="41">Prompt</text>
+            <text class="node-label dim" x="450" y="41">Idea</text>
           </g>
           <g>
             <rect class="node-box" x="375" y="104" width="150" height="44" rx="10"/>
             <text class="node-label" x="450" y="131">Gemini</text>
           </g>
           <g>
-            <rect class="node-box" x="375" y="192" width="150" height="44" rx="10"/>
-            <text class="node-label" x="450" y="219">Claude</text>
+            <rect class="node-box" x="380" y="192" width="140" height="40" rx="10"/>
+            <text class="node-label" x="450" y="217">Prompt</text>
           </g>
           <g>
-            <rect class="node-box" x="655" y="192" width="170" height="44" rx="10"/>
-            <text class="node-label" x="740" y="219">Obsidian Vault</text>
+            <rect class="node-box" x="375" y="280" width="150" height="44" rx="10"/>
+            <text class="node-label" x="450" y="307">Claude</text>
           </g>
           <g>
-            <rect class="node-box" x="280" y="280" width="140" height="42" rx="10"/>
-            <text class="node-label" x="350" y="306">ChatGPT</text>
+            <rect class="node-box" x="655" y="280" width="170" height="44" rx="10"/>
+            <text class="node-label" x="740" y="307">Obsidian Vault</text>
           </g>
           <g>
-            <rect class="node-box" x="470" y="280" width="160" height="42" rx="10"/>
-            <text class="node-label" x="550" y="306">Antigravity</text>
+            <rect class="node-box" x="360" y="368" width="180" height="44" rx="10"/>
+            <text class="node-label" x="450" y="395">Codex / Antigravity</text>
           </g>
           <g>
-            <rect class="node-box" x="375" y="368" width="150" height="42" rx="10"/>
-            <text class="node-label" x="450" y="394">GitHub</text>
+            <rect class="node-box" x="375" y="456" width="150" height="42" rx="10"/>
+            <text class="node-label" x="450" y="482">GitHub</text>
           </g>
           <g>
-            <rect class="node-box output" x="370" y="456" width="160" height="48" rx="12"/>
-            <text class="node-label output" x="450" y="485">Your App</text>
-            <circle class="halo" cx="450" cy="480" r="0">
-              <animate attributeName="r" dur="8s" repeatCount="indefinite" keyTimes="0;0.875;0.92;0.97;1" values="0;0;36;46;46"/>
-              <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.875;0.9;0.97;1" values="0;.55;.4;0;0"/>
+            <rect class="node-box output" x="370" y="544" width="160" height="48" rx="12"/>
+            <text class="node-label output" x="450" y="573">Final Result</text>
+            <circle class="halo" cx="450" cy="568" r="0">
+              <animate attributeName="r" dur="9s" repeatCount="indefinite" keyTimes="0;0.889;0.93;0.97;1" values="0;0;36;46;46"/>
+              <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.889;0.91;0.97;1" values="0;.55;.4;0;0"/>
             </circle>
           </g>
-          <text class="diagram-caption" x="450" y="530">becomes one of the apps below ↓</text>
+          <text class="diagram-caption" x="450" y="620">becomes one of the apps below ↓</text>
 
           <!-- pulses -->
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.001;0.125;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p1"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.001;0.125;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.001;0.111;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p1"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.001;0.111;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.126;0.25;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p2"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.126;0.25;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.112;0.222;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p2"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.112;0.222;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.251;0.375;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p3"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.251;0.375;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.223;0.333;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p3"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.223;0.333;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.376;0.5;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p4"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.376;0.5;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.334;0.444;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p4"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.334;0.444;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.501;0.625;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5a"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.501;0.625;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.445;0.556;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.445;0.556;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.501;0.625;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5b"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.501;0.625;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.557;0.667;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.557;0.667;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.626;0.75;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6a"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.626;0.75;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.668;0.778;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p7"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.668;0.778;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.626;0.75;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6b"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.626;0.75;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.751;0.875;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p7"/></animateMotion>
-            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.751;0.875;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;0.779;0.889;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p8"/></animateMotion>
+            <animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.779;0.889;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
         </svg>
       </div>
