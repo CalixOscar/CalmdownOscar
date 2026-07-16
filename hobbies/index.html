@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EEF2F6">
+<title>Hobbies — calmdownoscar</title>
+<meta name="description" content="A glimpse into what lies beyond screen time — open roads, engines, and the occasional detour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:      #EEF2F6;
+    --panel:   rgba(255,255,255,.62);
+    --edge:    rgba(32,43,54,.12);
+    --edge-hi: rgba(59,110,165,.4);
+    --accent:  #3B6EA5;
+    --progress:#A9782F;
+    --ink:     #202B36;
+    --muted:   #62717C;
+    --nav-h:   76px;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--accent); color:#fff; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--nav-h);
+  }
+  body.page-enter{ animation:pageEnter .45s cubic-bezier(.2,.7,.3,1) both; }
+  body.page-exit{ animation:pageExit .22s ease both; }
+  @keyframes pageEnter{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:none; }
+  }
+  @keyframes pageExit{
+    to{ opacity:0; transform:translateY(-4px); }
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+
+  /* ================= the scroll-scrub video reel ================= */
+  .reel-pin{ position:relative; height:320vh; }
+  .reel-stage{
+    position:sticky;
+    top:var(--nav-h);
+    height:calc(100vh - var(--nav-h));
+    overflow:hidden;
+  }
+  .reel{
+    --clip-w: min(600px, 88vw);
+    position:relative;
+    padding-top:2vh;
+    will-change:transform;
+  }
+  .clip{
+    position:relative;
+    width:var(--clip-w);
+    margin-left:auto; margin-right:auto;
+    overflow:hidden;
+    background:#1C252E;
+    border-radius:12px;
+    border:1px solid var(--edge);
+    box-shadow:0 12px 36px rgba(32,43,54,.08);
+  }
+  .clip video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .clip--1{ aspect-ratio:768 / 1108; z-index:0; }
+  .clip--2{
+    aspect-ratio:368 / 640;
+    z-index:1;
+    margin-top:calc(var(--clip-w) * -0.1443);
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 9%);
+            mask-image:linear-gradient(to bottom, transparent 0%, #000 9%);
+  }
+  .clip-heading{
+    position:absolute; z-index:3;
+    right:5%; bottom:13%;
+    text-align:right;
+    max-width:82%;
+    pointer-events:none;
+  }
+  .clip-heading h1{
+    font-weight:800;
+    font-size:clamp(26px, 4.6vw, 46px);
+    line-height:1.05;
+    letter-spacing:-0.03em;
+    color:#fff;
+  }
+  .clip-heading .word{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1);
+    text-shadow:0 2px 20px rgba(0,0,0,.7), 0 1px 3px rgba(0,0,0,.85);
+  }
+  .clip-heading .word.in{
+    opacity:1;
+    transform:none;
+  }
+  .clip-heading .oscar-word{
+    color:#85B6FF;
+    text-shadow:0 0 25px rgba(93,232,255,.6), 0 2px 20px rgba(0,0,0,.7);
+  }
+
+  /* ================= Under Construction Banner ================= */
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--progress);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .status-badge .dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--progress);
+    animation:dotPulseAmber 2.2s ease-out infinite;
+  }
+  @keyframes dotPulseAmber{
+    0%{ box-shadow:0 0 0 0 rgba(169,120,47,.45); }
+    70%{ box-shadow:0 0 0 8px rgba(169,120,47,0); }
+    100%{ box-shadow:0 0 0 0 rgba(169,120,47,0); }
+  }
+
+  /* ================= nav header ================= */
+  .site-header{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--nav-h);
+    display:flex; align-items:center;
+    background:rgba(238,242,246,.75);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--edge);
+  }
+  .site-header .wrap{
+    width:100%;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .mark{
+    font-weight:700; font-size:16px; letter-spacing:-.01em;
+    text-decoration:none; color:var(--ink);
+  }
+  .mark span{ color:var(--accent); }
+  nav a{
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    margin-left:24px;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+  @media (max-width:520px){
+    .site-header .wrap{ align-items:flex-start; gap:16px; }
+    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
+    nav a{ margin-left:0; }
+  }
+
+  footer{ border-top:1px solid var(--edge); padding:24px 0 40px; }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:10px;
+    font-size:13px; color:var(--muted);
+  }
+  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; }
+  .foot-row a:hover{ color:var(--accent); }
+
+  @media (prefers-reduced-motion: reduce){
+    body.page-enter, body.page-exit{ animation:none; }
+    .clip-heading .word{ opacity:1; transform:none; transition:none; }
+    .reel-pin{ height:auto; }
+    .reel-stage{ position:static; height:auto; overflow:visible; }
+    .reel{ transform:none !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body class="page-enter">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="../apps/">Apps</a>
+      <a href="./" aria-current="page">Hobbies</a>
+      <a href="../#about">About</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Page Header / Under Construction -->
+  <div class="wrap" style="padding-top: 48px; padding-bottom: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+    <div class="status-badge">
+      <span class="dot"></span>
+      Under Construction
+    </div>
+    <h1 style="font-size: clamp(34px, 6vw, 52px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;">Hobbies</h1>
+    <p style="max-width: 66ch; margin: 0 auto 36px; font-size: 17px; color: var(--muted); line-height: 1.65;">
+      A glimpse into what lies beyond screen time — open roads, engines, and the occasional detour.
+    </p>
+  </div>
+
+  <!-- Video Reel -->
+  <div class="reel-pin">
+   <div class="reel-stage">
+    <section class="reel" aria-label="Riding clips">
+      <div class="clip clip--1" aria-hidden="true">
+        <video muted playsinline preload="auto"
+               poster="poster.jpg" src="scrub.mp4"
+               disablepictureinpicture></video>
+        <div class="clip-heading">
+          <h1>
+            <span class="word">clips</span>
+            <span class="word">from</span>
+            <span class="word">the</span>
+            <span class="word"><span class="oscar-word">road</span><span class="oscar-word">.</span></span>
+          </h1>
+        </div>
+      </div>
+      <div class="clip clip--2" aria-hidden="true">
+        <video muted playsinline preload="auto"
+               poster="poster2.jpg" src="scrub2.mp4"
+               disablepictureinpicture></video>
+      </div>
+    </section>
+   </div>
+  </div>
+
+  <!-- TikTok Embed Section -->
+  <section class="wrap" style="padding: 64px 24px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+    <h2 style="font-size: 20px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
+    <div style="width: 100%; max-width: 580px; display: flex; justify-content: center; background: var(--panel); border: 1px solid var(--edge); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04); backdrop-filter: blur(6px);">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 780px; min-width: 288px; margin: 0 auto;" > <section> <a target="_blank" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ----- page transitions ----- */
+  document.body.addEventListener('animationend', function(e){
+    if (e.animationName === 'pageEnter'){ document.body.classList.remove('page-enter'); }
+  });
+  document.querySelectorAll('a[href]').forEach(function(link){
+    link.addEventListener('click', function(event){
+      var href = link.getAttribute('href');
+      var isMail = href && href.indexOf('mailto:') === 0;
+      var isHash = href && href.charAt(0) === '#';
+      var isExternal = link.origin && link.origin !== window.location.origin;
+      if (!href || isMail || isHash || isExternal || reduce.matches) return;
+      event.preventDefault();
+      document.body.classList.add('page-exit');
+      setTimeout(function(){ window.location.href = href; }, 180);
+    });
+  });
+
+  /* ----- video scrub ----- */
+  var navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
+  var reelPin   = document.querySelector('.reel-pin');
+  var reelStage = document.querySelector('.reel-stage');
+  var reel      = document.querySelector('.reel');
+  var clips = Array.prototype.map.call(document.querySelectorAll('.clip'), function(el){
+    return {
+      el: el,
+      vid: el.querySelector('video'),
+      words: Array.prototype.slice.call(el.querySelectorAll('.clip-heading .word')),
+      dur: 0, target: 0, current: 0, running: false
+    };
+  }).filter(function(c){ return c.vid; });
+
+  function clipFrame(c){
+    c.current += (c.target - c.current) * 0.2;
+    if (Math.abs(c.target - c.current) < 0.005){
+      c.current = c.target;
+      c.vid.currentTime = c.current;
+      c.running = false;
+      return;
+    }
+    c.vid.currentTime = c.current;
+    requestAnimationFrame(function(){ clipFrame(c); });
+  }
+
+  function reelProgress(){
+    if (!reelPin || !reelStage) return 0;
+    var scrollable = reelPin.offsetHeight - reelStage.offsetHeight;
+    if (scrollable <= 0) return 0;
+    var start = reelPin.offsetTop - navH;
+    return Math.min(Math.max((window.scrollY - start) / scrollable, 0), 1);
+  }
+
+  function scrubClip(c, cp){
+    if (!c.dur) return;
+    c.target = cp * c.dur;
+    if (!c.running){ c.running = true; clipFrame(c); }
+    var revealP = Math.min(cp / 0.85, 1);
+    c.words.forEach(function(w, i){
+      var threshold = (i + 1) / c.words.length;
+      w.classList.toggle('in', revealP >= threshold);
+    });
+  }
+
+  function scrub(){
+    if (reduce.matches) return;
+    var p = reelProgress();
+    if (reel && reelStage){
+      var pan = reel.offsetHeight - reelStage.offsetHeight;
+      if (pan < 0) pan = 0;
+      reel.style.transform = 'translateY(' + (-(p * pan)).toFixed(1) + 'px)';
+    }
+    if (clips[0]) scrubClip(clips[0], Math.min(p / 0.5, 1));
+    if (clips[1]) scrubClip(clips[1], Math.min(Math.max((p - 0.5) / 0.5, 0), 1));
+  }
+
+  if (clips.length){
+    clips.forEach(function(c){
+      c.vid.addEventListener('loadedmetadata', function(){
+        c.dur = Math.max(0, c.vid.duration - 0.05);
+        scrub();
+      });
+      c.vid.load();
+    });
+    window.addEventListener('scroll', scrub, { passive: true });
+    window.addEventListener('resize', scrub);
+  }
+})();
+</script>
+
+</body>
+</html>
