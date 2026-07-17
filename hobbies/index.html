@@ -275,7 +275,7 @@
   <section class="wrap" style="padding: 64px 24px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
     <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
     <div style="width: 100%; max-width: 580px; display: flex; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04); backdrop-filter: blur(6px);">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 780px; min-width: 288px; margin: 0 auto;" > <section> <a target="_blank" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 780px; min-width: 288px; margin: 0 auto;" > <section> <a target="_blank" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir</a> </section> </blockquote>
     </div>
   </section>
 </main>
@@ -382,6 +382,27 @@
     });
     window.addEventListener('scroll', scrub, { passive: true });
     window.addEventListener('resize', scrub);
+  }
+
+  /* ----- lazy-load TikTok embed (defer its script/iframe until near view) ----- */
+  var tiktokBlock = document.querySelector('.tiktok-embed');
+  if (tiktokBlock){
+    var loadTiktok = function(){
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.tiktok.com/embed.js';
+      document.body.appendChild(s);
+    };
+    if ('IntersectionObserver' in window){
+      var tiktokIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ loadTiktok(); tiktokIo.disconnect(); }
+        });
+      }, { rootMargin: '400px' });
+      tiktokIo.observe(tiktokBlock);
+    } else {
+      loadTiktok();
+    }
   }
 
   /* ----- scroll-reveal ----- */
