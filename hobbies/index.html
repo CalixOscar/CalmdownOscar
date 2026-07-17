@@ -20,12 +20,21 @@
     --ink:     #202B36;
     --muted:   #62717C;
     --nav-h:   76px;
+    /* cinema mode: 0 = light page, 1 = lights down for the reel (driven by scroll) */
+    --dark:       0;
+    --bg-dark:    #141B22;
+    --ink-dark:   #E8EEF4;
+    --muted-dark: #8FA0AE;
+    --accent-hi:  #85B6FF;
+    --panel-dark: rgba(255,255,255,.05);
+    --edge-dark:  rgba(255,255,255,.09);
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   ::selection{ background:var(--accent); color:#fff; }
   body{
     background:var(--bg);
+    background:color-mix(in srgb, var(--bg-dark) calc(var(--dark) * 100%), var(--bg));
     color:var(--ink);
     font-family:'Inter', system-ui, sans-serif;
     font-size:16px;
@@ -157,8 +166,10 @@
     height:var(--nav-h);
     display:flex; align-items:center;
     background:rgba(238,242,246,.75);
+    background:color-mix(in srgb, rgba(20,27,34,.78) calc(var(--dark) * 100%), rgba(238,242,246,.75));
     backdrop-filter:blur(14px);
     border-bottom:1px solid var(--edge);
+    border-bottom-color:color-mix(in srgb, rgba(255,255,255,.09) calc(var(--dark) * 100%), var(--edge));
   }
   .site-header .wrap{
     width:100%;
@@ -167,14 +178,22 @@
   .mark{
     font-weight:700; font-size:16px; letter-spacing:-.01em;
     text-decoration:none; color:var(--ink);
+    color:color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink));
   }
-  .mark span{ color:var(--accent); }
+  .mark span{
+    color:var(--accent);
+    color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
+  }
   nav a{
     color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    color:color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted));
     margin-left:24px;
     transition:color .2s ease;
   }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{
+    color:var(--accent);
+    color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
+  }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
   @media (max-width:520px){
     .site-header .wrap{ align-items:flex-start; gap:16px; }
@@ -254,8 +273,8 @@
 
   <!-- TikTok Embed Section -->
   <section class="wrap" style="padding: 64px 24px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
-    <h2 style="font-size: 20px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
-    <div style="width: 100%; max-width: 580px; display: flex; justify-content: center; background: var(--panel); border: 1px solid var(--edge); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04); backdrop-filter: blur(6px);">
+    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
+    <div style="width: 100%; max-width: 580px; display: flex; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04); backdrop-filter: blur(6px);">
       <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 780px; min-width: 288px; margin: 0 auto;" > <section> <a target="_blank" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
     </div>
   </section>
@@ -337,6 +356,13 @@
   function scrub(){
     if (reduce.matches) return;
     var p = reelProgress();
+    /* cinema mode: lights dim slowly through the reel, fully dark ~30% from
+       the bottom of the page, and stay dark to the end */
+    var dStart = reelPin ? reelPin.offsetTop - navH : 0;
+    var dEnd = (document.documentElement.scrollHeight - window.innerHeight) * 0.7;
+    var d = (window.scrollY - dStart) / Math.max(dEnd - dStart, 1);
+    d = Math.min(Math.max(d, 0), 1);
+    document.documentElement.style.setProperty('--dark', d.toFixed(3));
     if (reel && reelStage){
       var pan = reel.offsetHeight - reelStage.offsetHeight;
       if (pan < 0) pan = 0;
