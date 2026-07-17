@@ -266,7 +266,7 @@
     padding:1px 6px;
     color:var(--night);
   }
-  .hobbies-link{
+  .more-link{
     display:inline-block;
     margin-top:22px;
     font-size:15px; font-weight:600;
@@ -274,12 +274,12 @@
     text-decoration:none;
     transition:color .2s ease;
   }
-  .hobbies-link:hover{ color:var(--accent); }
-  .hobbies-link .arrow{
+  .more-link:hover{ color:var(--accent); }
+  .more-link .arrow{
     display:inline-block;
     transition:transform .25s cubic-bezier(.2,.7,.3,1);
   }
-  .hobbies-link:hover .arrow{ transform:translateX(5px); }
+  .more-link:hover .arrow{ transform:translateX(5px); }
 
   footer{ border-top:1px solid var(--edge); padding:24px 0 40px; }
   .foot-row{
@@ -501,9 +501,10 @@
   <section class="nuptia" id="nuptia">
     <div class="wrap">
       <p class="section-label reveal">Soon in the App Store</p>
-      <a class="nuptia-hero reveal" href="https://nuptia.wedding">
+      <a class="nuptia-hero reveal" href="https://nuptia.wedding" target="_blank" rel="noopener">
         <img src="assets/nuptia-hero.jpg" alt="Nuptia by calmdownoscar — your personal AI copilot for the most important day of your life. App preview on iPad and iPhone." loading="lazy">
       </a>
+      <a class="more-link reveal" href="apps/index.html">Apps coming soon <span class="arrow">→</span></a>
     </div>
   </section>
 
@@ -511,8 +512,8 @@
     <div class="wrap">
       <p class="section-label reveal">About</p>
       <p class="reveal">Oscar showed up in 2025 and hasn't been calm since. <span class="oscar">calmdownoscar</span> started as a joke about him and became the name for everything I build.</p>
-      <p class="reveal">When I'm not shipping apps, I'm riding — early, before the city's awake.</p>
-      <a class="hobbies-link reveal" href="hobbies/index.html">View hobbies <span class="arrow">→</span></a>
+      <p class="reveal">When I'm not shipping apps, I dream of riding motorcycles while living on a beach.</p>
+      <a class="more-link reveal" href="hobbies/index.html">View hobbies <span class="arrow">→</span></a>
     </div>
   </section>
 
