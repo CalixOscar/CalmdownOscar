@@ -42,14 +42,21 @@
   .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
 
   /* ================= video background ================= */
-  .bg-video{
+  .bg-stage{
     position:fixed; inset:0; z-index:-2;
+    perspective:1200px;
+    overflow:hidden;
+  }
+  .bg-video{
     width:100%; height:100%;
     object-fit:cover; object-position:center 15%;
+    transform-origin:center center;
+    will-change:transform;
   }
   .bg-scrim{
     position:fixed; inset:0; z-index:-1;
     background:rgba(238,242,246,.55);
+    will-change:transform;
   }
 
   /* ================= topbar ================= */
@@ -117,6 +124,7 @@
     backdrop-filter:blur(6px);
     transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
+  .app-grid .card.reveal{ transform:translateY(22px) scale(.985); }
   .card:hover{
     transform:translateY(-4px);
     border-color:var(--edge-hi);
@@ -171,7 +179,10 @@
   /* ================= pipeline diagram ================= */
   .diagram{ margin-top:6px; }
   .diagram svg{ width:100%; height:auto; display:block; overflow:visible; }
-  .trace{ fill:none; stroke:rgba(32,43,54,.18); stroke-width:1.4; }
+  .trace{
+    fill:none; stroke:rgba(32,43,54,.18); stroke-width:1.4;
+    transition:stroke-dashoffset .5s cubic-bezier(.2,.7,.3,1);
+  }
   .node-box{
     fill:rgba(255,255,255,.7);
     stroke:rgba(32,43,54,.2);
@@ -189,8 +200,18 @@
   }
   .node-label.output{ fill:var(--accent); }
   .node-label.dim{ fill:var(--muted); font-weight:500; }
+  .node-group{
+    opacity:0;
+    transition:opacity .4s cubic-bezier(.2,.7,.3,1), transform .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .node-group.from-left{ transform:translateX(-24px); }
+  .node-group.from-right{ transform:translateX(24px); }
+  .node-group.in{ opacity:1; transform:none; }
   .pulse{ fill:var(--accent); }
   .halo{ fill:none; stroke:var(--accent); stroke-width:2; opacity:0; }
+  .diagram:not(.built) .pulse,
+  .diagram:not(.built) .halo{ opacity:0 !important; }
+  .pulse, .halo{ transition:opacity .4s ease; }
   .diagram-caption{
     font-size:12px; letter-spacing:.02em;
     fill:var(--muted); text-anchor:middle;
@@ -211,6 +232,9 @@
     .card{ transition:none; }
     html{ scroll-behavior:auto; }
     .pulse, .halo{ opacity:0 !important; }
+    .node-group{ opacity:1; transform:none; transition:none; }
+    .trace{ transition:none; }
+    .bg-video, .bg-scrim{ transform:none !important; }
   }
 
   /* ================= preview modal ================= */
@@ -346,7 +370,9 @@
 </style>
 </head>
 <body>
-<video class="bg-video" src="assets/oscar-crawl.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+<div class="bg-stage">
+  <video class="bg-video" src="assets/oscar-crawl.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+</div>
 <div class="bg-scrim" aria-hidden="true"></div>
 
 <header class="topbar">
@@ -452,47 +478,47 @@
           <path id="p_figma_claude" class="trace" marker-end="url(#arrow)" d="M670,322 L525,402"/>
 
           <!-- nodes -->
-          <g>
+          <g class="node-group from-left">
             <rect class="node-box" x="325" y="20" width="250" height="44" rx="10"/>
             <text class="node-label" x="450" y="47">Non-administrative iOS Account</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p1">
             <rect class="node-box dim" x="380" y="112" width="140" height="40" rx="10"/>
             <text class="node-label dim" x="450" y="137">Idea</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p2">
             <rect class="node-box" x="375" y="200" width="150" height="44" rx="10"/>
             <text class="node-label" x="450" y="227">Gemini</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p3">
             <rect class="node-box" x="380" y="292" width="140" height="40" rx="10"/>
             <text class="node-label" x="450" y="317">Prompt</text>
           </g>
-          <g>
+          <g class="node-group from-right" data-in="p_gemini_figma p_prompt_figma">
             <rect class="node-box" x="670" y="292" width="140" height="40" rx="10"/>
             <text class="node-label" x="740" y="317">Figma</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p4 p_figma_claude">
             <rect class="node-box" x="375" y="380" width="150" height="44" rx="10"/>
             <text class="node-label" x="450" y="407">Claude</text>
           </g>
-          <g>
+          <g class="node-group from-right" data-in="p5 p6">
             <rect class="node-box" x="655" y="446" width="170" height="44" rx="10"/>
             <text class="node-label" x="740" y="473">Obsidian Vault</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p7 p11">
             <rect class="node-box" x="360" y="512" width="180" height="44" rx="10"/>
             <text class="node-label" x="450" y="539">Codex / Antigravity</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p8">
             <rect class="node-box" x="375" y="604" width="150" height="42" rx="10"/>
             <text class="node-label" x="450" y="630">GitHub</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p9">
             <rect class="node-box" x="375" y="694" width="150" height="42" rx="10"/>
             <text class="node-label" x="450" y="720">Vercel</text>
           </g>
-          <g>
+          <g class="node-group from-left" data-in="p10">
             <rect class="node-box output" x="370" y="784" width="160" height="48" rx="12"/>
             <text class="node-label output" x="450" y="813">Final Result</text>
             <circle class="halo" cx="450" cy="808" r="0">
@@ -601,6 +627,7 @@
 <script>
 (function(){
   var video = document.querySelector('.bg-video');
+  var scrim = document.querySelector('.bg-scrim');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (video && !reduceMotion.matches){
     var ready = false;
@@ -628,6 +655,12 @@
       var start = max * 0.12; // hold the first frame until a bit of scroll
       var progress = max > start ? Math.min(1, Math.max(0, (window.scrollY - start) / (max - start))) : 0;
       target = progress * video.duration;
+
+      var scale = 1.06 - progress * 0.06;
+      var tilt = progress * 2.5;
+      video.style.transform = 'scale(' + scale.toFixed(4) + ') rotateX(' + tilt.toFixed(3) + 'deg)';
+      if (scrim) scrim.style.transform = 'translateY(' + (progress * -8).toFixed(2) + 'px)';
+
       if (!running){
         running = true;
         clipFrame();
@@ -672,12 +705,60 @@
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var revealEls = document.querySelectorAll('.reveal');
+  var diagramEl = document.querySelector('.diagram');
+
+  document.querySelectorAll('.app-grid .card').forEach(function(el, i){
+    el.style.transitionDelay = (i * 90) + 'ms';
+  });
+
+  function buildDiagram(el){
+    var svg = el.querySelector('svg');
+    if (!svg) return;
+    var nodeGroups = Array.prototype.slice.call(svg.querySelectorAll('.node-group'));
+    var stepDelay = 220;
+    var tracesToDraw = [];
+
+    nodeGroups.forEach(function(g, i){
+      var delay = i * stepDelay;
+      var pathIds = (g.getAttribute('data-in') || '').split(' ').filter(Boolean);
+      pathIds.forEach(function(id){
+        var p = svg.querySelector('#' + id);
+        if (!p) return;
+        var len = p.getTotalLength();
+        p.style.strokeDasharray = len;
+        p.style.strokeDashoffset = len;
+        p.style.transitionDelay = delay + 'ms';
+        tracesToDraw.push(p);
+      });
+      g.style.transitionDelay = (pathIds.length ? delay + 140 : delay) + 'ms';
+    });
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        tracesToDraw.forEach(function(p){ p.style.strokeDashoffset = '0'; });
+        nodeGroups.forEach(function(g){ g.classList.add('in'); });
+      });
+    });
+
+    var totalDuration = nodeGroups.length * stepDelay + 600;
+    setTimeout(function(){ el.classList.add('built'); }, totalDuration);
+  }
+
   if (reduce.matches || !('IntersectionObserver' in window)){
     revealEls.forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('.app-grid .card').forEach(function(el){ el.style.transitionDelay = '0ms'; });
+    if (diagramEl){
+      diagramEl.querySelectorAll('.node-group').forEach(function(g){ g.classList.add('in'); });
+      diagramEl.classList.add('built');
+    }
   } else {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        if (e.isIntersecting){
+          e.target.classList.add('in');
+          if (e.target === diagramEl) buildDiagram(diagramEl);
+          io.unobserve(e.target);
+        }
       });
     }, { threshold: 0.15 });
     revealEls.forEach(function(el){ io.observe(el); });
