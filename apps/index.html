@@ -695,11 +695,10 @@
     } else {
       video.load();
       var playPromise = video.play();
+      video.pause(); // pause synchronously so no frames are visibly played
       if (playPromise !== undefined) {
-        playPromise.then(function() {
-          video.pause();
-        }).catch(function(e) {
-          // Ignore play interruption errors
+        playPromise.catch(function(e) {
+          // Ignore play interruption errors from the immediate pause() above
         });
       }
     }
