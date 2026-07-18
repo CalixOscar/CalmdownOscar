@@ -139,6 +139,8 @@
   .card.garage .status{ color:var(--muted); }
   .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:dotPulse 2.2s ease-out infinite; }
   .dot.amber{ background:var(--progress); animation:dotPulseAmber 2.2s ease-out infinite; }
+  .dot, .dot.amber{ animation-play-state:paused; }
+  html.is-scrolling .dot, html.is-scrolling .dot.amber{ animation-play-state:running; }
   @keyframes dotPulse{
     0%{ box-shadow:0 0 0 0 rgba(59,110,165,.45); } 70%{ box-shadow:0 0 0 8px rgba(59,110,165,0); } 100%{ box-shadow:0 0 0 0 rgba(59,110,165,0); }
   }
@@ -702,6 +704,28 @@
       }
     }
   }
+
+  // --- Ambient animations only run while actively scrolling ---
+  var pipelineSvg = document.querySelector('.diagram svg');
+  var scrollActiveTimer = null;
+
+  function pauseAmbient(){
+    if (pipelineSvg && typeof pipelineSvg.pauseAnimations === 'function') pipelineSvg.pauseAnimations();
+  }
+  function resumeAmbient(){
+    if (pipelineSvg && typeof pipelineSvg.unpauseAnimations === 'function') pipelineSvg.unpauseAnimations();
+  }
+  function markScrollActive(){
+    document.documentElement.classList.add('is-scrolling');
+    resumeAmbient();
+    clearTimeout(scrollActiveTimer);
+    scrollActiveTimer = setTimeout(function(){
+      document.documentElement.classList.remove('is-scrolling');
+      pauseAmbient();
+    }, 200);
+  }
+  pauseAmbient();
+  window.addEventListener('scroll', markScrollActive, { passive: true });
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var revealEls = document.querySelectorAll('.reveal');
