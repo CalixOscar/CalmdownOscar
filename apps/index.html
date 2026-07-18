@@ -637,31 +637,44 @@
     var current = 0;
     var target = 0;
     var running = false;
+    var maxScroll = 0;
+    var startOffset = 0;
+
+    function applyVisuals(easedProgress){
+      var scale = 1.06 - easedProgress * 0.06;
+      var tilt = easedProgress * 2.5;
+      video.style.transform = 'scale(' + scale.toFixed(4) + ') rotateX(' + tilt.toFixed(3) + 'deg)';
+      if (scrim) scrim.style.transform = 'translateY(' + (easedProgress * -8).toFixed(2) + 'px)';
+    }
 
     function clipFrame(){
       current += (target - current) * 0.15;
+      var easedProgress = video.duration ? Math.min(1, Math.max(0, current / video.duration)) : 0;
       if (Math.abs(target - current) < 0.005){
         current = target;
         video.currentTime = current;
+        applyVisuals(video.duration ? Math.min(1, Math.max(0, current / video.duration)) : 0);
         running = false;
         return;
       }
       video.currentTime = current;
+      applyVisuals(easedProgress);
       requestAnimationFrame(clipFrame);
+    }
+
+    // Recompute only on load/resize, not per scroll tick, so a mid-scroll
+    // layout shift (font swap, reflow) can't suddenly remap scrollY to a
+    // different video time and cause a visible jump.
+    function measure(){
+      maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      startOffset = maxScroll * 0.12; // hold the first frame until a bit of scroll
     }
 
     function scrubToScroll(){
       ticking = false;
       if (!ready || !video.duration) return;
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      var start = max * 0.12; // hold the first frame until a bit of scroll
-      var progress = max > start ? Math.min(1, Math.max(0, (window.scrollY - start) / (max - start))) : 0;
+      var progress = maxScroll > startOffset ? Math.min(1, Math.max(0, (window.scrollY - startOffset) / (maxScroll - startOffset))) : 0;
       target = progress * video.duration;
-
-      var scale = 1.06 - progress * 0.06;
-      var tilt = progress * 2.5;
-      video.style.transform = 'scale(' + scale.toFixed(4) + ') rotateX(' + tilt.toFixed(3) + 'deg)';
-      if (scrim) scrim.style.transform = 'translateY(' + (progress * -8).toFixed(2) + 'px)';
 
       if (!running){
         running = true;
@@ -676,10 +689,16 @@
       }
     }
 
+    function onResize(){
+      measure();
+      onScroll();
+    }
+
     function initVideo() {
       if (ready) return;
       ready = true;
       current = video.currentTime;
+      measure();
       scrubToScroll();
     }
 
@@ -688,7 +707,7 @@
     video.addEventListener('canplay', initVideo);
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
 
     if (video.readyState >= 1 || video.duration) {
       initVideo();
