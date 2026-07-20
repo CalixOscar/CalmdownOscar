@@ -153,6 +153,12 @@
     font-weight:700; font-size:19px; letter-spacing:-.01em;
     color:var(--ink);
   }
+  .card-head{ display:flex; align-items:center; gap:12px; }
+  .app-icon{
+    width:44px; height:44px; border-radius:11px;
+    box-shadow:0 4px 12px rgba(32,43,54,.18);
+    flex-shrink:0;
+  }
   .card p{ color:var(--muted); font-size:15px; }
   .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
   .pill{
@@ -437,15 +443,21 @@
           </div>
         </div>
 
-        <div class="card progress reveal">
-          <span class="status"><i class="dot amber"></i>In Progress</span>
-          <h3>Paper Plane Simulator</h3>
-          <p>A lightweight flying toy for testing throws, wind, glide, and timing without needing a gym floor or a perfectly patient afternoon.</p>
-          <div class="meta">
-            <span class="pill">Web</span>
-            <span class="pill">Physics</span>
+        <div class="card live reveal">
+          <span class="status"><i class="dot"></i>Open Source · App Store Soon</span>
+          <div class="card-head">
+            <img class="app-icon" src="assets/unli-rice-icon.png" alt="Unli Rice app icon" width="44" height="44">
+            <h3>Unli Rice</h3>
           </div>
-          <a class="applink" href="paper-plane-simulator/">Project page soon <span class="arrow">→</span></a>
+          <p>A persistent memory layer for AI agents. Claude, Gemini, Codex, and every other tool you connect read and write into the same notes over MCP, so nothing gets re-explained and no thread is ever really lost.</p>
+          <div class="meta">
+            <span class="pill">macOS</span>
+            <span class="pill">MCP</span>
+            <span class="pill">Memory</span>
+          </div>
+          <div class="links">
+            <a class="applink" href="https://github.com/CalixOscar/unli-rice">Source on GitHub <span class="arrow">→</span></a>
+          </div>
         </div>
 
       </div>
