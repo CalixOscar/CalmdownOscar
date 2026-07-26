@@ -232,6 +232,14 @@
     }
   }
 
+  /* Full-bleed variant: sits below the grid and carries the image at its native width,
+     which is the whole point of it not being in a column. */
+  .showcase-wide {
+    margin-bottom: 64px;
+  }
+  .showcase-wide .window-body img {
+    width: 100%;
+  }
   .showcase-card {
     background: var(--panel);
     border: 1px solid var(--edge);
@@ -449,6 +457,68 @@
     </div>
   </div>
 
+  <!-- Planet view: full width, so the shot is shown at native resolution rather than
+       squeezed into a grid column and resampled soft like the two cards above. -->
+  <div class="showcase-card showcase-wide reveal">
+    <div class="window-header">
+      <div class="window-dots">
+        <span class="window-dot dot-red"></span>
+        <span class="window-dot dot-yellow"></span>
+        <span class="window-dot dot-green"></span>
+      </div>
+      <span class="window-title">macOS Version 2.0 — Planet view</span>
+      <div style="width: 39px;"></div>
+    </div>
+    <div class="window-body">
+      <img src="assets/clearspace_planet.png"
+           alt="ClearSpace 2.0 on macOS: the drive drawn as Jupiter on a dark canvas, a Disk Strata panel listing Unreachable, Dust &amp; Caches, Applications, Not Yet Mapped and macOS Bedrock with their sizes, and a slider along the bottom running Mercury to Saturn.">
+    </div>
+    <div class="card-info">
+      <h3>Home Screen: <span>the disk as a world</span></h3>
+      <p>How full the drive is decides which planet you get — Mercury when it is bare, Saturn when it is critical. Each layer in the strata panel routes to the screen that can act on it, and the slider previews any other state without changing a thing.</p>
+    </div>
+  </div>
+
+  <div class="showcase-card showcase-wide reveal">
+    <div class="window-header">
+      <div class="window-dots">
+        <span class="window-dot dot-red"></span>
+        <span class="window-dot dot-yellow"></span>
+        <span class="window-dot dot-green"></span>
+      </div>
+      <span class="window-title">macOS Version 2.0 — Reclaim</span>
+      <div style="width: 39px;"></div>
+    </div>
+    <div class="window-body">
+      <img src="assets/clearspace_reclaim.png"
+           alt="The Reclaim screen: a Reclaimable space heading reading 154.69 GB no decision needed and 67.39 GB worth a look, above grouped findings for Debug Symbols from Real Devices and Build Data, each row tagged Rebuilds itself with its size and when it last changed.">
+    </div>
+    <div class="card-info">
+      <h3>Reclaim: <span>what is safe, and why</span></h3>
+      <p>Findings are grouped by what they actually are — device debug symbols, build data, package caches, git leftovers — and every row carries a verdict: <em>Rebuilds itself</em>, <em>Unreachable</em>, <em>Looks unused</em>, <em>Your call</em>. The headline splits the total that needs no decision from the part worth a look, so the easy space can be cleared without reading a single path.</p>
+    </div>
+  </div>
+
+  <div class="showcase-card showcase-wide reveal">
+    <div class="window-header">
+      <div class="window-dots">
+        <span class="window-dot dot-red"></span>
+        <span class="window-dot dot-yellow"></span>
+        <span class="window-dot dot-green"></span>
+      </div>
+      <span class="window-title">macOS Version 2.0 — Applications</span>
+      <div style="width: 39px;"></div>
+    </div>
+    <div class="window-body">
+      <img src="assets/clearspace_applications.png"
+           alt="The Applications screen: 67.83 GB across 73 apps with 23.87 GB outside the app bundles, listed in a table of bundle size, app data, caches, total footprint and last opened, sortable by footprint, last opened or name.">
+    </div>
+    <div class="card-info">
+      <h3>Applications: <span>the whole footprint</span></h3>
+      <p>An app is rarely just its bundle. Each row adds up the bundle, its application data and its caches, and says how much of that sits outside the bundle entirely — the part you lose track of. Sort by footprint to find the weight, or by last opened to find what you have stopped using.</p>
+    </div>
+  </div>
+
   <!-- Features Grid -->
   <section style="padding: 0 0 56px;">
     <div class="section-label reveal">1. Core Features</div>
@@ -456,39 +526,45 @@
     <div class="grid app-grid reveal">
       <!-- Feature 1 -->
       <div class="card">
-        <h3><span class="card-icon">📊</span> Interactive Disk Analysis</h3>
+        <h3><span class="card-icon">🪐</span> Planet Home Screen</h3>
         <ul>
-          <li><strong>Sunburst Visualization:</strong> Renders disk usage as interactive sunburst and donut charts.</li>
-          <li><strong>Real-time Zooming:</strong> Click any sector (folders) to zoom step-by-step deeper into the hierarchy.</li>
-          <li><strong>Breadcrumbs Navigation:</strong> Jump back instantly to previous folder levels without rescanning.</li>
+          <li><strong>The disk as a world:</strong> Fullness picks the planet — Mercury below 25%, Earth to 60%, Jupiter to 85%, Saturn above that. Rendered as a lit sphere by a Metal fragment shader, rings and all.</li>
+          <li><strong>Disk Strata:</strong> The drive broken into Unreachable, Dust &amp; Caches, Applications, Not Yet Mapped and macOS Bedrock. Every layer that can be acted on routes straight to the screen that owns it.</li>
+          <li><strong>Honest about the unknown:</strong> "Not Yet Mapped" is whatever is left over rather than a finding, and sealed system files are marked approximate, because macOS will not let any app measure them exactly.</li>
+          <li><strong>What-if slider:</strong> Drag along the whole drive to preview the world at any other fullness. It always springs back to the true one.</li>
         </ul>
       </div>
 
       <!-- Feature 2 -->
       <div class="card">
-        <h3><span class="card-icon">🧹</span> Smart Clean & Safety</h3>
+        <h3><span class="card-icon">🧹</span> Reclaim</h3>
         <ul>
-          <li><strong>Safety Categorization:</strong> Files are split into "completely safe to delete" (e.g. system caches) and "recommended for manual review".</li>
-          <li><strong>Pre-Deletion Checks:</strong> Automatically verifies if files are locked/open (via <code>lsof</code>) or contain uncommitted code in a Git repository before removing.</li>
-          <li><strong>Undo Banner:</strong> Restores files from the system Trash immediately if clicked.</li>
+          <li><strong>Grouped by what it is:</strong> Debug symbols copied off real devices, Xcode build data and simulators, package caches (npm, pip, Homebrew, SwiftPM), git leftovers, and large apps.</li>
+          <li><strong>A verdict on every row:</strong> <em>Rebuilds itself</em>, <em>Unreachable</em>, <em>Looks unused</em>, <em>Your call</em> or <em>Keep</em> — with the evidence beside it, usually when the item last changed or was opened.</li>
+          <li><strong>Two totals, not one:</strong> The header splits space needing no decision from space worth a look, so the easy wins can go without reading a single path.</li>
+          <li><strong>The gate lives in the model:</strong> Only items that are directly trashable and complete can be bulk-selected. Anything macOS or another tool owns says who removes it instead — Xcode's simulator tooling, an app's own installer, git's own maintenance.</li>
+          <li><strong>Reversible by default:</strong> Removal is a move to the system Trash behind a confirmation, never an unlink.</li>
         </ul>
       </div>
 
       <!-- Feature 3 -->
       <div class="card">
-        <h3><span class="card-icon">📥</span> Collector Dock</h3>
+        <h3><span class="card-icon">💻</span> Applications</h3>
         <ul>
-          <li><strong>Drag-and-Drop:</strong> Drag unwanted directories and files down into a centralized dock at the bottom of the screen.</li>
-          <li><strong>Pre-Deletion Verification:</strong> Aggregates items, filters duplicates, shows total size, and holds items safely until clicking "Remove".</li>
+          <li><strong>Whole footprint:</strong> Bundle plus application data plus caches, totalled per app — and how much of it lives outside the bundle, which is the part that goes unnoticed.</li>
+          <li><strong>Sort by what you are asking:</strong> Footprint to find weight, last opened to find neglect, name to find one thing.</li>
+          <li><strong>Labelled, not judged:</strong> Apps are tagged <em>Open</em>, <em>App Store</em> or <em>Check data</em>. The list is shown so the picture is complete; nothing in it is a recommendation.</li>
         </ul>
       </div>
 
       <!-- Feature 4 -->
       <div class="card">
-        <h3><span class="card-icon">💻</span> Rarely-Used Apps</h3>
+        <h3><span class="card-icon">✨</span> ClearSpace AI</h3>
         <ul>
-          <li><strong>Spotlight Scan:</strong> Uses macOS Spotlight metadata (<code>kMDItemLastUsedDate</code>) to find applications untouched for 30, 60, or 90 days.</li>
-          <li><strong>Safe Uninstall:</strong> Drag apps straight to the Collector Dock for clean, secure removal without active process risk.</li>
+          <li><strong>Say what to clean:</strong> Plain language — old receipts, bank transfer screenshots, invoices — becomes a deletion rule with a match count and an estimated size.</li>
+          <li><strong>Local first, in order:</strong> A local Ollama model on port 11434 if one is running, otherwise Apple Intelligence through the on-device Foundation Models framework, otherwise plain keyword matching. Nothing is sent off the Mac.</li>
+          <li><strong>It tells you which brain answered:</strong> Every action card names the engine that parsed the request, so a weak fallback is never mistaken for a confident one.</li>
+          <li><strong>Nothing deletes from chat:</strong> A rule produces a reviewable set. Staging and removal stay in the same flow as the rest of the app.</li>
         </ul>
       </div>
 
@@ -496,17 +572,18 @@
       <div class="card double">
         <h3><span class="card-icon">📸</span> Photo Library Cleaner</h3>
         <ul>
-          <li><strong>Timeline Scanning:</strong> Scans the photo library chronologically (year-by-year, month-by-month) to conserve memory and save checkpoints.</li>
-          <li><strong>Local AI Processing:</strong>
+          <li><strong>Timeline scanning:</strong> Works through the library year by year and month by month, saving a checkpoint after each batch so a large library never has to be done in one sitting.</li>
+          <li><strong>Metadata first:</strong> The inventory is built from metadata alone. Thumbnails are only decoded for the period you choose to analyse.</li>
+          <li><strong>Local analysis:</strong>
             <ul>
-              <li><strong>Duplicate Detection:</strong> Uses Apple Vision feature prints (<code>VNGenerateImageFeaturePrintRequest</code>) and perceptual hashing to cluster duplicates.</li>
-              <li><strong>Blur Analysis:</strong> Employs local Laplacian and gradient algorithms to detect out-of-focus photos.</li>
-              <li><strong>MLX Photo Reasoner:</strong> Downloads a local, lightweight multimodal model (Qwen2-VL 2B via Apple MLX Swift) to run advanced semantic reasoning on blurry or ambiguous photos on Apple Silicon.</li>
+              <li><strong>Duplicates and near-duplicates:</strong> Apple Vision feature prints (<code>VNGenerateImageFeaturePrintRequest</code>) clustered alongside a perceptual hash.</li>
+              <li><strong>Blur:</strong> Variance of a discrete Laplacian plus neighbouring-pixel gradients.</li>
+              <li><strong>Optional VLM refinement:</strong> On Apple Silicon, a quantised vision-language model downloaded on demand via MLX Swift — Qwen2.5-VL 3B (4-bit) through Qwen3-VL 4B (8-bit) — re-checks the ambiguous cases. Off unless you turn it on.</li>
             </ul>
           </li>
-          <li><strong>Review & Favourites:</strong> Trackpad gestures for gallery browsing. Hearts sync directly to Apple Photos and lock photos from deletion.</li>
-          <li><strong>Year-Locks & Achievements:</strong> Lock completed months/years to exclude them from future scans and earn achievement cards.</li>
-          <li><strong>System Security:</strong> Deletion occurs only after system-level confirmation dialogs.</li>
+          <li><strong>Hearts protect:</strong> Favourites sync to Apple Photos and lock a photo out of deletion.</li>
+          <li><strong>Year locks:</strong> Completed months and years are excluded from future scans, and reopen only deliberately or when genuinely new arrivals appear.</li>
+          <li><strong>Photo Trash:</strong> Nothing leaves the library on a tap. Candidates are staged, reviewed, and only then handed to the system confirmation dialog.</li>
         </ul>
       </div>
     </div>
