@@ -3,26 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#030607">
+<meta name="theme-color" content="#EEF2F6">
 <title>ClearSpace — calmdownoscar</title>
-<meta name="description" content="ClearSpace is a faster, friendlier way to organize and clear out your photos, live on the App Store.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="ClearSpace sorts your photo library by what it's actually costing you — biggest videos and photos first. Live on the App Store.">
 <style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
   :root{
-    --bg:      #030607;
-    --panel:   rgba(8,18,20,.62);
-    --edge:    rgba(93,232,255,.22);
-    --edge-hi: rgba(93,232,255,.75);
-    --cyan:    #5DE8FF;
-    --amber:   #FFB454;
-    --ink:     #DFF9FF;
-    --muted:   #6E8B92;
+    --bg:      #EEF2F6;
+    --panel:   rgba(255,255,255,.62);
+    --edge:    rgba(32,43,54,.12);
+    --edge-hi: rgba(59,110,165,.4);
+    --accent:  #3B6EA5;
+    --ink:     #202B36;
+    --muted:   #62717C;
+    --topbar-h: 76px;
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  ::selection{ background:var(--cyan); color:#00171B; }
+  ::selection{ background:var(--accent); color:#fff; }
   body{
     min-height:100vh;
     background:var(--bg);
@@ -31,95 +36,90 @@
     font-size:16px;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
-  }
-  .scanlines{
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(93,232,255,.025) 0 1px, transparent 1px 3px);
-    opacity:.5;
+    padding-top:var(--topbar-h);
   }
   .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
   header{
-    border-bottom:1px solid var(--edge);
-    background:rgba(3,6,7,.88);
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--topbar-h);
+    background:rgba(238,242,246,.86);
     backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--edge);
   }
-  .nav{ min-height:76px; display:flex; justify-content:space-between; align-items:center; gap:18px; }
-  .mark{
-    font-family:'Orbitron', sans-serif;
-    font-weight:800; font-size:16px; letter-spacing:.04em;
-    color:var(--ink); text-decoration:none; text-transform:uppercase;
-  }
-  .mark span{ color:var(--cyan); text-shadow:0 0 14px rgba(93,232,255,.7); }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
+  .mark span{ color:var(--accent); }
   nav a{
-    font-family:'JetBrains Mono', monospace;
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:13px;
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
     margin-left:22px;
     transition:color .2s ease;
   }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--cyan); }
-  a:focus-visible{ outline:1px solid var(--cyan); outline-offset:3px; }
-  main{ padding:80px 0 96px; }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+  main{ padding:64px 0 96px; }
+  .hero-icon{
+    width:72px; height:72px; border-radius:17px;
+    box-shadow:0 8px 22px rgba(32,43,54,.22);
+    margin-bottom:22px;
+  }
   .kicker{
-    font-family:'JetBrains Mono', monospace;
     display:inline-flex; align-items:center; gap:8px;
-    color:var(--cyan);
-    font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
-    margin-bottom:18px;
+    color:var(--accent);
+    font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+    margin-bottom:16px;
   }
+  .kicker .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); }
   h1{
-    font-family:'Orbitron', sans-serif;
     font-weight:800;
-    font-size:clamp(34px, 7vw, 56px);
+    font-size:clamp(32px, 6vw, 48px);
     line-height:1.08;
-    letter-spacing:-0.01em;
-    text-transform:uppercase;
+    letter-spacing:-0.015em;
   }
-  h1 span{ color:var(--cyan); text-shadow:0 0 24px rgba(93,232,255,.55); }
-  .lede{ margin-top:22px; max-width:56ch; font-size:17px; color:var(--muted); }
-  .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+  h1 span{ color:var(--accent); }
+  .lede{ margin-top:20px; max-width:52ch; font-size:17px; color:var(--muted); }
+  .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
   .pill{
-    font-family:'JetBrains Mono', monospace;
-    color:var(--muted); border:1px solid var(--edge); border-radius:3px;
-    padding:3px 8px; font-size:11px; letter-spacing:.04em;
+    color:var(--muted); border:1px solid var(--edge); border-radius:20px;
+    padding:4px 11px; font-size:12px; font-weight:500;
   }
   .card{
-    margin-top:38px; max-width:560px;
+    margin-top:34px; max-width:520px;
     background:var(--panel);
     border:1px solid var(--edge);
-    border-radius:6px;
-    padding:26px 24px;
-    display:flex; flex-direction:column; gap:14px;
+    border-radius:12px;
+    padding:24px;
+    display:flex; flex-direction:column; gap:13px;
+    backdrop-filter:blur(6px);
     transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
   .card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-3px);
     border-color:var(--edge-hi);
-    box-shadow:0 0 0 1px rgba(93,232,255,.25), 0 16px 40px rgba(0,0,0,.5), 0 0 44px rgba(93,232,255,.14);
+    box-shadow:0 14px 34px rgba(32,43,54,.14);
   }
   .card a.applink{
-    font-family:'JetBrains Mono', monospace;
-    color:var(--ink); font-weight:500; font-size:14px; text-decoration:none;
+    color:var(--ink); font-weight:600; font-size:14px; text-decoration:none;
     transition:color .2s ease;
   }
-  .card a.applink:hover{ color:var(--cyan); }
+  .card a.applink:hover{ color:var(--accent); }
   .card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
   .card a.applink:hover .arrow{ transform:translateX(5px); }
   .back{
-    font-family:'JetBrains Mono', monospace;
     display:inline-block; margin-top:28px;
-    color:var(--ink); font-weight:500; text-decoration:none;
+    color:var(--ink); font-weight:500; text-decoration:none; font-size:14px;
     transition:color .2s ease;
   }
-  .back:hover{ color:var(--cyan); }
+  .back:hover{ color:var(--accent); }
   footer{
-    border-top:1px solid var(--edge); padding:24px 0 40px;
-    font-family:'JetBrains Mono', monospace;
-    color:var(--muted); font-size:12px;
+    border-top:1px solid var(--edge); padding:22px 0 40px;
+    color:var(--muted); font-size:13px;
   }
   footer a{ color:var(--muted); transition:color .2s ease; }
-  footer a:hover{ color:var(--cyan); }
+  footer a:hover{ color:var(--accent); }
   @media (max-width:640px){
-    .nav{ align-items:flex-start; flex-direction:column; padding:20px 0; }
+    .nav{ flex-direction:column; align-items:flex-start; padding:14px 0; height:auto; }
+    header{ position:static; }
+    body{ padding-top:0; }
     nav a{ margin-left:0; margin-right:18px; }
   }
   @media (prefers-reduced-motion: reduce){
@@ -133,24 +133,28 @@
   <div class="wrap nav">
     <a class="mark" href="../../">calmdown<span>oscar</span></a>
     <nav>
-      <a href="../" aria-current="page">Apps</a>
+      <a href="../">Apps</a>
       <a href="../../#about">About</a>
+      <!-- support@calmdownoscar.com isn't receiving mail yet — peter@ until it's
+           fixed. Swap this and the other occurrence on this page back once it is. -->
       <a href="mailto:peter@calmdownoscar.com">Contact</a>
     </nav>
   </div>
 </header>
-<div class="scanlines" aria-hidden="true"></div>
 <main>
   <div class="wrap">
-    <span class="kicker">Live · App Store</span>
+    <img class="hero-icon" src="../assets/clearspace-icon.png" alt="ClearSpace app icon" width="72" height="72">
+    <span class="kicker"><i class="dot"></i>Live · App Store</span>
     <h1>Clear<span>Space</span></h1>
-    <p class="lede">A faster, friendlier home for your photos. Sort shots into albums Instagram-style, swipe the junk into the trash, and clear it out in batches — all on your device.</p>
+    <p class="lede">Sorts your photo library by what it's actually costing you — biggest videos and photos first, not the date they were taken. Heart what you keep, clear the rest.</p>
     <div class="meta">
       <span class="pill">iOS</span>
       <span class="pill">Photos</span>
     </div>
     <div class="card">
       <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">View on the App Store <span class="arrow">→</span></a>
+      <a class="applink" href="user_guide.html">Read the User Guide <span class="arrow">→</span></a>
+      <a class="applink" href="support.html">Get Support <span class="arrow">→</span></a>
       <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">→</span></a>
       <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">→</span></a>
     </div>

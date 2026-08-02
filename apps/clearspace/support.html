@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#EEF2F6">
-<title>Privacy Policy — ClearSpace</title>
-<meta name="description" content="Privacy policy for ClearSpace, the photo organizing app from calmdownoscar.">
+<title>Support — ClearSpace</title>
+<meta name="description" content="Support and frequently asked questions for ClearSpace, the photo clearing app from calmdownoscar.">
 <style>
   @font-face{
     font-family:'Inter';
@@ -68,7 +68,7 @@
     margin-bottom:6px;
   }
   h1{ font-size:clamp(26px, 5vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.15; }
-  .updated{ margin-top:12px; color:var(--muted); font-size:14px; }
+  .lede{ margin-top:14px; max-width:52ch; color:var(--muted); font-size:16px; }
   .policy{ margin-top:38px; }
   .policy h2{
     font-size:16px; font-weight:700; letter-spacing:-.005em;
@@ -78,8 +78,6 @@
   .policy h2:first-child{ margin-top:0; }
   .policy p, .policy li{ color:var(--muted); font-size:16px; }
   .policy p + p{ margin-top:12px; }
-  .policy ul{ margin:10px 0 0 20px; }
-  .policy li + li{ margin-top:6px; }
   .policy strong{ color:var(--ink); font-weight:600; }
   .policy a{ color:var(--accent); text-decoration:underline; text-decoration-color:var(--edge-hi); }
   .policy a:hover{ text-decoration-color:var(--accent); }
@@ -129,9 +127,8 @@
     <nav>
       <a href="../">Apps</a>
       <a href="../../#about">About</a>
-      <!-- support@calmdownoscar.com is not receiving mail yet — using peter@ until
-           that's fixed. Swap this and the other two occurrences on this page back
-           once support@ is confirmed working. -->
+      <!-- support@calmdownoscar.com isn't receiving mail yet — peter@ until it's
+           fixed. Swap this and the other occurrences on this page back once it is. -->
       <a href="mailto:peter@calmdownoscar.com">Contact</a>
     </nav>
   </div>
@@ -142,58 +139,38 @@
       <img class="app-icon" src="../assets/clearspace-icon.png" alt="" width="44" height="44">
       <span class="kicker">ClearSpace</span>
     </div>
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: August 3, 2026</p>
+    <h1>Support</h1>
+    <p class="lede">The questions that come up most, and a direct line if yours isn't one of them.</p>
 
     <div class="policy">
-      <h2>The short version</h2>
-      <p>ClearSpace collects nothing. There is no account, no analytics, no trackers, and no server this app talks to. Every photo it sizes, sorts, hearts, files into an album, or deletes is handled on your device, through Apple's own Photos framework, and never leaves it. This matches the app's own privacy manifest, submitted to Apple with every build.</p>
+      <h2>I deleted a lot, but my storage didn't change</h2>
+      <p>This is expected, and it's the single most common thing people write in about. ClearSpace deletes exactly the way the Photos app does: removed photos go to <strong>Recently Deleted</strong>, where they sit for 30 days before they're gone for good. Nothing is destroyed immediately, on purpose — it's the same safety net Photos itself gives you.</p>
+      <p>Your storage only frees up once that folder is emptied. Open <strong>Photos → Albums → Recently Deleted → Select → Delete All</strong>, and the space comes back straight away.</p>
 
-      <h2>What we don't collect</h2>
-      <ul>
-        <li><strong>Photos</strong> — never uploaded, stored, or transmitted anywhere. All sizing and sorting happens locally.</li>
-        <li><strong>Personal information</strong> — no name, email, or contact details, unless you choose to email us for support.</li>
-        <li><strong>Location</strong> — not collected or read.</li>
-        <li><strong>Usage analytics</strong> — ClearSpace has no analytics SDK of any kind, first-party or third-party. We cannot see how you use the app, and we don't try to.</li>
-        <li><strong>Advertising identifiers</strong> — not read. ClearSpace carries no ads and no ad framework.</li>
-      </ul>
+      <h2>What does the heart do?</h2>
+      <p>It's the same Favourite you already see in Apple Photos — there's only one, and it's shared. Hearting a photo in ClearSpace favourites it in Photos too, and anything you'd already favourited shows up hearted here. With <strong>Hide Hearted</strong> switched on (the default), a photo leaves the grid the moment you heart it, so the pile you're working through only ever shrinks.</p>
 
-      <h2>Photo privacy</h2>
-      <p>Organising, hearting, filing into albums, and deleting all happen locally through Apple's PhotoKit. The app only reads what you explicitly interact with, and nothing about your library is transmitted or stored outside it.</p>
+      <h2>Why can't I clear everything at once, or select many photos together?</h2>
+      <p>Finding, sorting, filtering, hearting, filing into albums, and deleting one photo at a time are all free, with no limit. Clearing many photos in a single action — the "delete everything without a heart" button, and multi-photo selection — is unlocked by a one-time purchase. It's a single payment, not a subscription, and it's yours for good once bought.</p>
+      <p>Already purchased it and it's not unlocking on a new phone or after a reinstall? Open the offer screen and tap <strong>Restore purchase</strong> — it re-checks your Apple Account rather than charging you again.</p>
 
-      <h2>Purchases</h2>
-      <p>Clearing photos in large batches is unlocked by a one-time in-app purchase, handled entirely by Apple through StoreKit. We never see your payment details — Apple processes the transaction and tells ClearSpace only whether it succeeded.</p>
+      <h2>Does ClearSpace find duplicate photos?</h2>
+      <p>Not yet on iPhone. It's on the roadmap, but nothing in the current version claims to find duplicates — if you've seen that claim anywhere, it's out of date and we'd genuinely like to know where, so we can fix it.</p>
 
-      <h2>Data sharing</h2>
-      <p>There is nothing of yours to share, because nothing is collected. The only party involved at all is Apple, for purchase processing and for delivering the app itself.</p>
+      <h2>A video won't play, or plays with no sound</h2>
+      <p>If it's stored only in iCloud and your connection is slow, give it a moment — ClearSpace downloads what it needs when you open a video, never in the background. Sound plays regardless of your silent switch, the same as Photos; if a video is still silent, check your phone's volume and that no other device (headphones, a speaker) is claiming the audio output.</p>
 
-      <h2>Data retention</h2>
-      <p>Your preferences — sort order, filters, whether an album has been used before — are stored only in the app on your own device, the same way any iOS app remembers a setting. Removing the app removes them.</p>
+      <h2>Where does my data go?</h2>
+      <p>Nowhere. Everything happens on your device — see the <a href="privacy.html">Privacy Policy</a> for the full detail.</p>
 
-      <h2>Children's privacy</h2>
-      <p>ClearSpace is not directed at children under 13, and since it collects no personal information from anyone, none is collected from them either.</p>
-
-      <h2>Your rights</h2>
-      <ul>
-        <li><strong>Nothing to access or export</strong> — we hold no data about you to hand over.</li>
-        <li><strong>Delete</strong> — removing the app removes every local preference it kept.</li>
-        <li><strong>Photos permission</strong> — grant or revoke at any time in iOS Settings → Privacy & Security → Photos.</li>
-      </ul>
-
-      <h2>Third-party services</h2>
-      <p>ClearSpace uses Apple's PhotoKit for photo library access and StoreKit for the one in-app purchase. Nothing else. iCloud is only ever involved insofar as your own Apple Account already syncs your library — ClearSpace does not add or change any iCloud sync of its own.</p>
-
-      <h2>Changes to this policy</h2>
-      <p>If this ever changes — for instance, if a future version adds analytics or a network feature — that change will be reflected here first, and called out in the App Store release notes.</p>
-
-      <h2>Contact</h2>
-      <p>Questions about this policy, or anything else: <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></p>
+      <h2>Still stuck</h2>
+      <p>Email <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a> and describe what you were doing when it happened — we read every message, and a specific description gets a faster answer than "it's broken."</p>
     </div>
 
     <div class="card">
-      <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">View ClearSpace on the App Store <span class="arrow">→</span></a>
       <a class="applink" href="user_guide.html">Read the User Guide <span class="arrow">→</span></a>
-      <a class="applink" href="support.html">Get Support <span class="arrow">→</span></a>
+      <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">→</span></a>
+      <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">View on the App Store <span class="arrow">→</span></a>
       <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">→</span></a>
     </div>
 
