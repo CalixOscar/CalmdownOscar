@@ -270,8 +270,15 @@
   .showcase-wide {
     margin-bottom: 40px;
   }
-  .showcase-wide .window-body img {
+  /* Full-bleed only for the landscape desktop captures (dark window bodies).
+     Portrait phone screenshots keep their own scale — stretching a 322px-wide
+     capture across the card upscaled it 2.6x. */
+  .showcase-wide .window-body.dark-body img {
     width: 100%;
+  }
+  .showcase-wide .window-body:not(.dark-body) img {
+    width: auto;
+    max-height: 700px;
   }
   .showcase-card {
     background: var(--panel);
