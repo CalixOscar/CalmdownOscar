@@ -50,6 +50,13 @@
     pointer-events:none;
     will-change:transform;
   }
+  @media (min-width: 768px){
+    .bg-stage{
+      transform: translateX(26vw);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
+    }
+  }
   .bg-video{
     width:100%; height:100%;
     object-fit:cover; display:block;
@@ -179,11 +186,11 @@
       <h1 class="rise">calm down, <span>oscar.</span></h1>
       <p class="rise d1">I'm Peter. Oscar is my son — he's the reason this studio has a name, and he's still working on the calm part.</p>
       
-      <p class="rise d1" style="margin-top:22px;">My mind runs on a hundred ideas a week, though only a select few ever reach the App Store. The ones that survive are built out of real necessity: tools born to solve my own development friction, or engineered to balance a full-time career in fast-paced Metro Manila with raising my son.</p>
+      <p class="rise d1" style="margin-top:22px;">My mind runs on a hundred ideas a week, though only a select few ever reach the App Store. The ones that survive are built out of real necessity: tools born to solve my own development friction, or engineered to balance a full-time career in fast-paced Metro Manila while raising my son.</p>
       
       <p class="rise d1" style="margin-top:22px;">I thrive on complex technical challenges and the art of piecing fragmented systems together. My background spans everything from enterprise platforms like SAP and Microsoft Foundry to experimenting with game mechanics in Roblox. I don't fit into a single-stack developer box — I operate as a systems architect and integrator, seeing how disparate platforms connect and function as one cohesive ecosystem.</p>
       
-      <p class="rise d1" style="margin-top:22px;">When I'm not shipping software, you'll find me dreaming of quiet roads and riding motorcycles.</p>
+      <p class="rise d1" style="margin-top:22px;">When I'm not shipping software, you'll find me dreaming of riding motorcycles on quiet roads</p>
       
       <a class="more-link rise" href="../hobbies/" style="margin-top:32px;">View hobbies <span class="arrow">→</span></a>
     </div>
