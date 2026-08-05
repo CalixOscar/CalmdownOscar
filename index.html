@@ -408,17 +408,10 @@
   .cs-step-content code { background: rgba(32,43,54,.06); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
 </style>
 </head>
-<body>
-<div class="bg-stage">
-  <video class="bg-video" src="assets/oscar-crawl.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
-</div>
-<div class="bg-scrim" aria-hidden="true"></div>
-
 <header class="topbar">
   <div class="wrap">
     <a class="mark" href="./">calmdown<span>oscar</span></a>
     <nav>
-      <a href="./" aria-current="page">Apps</a>
       <a href="hobbies/">Hobbies</a>
       <a href="aboutme/">About Me</a>
       <a href="mailto:peter@calmdownoscar.com">Contact</a>
@@ -428,7 +421,17 @@
 
 <main>
 
-  <section class="apps" id="apps">
+  <!-- Welcome Studio Hero -->
+  <section class="hero" style="padding-top:40px; padding-bottom:10px;">
+    <div class="wrap">
+      <h1 class="rise" style="font-size:clamp(32px, 5vw, 52px); font-weight:800; letter-spacing:-.03em; color:var(--ink);">calm down, <span style="color:var(--accent);">oscar.</span></h1>
+      <p class="rise d1" style="font-size:18px; color:var(--muted); margin-top:16px; max-width:640px; line-height:1.65;">
+        I'm Peter. Oscar is my son — he's the reason this studio has a name. Welcome to my one-person app studio out of Manila. Below is the technical discipline, problem-driven architecture, and multi-agent engineering behind what I build.
+      </p>
+    </div>
+  </section>
+
+  <section class="apps" id="apps" style="padding-top:30px;">
     <div class="wrap">
       <div class="section-label reveal">Apps & Case Studies</div>
       <p class="section-lede reveal">Problem-driven architecture, technical discipline, and real-world system impact across studio projects.</p>
