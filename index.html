@@ -62,25 +62,25 @@
   /* ================= topbar ================= */
   .topbar{
     position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    display:flex; align-items:center;
-    background:rgba(238,242,246,.7);
-    backdrop-filter:blur(14px);
+    height:64px;
+    background:rgba(238,242,246,.82);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid var(--edge);
+    display:flex; align-items:center;
   }
-  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; }
+  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; width:100%; }
   .mark{
-    font-weight:800; font-size:19px; letter-spacing:-.02em;
-    text-decoration:none; color:var(--ink);
+    font-weight:800; font-size:19px; color:var(--ink);
+    text-decoration:none; letter-spacing:-.02em;
   }
   .mark span{ color:var(--accent); }
   nav{ display:flex; gap:20px; align-items:center; }
   nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
-    margin-left:0;
+    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none;
     transition:color .2s ease;
   }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); font-weight:600; }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
   @media (max-width:560px){
     nav{ gap:14px; }
