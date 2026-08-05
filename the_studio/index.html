@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EEF2F6">
+<title>The Studio — calmdownoscar</title>
+<meta name="description" content="Studio DNA, privacy principles, HR-driven data security standards, guardrails, and evals at calmdownoscar.">
+<style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  :root{
+    --night:    #14181C;
+    --tank:     #F2581C;
+    --pacifier: #BCD9E8;
+
+    --bg:      #EEF2F6;
+    --panel:   rgba(255,255,255,.62);
+    --edge:    rgba(32,43,54,.12);
+    --edge-hi: rgba(59,110,165,.4);
+    --accent:  #3B6EA5;
+    --ink:     #202B36;
+    --muted:   #62717C;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--accent); color:#fff; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding-top:80px;
+    overflow-x:hidden;
+  }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+
+  /* ================= top bar ================= */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:64px;
+    background:rgba(238,242,246,.82);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--edge);
+    display:flex; align-items:center;
+  }
+  .topbar .wrap{
+    display:flex; justify-content:space-between; align-items:center; width:100%;
+  }
+  .mark{
+    font-weight:800; font-size:19px; color:var(--ink);
+    text-decoration:none; letter-spacing:-.02em;
+  }
+  .mark span{ color:var(--accent); }
+  nav{ display:flex; gap:20px; align-items:center; }
+  nav a{
+    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a[aria-current="page"]{ color:var(--accent); font-weight:600; }
+
+  /* ================= hero & cards ================= */
+  .hero{ padding:50px 0 30px; }
+  h1.rise{ font-size:clamp(32px, 5vw, 52px); font-weight:800; letter-spacing:-.03em; color:var(--ink); }
+  h1.rise span{ color:var(--accent); }
+  .rise.d1{ font-size:18px; color:var(--muted); margin-top:16px; max-width:640px; line-height:1.65; }
+
+  .section-label{
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--accent); margin-bottom:12px;
+  }
+  .studio-card{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-radius:14px;
+    padding:32px 28px;
+    backdrop-filter:blur(10px);
+    margin-bottom:36px;
+    box-shadow:0 8px 26px rgba(32,43,54,.04);
+  }
+  .studio-card h2{ font-size:22px; font-weight:700; color:var(--ink); margin-bottom:14px; letter-spacing:-.01em; }
+  .studio-card p{ font-size:16px; color:var(--muted); line-height:1.65; }
+  .studio-card p + p{ margin-top:16px; }
+  .studio-card strong{ color:var(--ink); font-weight:600; }
+
+  .list-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; margin-top:20px; }
+  @media (max-width:680px){ .list-grid{ grid-template-columns:1fr; } }
+  .list-item{
+    background:rgba(255,255,255,.5);
+    border:1px solid var(--edge);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .list-item h4{ font-size:14.5px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+  .list-item p{ font-size:14px; color:var(--muted); line-height:1.55; }
+
+  footer{ border-top:1px solid var(--edge); padding:24px 0 40px; margin-top:60px; }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:10px;
+    font-size:13px; color:var(--muted);
+  }
+  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; }
+  .foot-row a:hover{ color:var(--accent); }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="../how_I_work/">How I Work</a>
+      <a href="./" aria-current="page">The Studio</a>
+      <a href="../aboutme/">About Me</a>
+      <a href="../hobbies/">Hobbies</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="rise">the <span>studio.</span></h1>
+      <p class="rise d1">Studio DNA, privacy floor, HR-driven data security standards, and non-negotiable engineering guardrails governing every app built at calmdownoscar.</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap">
+      
+      <!-- 01. Product DNA -->
+      <div class="studio-card reveal">
+        <div class="section-label">01 · Studio DNA &amp; Core Values</div>
+        <h2>Apps Built to Put the Phone Down</h2>
+        <p>Software exists to <strong>reduce screen time and decision fatigue</strong>. Success for a calmdownoscar app means the user finishes what they came to do and puts their phone down — not maximizing session length, infinite feeds, or screen time.</p>
+        <p><strong>Business Rails:</strong> Zero ads. No third-party trackers. One-time or lifetime purchases whenever possible. Never use urgency bait, notification spam, or artificial streak counters to hook users.</p>
+      </div>
+
+      <!-- 02. HR-Driven Security & Privacy -->
+      <div class="studio-card reveal">
+        <div class="section-label">02 · HR-Driven Security &amp; Data Privacy</div>
+        <h2>Personal Data Protection as a Priority</h2>
+        <p>Coming from a background in <strong>Human Resources</strong>, safeguarding personal confidentiality is not a legal checklist — it is an foundational duty of trust. Handling sensitive personnel records translated directly into how software and AI architectures are designed here.</p>
+        
+        <div class="list-grid">
+          <div class="list-item">
+            <h4>100% On-Device Processing</h4>
+            <p>Sensitive operations (photo scanning, disk maps, voice notes) execute locally on Apple silicon. Data stays strictly on your device.</p>
+          </div>
+          <div class="list-item">
+            <h4>Zero 3rd-Party Analytics</h4>
+            <p>No SDK trackers, no telemetry scripts, no third-party data broker libraries. Crash visibility uses Apple's native MetricKit.</p>
+          </div>
+          <div class="list-item">
+            <h4>Server-Side Auth Enforcement</h4>
+            <p>UI hides controls, but server endpoints enforce strict per-record authorization. Client claims are never trusted blindly.</p>
+          </div>
+          <div class="list-item">
+            <h4>Zero Secrets in Client Binaries</h4>
+            <p>API keys and credentials never ship inside client binaries or public source. Enforced via Vercel proxy walls and environment secrets.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03. Guardrails & Evals -->
+      <div class="studio-card reveal">
+        <div class="section-label">03 · AI Guardrails &amp; Pre-Mortem Evals</div>
+        <h2>Architectural Discipline Across Multi-Agent AI</h2>
+        <p>When AI features are integrated into apps, strict engineering guardrails govern every prompt and model interaction:</p>
+        
+        <div class="list-grid">
+          <div class="list-item">
+            <h4>Single Source of Truth</h4>
+            <p>The AI model and the native UI read and write to the exact same state model, preventing state drift or hallucinations.</p>
+          </div>
+          <div class="list-item">
+            <h4>MCP Ground-Truth Memory</h4>
+            <p>Unli Rice memory layer operates over Model Context Protocol (MCP), ensuring all AI agents share identical architectural guardrails.</p>
+          </div>
+          <div class="list-item">
+            <h4>Pre-Mortem Regression Gate</h4>
+            <p>Before submitting any app to the App Store, a 6-month pre-mortem evaluation audit is executed to catch edge-case failures and regression risks.</p>
+          </div>
+          <div class="list-item">
+            <h4>Hybrid LLM + Local ML Fallback</h4>
+            <p>Cloud LLMs perform heavy reasoning, backed by on-device local ML (MLX / Metal) fallbacks for offline and privacy-conscious workflows.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var revealEls = document.querySelectorAll('.reveal');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduceMotion.matches || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
