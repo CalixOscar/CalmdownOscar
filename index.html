@@ -68,21 +68,18 @@
     backdrop-filter:blur(14px);
     border-bottom:1px solid var(--edge);
   }
-  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; }
-  .mark{
-    font-weight:700; font-size:16px; letter-spacing:-.01em;
-    text-decoration:none; color:var(--ink);
-  }
-  .mark span{ color:var(--accent); }
+  .topbar .wrap{ display:flex; justify-content:center; align-items:center; width:100%; }
+  nav{ display:flex; justify-content:center; align-items:center; gap:28px; width:100%; }
   nav a{
     color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
-    margin-left:24px;
+    margin-left:0;
     transition:color .2s ease;
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
   @media (max-width:560px){
-    nav a{ margin-left:14px; font-size:13px; }
+    nav{ gap:14px; }
+    nav a{ font-size:13px; }
   }
 
   .reveal{
@@ -410,7 +407,6 @@
 </head>
 <header class="topbar">
   <div class="wrap">
-    <a class="mark" href="./">calmdown<span>oscar</span></a>
     <nav>
       <a href="how_I_work/">How I Work</a>
       <a href="the_studio/">The Studio</a>
@@ -627,8 +623,8 @@
           </div>
 
           <div class="links">
-            <a class="applink" href="unlidisk/">Unli Disk Page <span class="arrow">→</span></a>
-            <a class="privacy-link" href="unlidisk/privacy.html">Privacy Policy</a>
+            <a class="applink" href="apps/unlidisk/">Unli Disk Page <span class="arrow">→</span></a>
+            <a class="privacy-link" href="apps/unlidisk/privacy.html">Privacy Policy</a>
           </div>
         </article>
 
