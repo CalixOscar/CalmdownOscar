@@ -52,7 +52,7 @@
   }
   @media (min-width: 768px){
     .bg-stage{
-      transform: translateX(26vw);
+      transform: translate(32vw, 15vh);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
     }
@@ -239,8 +239,7 @@
 
     function applyVisuals(easedProgress){
       var scale = 1.06 - easedProgress * 0.06;
-      var tilt = easedProgress * 2.5;
-      video.style.transform = 'scale(' + scale.toFixed(4) + ') rotateX(' + tilt.toFixed(3) + 'deg)';
+      video.style.transform = 'scale(' + scale.toFixed(4) + ')';
       if (scrim) scrim.style.transform = 'translateY(' + (easedProgress * -8).toFixed(2) + 'px)';
     }
 
