@@ -35,8 +35,8 @@ export default async function handler(req, res) {
       
       // Augment the query to ensure Tavily focuses strictly on the motorcycle niche
       let augmentedQuery = q;
-      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto/i.test(q)) {
-        augmentedQuery = `${q} (motorcycles OR MotoGP OR WSBK OR Supercross OR new bikes)`;
+      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto|isle of man tt/i.test(q)) {
+        augmentedQuery = `${q} (motorcycles OR MotoGP OR WSBK OR Supercross OR Isle of Man TT OR new bikes)`;
       }
 
       const searchRes = await fetch("https://api.tavily.com/search", {
