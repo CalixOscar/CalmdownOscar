@@ -465,10 +465,11 @@
 
   function reelProgress(){
     if (!reelPin || !reelStage) return 0;
+    var rect = reelPin.getBoundingClientRect();
     var scrollable = reelPin.offsetHeight - reelStage.offsetHeight;
     if (scrollable <= 0) return 0;
-    var start = reelPin.offsetTop - navH;
-    return Math.min(Math.max((window.scrollY - start) / scrollable, 0), 1);
+    var scrolled = navH - rect.top;
+    return Math.min(Math.max(scrolled / scrollable, 0), 1);
   }
 
   function scrubClip(c, cp){
@@ -488,7 +489,7 @@
     var p = reelProgress();
     /* cinema mode: lights dim slowly through the reel, fully dark ~30% from
        the bottom of the page, and stay dark to the end */
-    var dStart = reelPin ? reelPin.offsetTop - navH : 0;
+    var dStart = reelPin ? (window.scrollY + reelPin.getBoundingClientRect().top - navH) : 0;
     var dEnd = (document.documentElement.scrollHeight - window.innerHeight) * 0.7;
     var d = (window.scrollY - dStart) / Math.max(dEnd - dStart, 1);
     d = 1 - Math.min(Math.max(d, 0), 1);
