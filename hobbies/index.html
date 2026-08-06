@@ -239,6 +239,54 @@
     .reel{ transform:none !important; }
     html{ scroll-behavior:auto; }
   }
+  /* ================= Garage Terminal ================= */
+  #garage-terminal-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(59,110,165,.3);
+    cursor: pointer; transition: transform 0.2s;
+  }
+  #garage-terminal-btn:hover { transform: scale(1.05); }
+  
+  #garage-terminal {
+    position: fixed; bottom: 90px; right: 24px; z-index: 100;
+    width: 360px; height: 500px; max-height: 80vh; max-width: calc(100vw - 48px);
+    background: #141B22; border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; display: none; flex-direction: column;
+    box-shadow: 0 24px 48px rgba(0,0,0,.4);
+    font-family: 'Inter', monospace; overflow: hidden;
+  }
+  .terminal-header {
+    background: #0D1117; padding: 12px 16px; color: #8FA0AE; font-size: 12px;
+    font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  #close-terminal { background: none; border: none; color: #8FA0AE; font-size: 20px; cursor: pointer; }
+  #close-terminal:hover { color: #fff; }
+  .terminal-body {
+    flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+  }
+  .msg { font-size: 13px; line-height: 1.5; color: #E8EEF4; }
+  .msg.ai { color: #85B6FF; }
+  .msg.user { text-align: right; color: #8FA0AE; }
+  #boot-ai-btn {
+    background: rgba(133,182,255,.1); border: 1px solid #85B6FF; color: #85B6FF;
+    padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;
+    margin-top: auto;
+  }
+  #boot-ai-btn:hover { background: rgba(133,182,255,.2); }
+  #loading-bar-container { background: rgba(255,255,255,.05); height: 4px; border-radius: 2px; margin-top: auto; overflow: hidden; }
+  #loading-bar { background: #85B6FF; height: 100%; width: 0%; transition: width 0.3s; }
+  #loading-text { font-size: 11px; color: #8FA0AE; margin-top: 8px; text-align: center; }
+  .terminal-footer {
+    padding: 12px; border-top: 1px solid rgba(255,255,255,.05); background: #0D1117;
+  }
+  #chat-input {
+    width: 100%; background: none; border: none; color: #E8EEF4; font-size: 13px; outline: none;
+    font-family: inherit;
+  }
 </style>
 </head>
 <body class="page-enter">
@@ -432,6 +480,142 @@
 })();
 </script>
 
-    <script async src="https://chatty.veritiodigital.com/widget.js" data-key="fbea77b17b1fb40363cf0cc1daec79e5"></script>
+<!-- Garage Terminal UI -->
+    <div id="garage-terminal-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l6-6-6-6M12 19h8"/></svg>
+    </div>
+    
+    <div id="garage-terminal">
+      <div class="terminal-header">
+        <span>Garage AI Terminal</span>
+        <button id="close-terminal">×</button>
+      </div>
+      <div class="terminal-body" id="chat-history">
+        <div class="msg ai">SYSTEM: Awaiting boot sequence...</div>
+        <button id="boot-ai-btn">Boot Local AI Engine</button>
+        <div id="loading-bar-container" style="display:none;">
+          <div id="loading-bar"></div>
+          <div id="loading-text">Downloading weights... 0%</div>
+        </div>
+      </div>
+      <div class="terminal-footer">
+        <input type="text" id="chat-input" placeholder="Ask about bikes, routes, or gear..." disabled>
+      </div>
+    </div>
+
+    <!-- WebLLM Module -->
+    <script type="module">
+      import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+      const terminalBtn = document.getElementById('garage-terminal-btn');
+      const terminal = document.getElementById('garage-terminal');
+      const closeBtn = document.getElementById('close-terminal');
+      const bootBtn = document.getElementById('boot-ai-btn');
+      const chatHistory = document.getElementById('chat-history');
+      const chatInput = document.getElementById('chat-input');
+      const loadingContainer = document.getElementById('loading-bar-container');
+      const loadingBar = document.getElementById('loading-bar');
+      const loadingText = document.getElementById('loading-text');
+
+      let engine;
+      let isBooted = false;
+      const chatMessages = [
+        { role: "system", content: "You are an expert motorcycle mechanic, seasoned rider, and AI assistant. Keep answers calm, cool, and concise. You live in a garage. If context is provided, use it to answer factually." }
+      ];
+
+      terminalBtn.addEventListener('click', () => { terminal.style.display = 'flex'; });
+      closeBtn.addEventListener('click', () => { terminal.style.display = 'none'; });
+
+      bootBtn.addEventListener('click', async () => {
+        bootBtn.style.display = 'none';
+        loadingContainer.style.display = 'block';
+        
+        try {
+          const initProgressCallback = (initProgress) => {
+            const percent = Math.round(initProgress.progress * 100);
+            loadingBar.style.width = percent + '%';
+            loadingText.textContent = `Downloading weights... ${percent}%`;
+          };
+
+          const selectedModel = "Llama-3.2-1B-Instruct-q4f32_1-MLC";
+          engine = new webllm.MLCEngine();
+          engine.setInitProgressCallback(initProgressCallback);
+          
+          await engine.reload(selectedModel);
+          
+          isBooted = true;
+          loadingContainer.style.display = 'none';
+          chatInput.disabled = false;
+          chatInput.focus();
+          addMessage('SYSTEM: Engine booted. Online.', 'ai');
+        } catch (e) {
+          loadingText.textContent = 'Error: Failed to boot.';
+          console.error(e);
+        }
+      });
+
+      async function handleChat(text) {
+        addMessage(text, 'user');
+        chatInput.value = '';
+        chatInput.disabled = true;
+        
+        const aiMsgDiv = addMessage('Processing...', 'ai');
+
+        try {
+          // 1. Check for image request
+          if (text.toLowerCase().includes('show me a picture of') || text.toLowerCase().includes('image of')) {
+            const query = text.replace(/show me a picture of|image of/gi, '').trim();
+            const res = await fetch(`/api/search?type=image&q=${encodeURIComponent(query)}`);
+            if (res.ok) {
+              const data = await res.json();
+              aiMsgDiv.innerHTML = `Here is a picture of ${query}:<br><img src="${data.url}" alt="${data.alt}" style="max-width:100%; border-radius:8px; margin-top:8px;">`;
+              chatInput.disabled = false;
+              chatInput.focus();
+              return;
+            }
+          }
+
+          // 2. Standard Query + Web Search RAG
+          aiMsgDiv.textContent = 'Searching web...';
+          const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(text)}`);
+          let context = "";
+          if (res.ok) {
+            const data = await res.json();
+            context = `\\n\\nWeb Context: ${data.text}`;
+          }
+
+          aiMsgDiv.textContent = 'Generating...';
+          chatMessages.push({ role: "user", content: text + context });
+          
+          const reply = await engine.chat.completions.create({ messages: chatMessages });
+          const responseText = reply.choices[0].message.content;
+          
+          aiMsgDiv.textContent = responseText;
+          chatMessages.push({ role: "assistant", content: responseText });
+          
+        } catch (e) {
+          aiMsgDiv.textContent = 'Error: Link disconnected.';
+          console.error(e);
+        }
+        
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
+
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && chatInput.value.trim() && isBooted) {
+          handleChat(chatInput.value.trim());
+        }
+      });
+
+      function addMessage(text, sender) {
+        const div = document.createElement('div');
+        div.className = `msg ${sender}`;
+        div.textContent = text;
+        chatHistory.insertBefore(div, bootBtn);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        return div;
+      }
+    </script>
 </body>
 </html>
