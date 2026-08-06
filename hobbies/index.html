@@ -327,23 +327,21 @@
     <div class="reveal" style="max-width:65ch; margin-bottom:32px; font-size:15px; color:var(--muted); line-height:1.6; padding:16px; background:color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border:1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius:12px; backdrop-filter:blur(10px);">
       <strong>Technical Playground:</strong> I use this page to experiment with bleeding-edge web tech. Right now, I'm testing an <strong>800MB Local LLM</strong> (WebLLM) that runs entirely inside your browser using WebGPU. No server-side compute, zero data leaves your device. Boot the engine below and test out private, local AI execution for yourself.
     </div>
-    <div class="section-label reveal">Hobbies</div>
-    <p class="section-lede reveal">A glimpse into what lies beyond screen time — open roads, engines, and the occasional detour.</p>
   </div>
 
   <!-- AI Dashboard Section (Moved Right Below Hobbies Header) -->
   <section class="wrap" style="padding: 16px 24px 48px;">
-    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; text-align: center;">Interactive Garage AI</h2>
+    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; text-align: center;">Tiny motorcycle model llm</h2>
     <div class="dashboard-grid">
       <!-- Top Column: Workbench (Image) -->
       <div id="workbench">
-        <div class="workbench-empty">Boot the AI Engine to begin. Ask it to "Show me a picture of X" or ask about latest motorcycle news.</div>
+        <div class="workbench-empty">Boot the AI Engine to begin. Ask about any motorcycle model (e.g. Ducati Superleggera V4, BMW R1300GS, Yamaha R1).</div>
       </div>
       <!-- Middle Column: Terminal -->
       <div id="dashboard-left">
         <div id="garage-terminal">
           <div class="terminal-header">
-            <span>Garage AI Terminal</span>
+            <span>Tiny motorcycle model llm</span>
             <span style="color: #85B6FF; font-size: 10px; border: 1px solid rgba(133,182,255,.3); padding: 2px 6px; border-radius: 12px;">WebLLM 1B</span>
           </div>
           <div class="terminal-body" id="chat-history">
@@ -355,7 +353,7 @@
             </div>
           </div>
           <div class="terminal-footer">
-            <input type="text" id="chat-input" placeholder="Ask about bikes, routes, or gear..." disabled>
+            <input type="text" id="chat-input" placeholder="Ask about any motorcycle model..." disabled>
           </div>
         </div>
       </div>
@@ -558,7 +556,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Use the provided Web Context and Featured Image Headline to give a friendly, clear, and helpful response. Synthesize the facts naturally into a well-formatted summary with key specs and details." };
+      const initialSystemPrompt = { role: "system", content: "You are a specialized motorcycle model AI assistant. You ONLY answer questions about specific motorcycle models and their technical specs (engine, horsepower, weight, features). Do NOT answer questions about riding gear, riding routes, general news, or non-model topics. If a user asks about gear, routes, or non-model topics, politely state that you only answer queries about specific motorcycle models." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(isAuto = false) {
