@@ -273,6 +273,14 @@
   .spec-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 15px; line-height: 1.7; }
   .spec-label { color: #8FA0AE; font-weight: 600; white-space: nowrap; }
   .spec-value { color: #E8EEF4; }
+
+  .model-switch { display: flex; align-items: center; gap: 6px; margin-left: auto; font-size: 10px; color: #8FA0AE; }
+  .model-switch label { cursor: pointer; padding: 2px 6px; border-radius: 12px; border: 1px solid rgba(133,182,255,.2); transition: all .2s; }
+  .model-switch input { display: none; }
+  .model-switch .sw-1b { color: #85B6FF; border-color: rgba(133,182,255,.5); }
+  .model-switch input:checked ~ .sw-1b { color: #8FA0AE; border-color: rgba(133,182,255,.2); }
+  .model-switch input:checked ~ .sw-8b { color: #85B6FF; border-color: rgba(133,182,255,.5); }
+  .model-switch .sw-8b { color: #8FA0AE; }
   #boot-ai-btn {
     background: rgba(133,182,255,.1); border: 1px solid #85B6FF; color: #85B6FF;
     padding: 10px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;
@@ -329,7 +337,7 @@
       Under Construction
     </div>
     <div class="reveal" style="max-width:65ch; margin-bottom:32px; font-size:15px; color:var(--muted); line-height:1.6; padding:16px; background:color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border:1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius:12px; backdrop-filter:blur(10px);">
-      <strong>Technical Playground:</strong> I use this page to experiment with bleeding-edge web tech. Right now, I'm testing an <strong>800MB Local LLM</strong> (WebLLM) that runs entirely inside your browser using WebGPU. No server-side compute, zero data leaves your device. Boot the engine below and test out private, local AI execution for yourself.
+      <strong>Technical Playground:</strong> I use this page to experiment with bleeding-edge web tech. Right now, I'm testing a <strong>Local LLM</strong> (WebLLM) that runs entirely inside your browser using WebGPU. No server-side compute, zero data leaves your device. Choose the 1B model (800 MB, fast) or toggle to the 8B model (~4 GB, smarter) before booting.
     </div>
   </div>
 
@@ -345,8 +353,12 @@
       <div id="dashboard-left">
         <div id="garage-terminal">
           <div class="terminal-header">
-            <span>Tiny motorcycle model llm</span>
-            <span style="color: #85B6FF; font-size: 10px; border: 1px solid rgba(133,182,255,.3); padding: 2px 6px; border-radius: 12px;">WebLLM 1B</span>
+            <span>Motorcycle Model LLM</span>
+            <div class="model-switch">
+              <input type="checkbox" id="model-toggle">
+              <label class="sw-1b" for="model-toggle">1B · 800MB</label>
+              <label class="sw-8b" for="model-toggle">8B · 4GB</label>
+            </div>
           </div>
           <div class="terminal-body" id="chat-history">
             <div class="msg ai">SYSTEM: Awaiting boot sequence...</div>
@@ -598,14 +610,21 @@
         bootBtn.style.display = 'none';
         loadingContainer.style.display = 'block';
         
+        const use8B = document.getElementById('model-toggle').checked;
+        const selectedModel = use8B
+          ? "Llama-3.1-8B-Instruct-q4f16_1-MLC"
+          : "Llama-3.2-1B-Instruct-q4f32_1-MLC";
+        const modelLabel = use8B ? '8B (4 GB)' : '1B (800 MB)';
+        
+        // Disable toggle after boot so user can't switch mid-session
+        document.getElementById('model-toggle').disabled = true;
+
         try {
           const initProgressCallback = (initProgress) => {
             const percent = Math.round(initProgress.progress * 100);
             loadingBar.style.width = percent + '%';
-            loadingText.textContent = `Downloading weights... ${percent}%`;
+            loadingText.textContent = `Downloading ${modelLabel} weights... ${percent}%`;
           };
-
-          const selectedModel = "Llama-3.2-1B-Instruct-q4f32_1-MLC";
           engine = new webllm.MLCEngine();
           engine.setInitProgressCallback(initProgressCallback);
           
@@ -615,7 +634,7 @@
           loadingContainer.style.display = 'none';
           chatInput.disabled = false;
           chatInput.focus();
-          addMessage('SYSTEM: Engine booted. Online. Use /reset to clear memory.', 'ai');
+          addMessage(`SYSTEM: Engine booted (${modelLabel}). Online. Use /reset or /clear.`, 'ai');
           updateWorkbench('<div class="workbench-empty">Engine Online. Ready for queries.</div>');
           startIdleTimer();
         } catch (e) {
