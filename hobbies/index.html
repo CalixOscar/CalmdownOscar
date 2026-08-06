@@ -586,7 +586,7 @@
             if (res.ok) {
               const data = await res.json();
               aiMsgDiv.innerHTML = `I've put a picture of ${query} on the Workbench for you.`;
-              updateWorkbench(`<img src="${data.url}" alt="${data.alt}" /><div style="margin-top:12px; color:#8FA0AE; font-size:12px; text-align:center;">Unsplash: ${data.alt}</div>`);
+              updateWorkbench(`<img src="${data.url}" alt="${data.alt}" /><div style="margin-top:12px; color:#8FA0AE; font-size:12px; text-align:center;">Photo by <a href="${data.authorUrl}?utm_source=calmdownoscar&utm_medium=referral" target="_blank" style="color:#85B6FF; text-decoration:none;">${data.authorName}</a> on <a href="https://unsplash.com/?utm_source=calmdownoscar&utm_medium=referral" target="_blank" style="color:#85B6FF; text-decoration:none;">Unsplash</a></div>`);
               chatInput.disabled = false;
               chatInput.focus();
               return;

@@ -24,7 +24,9 @@ export default async function handler(req, res) {
       if (data.results && data.results.length > 0) {
         return res.status(200).json({
           url: data.results[0].urls.regular,
-          alt: data.results[0].alt_description
+          alt: data.results[0].alt_description,
+          authorName: data.results[0].user.name,
+          authorUrl: data.results[0].user.links.html
         });
       }
       return res.status(404).json({ error: 'No image found' });
