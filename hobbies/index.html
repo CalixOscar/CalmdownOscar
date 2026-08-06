@@ -38,7 +38,7 @@
     --muted:   #62717C;
     --nav-h:   calc(64px + var(--sat));
     /* cinema mode: 0 = light page, 1 = lights down for the reel (driven by scroll) */
-    --dark:       0;
+    --dark:       1;
     --bg-dark:    #141B22;
     --ink-dark:   #E8EEF4;
     --muted-dark: #8FA0AE;
@@ -484,7 +484,7 @@
     var dStart = reelPin ? reelPin.offsetTop - navH : 0;
     var dEnd = (document.documentElement.scrollHeight - window.innerHeight) * 0.7;
     var d = (window.scrollY - dStart) / Math.max(dEnd - dStart, 1);
-    d = Math.min(Math.max(d, 0), 1);
+    d = 1 - Math.min(Math.max(d, 0), 1);
     document.documentElement.style.setProperty('--dark', d.toFixed(3));
     if (reel && reelStage){
       var pan = reel.offsetHeight - reelStage.offsetHeight;
