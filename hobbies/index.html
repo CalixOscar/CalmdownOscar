@@ -609,14 +609,15 @@
           aiMsgDiv.textContent = 'Searching web...';
           const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(text)}`);
           let context = "";
+          let ragHtml = "";
           if (res.ok) {
             const data = await res.json();
             context = `\n\nWeb Context: ${data.text}`;
-            // Display the raw news/context on the workbench for a "cool tech" feel
-            updateWorkbench(`
+            ragHtml = `
               <div style="color: var(--ink); font-weight: 600; margin-bottom: 8px;">LIVE RAG CONTEXT FETCHED:</div>
               <pre>${data.text.replace(/\n/g, '<br>')}</pre>
-            `);
+            `;
+            updateWorkbench(ragHtml);
           }
 
           aiMsgDiv.textContent = 'Generating...';
@@ -627,6 +628,20 @@
           
           aiMsgDiv.textContent = responseText;
           chatMessages.push({ role: "assistant", content: responseText });
+
+          // 3. Auto-fetch a relevant image in the background
+          fetch(`/api/search?type=image&q=${encodeURIComponent(text)}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(imgData => {
+              if (imgData && imgData.url) {
+                const imgHtml = `<div style="margin-top:16px; border-top:1px solid rgba(255,255,255,.08); padding-top:16px;">
+                  <img src="${imgData.url}" alt="${imgData.alt}" />
+                  <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
+                </div>`;
+                updateWorkbench((ragHtml || '') + imgHtml);
+              }
+            })
+            .catch(() => {});
           
         } catch (e) {
           aiMsgDiv.textContent = 'Error: Link disconnected.';
