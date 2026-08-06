@@ -569,6 +569,14 @@
         msgDiv.textContent = isAuto ? 'SYSTEM: Idle timeout (30s). Memory & screen cleared.' : 'SYSTEM: Memory & screen cleared by /clear.';
         chatHistory.appendChild(msgDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight;
+
+        if (isAuto) {
+          updateWorkbench('<div class="workbench-empty">Engine Online. Ready for queries.</div>');
+          if (videoPanel) {
+            videoPanel.style.display = 'none';
+            videoPanel.innerHTML = '';
+          }
+        }
       }
 
       function startIdleTimer() {
@@ -721,15 +729,20 @@
             }
           }
 
-          // Now fetch Web Text Search guided by the exact Image Title
+          // Now fetch Web Text Search guided by the exact Image Title, with fallback
           aiMsgDiv.textContent = 'Reading web articles...';
           try {
-            const webRes = await fetch(`/api/search?type=web&q=${encodeURIComponent(textSearchTopic)}`);
-            if (webRes.ok) {
-              const webData = await webRes.json();
-              if (webData.text && webData.text !== "No relevant information found.") {
-                context += `\n\nWeb Articles Snippets: ${webData.text}`;
-              }
+            let webRes = await fetch(`/api/search?type=web&q=${encodeURIComponent(textSearchTopic)}`);
+            let webData = webRes.ok ? await webRes.json() : null;
+            
+            // Fallback to original user query if image title returned no text results
+            if (!webData || !webData.text || webData.text === "No relevant information found.") {
+              webRes = await fetch(`/api/search?type=web&q=${encodeURIComponent(searchQuery)}`);
+              webData = webRes.ok ? await webRes.json() : null;
+            }
+
+            if (webData && webData.text && webData.text !== "No relevant information found.") {
+              context += `\n\nWeb Articles Snippets: ${webData.text}`;
             }
           } catch(e) {}
 
