@@ -353,7 +353,7 @@
             </div>
           </div>
           <div class="terminal-footer">
-            <input type="text" id="chat-input" placeholder="Ask about any motorcycle model..." disabled>
+            <input type="text" id="chat-input" placeholder="Ask about any motorcycle model... (type /clear to reset)" disabled>
           </div>
         </div>
       </div>
@@ -561,10 +561,11 @@
 
       function resetMemory(isAuto = false) {
         chatMessages = [ initialSystemPrompt ];
+        chatHistory.innerHTML = '';
         const msgDiv = document.createElement('div');
         msgDiv.className = 'msg ai';
         msgDiv.style.opacity = '0.7';
-        msgDiv.textContent = isAuto ? 'SYSTEM: Idle timeout (30s). Memory cleared.' : 'SYSTEM: Memory cleared by /reset.';
+        msgDiv.textContent = isAuto ? 'SYSTEM: Idle timeout (30s). Memory & screen cleared.' : 'SYSTEM: Memory & screen cleared by /clear.';
         chatHistory.appendChild(msgDiv);
         chatHistory.scrollTop = chatHistory.scrollHeight;
       }
