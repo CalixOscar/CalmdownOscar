@@ -269,6 +269,10 @@
   .msg { font-size: 16px; line-height: 1.6; color: #E8EEF4; }
   .msg.ai { color: #85B6FF; }
   .msg.user { text-align: right; color: #8FA0AE; }
+
+  .spec-card { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 15px; line-height: 1.7; }
+  .spec-label { color: #8FA0AE; font-weight: 600; white-space: nowrap; }
+  .spec-value { color: #E8EEF4; }
   #boot-ai-btn {
     background: rgba(133,182,255,.1); border: 1px solid #85B6FF; color: #85B6FF;
     padding: 10px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;
@@ -539,7 +543,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are a knowledgeable motorcycle model AI assistant. Your goal is to provide clear, helpful, and accurate technical details (engine type, horsepower, weight, key features) about motorcycle models using the provided Web Articles Snippets and Featured Image Title. Synthesize the facts cleanly and concisely." };
+      const initialSystemPrompt = { role: "system", content: "You are a motorcycle spec-sheet assistant. For every query, output ONLY these 8 lines, one per line, using the exact format 'Label: Value'. Fill in values from the Web Context. If a value is unknown, write 'N/A'.\nBrand: ...\nModel: ...\nType: ...\nEngine: ...\nPower: ...\nWeight: ...\nSeat Height: ...\nNotable: ...\nDo not output anything else." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(clearScreen = false, label = 'SYSTEM: Memory cleared.') {
@@ -743,7 +747,29 @@
           const reply = await engine.chat.completions.create({ messages: tempMessages });
           const responseText = reply.choices[0].message.content;
           
-          aiMsgDiv.textContent = responseText;
+          // Parse spec-sheet template into a styled card
+          const specLabels = ['Brand', 'Model', 'Type', 'Engine', 'Power', 'Weight', 'Seat Height', 'Notable'];
+          const lines = responseText.split('\n').filter(l => l.includes(':'));
+          let cardHtml = '<div class="spec-card">';
+          let matched = 0;
+          for (const line of lines) {
+            const idx = line.indexOf(':');
+            if (idx > 0) {
+              const label = line.substring(0, idx).trim();
+              const value = line.substring(idx + 1).trim();
+              if (label && value) {
+                cardHtml += `<span class="spec-label">${label}</span><span class="spec-value">${value}</span>`;
+                matched++;
+              }
+            }
+          }
+          cardHtml += '</div>';
+          
+          if (matched >= 3) {
+            aiMsgDiv.innerHTML = cardHtml;
+          } else {
+            aiMsgDiv.textContent = responseText;
+          }
           chatMessages.push({ role: "assistant", content: responseText });
           
         } catch (e) {
