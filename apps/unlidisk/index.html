@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#EEF2F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Unli Disk — calmdownoscar</title>
 <meta name="description" content="Unli Disk is a disk-space analyzer, developer junk cleanup tool, and photo library organizer for macOS. 100% on-device privacy.">
 <style>
@@ -16,6 +18,11 @@
     font-display:swap;
   }
   :root{
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+
     --bg:      #EEF2F6;
     --panel:   rgba(255,255,255,.62);
     --edge:    rgba(32,43,54,.12);
@@ -25,11 +32,11 @@
     --progress:#A9782F;
     --ink:     #202B36;
     --muted:   #62717C;
-    --topbar-h: 76px;
+    --topbar-h: calc(64px + var(--sat));
     --window-chrome: #E8EDF0;
   }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   ::selection{ background:var(--accent); color:#fff; }
   body{
     min-height:100vh;
@@ -42,24 +49,31 @@
     padding-top:var(--topbar-h);
     overflow-x:hidden;
   }
-  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+  .wrap{ max-width:920px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
   header{
     position:fixed; top:0; left:0; right:0; z-index:10;
     height:var(--topbar-h);
+    padding-top:var(--sat);
     background:rgba(238,242,246,.86);
     backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--edge);
   }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
   .mark span{ color:var(--accent); }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav::-webkit-scrollbar{ display:none; }
   nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
     margin-left:22px;
-    transition:color .2s ease;
+    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+  @media (max-width:640px){
+    nav a{ margin-left:14px; font-size:13px; }
+  }
   
   main{ padding:56px 0 96px; }
 
@@ -306,10 +320,10 @@
   .back:hover { color: var(--accent); }
 
   footer {
-    border-top: 1px solid var(--edge); padding: 22px 0 40px;
+    border-top: 1px solid var(--edge); padding: 22px 0 calc(40px + var(--sab));
     color: var(--muted); font-size: 13px; margin-top: 64px;
   }
-  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; }
+  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; padding: 4px 0; min-height: 44px; display: inline-flex; align-items: center; }
   footer a:hover { color: var(--accent); }
 
   .reveal {

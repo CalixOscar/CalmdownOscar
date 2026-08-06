@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#EEF2F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>How I Work — calmdownoscar</title>
 <meta name="description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, pre-mortems, backend architecture, security audits, and post-mortems.">
 <style>
@@ -16,6 +18,11 @@
     font-display:swap;
   }
   :root{
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+
     --night:    #14181C;
     --tank:     #F2581C;
     --pacifier: #BCD9E8;
@@ -27,9 +34,10 @@
     --accent:  #3B6EA5;
     --ink:     #202B36;
     --muted:   #62717C;
+    --topbar-h: calc(64px + var(--sat));
   }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   ::selection{ background:var(--accent); color:#fff; }
   body{
     background:var(--bg);
@@ -38,15 +46,16 @@
     font-size:16px;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
-    padding-top:80px;
+    padding-top:var(--topbar-h);
     overflow-x:hidden;
   }
-  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+  .wrap{ max-width:880px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
 
   /* ================= top bar ================= */
   .topbar{
     position:fixed; top:0; left:0; right:0; z-index:10;
-    height:64px;
+    height:var(--topbar-h);
+    padding-top:var(--sat);
     background:rgba(238,242,246,.82);
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
@@ -58,15 +67,21 @@
   }
   .mark{
     font-weight:800; font-size:19px; color:var(--ink);
-    text-decoration:none; letter-spacing:-.02em;
+    text-decoration:none; letter-spacing:-.02em; flex-shrink:0;
   }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; gap:20px; align-items:center; }
+  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav::-webkit-scrollbar{ display:none; }
   nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none;
-    transition:color .2s ease;
+    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
+    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
   }
   nav a:hover, nav a[aria-current="page"]{ color:var(--accent); font-weight:600; }
+  @media (max-width:640px){
+    .topbar .wrap{ gap:12px; }
+    nav{ gap:14px; }
+    nav a{ font-size:13px; }
+  }
 
   /* ================= headers & text ================= */
   .section-label{
@@ -95,8 +110,9 @@
 
   /* ================= pipeline diagram ================= */
   .pipeline{ padding:20px 0 80px; border-top:1px solid var(--edge); }
-  .diagram{ margin-top:16px; }
-  .diagram svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .diagram{ margin-top:16px; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .diagram::-webkit-scrollbar{ display:none; }
+  .diagram svg{ width:100%; min-width:680px; height:auto; display:block; overflow:visible; }
   .trace{
     fill:none; stroke:rgba(32,43,54,.18); stroke-width:1.4;
   }
@@ -127,13 +143,13 @@
     fill:var(--muted);
   }
 
-  footer{ border-top:1px solid var(--edge); padding:24px 0 40px; }
+  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
   .foot-row{
     display:flex; justify-content:space-between; align-items:center;
     flex-wrap:wrap; gap:10px;
     font-size:13px; color:var(--muted);
   }
-  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; }
+  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
   .foot-row a:hover{ color:var(--accent); }
 
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }

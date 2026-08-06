@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#EEF2F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Hobbies — calmdownoscar</title>
 <meta name="description" content="A glimpse into what lies beyond screen time — open roads, engines, and the occasional detour.">
 <style>
@@ -16,6 +18,11 @@
     font-display:swap;
   }
   :root{
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+
     --bg:      #EEF2F6;
     --panel:   rgba(255,255,255,.62);
     --edge:    rgba(32,43,54,.12);
@@ -24,7 +31,7 @@
     --progress:#A9782F;
     --ink:     #202B36;
     --muted:   #62717C;
-    --nav-h:   76px;
+    --nav-h:   calc(64px + var(--sat));
     /* cinema mode: 0 = light page, 1 = lights down for the reel (driven by scroll) */
     --dark:       0;
     --bg-dark:    #141B22;
@@ -34,8 +41,8 @@
     --panel-dark: rgba(255,255,255,.05);
     --edge-dark:  rgba(255,255,255,.09);
   }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   ::selection{ background:var(--accent); color:#fff; }
   body{
     background:var(--bg);
@@ -46,6 +53,7 @@
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
     padding-top:var(--nav-h);
+    overflow-x:hidden;
   }
   body.page-enter{ animation:pageEnter .45s cubic-bezier(.2,.7,.3,1) both; }
   body.page-exit{ animation:pageExit .22s ease both; }
@@ -56,7 +64,7 @@
   @keyframes pageExit{
     to{ opacity:0; transform:translateY(-4px); }
   }
-  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+  .wrap{ max-width:880px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
 
   /* ================= the scroll-scrub video reel ================= */
   .reel-pin{ position:relative; height:320vh; }
@@ -169,10 +177,12 @@
   .site-header{
     position:fixed; top:0; left:0; right:0; z-index:10;
     height:var(--nav-h);
+    padding-top:var(--sat);
     display:flex; align-items:center;
     background:rgba(238,242,246,.75);
     background:color-mix(in srgb, rgba(20,27,34,.78) calc(var(--dark) * 100%), rgba(238,242,246,.75));
     backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--edge);
     border-bottom-color:color-mix(in srgb, rgba(255,255,255,.09) calc(var(--dark) * 100%), var(--edge));
   }
@@ -182,37 +192,38 @@
   }
   .mark{
     font-weight:700; font-size:16px; letter-spacing:-.01em;
-    text-decoration:none; color:var(--ink);
+    text-decoration:none; color:var(--ink); flex-shrink:0;
     color:color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink));
   }
   .mark span{
     color:var(--accent);
     color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
   }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav::-webkit-scrollbar{ display:none; }
   nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
     color:color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted));
     margin-left:24px;
-    transition:color .2s ease;
+    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{
     color:var(--accent);
     color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
   }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  @media (max-width:520px){
-    .site-header .wrap{ align-items:flex-start; gap:16px; }
-    nav{ display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 16px; }
-    nav a{ margin-left:0; }
+  @media (max-width:640px){
+    .site-header .wrap{ gap:12px; }
+    nav a{ margin-left:14px; font-size:13px; }
   }
 
-  footer{ border-top:1px solid var(--edge); padding:24px 0 40px; }
+  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
   .foot-row{
     display:flex; justify-content:space-between; align-items:center;
     flex-wrap:wrap; gap:10px;
     font-size:13px; color:var(--muted);
   }
-  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; }
+  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
   .foot-row a:hover{ color:var(--accent); }
 
   @media (prefers-reduced-motion: reduce){
