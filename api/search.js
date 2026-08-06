@@ -33,6 +33,12 @@ export default async function handler(req, res) {
       // Live Web Search using Tavily API (specifically built for AI agents)
       const tavilyKey = process.env.TAVILY_API_KEY || "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";
       
+      // Augment the query to ensure Tavily focuses strictly on the motorcycle niche
+      let augmentedQuery = q;
+      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto/i.test(q)) {
+        augmentedQuery = `${q} (motorcycles OR MotoGP OR WSBK OR Supercross OR new bikes)`;
+      }
+
       const searchRes = await fetch("https://api.tavily.com/search", {
         method: "POST",
         headers: {
@@ -40,7 +46,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          query: q,
+          query: augmentedQuery,
           search_depth: "basic",
           include_answer: false,
           max_results: 3
