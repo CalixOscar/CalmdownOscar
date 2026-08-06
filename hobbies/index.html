@@ -555,10 +555,9 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const specPrompt = { role: "system", content: "You are a motorcycle spec-sheet assistant. For every query, output ONLY these 8 lines, one per line, using the exact format 'Label: Value'. Fill in values from the Web Context. If a value is unknown, write 'N/A'.\nBrand: ...\nModel: ...\nType: ...\nEngine: ...\nPower: ...\nWeight: ...\nSeat Height: ...\nNotable: ...\nDo not output anything else." };
-      const chatPrompt = { role: "system", content: "You are a knowledgeable motorcycle model assistant. Using the provided Web Context and Image Title, give a clear, conversational answer about the motorcycle — covering its engine, character, standout features, and how it fits in the lineup. Keep it concise but informative. No meta-commentary, no disclaimers." };
-      let activePrompt = specPrompt;
-      let useSpecCard = true;
+      const smallPrompt = { role: "system", content: "You are a concise motorcycle assistant. For any motorcycle model query, reply in ONE short, punchy sentence capturing its essence (for example: 'BMW S1000RR: The street bike you can take straight to the race track.'). Use facts from the Web Context and Image Title. Be direct and brief. No intro phrases or disclaimers." };
+      const largePrompt = { role: "system", content: "You are a knowledgeable motorcycle model assistant. Using the provided Web Context and Image Title, give a clear, conversational answer about the motorcycle — covering its engine, character, standout features, and how it fits in the lineup. Keep it concise but informative. No meta-commentary, no disclaimers." };
+      let activePrompt = smallPrompt;
       let chatMessages = [ activePrompt ];
 
       function resetMemory(clearScreen = false, label = 'SYSTEM: Memory cleared.') {
@@ -620,8 +619,7 @@
         const modelLabel = use8B ? '8B (4 GB)' : '1B (800 MB)';
         
         // Set prompt mode based on model
-        activePrompt = use8B ? chatPrompt : specPrompt;
-        useSpecCard = !use8B;
+        activePrompt = use8B ? largePrompt : smallPrompt;
         chatMessages = [ activePrompt ];
         
         // Disable toggle after boot so user can't switch mid-session
@@ -774,31 +772,7 @@
           const reply = await engine.chat.completions.create({ messages: tempMessages });
           const responseText = reply.choices[0].message.content;
           
-          // Render based on model mode
-          if (useSpecCard) {
-            const lines = responseText.split('\n').filter(l => l.includes(':'));
-            let cardHtml = '<div class="spec-card">';
-            let matched = 0;
-            for (const line of lines) {
-              const idx = line.indexOf(':');
-              if (idx > 0) {
-                const label = line.substring(0, idx).trim();
-                const value = line.substring(idx + 1).trim();
-                if (label && value) {
-                  cardHtml += `<span class="spec-label">${label}</span><span class="spec-value">${value}</span>`;
-                  matched++;
-                }
-              }
-            }
-            cardHtml += '</div>';
-            if (matched >= 3) {
-              aiMsgDiv.innerHTML = cardHtml;
-            } else {
-              aiMsgDiv.textContent = responseText;
-            }
-          } else {
-            aiMsgDiv.textContent = responseText;
-          }
+          aiMsgDiv.textContent = responseText;
           chatMessages.push({ role: "assistant", content: responseText });
           
         } catch (e) {
