@@ -561,8 +561,8 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const smallPrompt = { role: "system", content: "You are a concise motorcycle assistant. For any motorcycle model query, reply in ONE short, punchy sentence capturing its essence (for example: 'BMW S1000RR: The street bike you can take straight to the race track.'). Use facts from the Web Context and Image Title. Be direct and brief. No intro phrases or disclaimers." };
-      const largePrompt = { role: "system", content: "You are a knowledgeable motorcycle model assistant. Using the provided Web Context and Image Title, give a clear, conversational answer about the motorcycle — covering its engine, character, standout features, and how it fits in the lineup. Keep it concise but informative. No meta-commentary, no disclaimers." };
+      const smallPrompt = { role: "system", content: "The current year is 2026. You are a concise motorcycle assistant. For any motorcycle model query, reply in ONE short, punchy sentence capturing its essence (for example: 'BMW S1000RR: The street bike you can take straight to the race track.'). Use facts from the Web Articles Snippets and Featured Image Title. Be direct and brief. No intro phrases or disclaimers." };
+      const largePrompt = { role: "system", content: "The current year is 2026. You are a knowledgeable motorcycle model assistant. Using the provided Web Articles Snippets and Featured Image Title, give a clear, conversational answer about the motorcycle — covering its engine, character, standout features, and how it fits in the lineup. Ground your response in current 2026 data from the Web Context. Keep it concise but informative. No meta-commentary, no disclaimers." };
       let activePrompt = smallPrompt;
       let chatMessages = [ activePrompt ];
 
