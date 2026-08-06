@@ -610,11 +610,23 @@
 
           // 2. Standard Query + Web Search RAG
           aiMsgDiv.textContent = 'Searching web...';
-          const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(text)}`);
+          
+          let searchQuery = text;
+          if (chatMessages.length > 1) {
+            // Grab the last thing the user said to provide context for follow-up questions (e.g. "how much does it weigh?")
+            const lastUserMsg = chatMessages.filter(m => m.role === 'user').pop();
+            if (lastUserMsg) {
+              searchQuery = lastUserMsg.content + " " + text;
+            }
+          }
+
+          const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(searchQuery)}`);
           let context = "";
           if (res.ok) {
             const data = await res.json();
-            context = `\n\nWeb Context: ${data.text}`;
+            if (data.text !== "No relevant information found.") {
+              context = `\n\nWeb Context: ${data.text}`;
+            }
           }
 
           aiMsgDiv.textContent = 'Generating...';
