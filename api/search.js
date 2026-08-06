@@ -14,7 +14,12 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'UNSPLASH_API_KEY is not configured in Vercel.' });
       }
 
-      const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&per_page=1`, {
+      let augmentedImageQuery = q;
+      if (!/motorcycle|bike|moto/i.test(q)) {
+        augmentedImageQuery += " motorcycle";
+      }
+
+      const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(augmentedImageQuery)}&per_page=1`, {
         headers: {
           'Authorization': `Client-ID ${unsplashKey}`
         }
@@ -32,8 +37,11 @@ export default async function handler(req, res) {
       }
 
       // Fallback: If no exact match, try the last word as a broader search (e.g. "m1000rr")
-      const fallbackQuery = q.split(' ').pop();
+      let fallbackQuery = q.split(' ').pop();
       if (fallbackQuery) {
+        if (!/motorcycle|bike|moto/i.test(fallbackQuery)) {
+          fallbackQuery += " motorcycle";
+        }
         const fbResponse = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(fallbackQuery)}&per_page=1`, {
           headers: {
             'Authorization': `Client-ID ${unsplashKey}`
