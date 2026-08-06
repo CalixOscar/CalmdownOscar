@@ -29,7 +29,7 @@
     --sar: env(safe-area-inset-right, 0px);
 
     --bg:      #EEF2F6;
-    --panel:   rgba(255,255,255,.62);
+    --panel:   rgba(255,255,255,0.4);
     --edge:    rgba(32,43,54,.12);
     --edge-hi: rgba(59,110,165,.4);
     --accent:  #3B6EA5;
@@ -138,7 +138,7 @@
     padding:26px 24px;
     display:flex; flex-direction:column; gap:10px;
     position:relative;
-    backdrop-filter:blur(6px);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
   .app-grid .card.reveal{ transform:translateY(22px) scale(.985); }
@@ -710,12 +710,8 @@
   <section class="contact" id="contact" style="padding-top:40px; padding-bottom:20px;">
     <div class="wrap">
       <div class="card invite" style="text-align:center; padding:48px 24px;">
-        <h3 style="font-size:24px; margin-bottom:12px;">Let's build something together.</h3>
-        <p style="color:var(--muted); max-width:540px; margin:0 auto 28px; font-size:16px;">
-          Available for freelance iOS &amp; macOS app development, technical architecture consulting, and multi-agent AI systems engineering.
-        </p>
         <a href="mailto:peter@calmdownoscar.com" class="applink" style="display:inline-flex; align-items:center; justify-content:center; padding:12px 28px; background:var(--accent); color:#fff; border-radius:8px; font-weight:600; font-size:15px; text-decoration:none; transition:transform 0.2s ease, background 0.2s ease;">
-          Email peter@calmdownoscar.com <span class="arrow" style="margin-left:8px;">→</span>
+          Let's build together <span class="arrow" style="margin-left:8px;">→</span>
         </a>
       </div>
     </div>

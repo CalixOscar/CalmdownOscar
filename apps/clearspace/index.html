@@ -22,7 +22,7 @@
   }
   :root{
     --bg:      #EEF2F6;
-    --panel:   rgba(255,255,255,.62);
+    --panel:   rgba(255,255,255,0.4);
     --edge:    rgba(32,43,54,.12);
     --edge-hi: rgba(59,110,165,.4);
     --accent:  #3B6EA5;
@@ -94,7 +94,7 @@
     border-radius:12px;
     padding:24px;
     display:flex; flex-direction:column; gap:13px;
-    backdrop-filter:blur(6px);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
   .card:hover{

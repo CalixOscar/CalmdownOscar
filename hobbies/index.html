@@ -29,7 +29,7 @@
     --sar: env(safe-area-inset-right, 0px);
 
     --bg:      #EEF2F6;
-    --panel:   rgba(255,255,255,.62);
+    --panel:   rgba(255,255,255,0.4);
     --edge:    rgba(32,43,54,.12);
     --edge-hi: rgba(59,110,165,.4);
     --accent:  #3B6EA5;
@@ -580,8 +580,8 @@
 
         try {
           // 1. Check for image request
-          if (text.toLowerCase().includes('show me') || text.toLowerCase().includes('picture of') || text.toLowerCase().includes('image of')) {
-            const query = text.replace(/show me a picture of|show me|picture of|image of/gi, '').trim();
+          if (/(show me|picture|image|photo|see the)/i.test(text)) {
+            const query = text.replace(/show me a picture of|show me|picture of|image of|can i see the image|the image|image|picture|photo|can i see/gi, '').trim();
             const res = await fetch(`/api/search?type=image&q=${encodeURIComponent(query)}`);
             if (res.ok) {
               const data = await res.json();
