@@ -647,10 +647,12 @@
           
           let searchQuery = text;
           if (chatMessages.length > 1) {
-            // Grab the last thing the user said to provide context for follow-up questions
-            const lastUserMsg = chatMessages.filter(m => m.role === 'user').pop();
-            if (lastUserMsg) {
-              searchQuery = lastUserMsg.content + " " + text;
+            const isFollowUp = /\b(it|its|this|that|they|them|the bike|the engine|the stats|the weight|the hp|the horsepower|in kg|in mph)\b/i.test(text) || text.split(' ').length < 4;
+            if (isFollowUp) {
+              const lastUserMsg = chatMessages.filter(m => m.role === 'user').pop();
+              if (lastUserMsg) {
+                searchQuery = lastUserMsg.content + " " + text;
+              }
             }
           }
 
