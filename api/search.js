@@ -8,57 +8,25 @@ export default async function handler(req, res) {
 
   try {
     if (type === 'image') {
-      // Unsplash Image Search
-      const unsplashKey = process.env.UNSPLASH_API_KEY;
-      if (!unsplashKey) {
-        return res.status(500).json({ error: 'UNSPLASH_API_KEY is not configured in Vercel.' });
+      // Google Custom Search (Image Search)
+      const googleKey = process.env.GOOGLE_SEARCH_API_KEY;
+      const googleCx = process.env.GOOGLE_SEARCH_CX;
+      
+      if (!googleKey || !googleCx) {
+        return res.status(500).json({ error: 'Google API Key or CX is not configured in Vercel.' });
       }
 
-      let augmentedImageQuery = q;
-      if (!/motorcycle|bike|moto/i.test(q)) {
-        augmentedImageQuery += " motorcycle";
-      }
-
-      const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(augmentedImageQuery)}&per_page=1`, {
-        headers: {
-          'Authorization': `Client-ID ${unsplashKey}`
-        }
-      });
+      const response = await fetch(`https://customsearch.googleapis.com/customsearch/v1?key=${googleKey}&cx=${googleCx}&searchType=image&q=${encodeURIComponent(q)}&num=1`);
       const data = await response.json();
       
-      if (data.results && data.results.length > 0) {
+      if (data.items && data.items.length > 0) {
         return res.status(200).json({
-          url: data.results[0].urls.regular,
-          alt: data.results[0].alt_description,
-          authorName: data.results[0].user.name,
-          authorUrl: data.results[0].user.links.html,
+          url: data.items[0].link,
+          alt: data.items[0].title,
+          sourceDomain: data.items[0].displayLink,
+          sourceUrl: data.items[0].image.contextLink,
           fallback: false
         });
-      }
-
-      // Fallback: If no exact match, try the last word as a broader search (e.g. "m1000rr")
-      let fallbackQuery = q.split(' ').pop();
-      if (fallbackQuery) {
-        if (!/motorcycle|bike|moto/i.test(fallbackQuery)) {
-          fallbackQuery += " motorcycle";
-        }
-        const fbResponse = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(fallbackQuery)}&per_page=1`, {
-          headers: {
-            'Authorization': `Client-ID ${unsplashKey}`
-          }
-        });
-        const fbData = await fbResponse.json();
-        
-        if (fbData.results && fbData.results.length > 0) {
-          return res.status(200).json({
-            url: fbData.results[0].urls.regular,
-            alt: fbData.results[0].alt_description,
-            authorName: fbData.results[0].user.name,
-            authorUrl: fbData.results[0].user.links.html,
-            fallback: true,
-            originalQuery: q
-          });
-        }
       }
       
       return res.status(404).json({ error: 'No image found' });

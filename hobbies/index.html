@@ -586,16 +586,16 @@
             if (res.ok) {
               const data = await res.json();
               if (data.fallback) {
-                aiMsgDiv.innerHTML = `I couldn't find an exact image of "${data.originalQuery}" on Unsplash, but here's a regular one instead.`;
+                aiMsgDiv.innerHTML = `I couldn't find an exact image of "${data.originalQuery}", but here's a related one.`;
               } else {
                 aiMsgDiv.innerHTML = `I've put a picture of ${query} on the Workbench for you.`;
               }
-              updateWorkbench(`<img src="${data.url}" alt="${data.alt}" /><div style="margin-top:12px; color:#8FA0AE; font-size:12px; text-align:center;">Photo by <a href="${data.authorUrl}?utm_source=calmdownoscar&utm_medium=referral" target="_blank" style="color:#85B6FF; text-decoration:none;">${data.authorName}</a> on <a href="https://unsplash.com/?utm_source=calmdownoscar&utm_medium=referral" target="_blank" style="color:#85B6FF; text-decoration:none;">Unsplash</a></div>`);
+              updateWorkbench(`<img src="${data.url}" alt="${data.alt}" /><div style="margin-top:12px; color:#8FA0AE; font-size:12px; text-align:center;">Source: <a href="${data.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${data.sourceDomain}</a></div>`);
               chatInput.disabled = false;
               chatInput.focus();
               return;
             } else {
-              aiMsgDiv.innerHTML = `I couldn't find any related images on Unsplash.`;
+              aiMsgDiv.innerHTML = `I couldn't find any related images on the web.`;
               chatInput.disabled = false;
               chatInput.focus();
               return;
