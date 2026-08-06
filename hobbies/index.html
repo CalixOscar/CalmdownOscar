@@ -618,9 +618,12 @@
           }
 
           aiMsgDiv.textContent = 'Generating...';
-          chatMessages.push({ role: "user", content: text + context });
           
-          const reply = await engine.chat.completions.create({ messages: chatMessages });
+          // Send context to the LLM for this turn, but only save the clean text to history
+          const tempMessages = [...chatMessages, { role: "user", content: text + context }];
+          chatMessages.push({ role: "user", content: text });
+          
+          const reply = await engine.chat.completions.create({ messages: tempMessages });
           const responseText = reply.choices[0].message.content;
           
           aiMsgDiv.textContent = responseText;
