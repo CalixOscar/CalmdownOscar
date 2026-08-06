@@ -1,4 +1,3 @@
-import { search } from 'duck-duck-scrape';
 
 export default async function handler(req, res) {
   const { q, type } = req.query;
@@ -31,19 +30,32 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'No image found' });
 
     } else {
-      // Live Web Search using DuckDuckGo to get up-to-date news and facts
-      const searchResults = await search(q, {
-        safeSearch: "moderate",
-        time: "m", // Search past month for up-to-date news
+      // Live Web Search using Tavily API (specifically built for AI agents)
+      const tavilyKey = process.env.TAVILY_API_KEY || "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";
+      
+      const searchRes = await fetch("https://api.tavily.com/search", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${tavilyKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: q,
+          search_depth: "basic",
+          include_answer: false,
+          max_results: 3
+        })
       });
 
-      if (searchResults.noResults) {
+      const searchData = await searchRes.json();
+
+      if (!searchData.results || searchData.results.length === 0) {
         return res.status(200).json({ text: "No relevant information found." });
       }
 
       // Grab the top 3 results
-      const context = searchResults.results.slice(0, 3).map(item => {
-        return `${item.title}: ${item.description}`;
+      const context = searchData.results.map(item => {
+        return `${item.title}: ${item.content}`;
       }).join('\n\n');
       
       return res.status(200).json({ text: context });

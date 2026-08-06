@@ -2,7 +2,5 @@
   "name": "calmdownoscar",
   "version": "1.0.0",
   "description": "Dependencies for Vercel Serverless Functions",
-  "dependencies": {
-    "duck-duck-scrape": "^2.2.5"
-  }
+  "dependencies": {}
 }
