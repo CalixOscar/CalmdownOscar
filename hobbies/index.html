@@ -549,7 +549,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Use the provided Web Context and Featured Image Headline to provide clear, accurate, and concise summaries about motorcycles, specs, and gear. Synthesize the provided information naturally. Keep responses concise and direct." };
+      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Use the provided Web Context and Featured Image Headline to provide clear, accurate, and concise summaries. Accuracy note: Ducati V4 models (like Superleggera V4, Panigale V4) feature V4 4-cylinder engines, NOT V-twins or V2s. Synthesize facts accurately and keep responses concise and direct." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(isAuto = false) {
