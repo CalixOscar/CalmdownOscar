@@ -580,8 +580,8 @@
 
         try {
           // 1. Check for image request
-          if (text.toLowerCase().includes('show me a picture of') || text.toLowerCase().includes('image of')) {
-            const query = text.replace(/show me a picture of|image of/gi, '').trim();
+          if (text.toLowerCase().includes('show me') || text.toLowerCase().includes('picture of') || text.toLowerCase().includes('image of')) {
+            const query = text.replace(/show me a picture of|show me|picture of|image of/gi, '').trim();
             const res = await fetch(`/api/search?type=image&q=${encodeURIComponent(query)}`);
             if (res.ok) {
               const data = await res.json();
