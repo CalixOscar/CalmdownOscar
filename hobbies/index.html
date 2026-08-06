@@ -538,9 +538,29 @@
 
       let engine;
       let isBooted = false;
-      const chatMessages = [
-        { role: "system", content: "You are an elite motorcycle mechanic and AI assistant. Relay facts strictly based on 'Web Context'. DO NOT guess, DO NOT invent specs, and DO NOT hallucinate. If you aren't sure, state that. Keep answers calm and concise." }
-      ];
+      let idleTimer = null;
+
+      const initialSystemPrompt = { role: "system", content: "You are an elite motorcycle mechanic and AI assistant. Relay facts strictly based on 'Web Context'. DO NOT guess, DO NOT invent specs, and DO NOT hallucinate. If you aren't sure, state that. Keep answers calm and concise." };
+      let chatMessages = [ initialSystemPrompt ];
+
+      function resetMemory(isAuto = false) {
+        chatMessages = [ initialSystemPrompt ];
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'msg ai';
+        msgDiv.style.opacity = '0.7';
+        msgDiv.textContent = isAuto ? 'SYSTEM: Idle timeout (30s). Memory cleared.' : 'SYSTEM: Memory cleared by /reset.';
+        chatHistory.appendChild(msgDiv);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }
+
+      function startIdleTimer() {
+        if (idleTimer) clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          if (isBooted && chatMessages.length > 1) {
+            resetMemory(true);
+          }
+        }, 30000); // 30 seconds
+      }
 
       function updateWorkbench(htmlContent) {
         workbench.innerHTML = `<div class="workbench-content" style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center;">${htmlContent}</div>`;
@@ -573,8 +593,9 @@
           loadingContainer.style.display = 'none';
           chatInput.disabled = false;
           chatInput.focus();
-          addMessage('SYSTEM: Engine booted. Online.', 'ai');
+          addMessage('SYSTEM: Engine booted. Online. Use /reset to clear memory.', 'ai');
           updateWorkbench('<div class="workbench-empty">Engine Online. Ready for queries.</div>');
+          startIdleTimer();
         } catch (e) {
           loadingText.textContent = 'Error: Failed to boot.';
           console.error(e);
@@ -582,6 +603,15 @@
       });
 
       async function handleChat(text) {
+        if (idleTimer) clearTimeout(idleTimer);
+
+        if (text.toLowerCase() === '/reset' || text.toLowerCase() === '/clear') {
+          resetMemory(false);
+          chatInput.value = '';
+          startIdleTimer();
+          return;
+        }
+
         addMessage(text, 'user');
         chatInput.value = '';
         chatInput.disabled = true;
@@ -681,6 +711,7 @@
         
         chatInput.disabled = false;
         chatInput.focus();
+        startIdleTimer();
       }
 
       chatInput.addEventListener('keypress', (e) => {
