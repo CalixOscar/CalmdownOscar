@@ -353,7 +353,7 @@
             </div>
           </div>
           <div class="terminal-footer">
-            <input type="text" id="chat-input" placeholder="Ask about any motorcycle model... (type /clear to reset)" disabled>
+            <input type="text" id="chat-input" placeholder="Ask about any motorcycle model... (type /reset or /clear)" disabled>
           </div>
         </div>
       </div>
@@ -560,30 +560,29 @@
       const initialSystemPrompt = { role: "system", content: "You are a knowledgeable motorcycle model AI assistant. Your goal is to provide clear, helpful, and accurate technical details (engine type, horsepower, weight, key features) about motorcycle models using the provided Web Articles Snippets and Featured Image Title. Synthesize the facts cleanly and concisely." };
       let chatMessages = [ initialSystemPrompt ];
 
-      function resetMemory(isAuto = false) {
+      function resetMemory(clearScreen = false, label = 'SYSTEM: Memory cleared.') {
         chatMessages = [ initialSystemPrompt ];
-        chatHistory.innerHTML = '';
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'msg ai';
-        msgDiv.style.opacity = '0.7';
-        msgDiv.textContent = isAuto ? 'SYSTEM: Idle timeout (30s). Memory & screen cleared.' : 'SYSTEM: Memory & screen cleared by /clear.';
-        chatHistory.appendChild(msgDiv);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-
-        if (isAuto) {
+        if (clearScreen) {
+          chatHistory.innerHTML = '';
           updateWorkbench('<div class="workbench-empty">Engine Online. Ready for queries.</div>');
           if (videoPanel) {
             videoPanel.style.display = 'none';
             videoPanel.innerHTML = '';
           }
         }
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'msg ai';
+        msgDiv.style.opacity = '0.7';
+        msgDiv.textContent = label;
+        chatHistory.appendChild(msgDiv);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
       }
 
       function startIdleTimer() {
         if (idleTimer) clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
           if (isBooted && chatMessages.length > 1) {
-            resetMemory(true);
+            resetMemory(false, 'SYSTEM: Idle timeout (30s). Memory cleared.');
           }
         }, 30000); // 30 seconds
       }
@@ -642,8 +641,15 @@
       async function handleChat(text) {
         if (idleTimer) clearTimeout(idleTimer);
 
-        if (text.toLowerCase() === '/reset' || text.toLowerCase() === '/clear') {
-          resetMemory(false);
+        if (text.toLowerCase() === '/reset') {
+          resetMemory(false, 'SYSTEM: Memory cleared by /reset.');
+          chatInput.value = '';
+          startIdleTimer();
+          return;
+        }
+
+        if (text.toLowerCase() === '/clear') {
+          resetMemory(true, 'SYSTEM: Memory & screen cleared by /clear.');
           chatInput.value = '';
           startIdleTimer();
           return;
