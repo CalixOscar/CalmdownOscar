@@ -557,7 +557,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are a specialized motorcycle model AI assistant. You ONLY answer questions about specific motorcycle models and their technical specs (engine, horsepower, weight, features). Do NOT answer questions about riding gear, riding routes, general news, or non-model topics. If a user asks about gear, routes, or non-model topics, politely state that you only answer queries about specific motorcycle models." };
+      const initialSystemPrompt = { role: "system", content: "You are a knowledgeable motorcycle model AI assistant. Your goal is to provide clear, helpful, and accurate technical details (engine type, horsepower, weight, key features) about motorcycle models using the provided Web Articles Snippets and Featured Image Title. Synthesize the facts cleanly and concisely." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(isAuto = false) {
