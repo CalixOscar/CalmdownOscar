@@ -549,7 +549,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Answer the user's question directly using the provided Web Context and Featured Image. State only facts, specs, and details that explicitly appear in the Web Context. NEVER invent fake numbers or specs (like 4000cc or random horsepower). Do NOT include intro fluff (like 'Here is a summary:'), do NOT output meta-reasoning, and do NOT add concluding remarks. Output strictly the direct answer." };
+      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Use the provided Web Context and Featured Image Headline to give a friendly, clear, and helpful response. Synthesize the facts naturally into a well-formatted summary with key specs and details." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(isAuto = false) {
