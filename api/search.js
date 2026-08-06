@@ -15,10 +15,13 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'SERPER_API_KEY is not configured in Vercel.' });
       }
 
+      // Clean conversational prefixes for precise Google search results
+      let cleanQuery = q.replace(/^(i want|i need|tell me about|give me|show me|can i see|what is|how about|looking for|info on|details on)\s+/gi, '').trim();
+
       // Augment the query to ensure we get motorcycle images
-      let augmentedQuery = q;
-      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto|isle of man tt/i.test(q)) {
-        augmentedQuery = `${q} motorcycle`;
+      let augmentedQuery = cleanQuery;
+      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto|isle of man tt/i.test(cleanQuery)) {
+        augmentedQuery = `${cleanQuery} motorcycle`;
       }
 
       const response = await fetch('https://google.serper.dev/images', {
