@@ -8,32 +8,44 @@ export default async function handler(req, res) {
 
   try {
     if (type === 'image') {
-      // Google Custom Search (Image Search)
-      const googleKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY;
-      const googleCx = process.env.GOOGLE_SEARCH_CX;
+      // Serper.dev (Google Image Search Alternative)
+      const serperKey = process.env.SERPER_API_KEY;
       
-      if (!googleKey || !googleCx) {
-        return res.status(500).json({ error: 'Google API Key or CX is not configured in Vercel.' });
+      if (!serperKey) {
+        return res.status(500).json({ error: 'SERPER_API_KEY is not configured in Vercel.' });
       }
 
-      const response = await fetch(`https://customsearch.googleapis.com/customsearch/v1?key=${googleKey}&cx=${googleCx}&searchType=image&q=${encodeURIComponent(q)}&num=1`, {
+      // Augment the query to ensure we get motorcycle images
+      let augmentedQuery = q;
+      if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto|isle of man tt/i.test(q)) {
+        augmentedQuery = `${q} motorcycle`;
+      }
+
+      const response = await fetch('https://google.serper.dev/images', {
+        method: 'POST',
         headers: {
-          'Referer': 'https://www.calmdownoscar.com/hobbies'
-        }
+          'X-API-KEY': serperKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          q: augmentedQuery,
+          num: 1
+        })
       });
+      
       const data = await response.json();
       
-      if (data.items && data.items.length > 0) {
+      if (data.images && data.images.length > 0) {
         return res.status(200).json({
-          url: data.items[0].link,
-          alt: data.items[0].title,
-          sourceDomain: data.items[0].displayLink,
-          sourceUrl: data.items[0].image.contextLink,
+          url: data.images[0].imageUrl,
+          alt: data.images[0].title,
+          sourceDomain: data.images[0].source,
+          sourceUrl: data.images[0].link,
           fallback: false
         });
       }
       
-      return res.status(404).json({ error: 'No image found', rawResponse: data });
+      return res.status(404).json({ error: 'No image found' });
 
     } else {
       // Live Web Search using Tavily API (specifically built for AI agents)
