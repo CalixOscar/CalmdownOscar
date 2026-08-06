@@ -337,7 +337,10 @@
       Under Construction
     </div>
     <div class="reveal" style="max-width:65ch; margin-bottom:32px; font-size:15px; color:var(--muted); line-height:1.6; padding:16px; background:color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border:1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius:12px; backdrop-filter:blur(10px);">
-      <strong>Technical Playground:</strong> I use this page to experiment with bleeding-edge web tech. Right now, I'm testing a <strong>Local LLM</strong> (WebLLM) that runs entirely inside your browser using WebGPU. No server-side compute, zero data leaves your device. Choose the 1B model (800 MB, fast) or toggle to the 8B model (~4 GB, smarter) before booting.
+      <strong>Technical Playground:</strong> I use this page to experiment with bleeding-edge web tech. Right now, I'm testing a <strong>Local LLM</strong> (WebLLM) running entirely in-browser via WebGPU. No server-side compute, zero data leaves your device. Choose 1B (800 MB) or 8B (~4 GB) before booting.
+      <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); font-size:13px; color:#FFB800;">
+        ⚠️ <strong>Hardware Note:</strong> WebGPU local LLMs require high unified memory. Mobile browsers (including iPhone 15 Pro Max) may crash when allocating weights. An <strong>M1/M2/M3 iPad, Mac, or desktop GPU</strong> is strongly recommended.
+      </div>
     </div>
   </div>
 
