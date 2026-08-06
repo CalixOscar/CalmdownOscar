@@ -16,7 +16,11 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Google API Key or CX is not configured in Vercel.' });
       }
 
-      const response = await fetch(`https://customsearch.googleapis.com/customsearch/v1?key=${googleKey}&cx=${googleCx}&searchType=image&q=${encodeURIComponent(q)}&num=1`);
+      const response = await fetch(`https://customsearch.googleapis.com/customsearch/v1?key=${googleKey}&cx=${googleCx}&searchType=image&q=${encodeURIComponent(q)}&num=1`, {
+        headers: {
+          'Referer': 'https://www.calmdownoscar.com/hobbies'
+        }
+      });
       const data = await response.json();
       
       if (data.items && data.items.length > 0) {
