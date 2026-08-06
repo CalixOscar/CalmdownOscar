@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         });
       }
       
-      return res.status(404).json({ error: 'No image found' });
+      return res.status(404).json({ error: 'No image found', rawResponse: data });
 
     } else {
       // Live Web Search using Tavily API (specifically built for AI agents)

@@ -611,11 +611,11 @@
           let context = "";
           if (res.ok) {
             const data = await res.json();
-            context = `\\n\\nWeb Context: ${data.text}`;
+            context = `\n\nWeb Context: ${data.text}`;
             // Display the raw news/context on the workbench for a "cool tech" feel
             updateWorkbench(`
               <div style="color: var(--ink); font-weight: 600; margin-bottom: 8px;">LIVE RAG CONTEXT FETCHED:</div>
-              <pre>${data.text.replace(/\\n/g, '<br>')}</pre>
+              <pre>${data.text.replace(/\n/g, '<br>')}</pre>
             `);
           }
 
