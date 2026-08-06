@@ -443,26 +443,6 @@
     };
   }).filter(function(c){ return c.vid; });
 
-  function clipFrame(c){
-    if (!c.vid || !c.dur) { c.running = false; return; }
-    c.current += (c.target - c.current) * 0.2;
-    
-    // Ensure video decoder isn't suspended by browser/WebGPU GPU context shifts
-    try {
-      if (isFinite(c.current)) {
-        var clampedTime = Math.max(0, Math.min(c.current, c.dur));
-        c.vid.currentTime = clampedTime;
-      }
-    } catch(e) {}
-
-    if (Math.abs(c.target - c.current) < 0.005){
-      c.current = c.target;
-      c.running = false;
-      return;
-    }
-    requestAnimationFrame(function(){ clipFrame(c); });
-  }
-
   function reelProgress(){
     if (!reelPin || !reelStage) return 0;
     var rect = reelPin.getBoundingClientRect();
@@ -475,8 +455,8 @@
   function scrubClip(c, cp){
     if (!c.dur && c.vid && c.vid.duration) { c.dur = Math.max(0, c.vid.duration - 0.05); }
     if (!c.dur) return;
-    c.target = cp * c.dur;
-    if (!c.running){ c.running = true; clipFrame(c); }
+    var t = cp * c.dur;
+    try { c.vid.currentTime = Math.max(0, Math.min(t, c.dur)); } catch(e) {}
     var revealP = Math.min(cp / 0.85, 1);
     c.words.forEach(function(w, i){
       var threshold = (i + 1) / c.words.length;
@@ -487,8 +467,6 @@
   function scrub(){
     if (reduce.matches) return;
     var p = reelProgress();
-    /* cinema mode: lights dim slowly through the reel, fully dark ~30% from
-       the bottom of the page, and stay dark to the end */
     var dStart = reelPin ? (window.scrollY + reelPin.getBoundingClientRect().top - navH) : 0;
     var dEnd = (document.documentElement.scrollHeight - window.innerHeight) * 0.7;
     var d = (window.scrollY - dStart) / Math.max(dEnd - dStart, 1);
@@ -502,6 +480,10 @@
     if (clips[0]) scrubClip(clips[0], Math.min(p / 0.5, 1));
     if (clips[1]) scrubClip(clips[1], Math.min(Math.max((p - 0.5) / 0.5, 0), 1));
   }
+
+  // Expose clips for WebGPU recovery from the LLM module
+  window._scrubClips = clips;
+  window._scrubFn = scrub;
 
   if (clips.length){
     clips.forEach(function(c){
@@ -772,6 +754,18 @@
         chatInput.disabled = false;
         chatInput.focus();
         startIdleTimer();
+
+        // Force-reload video elements after WebGPU releases the GPU
+        // so the browser's hardware video decoder is reclaimed
+        if (window._scrubClips) {
+          window._scrubClips.forEach(function(c) {
+            if (c.vid) {
+              var src = c.vid.currentSrc || c.vid.src;
+              c.vid.load();
+              c.dur = 0;
+            }
+          });
+        }
       }
 
       chatInput.addEventListener('keypress', (e) => {
