@@ -387,6 +387,9 @@
           </div>
         </div>
       </div>
+      <!-- Video Panel (Hidden by default) -->
+      <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:0 16px 34px rgba(32,43,54,.04);">
+      </div>
     </div>
   </section>
 </main>
@@ -531,6 +534,7 @@
       const loadingBar = document.getElementById('loading-bar');
       const loadingText = document.getElementById('loading-text');
       const workbench = document.getElementById('workbench');
+      const videoPanel = document.getElementById('video-panel');
 
       let engine;
       let isBooted = false;
@@ -608,24 +612,53 @@
             }
           }
 
-          // 2. Standard Query + Web Search RAG
-          aiMsgDiv.textContent = 'Searching web...';
+          // 2. Fetch Image, Video, and Web Search RAG concurrently
+          aiMsgDiv.textContent = 'Searching web, images & videos...';
           
           let searchQuery = text;
           if (chatMessages.length > 1) {
-            // Grab the last thing the user said to provide context for follow-up questions (e.g. "how much does it weigh?")
+            // Grab the last thing the user said to provide context for follow-up questions
             const lastUserMsg = chatMessages.filter(m => m.role === 'user').pop();
             if (lastUserMsg) {
               searchQuery = lastUserMsg.content + " " + text;
             }
           }
 
-          const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(searchQuery)}`);
+          const [webRes, imgRes, vidRes] = await Promise.allSettled([
+            fetch(`/api/search?type=web&q=${encodeURIComponent(searchQuery)}`),
+            fetch(`/api/search?type=image&q=${encodeURIComponent(searchQuery)}`),
+            fetch(`/api/search?type=video&q=${encodeURIComponent(searchQuery)}`)
+          ]);
+
           let context = "";
-          if (res.ok) {
-            const data = await res.json();
-            if (data.text !== "No relevant information found.") {
-              context = `\n\nWeb Context: ${data.text}`;
+
+          // Process Image Result
+          if (imgRes.status === 'fulfilled' && imgRes.value.ok) {
+            const imgData = await imgRes.value.json();
+            if (imgData && imgData.url) {
+              const imgHtml = `
+                <img src="${imgData.url}" alt="${imgData.alt}" style="max-width:100%; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2);" />
+                <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
+              `;
+              updateWorkbench(imgHtml);
+              context += `\n\nFeatured Image Headline/Title: "${imgData.alt}" (Source: ${imgData.sourceDomain})`;
+            }
+          }
+
+          // Process Video Result
+          if (vidRes.status === 'fulfilled' && vidRes.value.ok) {
+            const vidData = await vidRes.value.json();
+            if (vidData && vidData.embedUrl) {
+              videoPanel.style.display = 'block';
+              videoPanel.innerHTML = `<iframe width="100%" height="100%" src="${vidData.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            }
+          }
+
+          // Process Web Text Result
+          if (webRes.status === 'fulfilled' && webRes.value.ok) {
+            const webData = await webRes.value.json();
+            if (webData.text && webData.text !== "No relevant information found.") {
+              context += `\n\nWeb Articles Snippets: ${webData.text}`;
             }
           }
 
@@ -640,20 +673,6 @@
           
           aiMsgDiv.textContent = responseText;
           chatMessages.push({ role: "assistant", content: responseText });
-
-          // 3. Auto-fetch a relevant image in the background
-          fetch(`/api/search?type=image&q=${encodeURIComponent(text)}`)
-            .then(r => r.ok ? r.json() : null)
-            .then(imgData => {
-              if (imgData && imgData.url) {
-                const imgHtml = `
-                  <img src="${imgData.url}" alt="${imgData.alt}" style="max-width:100%; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2);" />
-                  <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
-                `;
-                updateWorkbench(imgHtml);
-              }
-            })
-            .catch(() => {});
           
         } catch (e) {
           aiMsgDiv.textContent = 'Error: Link disconnected.';
