@@ -242,15 +242,11 @@
   /* ================= Interactive Garage Dashboard ================= */
   .dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 24px;
     width: 100%;
-    max-width: 900px;
+    max-width: min(600px, 88vw);
     margin: 0 auto;
-    min-height: 500px;
-  }
-  @media (max-width: 768px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
   }
   
   #garage-terminal {
@@ -366,7 +362,11 @@
   <section class="wrap" style="padding: 64px 24px 24px;">
     <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; text-align: center;">Interactive Garage AI</h2>
     <div class="dashboard-grid">
-      <!-- Left Column: Terminal -->
+      <!-- Top Column: Workbench (Image) -->
+      <div id="workbench">
+        <div class="workbench-empty">Boot the AI Engine to begin. Ask it to "Show me a picture of X" or ask about latest motorcycle news.</div>
+      </div>
+      <!-- Bottom Column: Terminal -->
       <div id="dashboard-left">
         <div id="garage-terminal">
           <div class="terminal-header">
@@ -385,10 +385,6 @@
             <input type="text" id="chat-input" placeholder="Ask about bikes, routes, or gear..." disabled>
           </div>
         </div>
-      </div>
-      <!-- Right Column: Workbench -->
-      <div id="workbench">
-        <div class="workbench-empty">Boot the AI Engine to begin. Ask it to "Show me a picture of X" or ask about latest motorcycle news.</div>
       </div>
     </div>
   </section>
