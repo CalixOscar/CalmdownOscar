@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   try {
     if (type === 'image') {
       // Google Custom Search (Image Search)
-      const googleKey = process.env.GOOGLE_SEARCH_API_KEY;
+      const googleKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY;
       const googleCx = process.env.GOOGLE_SEARCH_CX;
       
       if (!googleKey || !googleCx) {
