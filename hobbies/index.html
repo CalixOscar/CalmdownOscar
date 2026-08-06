@@ -670,9 +670,9 @@
             }
           }
 
-          // 2. Fetch Image, Video, and Web Search RAG concurrently
-          aiMsgDiv.textContent = 'Searching web, images & videos...';
-          updateWorkbench('<div class="workbench-empty" style="color:#85B6FF;">Searching for media & context...</div>');
+          // 2. Fetch Image & Video FIRST (superfast)
+          aiMsgDiv.textContent = 'Searching image & video...';
+          updateWorkbench('<div class="workbench-empty" style="color:#85B6FF;">Searching for media...</div>');
           
           let searchQuery = text;
           if (chatMessages.length > 1) {
@@ -685,15 +685,16 @@
             }
           }
 
-          const [webRes, imgRes, vidRes] = await Promise.allSettled([
-            fetch(`/api/search?type=web&q=${encodeURIComponent(searchQuery)}`),
+          let context = "";
+          let textSearchTopic = searchQuery;
+
+          // Fetch Image & Video in parallel first
+          const [imgRes, vidRes] = await Promise.allSettled([
             fetch(`/api/search?type=image&q=${encodeURIComponent(searchQuery)}`),
             fetch(`/api/search?type=video&q=${encodeURIComponent(searchQuery)}`)
           ]);
 
-          let context = "";
-
-          // Process Image Result
+          // Process Image Result immediately and use its title to guide Web Search
           if (imgRes.status === 'fulfilled' && imgRes.value.ok) {
             const imgData = await imgRes.value.json();
             if (imgData && imgData.url) {
@@ -702,7 +703,11 @@
                 <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
               `;
               updateWorkbench(imgHtml);
-              context += `\n\nFeatured Image Headline/Title: "${imgData.alt}" (Source: ${imgData.sourceDomain})`;
+              context += `\n\nFeatured Image Title: "${imgData.alt}" (Source: ${imgData.sourceDomain})`;
+              
+              if (imgData.alt && imgData.alt.length > 3) {
+                textSearchTopic = `${imgData.alt} motorcycle specs`;
+              }
             }
           }
 
@@ -715,13 +720,17 @@
             }
           }
 
-          // Process Web Text Result
-          if (webRes.status === 'fulfilled' && webRes.value.ok) {
-            const webData = await webRes.value.json();
-            if (webData.text && webData.text !== "No relevant information found.") {
-              context += `\n\nWeb Articles Snippets: ${webData.text}`;
+          // Now fetch Web Text Search guided by the exact Image Title
+          aiMsgDiv.textContent = 'Reading web articles...';
+          try {
+            const webRes = await fetch(`/api/search?type=web&q=${encodeURIComponent(textSearchTopic)}`);
+            if (webRes.ok) {
+              const webData = await webRes.json();
+              if (webData.text && webData.text !== "No relevant information found.") {
+                context += `\n\nWeb Articles Snippets: ${webData.text}`;
+              }
             }
-          }
+          } catch(e) {}
 
           aiMsgDiv.textContent = 'Generating...';
           
