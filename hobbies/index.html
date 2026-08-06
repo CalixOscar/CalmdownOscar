@@ -609,15 +609,9 @@
           aiMsgDiv.textContent = 'Searching web...';
           const res = await fetch(`/api/search?type=web&q=${encodeURIComponent(text)}`);
           let context = "";
-          let ragHtml = "";
           if (res.ok) {
             const data = await res.json();
             context = `\n\nWeb Context: ${data.text}`;
-            ragHtml = `
-              <div style="color: var(--ink); font-weight: 600; margin-bottom: 8px;">LIVE RAG CONTEXT FETCHED:</div>
-              <pre>${data.text.replace(/\n/g, '<br>')}</pre>
-            `;
-            updateWorkbench(ragHtml);
           }
 
           aiMsgDiv.textContent = 'Generating...';
@@ -634,11 +628,11 @@
             .then(r => r.ok ? r.json() : null)
             .then(imgData => {
               if (imgData && imgData.url) {
-                const imgHtml = `<div style="margin-top:16px; border-top:1px solid rgba(255,255,255,.08); padding-top:16px;">
-                  <img src="${imgData.url}" alt="${imgData.alt}" />
+                const imgHtml = `
+                  <img src="${imgData.url}" alt="${imgData.alt}" style="max-width:100%; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2);" />
                   <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
-                </div>`;
-                updateWorkbench((ragHtml || '') + imgHtml);
+                `;
+                updateWorkbench(imgHtml);
               }
             })
             .catch(() => {});
