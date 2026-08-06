@@ -266,23 +266,23 @@
   .terminal-body {
     flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
   }
-  .msg { font-size: 15px; line-height: 1.6; color: #E8EEF4; }
+  .msg { font-size: 16px; line-height: 1.6; color: #E8EEF4; }
   .msg.ai { color: #85B6FF; }
   .msg.user { text-align: right; color: #8FA0AE; }
   #boot-ai-btn {
     background: rgba(133,182,255,.1); border: 1px solid #85B6FF; color: #85B6FF;
-    padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;
+    padding: 10px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;
     margin-top: auto;
   }
   #boot-ai-btn:hover { background: rgba(133,182,255,.2); }
   #loading-bar-container { background: rgba(255,255,255,.05); height: 4px; border-radius: 2px; margin-top: auto; overflow: hidden; }
   #loading-bar { background: #85B6FF; height: 100%; width: 0%; transition: width 0.3s; }
-  #loading-text { font-size: 11px; color: #8FA0AE; margin-top: 8px; text-align: center; }
+  #loading-text { font-size: 12px; color: #8FA0AE; margin-top: 8px; text-align: center; }
   .terminal-footer {
     padding: 12px; border-top: 1px solid rgba(255,255,255,.05); background: #0D1117;
   }
   #chat-input {
-    width: 100%; background: none; border: none; color: #E8EEF4; font-size: 13px; outline: none;
+    width: 100%; background: none; border: none; color: #E8EEF4; font-size: 16px; outline: none;
     font-family: inherit;
   }
   
@@ -291,16 +291,14 @@
     border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge));
     border-radius: 12px; padding: 24px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    backdrop-filter: blur(6px);
-    overflow-y: auto; height: 100%; text-align: left;
+    text-align: left;
   }
   .workbench-empty {
     color: color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted));
-    font-size: 14px; text-align: center;
+    font-size: 15px; text-align: center;
   }
   .workbench-content img { max-width: 100%; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.2); cursor: zoom-in; }
-  .workbench-content img.fullscreen { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; max-width: 95vw; max-height: 95vh; box-shadow: 0 0 0 2000px rgba(0,0,0,.85); cursor: zoom-out; }
-  .workbench-content pre { font-size: 12px; color: var(--ink); white-space: pre-wrap; font-family: 'Inter', monospace; margin-top: 12px; }
+  .workbench-content pre { font-size: 13px; color: var(--ink); white-space: pre-wrap; font-family: 'Inter', monospace; margin-top: 12px; }
 
 </style>
 </head>
@@ -333,6 +331,40 @@
     <p class="section-lede reveal">A glimpse into what lies beyond screen time — open roads, engines, and the occasional detour.</p>
   </div>
 
+  <!-- AI Dashboard Section (Moved Right Below Hobbies Header) -->
+  <section class="wrap" style="padding: 16px 24px 48px;">
+    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; text-align: center;">Interactive Garage AI</h2>
+    <div class="dashboard-grid">
+      <!-- Top Column: Workbench (Image) -->
+      <div id="workbench">
+        <div class="workbench-empty">Boot the AI Engine to begin. Ask it to "Show me a picture of X" or ask about latest motorcycle news.</div>
+      </div>
+      <!-- Middle Column: Terminal -->
+      <div id="dashboard-left">
+        <div id="garage-terminal">
+          <div class="terminal-header">
+            <span>Garage AI Terminal</span>
+            <span style="color: #85B6FF; font-size: 10px; border: 1px solid rgba(133,182,255,.3); padding: 2px 6px; border-radius: 12px;">WebLLM 1B</span>
+          </div>
+          <div class="terminal-body" id="chat-history">
+            <div class="msg ai">SYSTEM: Awaiting boot sequence...</div>
+            <button id="boot-ai-btn">Boot Local AI Engine</button>
+            <div id="loading-bar-container" style="display:none;">
+              <div id="loading-bar"></div>
+              <div id="loading-text">Downloading weights... 0%</div>
+            </div>
+          </div>
+          <div class="terminal-footer">
+            <input type="text" id="chat-input" placeholder="Ask about bikes, routes, or gear..." disabled>
+          </div>
+        </div>
+      </div>
+      <!-- Video Panel (Hidden by default) -->
+      <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:0 16px 34px rgba(32,43,54,.04);">
+      </div>
+    </div>
+  </section>
+
   <!-- Video Reel -->
   <div class="reel-pin">
    <div class="reel-stage">
@@ -359,37 +391,14 @@
    </div>
   </div>
 
-  <!-- AI Dashboard Section -->
-  <section class="wrap" style="padding: 64px 24px 24px;">
-    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; text-align: center;">Interactive Garage AI</h2>
-    <div class="dashboard-grid">
-      <!-- Top Column: Workbench (Image) -->
-      <div id="workbench">
-        <div class="workbench-empty">Boot the AI Engine to begin. Ask it to "Show me a picture of X" or ask about latest motorcycle news.</div>
-      </div>
-      <!-- Bottom Column: Terminal -->
-      <div id="dashboard-left">
-        <div id="garage-terminal">
-          <div class="terminal-header">
-            <span>Garage AI Terminal</span>
-            <span style="color: #85B6FF; font-size: 10px; border: 1px solid rgba(133,182,255,.3); padding: 2px 6px; border-radius: 12px;">WebLLM 1B</span>
-          </div>
-          <div class="terminal-body" id="chat-history">
-            <div class="msg ai">SYSTEM: Awaiting boot sequence...</div>
-            <button id="boot-ai-btn">Boot Local AI Engine</button>
-            <div id="loading-bar-container" style="display:none;">
-              <div id="loading-bar"></div>
-              <div id="loading-text">Downloading weights... 0%</div>
-            </div>
-          </div>
-          <div class="terminal-footer">
-            <input type="text" id="chat-input" placeholder="Ask about bikes, routes, or gear..." disabled>
-          </div>
-        </div>
-      </div>
-      <!-- Video Panel (Hidden by default) -->
-      <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:0 16px 34px rgba(32,43,54,.04);">
-      </div>
+  <!-- TikTok Embed Section (Matching Grid Width) -->
+  <section class="wrap" style="padding: 64px 24px 48px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+    <h2 style="font-size: 20px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
+    <div id="tiktokPanel" style="width: 100%; max-width: min(600px, 88vw); margin: 0 auto; min-height: 400px; display: flex; flex-direction: column; align-items: center; gap: 16px; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04);">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 100%; min-width: 288px; width: 100%; margin: 0 auto;">
+        <section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir on TikTok</a></section>
+      </blockquote>
+      <a href="https://www.tiktok.com/@free_pjutir" target="_blank" rel="noopener" style="font-size:13px; color: color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted));">Open profile directly on TikTok →</a>
     </div>
   </section>
 </main>
@@ -567,7 +576,18 @@
         const img = workbench.querySelector('img');
         if (img) {
           img.addEventListener('click', function() {
-            this.classList.toggle('fullscreen');
+            let overlay = document.getElementById('fullscreen-overlay');
+            if (!overlay) {
+              overlay = document.createElement('div');
+              overlay.id = 'fullscreen-overlay';
+              overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; display:none; justify-content:center; align-items:center; cursor:zoom-out; backdrop-filter:blur(8px);';
+              overlay.innerHTML = '<img id="overlay-img" style="max-width:92vw; max-height:92vh; border-radius:8px; box-shadow:0 16px 48px rgba(0,0,0,0.6); object-fit:contain;" />';
+              overlay.addEventListener('click', () => { overlay.style.display = 'none'; });
+              document.body.appendChild(overlay);
+            }
+            const overlayImg = document.getElementById('overlay-img');
+            overlayImg.src = this.src;
+            overlay.style.display = 'flex';
           });
         }
       }
