@@ -48,38 +48,40 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'No image found' });
 
     } else {
-      // Live Web Search using Tavily API (specifically built for AI agents)
-      const tavilyKey = process.env.TAVILY_API_KEY || "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";
+      // Live Web Search using Serper.dev (Google Search)
+      const serperKey = process.env.SERPER_API_KEY;
       
-      // Augment the query to ensure Tavily focuses strictly on the motorcycle niche
+      if (!serperKey) {
+        return res.status(500).json({ error: 'SERPER_API_KEY is not configured in Vercel.' });
+      }
+      
+      // Augment the query to ensure we get motorcycle results
       let augmentedQuery = q;
       if (!/motorcycle|moto|bike|wsbk|motogp|supercross|supermoto|isle of man tt/i.test(q)) {
-        augmentedQuery = `${q} (motorcycles OR MotoGP OR WSBK OR Supercross OR Isle of Man TT OR new bikes)`;
+        augmentedQuery = `${q} motorcycle`;
       }
 
-      const searchRes = await fetch("https://api.tavily.com/search", {
+      const searchRes = await fetch("https://google.serper.dev/search", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${tavilyKey}`,
+          "X-API-KEY": serperKey,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          query: augmentedQuery,
-          search_depth: "basic",
-          include_answer: false,
-          max_results: 3
+          q: augmentedQuery,
+          num: 4
         })
       });
 
       const searchData = await searchRes.json();
 
-      if (!searchData.results || searchData.results.length === 0) {
+      if (!searchData.organic || searchData.organic.length === 0) {
         return res.status(200).json({ text: "No relevant information found." });
       }
 
-      // Grab the top 3 results
-      const context = searchData.results.map(item => {
-        return `${item.title}: ${item.content}`;
+      // Grab the top 4 snippets
+      const context = searchData.organic.slice(0, 4).map(item => {
+        return `${item.title}: ${item.snippet}`;
       }).join('\n\n');
       
       return res.status(200).json({ text: context });
