@@ -26,9 +26,33 @@ export default async function handler(req, res) {
           url: data.results[0].urls.regular,
           alt: data.results[0].alt_description,
           authorName: data.results[0].user.name,
-          authorUrl: data.results[0].user.links.html
+          authorUrl: data.results[0].user.links.html,
+          fallback: false
         });
       }
+
+      // Fallback: If no exact match, try the last word as a broader search (e.g. "m1000rr")
+      const fallbackQuery = q.split(' ').pop();
+      if (fallbackQuery) {
+        const fbResponse = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(fallbackQuery)}&per_page=1`, {
+          headers: {
+            'Authorization': `Client-ID ${unsplashKey}`
+          }
+        });
+        const fbData = await fbResponse.json();
+        
+        if (fbData.results && fbData.results.length > 0) {
+          return res.status(200).json({
+            url: fbData.results[0].urls.regular,
+            alt: fbData.results[0].alt_description,
+            authorName: fbData.results[0].user.name,
+            authorUrl: fbData.results[0].user.links.html,
+            fallback: true,
+            originalQuery: q
+          });
+        }
+      }
+      
       return res.status(404).json({ error: 'No image found' });
 
     } else {
