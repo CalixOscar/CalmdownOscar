@@ -664,6 +664,7 @@
 
           // 2. Fetch Image, Video, and Web Search RAG concurrently
           aiMsgDiv.textContent = 'Searching web, images & videos...';
+          updateWorkbench('<div class="workbench-empty" style="color:#85B6FF;">Searching for media & context...</div>');
           
           let searchQuery = text;
           if (chatMessages.length > 1) {

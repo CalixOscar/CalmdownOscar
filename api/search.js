@@ -27,9 +27,16 @@ export default async function handler(req, res) {
       const data = await response.json();
       
       if (data.images && data.images.length > 0) {
-        // Find an image whose title specifically contains the search term (e.g. superleggera) to avoid showing wrong bike models
+        let candidates = data.images;
+        
+        // Strictly filter out any images titled 'V2' or 'Panigale V2' when searching for Superleggera
+        if (/superleggera/i.test(cleanQuery)) {
+          const nonV2 = data.images.filter(img => !/\bv2\b|panigale v2/i.test(img.title || '') && !/\bv2\b/i.test(img.imageUrl || ''));
+          if (nonV2.length > 0) candidates = nonV2;
+        }
+
         const mainKeyword = cleanQuery.split(' ').filter(w => w.length > 3)[0] || cleanQuery;
-        const matched = data.images.find(img => img.title && img.title.toLowerCase().includes(mainKeyword.toLowerCase())) || data.images[0];
+        const matched = candidates.find(img => img.title && img.title.toLowerCase().includes(mainKeyword.toLowerCase())) || candidates[0] || data.images[0];
         
         return res.status(200).json({
           url: matched.imageUrl,
