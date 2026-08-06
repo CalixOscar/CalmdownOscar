@@ -446,14 +446,22 @@
   }).filter(function(c){ return c.vid; });
 
   function clipFrame(c){
+    if (!c.vid || !c.dur) { c.running = false; return; }
     c.current += (c.target - c.current) * 0.2;
+    
+    // Ensure video decoder isn't suspended by browser/WebGPU GPU context shifts
+    try {
+      if (isFinite(c.current)) {
+        var clampedTime = Math.max(0, Math.min(c.current, c.dur));
+        c.vid.currentTime = clampedTime;
+      }
+    } catch(e) {}
+
     if (Math.abs(c.target - c.current) < 0.005){
       c.current = c.target;
-      c.vid.currentTime = c.current;
       c.running = false;
       return;
     }
-    c.vid.currentTime = c.current;
     requestAnimationFrame(function(){ clipFrame(c); });
   }
 
@@ -466,6 +474,7 @@
   }
 
   function scrubClip(c, cp){
+    if (!c.dur && c.vid && c.vid.duration) { c.dur = Math.max(0, c.vid.duration - 0.05); }
     if (!c.dur) return;
     c.target = cp * c.dur;
     if (!c.running){ c.running = true; clipFrame(c); }
