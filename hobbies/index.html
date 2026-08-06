@@ -549,7 +549,7 @@
       let isBooted = false;
       let idleTimer = null;
 
-      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Use the provided Web Context and Featured Image Headline to provide clear, accurate, and concise summaries. Accuracy note: Ducati V4 models (like Superleggera V4, Panigale V4) feature V4 4-cylinder engines, NOT V-twins or V2s. Synthesize facts accurately and keep responses concise and direct." };
+      const initialSystemPrompt = { role: "system", content: "You are an elite, knowledgeable motorcycle expert and garage AI assistant. Answer the user's question directly using the provided Web Context and Featured Image. State only the facts, specs, and details clearly. Do NOT include intro fluff (like 'Here is a concise summary:'), do NOT output meta-reasoning or notes about accuracy, and do NOT add concluding remarks. Output strictly the direct answer." };
       let chatMessages = [ initialSystemPrompt ];
 
       function resetMemory(isAuto = false) {
