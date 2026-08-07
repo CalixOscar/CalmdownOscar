@@ -470,7 +470,6 @@
                 <span class="pill">iOS</span>
                 <span class="pill">Vercel Relay</span>
                 <span class="pill">CloudKit</span>
-                <span class="pill">On-Device MLX</span>
               </div>
             </div>
           </div>
@@ -488,7 +487,7 @@
               <div class="cs-step-num">02 · Relay architecture</div>
               <div class="cs-step-content">
                 <h4>No key in the binary</h4>
-                <p>Cloud calls (currently Gemini 2.5 Lite) go through a stateless relay hosted on Vercel, which holds the API key and enforces rate limits server-side — nothing in the client can leak a credential. On-device, a Phi-4-mini model via MLX handles what it can before a cloud call is even needed. I found and fixed a production auth bug here myself: a token-name mismatch (<code>RELAY_KEY</code> vs. <code>RELAY_TOKEN</code>) that was silently causing 401s.</p>
+                <p>Cloud calls go through a stateless relay hosted on Vercel, which holds the API key and enforces rate limits server-side — nothing in the client can leak a credential. An earlier build ran inference on-device via MLX (Llama 3.2 3B, then Qwen 2.5 3B); that path was later pulled, and the app currently runs a single hardcoded cloud preset (Gemini Flash) with no on-device fallback.</p>
               </div>
             </div>
             <div class="cs-step">
