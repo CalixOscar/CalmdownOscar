@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>calmdownoscar | Independent App Studio</title>
-<meta name="description" content="Solo independent app studio based in Manila. Exploring problem-driven architecture, privacy-first Swift development, and multi-agent systems.">
+<meta name="description" content="Solo independent app studio building privacy-first Swift apps with on-device and cloud AI — relay architecture, model routing, grounding, and multi-agent development workflows.">
 <meta property="og:title" content="calmdownoscar | Independent App Studio">
-<meta property="og:description" content="Solo independent app studio based in Manila. Exploring problem-driven architecture, privacy-first Swift development, and multi-agent systems.">
+<meta property="og:description" content="Solo independent app studio building privacy-first Swift apps with on-device and cloud AI — relay architecture, model routing, grounding, and multi-agent development workflows.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://calmdownoscar.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -447,7 +447,7 @@
     <div class="wrap">
       <h1 class="rise" style="font-size:clamp(32px, 5vw, 52px); font-weight:800; letter-spacing:-.03em; color:var(--ink);">calm down, <span style="color:var(--accent);">oscar.</span></h1>
       <p class="rise d1" style="font-size:18px; color:var(--muted); margin-top:16px; max-width:640px; line-height:1.65;">
-        Welcome to my one-person app studio out of Manila. Below is the technical discipline, problem-driven architecture, and multi-agent engineering behind what I build.
+        Welcome to my one-person app studio. Below are five shipped and in-progress apps, and the systems decisions behind each one — relay design, on-device vs. cloud model routing, grounding, and where the guardrails sit.
       </p>
     </div>
   </section>
@@ -455,7 +455,7 @@
   <section class="apps" id="apps" style="padding-top:30px;">
     <div class="wrap">
       <div class="section-label reveal">Apps & Case Studies</div>
-      <p class="section-lede reveal">Problem-driven architecture, technical discipline, and real-world system impact across studio projects.</p>
+      <p class="section-lede reveal">How each app actually works: what runs on-device, what talks to a server, and why it's split that way.</p>
       <div class="app-grid">
 
         <!-- Wedding Concierge -->
@@ -468,34 +468,34 @@
               <div class="meta" style="margin-top:4px;">
                 <span class="pill">macOS</span>
                 <span class="pill">iOS</span>
-                <span class="pill">Vercel Proxy</span>
+                <span class="pill">Vercel Relay</span>
                 <span class="pill">CloudKit</span>
-                <span class="pill">Local MLX Evals</span>
+                <span class="pill">On-Device MLX</span>
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Multi-platform conversational AI planning companion engineered with a secure Vercel API proxy wall, CloudKit cross-device sync, and structured spatial planning tools.</p>
-          
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">An iOS/macOS wedding-planning concierge — not a bare chatbot. The LLM is one piece of a system that also handles sync, credentials, and grounding.</p>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Problem</div>
+              <div class="cs-step-num">01 · Grounding & state</div>
               <div class="cs-step-content">
-                <h4>Planning Decision Fatigue</h4>
-                <p>Wedding coordination presents overwhelming decision fatigue across venue search, budget creation, guest lists, and seating arrangements. Raw LLM chatbots fail to structure unstructured advice into actionable event planning timelines.</p>
+                <h4>Grounded, not generative</h4>
+                <p>Venue and vendor picks come from Apple MapKit and Google Places, so the assistant reasons over real search results instead of inventing addresses. The model and the UI also share one state model by design — a known failure mode in AI apps is the assistant's understanding drifting from what's on screen, and that's specifically what this was built to prevent.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">02 · Architecture & Protocols</div>
+              <div class="cs-step-num">02 · Relay architecture</div>
               <div class="cs-step-content">
-                <h4>Vercel Proxy & CloudKit Sync</h4>
-                <p>Hybrid cloud architecture combining a secure Vercel API proxy wall (protecting API credentials and enforcing rate limits) with CloudKit cross-device state synchronization (search venues on iOS, manage guest lists on Mac). Prototyped with local MLX LLMs and features deep UI planning tiles that transform conversational prompts into concrete schedules.</p>
+                <h4>No key in the binary</h4>
+                <p>Cloud calls (currently Gemini 2.5 Lite) go through a stateless relay hosted on Vercel, which holds the API key and enforces rate limits server-side — nothing in the client can leak a credential. On-device, a Phi-4-mini model via MLX handles what it can before a cloud call is even needed. I found and fixed a production auth bug here myself: a token-name mismatch (<code>RELAY_KEY</code> vs. <code>RELAY_TOKEN</code>) that was silently causing 401s.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Impact</div>
+              <div class="cs-step-num">03 · Status</div>
               <div class="cs-step-content">
-                <h4>Actionable Event Architecture</h4>
-                <p>Delivers enterprise-grade conversational AI planning with real-time venue search, zero user database tracking, and seamless multi-device sync.</p>
+                <h4>Local-first, minimal data</h4>
+                <p>SwiftData plus CloudKit keeps plans in sync across iOS and macOS without a backend database. No user tracking; sensitive profile data stays on-device. Currently awaiting App Store review, with a global launch planned.</p>
               </div>
             </div>
           </div>
@@ -522,28 +522,28 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Open-source persistent memory layer for multi-agent LLM systems over Model Context Protocol (MCP) with on-the-go iOS voice-to-vault synchronization.</p>
-          
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">A persistent memory layer for multi-agent LLM workflows, built because every new AI session starting cold was burning tokens and causing hallucination loops.</p>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Problem</div>
+              <div class="cs-step-num">01 · Why</div>
               <div class="cs-step-content">
-                <h4>Context Drift & Token Waste</h4>
-                <p>Building complex apps with multiple LLM engines (Gemini, Claude, Codex, Antigravity) causes rapid context window ballooning, expensive token consumption, and hallucination loops when starting fresh sessions. Standard note systems become unorganized bloatware during multi-agent handoffs.</p>
+                <h4>The cold-start problem</h4>
+                <p>Every new session with Gemini, Claude, Codex, or Antigravity starts with zero context, so it re-explains the project from scratch. That's wasted tokens — and worse, a source of hallucination when the re-explanation is incomplete.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">02 · Architecture & Protocols</div>
+              <div class="cs-step-num">02 · Architecture</div>
               <div class="cs-step-content">
-                <h4>MCP Protocol & Shared Vault</h4>
-                <p>Engineered an open-source persistent memory layer using Model Context Protocol (MCP) and file-system state synchronization. Connects disparate LLMs to a single ground-truth vault featuring explicit guardrails, evaluation rules, and non-destructive folder governance. Includes an iOS voice-capture app that syncs raw audio notes to macOS for instant agent retrieval.</p>
+                <h4>One vault, several agents</h4>
+                <p>Unli Rice connects those LLMs over Model Context Protocol (MCP) to a single ground-truth vault. It's not just shared notes — the vault structure encodes explicit guardrails and evaluation rules, so one agent can't step on another's work or violate a constraint a different agent already set.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Impact</div>
+              <div class="cs-step-num">03 · Reach it</div>
               <div class="cs-step-content">
-                <h4>Zero Re-explanation Friction</h4>
-                <p>Eliminates context re-explanation across multi-agent chat sessions, enforcing strict architectural consistency and zero-friction model swapping without loss of project memory.</p>
+                <h4>Voice in, code out</h4>
+                <p>An iOS companion app captures raw audio and syncs it to macOS for retrieval by any connected agent. Source and guardrail design are public on GitHub, linked below.</p>
               </div>
             </div>
           </div>
@@ -571,28 +571,28 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift & PhotosKit rebuild for on-device iPhone photo library analysis, high-throughput media indexing, and privacy-first storage recovery.</p>
-          
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical.</p>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Problem</div>
+              <div class="cs-step-num">01 · Model choice</div>
               <div class="cs-step-content">
-                <h4>iCloud Bloat & Large Libraries</h4>
-                <p>Managing massive personal photo libraries (40,000+ items per user) leads to escalating iCloud subscription costs and device storage depletion, while third-party utilities suffer from slow cloud processing or privacy risks.</p>
+                <h4>Why on-device</h4>
+                <p>Photo review is privacy-sensitive and high-volume — exactly the case for choosing local inference over a cloud API. A SmolVLM2 vision model runs via MLX on-device, sized for the lowest-spec supported iPhone rather than my own dev machine.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">02 · Architecture & Protocols</div>
+              <div class="cs-step-num">02 · Safety</div>
               <div class="cs-step-content">
-                <h4>PhotosKit On-Device Indexing</h4>
-                <p>Native Swift/SwiftUI rebuild utilizing Apple's <code>PhotosKit</code> framework for high-throughput on-device media analysis. Ranks heavy video containers and burst assets locally with zero third-party trackers or external cloud dependencies.</p>
+                <h4>Non-destructive by design</h4>
+                <p>Deletions route through iOS's own Recently Deleted, giving a 30-day recovery window instead of a bulk, irreversible delete.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Impact</div>
+              <div class="cs-step-num">03 · Status</div>
               <div class="cs-step-content">
-                <h4>Privacy-First Fast Scan</h4>
-                <p>Delivers liquid-smooth local scanning of massive media libraries with complete privacy preservation and bulk removal to iOS Recently Deleted for 30-day non-destructive recovery safety.</p>
+                <h4>Where it's headed</h4>
+                <p>Currently being reworked into a chat/concierge interface — still local-MLX-only, with no cloud dependency at all.</p>
               </div>
             </div>
           </div>
@@ -619,28 +619,28 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native macOS storage map & developer cache analyzer. Intelligently identifies orphaned Git repos, build caches, and heavy media assets.</p>
-          
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native macOS storage map and dev-cache analyzer, built to find what generic visualizers miss and delete none of it by accident.</p>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Problem</div>
+              <div class="cs-step-num">01 · What it finds</div>
               <div class="cs-step-content">
-                <h4>Developer Cache & Repo Bloat</h4>
-                <p>Developer Mac storage rapidly vanishes under unlinked Git repositories, build artifacts, and hidden caches. Traditional visualizers obscure developer file context, while automated cleaners pose catastrophic data loss risks for uncommitted repos.</p>
+                <h4>Not just folder sizes</h4>
+                <p>Storage tools that only show what's big don't know a build cache from an uncommitted repo. Unli Disk parses specifically for orphaned Git repos and dev caches that naive visualizers surface as generic "large folders."</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">02 · Architecture & Protocols</div>
+              <div class="cs-step-num">02 · Safety rule</div>
               <div class="cs-step-content">
-                <h4>Tree Mapping & Dev Rules</h4>
-                <p>High-performance macOS disk scanner built with AppKit/SwiftUI that generates transparent disk tree maps and detects orphan repositories. Integrates the shared <code>Packages/UnliDiskPhotos</code> engine for local photo auditing and enforces strict safety by routing files exclusively to macOS Trash.</p>
+                <h4>Trash only, never unlink</h4>
+                <p>Automated cleaners are a real data-loss risk on a machine full of uncommitted work, so every deletion routes through macOS Trash — recoverable, never a direct delete. That constraint was chosen on purpose, not left out for later.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Impact</div>
+              <div class="cs-step-num">03 · Code reuse</div>
               <div class="cs-step-content">
-                <h4>Safe Disk Space Reclamation</h4>
-                <p>Reclaims gigabytes of developer disk bloat safely without blind automated deletions or project corruption risks.</p>
+                <h4>Shared engine, not a one-off</h4>
+                <p>The photo-auditing code lives in <code>Packages/UnliDiskPhotos</code>, the same engine ClearSpace uses — deliberate reuse across studio projects rather than separate builds each time.</p>
               </div>
             </div>
           </div>
@@ -666,28 +666,28 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">iPad sketch-to-3D floorplan engine. Transforms freehand touch/stylus strokes into parametric geometry and AI visual renders for spatial planning.</p>
-          
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">iPad sketch-to-3D floorplan engine. Freehand stylus strokes become parametric geometry, then 3D models and AI renders — draft stage, earliest of the five here.</p>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
               <div class="cs-step-num">01 · Problem</div>
               <div class="cs-step-content">
-                <h4>Rigid CAD Software Limits</h4>
-                <p>Traditional CAD tools demand steep learning curves and rigid inputs, hindering rapid architectural exploration for complex custom floorplan requirements (e.g. child safety zones, pet areas, vehicle storage).</p>
+                <h4>Sketch, not CAD</h4>
+                <p>CAD tools demand a steep learning curve for something as simple as roughing out a floorplan with a child-safety zone or a pet area penned in.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">02 · Architecture & Protocols</div>
+              <div class="cs-step-num">02 · Design choice</div>
               <div class="cs-step-content">
-                <h4>Parametric Sketch Interpreter</h4>
-                <p>Sketch-first iPad design system that interprets freehand stylus strokes into structured parametric floorplan data, automatically generating real-time 3D building models and AI visual renders from a unified spatial model.</p>
+                <h4>A structured layer between stylus and AI</h4>
+                <p>Freehand strokes get interpreted into parametric floorplan geometry first; the 3D models and AI renders are generated from that structured data, not straight from raw stylus input. Constraining what the generative step sees is what keeps its output usable.</p>
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Impact</div>
+              <div class="cs-step-num">03 · Status</div>
               <div class="cs-step-content">
-                <h4>Rapid Spatial Prototyping</h4>
-                <p>Accelerates early-stage spatial ideation from rough napkin sketches to interactive 3D geometry in seconds.</p>
+                <h4>Where it's at</h4>
+                <p>Draft stage — no build to try yet, just the simulator mockup below.</p>
               </div>
             </div>
           </div>
@@ -700,7 +700,7 @@
       </div>
 
       <div style="margin-top:40px; text-align:center;">
-        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent);">See my multi-agent development methodology &amp; pipeline <span class="arrow">→</span></a>
+        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent);">See how these get built — the multi-agent workflow <span class="arrow">→</span></a>
       </div>
     </div>
   </section>
@@ -720,7 +720,7 @@
 
 <footer>
   <div class="wrap foot-row">
-    <span>© 2026 calmdownoscar · est. the year Oscar was</span>
+    <span>© 2026 calmdownoscar · est. 2025</span>
     <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
   </div>
 </footer>

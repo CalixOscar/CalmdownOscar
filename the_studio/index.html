@@ -181,7 +181,7 @@
       <div class="studio-card reveal">
         <div class="section-label">02 · HR-Driven Security &amp; Data Privacy</div>
         <h2>Personal Data Protection as a Priority</h2>
-        <p>Coming from a background in <strong>Human Resources</strong>, safeguarding personal confidentiality is not a legal checklist — it is an foundational duty of trust. Handling sensitive personnel records translated directly into how software and AI architectures are designed here.</p>
+        <p>Coming from a background in <strong>Human Resources</strong>, safeguarding personal confidentiality is not a legal checklist — it is a foundational duty of trust. Handling sensitive personnel records translated directly into how software and AI architectures are designed here.</p>
         
         <div class="list-grid">
           <div class="list-item">
@@ -198,33 +198,33 @@
           </div>
           <div class="list-item">
             <h4>Zero Secrets in Client Binaries</h4>
-            <p>API keys and credentials never ship inside client binaries or public source. Enforced via Vercel proxy walls and environment secrets.</p>
+            <p>API keys never ship inside a client binary. Cloud LLM calls route through a stateless relay (see Wedding Concierge) that holds the credential server-side instead.</p>
           </div>
         </div>
       </div>
 
       <!-- 03. Guardrails & Evals -->
       <div class="studio-card reveal">
-        <div class="section-label">03 · AI Guardrails &amp; Pre-Mortem Evals</div>
-        <h2>Architectural Discipline Across Multi-Agent AI</h2>
-        <p>When AI features are integrated into apps, strict engineering guardrails govern every prompt and model interaction:</p>
-        
+        <div class="section-label">03 · AI Guardrails</div>
+        <h2>How AI Features Are Kept Honest</h2>
+        <p>When a model gets wired into an app, these are the constraints it has to work inside:</p>
+
         <div class="list-grid">
           <div class="list-item">
             <h4>Single Source of Truth</h4>
-            <p>The AI model and the native UI read and write to the exact same state model, preventing state drift or hallucinations.</p>
+            <p>The model and the native UI read and write to the same state — not two systems that can drift apart. Wedding Concierge was built specifically against that failure mode.</p>
           </div>
           <div class="list-item">
             <h4>MCP Ground-Truth Memory</h4>
-            <p>Unli Rice memory layer operates over Model Context Protocol (MCP), ensuring all AI agents share identical architectural guardrails.</p>
+            <p>Unli Rice runs over Model Context Protocol (MCP) so every connected agent — Gemini, Claude, Codex, Antigravity — reads from one vault instead of re-explaining context each session.</p>
           </div>
           <div class="list-item">
-            <h4>Pre-Mortem Regression Gate</h4>
-            <p>Before submitting any app to the App Store, a 6-month pre-mortem evaluation audit is executed to catch edge-case failures and regression risks.</p>
+            <h4>Manual Pre-Mortem Review</h4>
+            <p>Before an App Store submission, I walk through likely edge cases and regressions by hand. It's a manual pass today, not an automated eval suite — worth saying plainly rather than dressing it up.</p>
           </div>
           <div class="list-item">
-            <h4>Hybrid LLM + Local ML Fallback</h4>
-            <p>Cloud LLMs perform heavy reasoning, backed by on-device local ML (MLX / Metal) fallbacks for offline and privacy-conscious workflows.</p>
+            <h4>Cloud by Default, Local Where It Matters</h4>
+            <p>Cloud LLM handles heavy reasoning by default; on-device MLX is the fallback — for offline use in Wedding Concierge, or as the only inference path at all in ClearSpace, where photo review runs 100% local for privacy.</p>
           </div>
         </div>
       </div>

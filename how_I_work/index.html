@@ -192,19 +192,19 @@
       <div class="grid">
         <div class="card reveal">
           <h3>01 · Voice Capture &amp; Vault Ingestion</h3>
-          <p>Ideas are spoken directly into the Unli Rice iOS capture app and transcribed to markdown text. Notes automatically sync to the local Unli Rice vault as ground-truth memory accessible by connected MCP agents.</p>
+          <p>Ideas get spoken into the Unli Rice iOS app, transcribed to markdown, and synced to the local vault — the same ground-truth memory every connected MCP agent reads from, so no tool starts a session cold.</p>
         </div>
         <div class="card reveal">
           <h3>02 · Feasibility &amp; Market Research</h3>
-          <p>Gemini Spark ingests the raw vault text, analyzes technical feasibility, and benchmarks existing market solutions to evaluate whether the concept solves a genuine operational gap.</p>
+          <p>Gemini Spark reads the raw vault text, checks technical feasibility, and benchmarks existing solutions to see whether the idea solves a real gap before any code gets written.</p>
         </div>
         <div class="card reveal">
-          <h3>03 · Pre-Mortem &amp; Evals Injection</h3>
-          <p>Claude performs a pre-mortem failure analysis, adding context rules, guardrails, and evals. Once approved, Claude generates a handoff prompt for Codex to build backend schemas and core logic, returning for verification.</p>
+          <h3>03 · Pre-Mortem &amp; Handoff</h3>
+          <p>Claude does the hard-reasoning work: a pre-mortem for likely failure modes, plus the guardrails and context rules that follow from it. It then writes a handoff — task, approach, files to touch, gotchas — for Codex to execute against, and checks the result on return rather than re-deriving the approach itself.</p>
         </div>
         <div class="card reveal">
-          <h3>04 · UI/UX Assembly &amp; Security Audit</h3>
-          <p>Antigravity builds UI/UX mockups and frontend components (with Figma/Higgsfield over MCP). Near completion, Claude runs a security audit for exploit vectors and encryption, followed by a Codex post-mortem before Vercel proxy &amp; App Store release. Post-release, Unli Disk frees storage by deleting simulators and dead-end repos.</p>
+          <h3>04 · UI Assembly &amp; Security Audit</h3>
+          <p>Antigravity produces a first-pass UI (via Figma over MCP) that Claude and Codex then build out properly — it's a starting point, not a finished frontend on its own. Near release, Claude runs a security audit on exploit vectors and encryption, Codex does a post-mortem, and the app ships through the relay to the App Store. Afterward, Unli Disk clears simulators and dead-end repos off my own machine.</p>
         </div>
       </div>
     </div>
@@ -214,7 +214,7 @@
   <section class="pipeline" id="pipeline">
     <div class="wrap">
       <div class="section-label reveal">The pipeline</div>
-      <p class="section-lede reveal" style="margin-bottom:24px;">Visual map of the multi-agent pipeline: from voice capture to pre-mortems, backend architecture, security audits, and post-mortems — featuring automated return verification loops at every stage.</p>
+      <p class="section-lede reveal" style="margin-bottom:24px;">Visual map of the multi-agent pipeline: from voice capture to pre-mortems, backend architecture, security audits, and post-mortems — with return loops where one tool checks another's output before work continues.</p>
       
       <div class="diagram reveal">
         <svg viewBox="0 0 900 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: starting with Unli Rice Voice Capture, an idea moves into the Unli Rice Vault, to Gemini Spark for technical feasibility and market research, to Claude for pre-mortem analysis and guardrail injection synced via Unli Rice / MCP Vault Sync, to Codex for backend architecture with a curved return verification loop to Claude, to Antigravity and MCP design tools for UI/UX, to Claude for a security audit with a curved return loop to Codex for hardening, to Codex for post-mortem analysis, to Vercel and the App Store release, and finally to Unli Disk for storage cleanup.">
