@@ -71,21 +71,22 @@
     display:flex; justify-content:space-between; align-items:center; width:100%;
   }
   .mark{
-    font-weight:800; font-size:19px; color:var(--ink);
-    text-decoration:none; letter-spacing:-.02em; flex-shrink:0;
+    font-weight:700; font-size:16px; letter-spacing:-.01em; color:var(--ink);
+    text-decoration:none; flex-shrink:0;
   }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
   nav::-webkit-scrollbar{ display:none; }
   nav a{
     color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
+    margin-left:24px;
     transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
   }
-  nav a:hover, nav a[aria-current="page"]{ color:var(--accent); font-weight:600; }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
   @media (max-width:640px){
     .topbar .wrap{ gap:12px; }
-    nav{ gap:14px; }
-    nav a{ font-size:13px; }
+    nav a{ margin-left:14px; font-size:13px; }
   }
 
   /* ================= hero & cards ================= */
