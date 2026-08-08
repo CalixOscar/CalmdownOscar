@@ -574,24 +574,24 @@
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Model choice</div>
+              <div class="cs-step-num">01 · Detection method</div>
               <div class="cs-step-content">
-                <h4>Why on-device</h4>
-                <p>Photo review is privacy-sensitive and high-volume — exactly the case for choosing local inference over a cloud API. A SmolVLM2 vision model runs via MLX on-device, sized for the lowest-spec supported iPhone rather than my own dev machine.</p>
+                <h4>Signal, not a model</h4>
+                <p>What ships today isn't a model call at all: a 64-bit perceptual hash surfaces candidate duplicate pairs, Apple's Vision feature-print distance confirms the match, and a Laplacian blur score catches soft shots — all through Apple's Vision framework, no model download. An earlier version added an on-device VLM as a refinement pass on top of that; it made the scan slower for little gain, so it was cut. Classical signal was the better call.</p>
               </div>
             </div>
             <div class="cs-step">
               <div class="cs-step-num">02 · Safety</div>
               <div class="cs-step-content">
                 <h4>Non-destructive by design</h4>
-                <p>Deletions route through iOS's own Recently Deleted, giving a 30-day recovery window instead of a bulk, irreversible delete.</p>
+                <p>The core flow is blunt on purpose: pick a period, heart the photos to keep, then one button deletes everything in that period without a heart. Skip the period filter and that button can queue 30,000+ photos at once — so every deletion routes through iOS's own Recently Deleted instead of a hard delete, giving a 30-day window to undo exactly that mistake.</p>
               </div>
             </div>
             <div class="cs-step">
               <div class="cs-step-num">03 · Status</div>
               <div class="cs-step-content">
                 <h4>Where it's headed</h4>
-                <p>The reworked chat/concierge interface — still local-MLX-only, no cloud dependency at all — is built and now awaiting App Store review.</p>
+                <p>The reworked chat/concierge interface is built and awaiting App Store review.</p>
               </div>
             </div>
           </div>
