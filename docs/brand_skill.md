@@ -56,7 +56,7 @@ If a request conflicts with a hard rule below, say so in one sentence, propose t
 
 **Required.**
 - One accent hue, `--accent` / `--accent-ink`, on ≤3% of any viewport.
-- Two type families only: Fraunces (display, ≥24px) and Inter (text, ≤32px). Both self-hosted.
+- Two type voices only: **Inter** (self-hosted) for all prose and display, and the **system monospace stack** for metadata. No serif, no third font, no downloads. Prose is Inter; anything that behaves like data — labels, statuses, counts, indices, platform tags, units — is mono. Display Inter is weight 800 at `letter-spacing: -.045em`; that tracking is load-bearing.
 - All spacing a multiple of 8px.
 - Left-aligned body copy, `max-width: 68ch`. Never centered.
 - Real photography or real product screenshots. If neither exists, use type and rules — whitespace is a legitimate answer, illustration is not.

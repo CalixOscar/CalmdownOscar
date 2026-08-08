@@ -60,25 +60,29 @@ Verified contrast ratios in parentheses. Reject any pair not listed here.
 
 ### 1.2 Type
 
-Two families. Both self-hosted, both SIL OFL, both variable, both subset to `latin` + the arrows used.
+One self-hosted family plus a system stack. Nothing to download.
 
-| Role | Family | Axes used | Where |
+| Role | Family | Weights | Where |
 |---|---|---|---|
-| Display | **Fraunces** Variable | `opsz 96`, `wght 300–700`, `SOFT 0`, `WONK 1` | h1, section numbers, footer wordmark, metric values |
-| Text | **Inter** Variable *(already in repo)* | `wght 400–650` | everything else |
+| Display + text | **Inter** Variable *(already self-hosted)* | `400–800` | h1, section heads, body, links, footer wordmark |
+| Metadata | **System monospace** — `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace` | `500–700` | eyebrows, status pills, platform pills, step indices, metric values, any numeral |
 
-Fraunces at `opsz 96 / WONK 1` gives editorial contrast and a slight quirk at display size without becoming decorative. Never set Fraunces below 24px. Never set Inter above 32px.
+**No serif anywhere.** Revised 2026-08-09: the original spec paired Inter with Fraunces. On the page it read as a news article, and it contradicted the Linear/Stripe reference points in the same brief — both are sans-only. The technical register now comes from monospace metadata, not from an editorial display face.
+
+Monospace is the "tech" cue and it costs zero bytes — it is a system stack, nothing to download or self-host. The rule is simple: **prose is Inter, anything that behaves like data is mono.** Labels, statuses, counts, indices, platform tags, and units are data. Sentences are not.
+
+Display Inter is set at `font-weight: 800`, `letter-spacing: -.045em`, `line-height: .92`. That tracking is what stops large Inter from looking like a default system page — do not slacken it.
 
 ```css
 --step--1: clamp(13px, 0.80rem + 0.1vw, 14px);   /* meta, pills, captions */
 --step-0:  clamp(16px, 0.95rem + 0.2vw, 17px);   /* body */
 --step-1:  clamp(19px, 1.05rem + 0.5vw, 22px);   /* lede */
---step-2:  clamp(26px, 1.30rem + 1.4vw, 38px);   /* section heads (Fraunces) */
---step-3:  clamp(40px, 1.60rem + 5.0vw, 96px);   /* h1 (Fraunces) */
---step-4:  clamp(56px, 2.00rem + 9.0vw, 168px);  /* footer wordmark (Fraunces) */
+--step-2:  clamp(26px, 1.30rem + 1.4vw, 38px);   /* section heads (Inter 800) */
+--step-3:  clamp(40px, 1.60rem + 5.0vw, 96px);   /* h1 (Inter 800, tracking -.045em) */
+--step-4:  clamp(56px, 2.00rem + 9.0vw, 168px);  /* footer wordmark (Inter 800) */
 ```
 
-- Display tracking: `-0.03em` at `--step-3` and above, `-0.02em` at `--step-2`.
+- Display tracking: `-0.045em` at `--step-3` and above, `-0.03em` at `--step-2`. Inter needs more negative tracking at display size than a serif would.
 - Body: `line-height 1.6`, `max-width 68ch`. Lede: `line-height 1.35`, `max-width 46ch`.
 - Body weight 400. There is no 300-weight body text anywhere.
 - Numerals in metric tiles: `font-variant-numeric: tabular-nums`.
@@ -112,11 +116,11 @@ Fraunces at `opsz 96 / WONK 1` gives editorial contrast and a slight quirk at di
 Build these six. Anything not on this list needs a reason.
 
 1. **Bordered card** — `1px solid var(--edge)`, `--radius`, `24px` padding, transparent background on paper / `--slate-lift` on slate. Hover: border → `--accent`, `transform: translateY(-2px)`. No shadow, ever.
-2. **Metric tile** — a card variant. Fraunces value at `--step-2`, Inter label at `--step--1` uppercase `letter-spacing .06em` in `--muted`, optional 1-line footnote.
+2. **Metric tile** — a card variant. mono value at `--step-2`, mono label at `--step--1` uppercase `letter-spacing .06em` in `--muted`, optional 1-line footnote.
 3. **Segmented control** — `1px` outer border, inner sliding thumb (`transform: translateX`, `--fast`). Real `<input type="radio">` inside `<fieldset>`; the visual thumb is a sibling element. Keyboard: arrow keys move selection natively.
 4. **Text link** — the default interactive element. `color: inherit`, `border-bottom: 1px solid var(--edge)`; on hover/focus the border becomes `--accent` and a `↗`/`→` glyph translates 3px. Reserve real buttons for the tool's controls only.
-5. **Pill** — platform/tech metadata. `--step--1`, `--muted`, `1px` border, `--radius-pill`, `4px 10px`. Never colored, never filled.
-6. **Section header** — `<h2>` in Fraunces `--step-2`, preceded by a monospaced-feel index (`01 —`) in Inter `--step--1` `--accent-ink`, followed by a full-bleed `--rule`.
+5. **Pill** — platform/tech metadata, set in mono. `--step--1`, `--muted`, `1px` border, `--radius` (not `--radius-pill`: rectangular reads technical, fully-rounded reads consumer), `4px 10px`. Never colored, never filled.
+6. **Section header** — `<h2>` in Inter 800 `--step-2`, preceded by a mono index (`01 —`) at `--step--1` in `--accent-ink`, followed by a full-bleed `--rule`.
 
 **Forbidden components:** hero gradient orbs, glassmorphic panels, testimonial carousels, logo clouds, animated counters that never stop, chat bubbles, "trusted by" strips, badge grids, cookie banners (nothing to consent to — there are no cookies).
 
@@ -126,7 +130,7 @@ Build these six. Anything not on this list needs a reason.
 
 ```
 S0  Topbar             sticky, 64px
-S1  Hero               100vh, parallax
+S1  Hero               88svh, parallax
 S2  Cold Start tool    interactive, paper-sunk
 S3  Decisions          dark, horizontal scroll
 S4  Apps               five case studies, paper
@@ -137,14 +141,14 @@ S5  Footer             dark, full-bleed
 
 ## 4. S1 — Hero
 
-**Layout.** `min-height: 100svh` (`svh`, not `vh` — mobile URL bar). Content anchored to the lower third, not vertically centered. Left-aligned in the text column. Existing `assets/oscar-crawl.mp4` stays as the background plate at `opacity .18`, `filter: grayscale(1)`, with `--paper` scrim above it.
+**Layout.** `min-height: 88svh` (`svh`, not `vh` — mobile URL bar; 88 rather than 100 so the fold does not open on a void). Content anchored to the lower third, not vertically centered. Left-aligned in the text column. Existing `assets/oscar-crawl.mp4` stays as the background plate at `opacity .18`, `filter: grayscale(1)`, with `--paper` scrim above it.
 
 **Copy — exact.**
 
 > **Eyebrow** (Inter, `--step--1`, `--muted`, `letter-spacing .08em`, uppercase)
 > `INDEPENDENT APP STUDIO — EST. 2025`
 >
-> **H1** (Fraunces, `--step-3`, three lines, `--ink`; the period in line 3 set in `--accent`)
+> **H1** (Inter 800, `--step-3`, three lines, `--ink`; the period in line 3 set in `--accent`)
 > `One person.`
 > `Five apps.`
 > `No key in the binary.`
@@ -227,7 +231,7 @@ Then one text link: `Unli Rice is what I built for this →` pointing to `/unlir
 > `The parts that don't demo well.`
 > `Six decisions where the interesting work was choosing the constraint, not writing the code.`
 
-**Cards — exact copy.** Each: index (`--accent`, Fraunces), title (Inter 650, `--ink-invert`), body (Inter, `--muted-inv`, 3 lines max), footer meta pill with the app name.
+**Cards — exact copy.** Each: index (`--accent`, mono), title (Inter 650, `--ink-invert`), body (Inter, `--muted-inv`, 3 lines max), footer meta pill with the app name.
 
 1. **`01` · No key in the binary** — `Cloud calls route through a stateless Vercel relay that holds the API key and rate-limits server-side. Nothing shipped to a device can leak a credential, because nothing shipped to a device has one.` — *Wedding Concierge*
 2. **`02` · Classical signal beat the model** — `Duplicate detection is a 64-bit perceptual hash, a Vision feature-print distance check, and a Laplacian blur score. An on-device VLM refinement pass was built, measured, and cut — slower, barely better.` — *ClearSpace*
@@ -256,7 +260,7 @@ Keep the existing three-step case-study structure — it is the strongest conten
 
 **Per-app block.** Bordered card, full container width, `40px` padding, stacked `64px` apart.
 
-- **Row 1:** app icon (56px, `--radius`), name in Fraunces `--step-2`, status pill, platform/tech pills.
+- **Row 1:** app icon (56px, `--radius`), name in Inter 800 `--step-2`, status pill, platform/tech pills.
 - **Row 2:** one-sentence positioning line, `--step-1`, `--muted`, max 46ch.
 - **Row 3:** three columns at ≥900px (`01 · 02 · 03` steps), separated by 1px vertical rules, stacked with horizontal rules below 900px. Step index in `--accent-ink`.
 - **Row 4:** real screenshot from `assets/`, `--radius`, `1px solid var(--edge)`, no shadow, no device frame mockup, no perspective transform.
@@ -273,7 +277,7 @@ Existing per-app case-study copy carries over verbatim. It is accurate and alrea
 
 Full-bleed `--slate`, `104px 0 40px`.
 
-- **Row 1:** the wordmark `calmdownoscar` in Fraunces at `--step-4`, `--ink-invert`, tracking `-.04em`, clipped to the container so it optically bleeds off the right edge at narrow widths. The final `r` is set in `--accent`. This is the page's last statement; it takes the space.
+- **Row 1:** the wordmark `calmdownoscar` in Inter 800 at `--step-4`, `--ink-invert`, tracking `-.04em`, clipped to the container so it optically bleeds off the right edge at narrow widths. The final `r` is set in `--accent`. This is the page's last statement; it takes the space.
 - **Row 2:** three columns of text links — **Apps** (five apps) · **Studio** (How I Work, The Studio, About Me, Playground, Hobbies) · **Direct** (email, GitHub, Mac App Store).
 - **Row 3:** `1px` rule, then `© 2026 calmdownoscar · est. 2025` left, `No trackers. No analytics. No cookies.` right, both `--step--1` `--muted-inv`.
 
@@ -320,7 +324,7 @@ Plus, in JS: parallax loop is never started, count-up is skipped, `scroll-snap-t
 ## 11. Build order
 
 1. Token layer in `:root` — replace the current `--bg/--accent/--ink` block. Site-wide, so smoke-test all 9 pages after.
-2. Subset and self-host Fraunces into `assets/fonts/`. Add `@font-face`. Ship nothing until it is local.
+2. ~~Self-host a display face.~~ Dropped — Inter is already local and monospace is a system stack. No font work required, and no Google Fonts link is ever an acceptable shortcut here.
 3. S5 footer + S0 topbar (site-wide, highest leverage).
 4. S1 hero, reusing the existing scrub loop.
 5. S4 apps restyle — content unchanged.
