@@ -262,23 +262,35 @@
 
   /* ---- prompt-template chips above the chat input ---- */
   .prompt-templates {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    padding: 12px 16px;
     background: rgba(255,255,255,.03);
     border-top: 1px solid var(--edge-dark);
   }
-  .prompt-templates span {
-    width: 100%;
-    font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-    color: var(--muted-dark); margin-bottom: 2px;
+  .prompt-templates-toggle {
+    display: flex; align-items: center; gap: 6px;
+    width: 100%; padding: 12px 16px;
+    font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted-dark); background: none; border: none; cursor: pointer;
+    text-align: left;
   }
-  .prompt-templates button {
+  .prompt-templates-toggle:hover, .prompt-templates-toggle:focus-visible { color: var(--accent-hi); }
+  .prompt-templates-toggle .chevron {
+    display: inline-flex; flex-shrink: 0;
+    transition: transform .2s ease;
+  }
+  .prompt-templates-toggle svg { width: 12px; height: 12px; display: block; }
+  .prompt-templates-toggle[aria-expanded="false"] .chevron { transform: rotate(-90deg); }
+  .prompt-templates-body {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 0 16px 14px;
+  }
+  .prompt-templates-body[hidden] { display: none; }
+  .prompt-templates-body button {
     font-family: inherit; font-size: 13px; font-weight: 500;
     color: var(--accent-hi); background: rgba(133,182,255,.08); cursor: pointer;
     border: 1px solid rgba(133,182,255,.25); border-radius: 14px; padding: 6px 12px;
     transition: background .2s ease, border-color .2s ease;
   }
-  .prompt-templates button:hover, .prompt-templates button:focus-visible {
+  .prompt-templates-body button:hover, .prompt-templates-body button:focus-visible {
     background: rgba(133,182,255,.16); border-color: rgba(133,182,255,.5);
   }
 
@@ -369,8 +381,12 @@
            into it for the visitor — clicking a chip copies the prompt so they
            can paste it in. Not a live connection to the chat, just a shortcut
            for people who don't know what to ask. -->
-      <div class="prompt-templates" id="prompt-templates">
-        <span>Not sure what to ask? Tap one to copy it, then paste it in:</span>
+      <div class="prompt-templates">
+        <button type="button" class="prompt-templates-toggle" id="prompt-templates-toggle" aria-expanded="true" aria-controls="prompt-templates">
+          Not sure what to ask? Tap one to copy it, then paste it in
+          <span class="chevron"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <div class="prompt-templates-body" id="prompt-templates"></div>
       </div>
 
       <p class="embed-note">Unlike the local model above, this one is hosted — messages go to chatty.veritiodigital.com.</p>
@@ -783,6 +799,15 @@
     });
     wrap.appendChild(btn);
   });
+
+  var toggle = document.getElementById('prompt-templates-toggle');
+  if (toggle){
+    toggle.addEventListener('click', function(){
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if (open) wrap.setAttribute('hidden', ''); else wrap.removeAttribute('hidden');
+    });
+  }
 })();
 </script>
 
