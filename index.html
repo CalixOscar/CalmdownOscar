@@ -462,11 +462,11 @@
 
   /* ================= S1 hero ================= */
   .hero{
-    min-height:62svh;                  /* svh, not vh — mobile URL bar */
-    display:flex; flex-direction:column; justify-content:flex-end;
+    min-height:52svh;                  /* svh, not vh — mobile URL bar */
+    display:flex; flex-direction:column; justify-content:flex-start;
     padding:0 0 clamp(40px, 7vh, 88px);
   }
-  section.hero:first-of-type{ padding-top:0; }
+  section.hero:first-of-type{ padding-top:clamp(40px, 8vh, 88px); }
   .hero .wrap{ width:100%; }
   .hero-inner{ will-change:transform; }
   .hero-eyebrow{
@@ -544,8 +544,7 @@
   <section class="hero">
     <div class="wrap">
       <div class="hero-inner">
-        <p class="hero-eyebrow"><span>Independent app studio</span><span>est. 2025</span><span>iOS &middot; macOS</span></p>
-        <h1>No key in the binary<span class="stop">.</span></h1>
+        <h1>iOS and macOS, built alone<span class="stop">.</span></h1>
         <p class="hero-lede">
           On-device when the data is yours, relayed through a server when it isn't.
         </p>
