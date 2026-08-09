@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FAFAF7">
+<meta name="theme-color" content="#EEF2F6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>calmdownoscar | Independent App Studio</title>
@@ -29,8 +29,8 @@
     --sar: env(safe-area-inset-right, 0px);
 
     /* ---- surfaces ---- */
-    --paper:      #FAFAF7;   /* light surface — neutral off-white */
-    --paper-sunk: #F1F1EC;   /* inset wells, tool background */
+    --paper:      #EEF2F6;   /* light surface — shared blue-tinted off-white, matches how_I_work/the_studio/etc. */
+    --paper-sunk: #E4EAF0;   /* inset wells, tool background — same tint, one step down */
     --slate:      #0E1116;   /* dark surface — showcase + footer */
     --slate-lift: #171B21;   /* card on slate */
 
@@ -68,7 +68,7 @@
     --step-0:  clamp(16px, 0.95rem + 0.2vw, 17px);
     --step-1:  clamp(19px, 1.05rem + 0.5vw, 22px);
     --step-2:  clamp(26px, 1.30rem + 1.4vw, 38px);
-    --step-3:  clamp(40px, 1.60rem + 5.0vw, 96px);
+    --step-3:  clamp(36px, 1.44rem + 4.5vw, 86px);
     --step-4:  clamp(56px, 2.00rem + 9.0vw, 168px);
 
     /* ---- aliases kept so pre-redesign rules keep working ---- */
@@ -108,7 +108,7 @@
   }
   .bg-scrim{
     position:fixed; inset:0; z-index:-1;
-    background:rgba(250, 250, 247,.55);
+    background:rgba(238, 242, 246,.55);
     will-change:transform;
   }
 
@@ -117,7 +117,7 @@
     position:fixed; top:0; left:0; right:0; z-index:10;
     height:var(--topbar-h);
     padding-top:var(--sat);
-    background:rgba(250, 250, 247,.82);
+    background:rgba(238, 242, 246,.82);
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid var(--edge);
@@ -482,7 +482,7 @@
   .hero h1{
     font-family:var(--font-display);
     font-size:var(--step-3); font-weight:800;
-    line-height:.92; letter-spacing:-.045em; color:var(--ink);
+    line-height:1; letter-spacing:-.02em; color:var(--ink);
   }
   .hero h1 .stop{ color:var(--accent); }   /* large display — 3:1 threshold, passes */
   .hero-lede{
@@ -544,7 +544,7 @@
   <section class="hero">
     <div class="wrap">
       <div class="hero-inner">
-        <h1>iOS and macOS, built alone<span class="stop">.</span></h1>
+        <h1>Built at night, while Oscar sleeps<span class="stop">.</span></h1>
         <p class="hero-lede">
           On-device when the data is yours, relayed through a server when it isn't.
         </p>
@@ -800,7 +800,7 @@
       </div>
 
       <div style="margin-top:40px; text-align:center;">
-        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent);">See how these get built — the multi-agent workflow <span class="arrow">→</span></a>
+        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent-ink);">The multi-agent workflow <span class="arrow">→</span></a>
       </div>
     </div>
   </section>

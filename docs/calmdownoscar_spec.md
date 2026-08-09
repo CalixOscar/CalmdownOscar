@@ -71,18 +71,18 @@ One self-hosted family plus a system stack. Nothing to download.
 
 Monospace is the "tech" cue and it costs zero bytes — it is a system stack, nothing to download or self-host. The rule is simple: **prose is Inter, anything that behaves like data is mono.** Labels, statuses, counts, indices, platform tags, and units are data. Sentences are not.
 
-Display Inter is set at `font-weight: 800`, `letter-spacing: -.045em`, `line-height: .92`. That tracking is what stops large Inter from looking like a default system page — do not slacken it.
+Revised 2026-08-09 (second pass): the original -.045em tracking was too aggressive — on the actual page it read as a *different* face from the rest of the site's bold text (nav mark at -.02em, card titles at -.01em), which is exactly the seam problem the serif removal was meant to fix. Display Inter is now `font-weight: 800`, `letter-spacing: -.02em`, `line-height: 1`, matching the tracking already used elsewhere on the page. Size also came down ~10% (see --step-3 below) — the original scale was tuned for a serif's wider letterforms and ran heavy in Inter.
 
 ```css
 --step--1: clamp(13px, 0.80rem + 0.1vw, 14px);   /* meta, pills, captions */
 --step-0:  clamp(16px, 0.95rem + 0.2vw, 17px);   /* body */
 --step-1:  clamp(19px, 1.05rem + 0.5vw, 22px);   /* lede */
 --step-2:  clamp(26px, 1.30rem + 1.4vw, 38px);   /* section heads (Inter 800) */
---step-3:  clamp(40px, 1.60rem + 5.0vw, 96px);   /* h1 (Inter 800, tracking -.045em) */
+--step-3:  clamp(36px, 1.44rem + 4.5vw, 86px);   /* h1 (Inter 800, tracking -.02em) — ~10% down from the original scale */
 --step-4:  clamp(56px, 2.00rem + 9.0vw, 168px);  /* footer wordmark (Inter 800) */
 ```
 
-- Display tracking: `-0.045em` at `--step-3` and above, `-0.03em` at `--step-2`. Inter needs more negative tracking at display size than a serif would.
+- Display tracking: `-0.02em` at `--step-3` and above, `-0.02em` at `--step-2` — matched to the nav mark's tracking so display type reads as the same face as the rest of the page, not a separate one.
 - Body: `line-height 1.6`, `max-width 68ch`. Lede: `line-height 1.35`, `max-width 46ch`.
 - Body weight 400. There is no 300-weight body text anywhere.
 - Numerals in metric tiles: `font-variant-numeric: tabular-nums`.
