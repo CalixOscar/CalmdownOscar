@@ -84,15 +84,17 @@ Replace those **values** with:
     --bg:      #141B22;
     --panel:   rgba(255,255,255,.05);
     --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(228,71,29,.4);
-    --accent:  #E4471D;
+    --edge-hi: rgba(133,182,255,.4);
+    --accent:  #85B6FF;
     --ink:     #E8EEF4;
     --muted:   #8FA0AE;
 ```
 
 If the file also has `--progress:#A9782F;`, change it to `--progress:#B88233;`.
 
-These are not arbitrary — every value is measured. Contrast ratios against `#141B22`: `--ink` 14.9:1, `--muted` 6.5:1, `--progress` 5.19:1. The old `#A9782F` was 4.48:1, which fails AA for small text, and it renders real small text (the amber "Awaiting Review" status).
+**The accent is BLUE (`#85B6FF`), not orange.** Orange is reserved for `index.html` only — it is the one page that gets any hint of it. `#85B6FF` is the same dark-mode accent already used by `playground/` and `hobbies/`, so these 18 pages will match those two. Do not use `#E4471D` anywhere in these files.
+
+These are not arbitrary — every value is measured. Contrast ratios against `#141B22`: `--ink` 14.9:1, `--muted` 6.5:1, `--accent` 8.38:1, `--progress` 5.19:1. Two of the old values fail AA and must not be kept: the old blue `#3B6EA5` is only 3.27:1 on this background, and the old amber `#A9782F` is 4.48:1 while rendering real small text (the "Awaiting Review" status).
 
 Some files have extra page-specific tokens near the block (for example `aboutme/index.html` has `--night`, `--tank`, `--pacifier`). **Leave those alone.** Only change the seven names listed above, plus `--progress` if present.
 
@@ -107,7 +109,7 @@ Replace these exact strings wherever they appear in the 18 files. The alpha valu
 | Find | Replace with | What it is |
 |---|---|---|
 | `rgba(238,242,246,` | `rgba(20,27,34,` | Light page-colour used in topbar / scrim backgrounds. `#EEF2F6` = `rgb(238,242,246)`; `#141B22` = `rgb(20,27,34)`. |
-| `rgba(59,110,165,` | `rgba(228,71,29,` | Old blue accent in rgba form (glow/pulse keyframes). New orange = `rgb(228,71,29)`. |
+| `rgba(59,110,165,` | `rgba(133,182,255,` | Old blue accent in rgba form (glow/pulse keyframes). New blue `#85B6FF` = `rgb(133,182,255)`. |
 | `rgba(169,120,47,` | `rgba(184,130,51,` | Old amber in rgba form. Matches the new `--progress`. |
 
 Note the spacing varies — some files write `rgba(238, 242, 246,` with spaces. Match both forms.
@@ -156,7 +158,8 @@ If any check fails, fix it within the hard rule above, or revert that file and f
 - **`unlidisk/` and `apps/unlidisk/` are two different directory trees with near-identical files.** They are NOT symlinks and their contents genuinely differ. Both are in the list. Edit both. Same for the two ClearSpace locations.
 - **`clearspace/work_in_progress/index.html` writes `:root {` with a space** before the brace. A grep for `:root{` will silently skip this file. It is in the list and it does need changing.
 - **Do not add a Google Fonts link to anything.** Zero third-party network requests is a hard project rule (see `AGENTS.md`). Three pages currently violate this and are being handled separately — do not copy their pattern.
-- **Do not change `--accent` to blue.** `playground/` and `hobbies/` use a blue accent (`#85B6FF`) because they are deliberately distinct. The other 18 pages get orange, matching `index.html`.
+- **Do not introduce orange anywhere.** `index.html` is the only page on the site that carries the orange accent. These 18 pages use the blue `#85B6FF`, matching `playground/` and `hobbies/`. If you find yourself typing `#E4471D` or `rgba(228,71,29,`, you are in the wrong file.
+- **`hobbies/index.html` is finished — do not touch it at all,** not even to "align" it with the others. It is already dark and already correct.
 - The site uses `env(safe-area-inset-*)` for iOS notch support. Do not remove or alter those.
 
 ## WHEN DONE
