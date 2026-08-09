@@ -235,8 +235,13 @@
   }
   .chat-embed-status a { color: var(--accent-hi); text-decoration: none; }
   .embed-note {
-    margin-top: 10px;
-    font-size: 12px; color: var(--muted-dark); opacity: .85; text-align: center;
+    margin-top: 12px;
+    font-size: 13px; font-weight: 700; color: #FFD400;
+    text-align: center;
+    background: rgba(255, 212, 0, 0.1);
+    border: 1px solid rgba(255, 212, 0, 0.4);
+    border-radius: 8px;
+    padding: 10px 14px;
   }
 
   .veritio-tile {
@@ -330,15 +335,15 @@
       <p style="font-size: 17px; color: var(--muted-dark); line-height: 1.6;">
         I use this page to try out new web tech — an experimental labs space distinct from the rest of the site.
       </p>
-      <div style="margin-top: 14px; font-size: 13px; color: var(--muted-dark); opacity: 0.85;">
-        Requirement: WebGPU support and unified memory (M1+ iPad/Mac or desktop GPU recommended). Zero data leaves your device.
-      </div>
     </div>
   </div>
 
   <!-- AI Dashboard Section -->
   <section class="wrap" style="padding: 0 24px 48px;">
     <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">Tiny motorcycle model llm</h2>
+    <div style="max-width:min(680px, 92vw); margin: 0 auto 20px; font-size: 13px; color: var(--muted-dark); opacity: 0.85; text-align: center;">
+      Requirement: WebGPU support and unified memory (M1+ iPad/Mac or desktop GPU recommended). Zero data leaves your device.
+    </div>
     <div class="dashboard-grid">
       <!-- Top Column: Workbench (Image) -->
       <div id="workbench">
@@ -391,7 +396,7 @@
           <div class="preview-chips" id="preview-chips"></div>
         </div>
         <div class="preview-body" id="preview-body">
-          <div class="preview-empty">Pick a topic — you'll get a shot of it and a link to its user guide.</div>
+          <div class="preview-empty">Pick an app or ask a question about one of the apps from this studio and get a sneak peek here.</div>
         </div>
       </div>
 
