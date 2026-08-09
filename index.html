@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#EEF2F6">
+<meta name="theme-color" content="#141B22">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>calmdownoscar | Independent App Studio</title>
@@ -28,25 +28,39 @@
     --sal: env(safe-area-inset-left, 0px);
     --sar: env(safe-area-inset-right, 0px);
 
-    /* ---- surfaces ---- */
-    --paper:      #EEF2F6;   /* light surface — shared blue-tinted off-white, matches how_I_work/the_studio/etc. */
-    --paper-sunk: #E4EAF0;   /* inset wells, tool background — same tint, one step down */
-    --slate:      #0E1116;   /* dark surface — showcase + footer */
-    --slate-lift: #171B21;   /* card on slate */
+    /* ---- surfaces ----
+       TRIAL 2026-08-09: page repointed to the dark surface — --paper now IS
+       --slate's value, --paper-sunk now IS --slate-lift's value. Keeping
+       --slate/--slate-lift as separate literals (not var() aliases to
+       --paper) so this is a one-block revert back to the light scheme
+       later: just restore the two --paper lines below. */
+    --paper:      #141B22;   /* was #EEF2F6 (light) — now == --slate, Playground's exact background */
+    --paper-sunk: #1E2933;   /* was #E4EAF0 (light) — now == --slate-lift */
+    --slate:      #141B22;   /* dark surface literal — Playground's exact value (H210 S26% L11%). Base --accent alone drops to 4.31 on this; fixed by brightening --accent-ink below rather than darkening this. */
+    --slate-lift: #1E2933;   /* card on slate literal — same family, one step up, used as the lifted panel fill on cards */
 
-    /* ---- text (contrast verified, see docs/calmdownoscar_spec.md §1.1) ---- */
-    --ink:        #12151A;   /* on paper      17.5:1 */
-    --muted:      #5A6470;   /* on paper       5.8:1 */
+    /* ---- text (contrast verified, see docs/calmdownoscar_spec.md §1.1) ----
+       TRIAL: --ink/--muted repointed to the ink-invert/muted-inv values so
+       the whole page reads light-on-dark. Revert by restoring #12151A and
+       #5A6470 below. */
+    --ink:        #EDEEEA;   /* was #12151A — now == --ink-invert, 16.2:1 on slate */
+    --muted:      #9AA3AC;   /* was #5A6470 — now == --muted-inv, 7.4:1 on slate */
     --ink-invert: #EDEEEA;   /* on slate      16.2:1 */
     --muted-inv:  #9AA3AC;   /* on slate       7.4:1 */
 
     /* ---- accent: ONE hue, two tokens for contrast compliance ---- */
     --accent:     #E4471D;   /* graphics, rules, large display, text on slate 4.7:1 */
-    --accent-ink: #C43A12;   /* accent-coloured small text on paper          5.1:1 */
-    /* --accent must never be used for body copy on paper (3.85:1, fails AA) */
+    /* TRIAL: on dark, plain --accent already clears 4.5:1 (4.7:1), so the
+       small-text variant just equals it — on the light scheme accent-ink
+       was a separate darker shade (#C43A12) because plain accent only hit
+       3.85:1 there. Revert by restoring #C43A12 below. */
+    --accent-ink: #E6542D;   /* was #C43A12 (light-only variant) — now a brighter orange (L54% vs base's L50%) so small text clears 4.5:1 on Playground's exact slate (4.69:1); plain --accent only hits 4.31 there */
+    /* --accent must never be used for body copy on the LIGHT paper (3.85:1, fails AA) — moot while paper == slate */
 
-    /* ---- structure ---- */
-    --edge:       rgba(18,21,26,.14);
+    /* ---- structure ----
+       TRIAL: --edge repointed to the light-on-dark border value. Revert by
+       restoring rgba(18,21,26,.14) below. */
+    --edge:       rgba(237,238,234,.16);   /* was rgba(18,21,26,.14) — now == --edge-inv */
     --edge-inv:   rgba(237,238,234,.16);
     --focus:      var(--accent);
 
@@ -108,7 +122,7 @@
   }
   .bg-scrim{
     position:fixed; inset:0; z-index:-1;
-    background:rgba(238, 242, 246,.55);
+    background:rgba(20, 27, 34,.72);   /* TRIAL: was rgba(238,242,246,.55) — darker so the video reads as moody texture, not a bright patch on a dark page */
     will-change:transform;
   }
 
@@ -117,7 +131,7 @@
     position:fixed; top:0; left:0; right:0; z-index:10;
     height:var(--topbar-h);
     padding-top:var(--sat);
-    background:rgba(238, 242, 246,.82);
+    background:rgba(20, 27, 34,.82);   /* TRIAL: was rgba(238,242,246,.82) */
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid var(--edge);
@@ -172,7 +186,7 @@
   @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
 
   .card{
-    background:transparent;
+    background:rgba(255,255,255,.05);   /* TRIAL: was transparent — Playground's panel-on-dark treatment gives cards a visible lift; revert to transparent for the light theme */
     border:1px solid var(--edge);
     border-radius:var(--radius);
     padding:26px 24px;
@@ -433,7 +447,7 @@
   /* ================= case studies ================= */
   .cs-list { display: flex; flex-direction: column; gap: 24px; }
   .cs-card {
-    background: transparent;
+    background: rgba(255,255,255,.05);   /* TRIAL: was transparent — matches .card's dark-theme lift; revert to transparent for the light theme */
     border: 1px solid var(--edge);
     border-radius: var(--radius);
     padding: 28px 26px;
@@ -458,7 +472,7 @@
   .cs-step-num { font-family:var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--accent-ink); text-transform: uppercase; }
   .cs-step-content h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
   .cs-step-content p { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
-  .cs-step-content code { background: rgba(18, 21, 26,.06); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+  .cs-step-content code { background: rgba(237, 238, 234,.08); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; } /* TRIAL: was rgba(18,21,26,.06), a dark tint that goes invisible on a dark page */
 
   /* ================= S1 hero ================= */
   /* No animation on this page by design — static layout only, sized to content. */
