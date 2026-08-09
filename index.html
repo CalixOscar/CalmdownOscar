@@ -43,10 +43,10 @@
        TRIAL: --ink/--muted repointed to the ink-invert/muted-inv values so
        the whole page reads light-on-dark. Revert by restoring #12151A and
        #5A6470 below. */
-    --ink:        #EDEEEA;   /* was #12151A — now == --ink-invert, 16.2:1 on slate */
-    --muted:      #9AA3AC;   /* was #5A6470 — now == --muted-inv, 7.4:1 on slate */
-    --ink-invert: #EDEEEA;   /* on slate      16.2:1 */
-    --muted-inv:  #9AA3AC;   /* on slate       7.4:1 */
+    --ink:        #E8EEF4;   /* was #12151A (light) — Playground's --ink-dark. Cool blue-white (B channel highest); the previous #EDEEEA was warm (B lowest) and read dingy against navy. 14.9:1 */
+    --muted:      #8FA0AE;   /* was #5A6470 (light) — Playground's --muted-dark, blue-tinted rather than neutral grey. 6.5:1 */
+    --ink-invert: #E8EEF4;   /* on slate      14.9:1 */
+    --muted-inv:  #8FA0AE;   /* on slate       6.5:1 */
 
     /* ---- accent: ONE hue, two tokens for contrast compliance ---- */
     --accent:     #E4471D;   /* graphics, rules, large display, text on slate 4.7:1 */
@@ -60,8 +60,8 @@
     /* ---- structure ----
        TRIAL: --edge repointed to the light-on-dark border value. Revert by
        restoring rgba(18,21,26,.14) below. */
-    --edge:       rgba(237,238,234,.16);   /* was rgba(18,21,26,.14) — now == --edge-inv */
-    --edge-inv:   rgba(237,238,234,.16);
+    --edge:       rgba(255,255,255,.09);   /* was rgba(18,21,26,.14) (light) — Playground's --edge-dark. Pure white at .09, not warm white at .16: the old value was both warmer and ~2x stronger, which made every border read as a hard line */
+    --edge-inv:   rgba(255,255,255,.09);
     --focus:      var(--accent);
 
     /* ---- space / radius / motion ---- */
@@ -89,7 +89,7 @@
     --bg:      var(--paper);
     --panel:   rgba(255,255,255,0.4);
     --edge-hi: rgba(228,71,29,.4);
-    --progress:#A9782F;
+    --progress:#B88233;   /* TRIAL: was #A9782F, which is 4.48:1 on the dark bg — just under AA, and it's real small text (the amber "Awaiting Review" status on 3 cards). Brightened to 5.19:1. Revert to #A9782F with the light theme. */
     --topbar-h: calc(64px + var(--sat));
   }
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -214,7 +214,7 @@
     0%{ box-shadow:0 0 0 0 rgba(228,71,29,.45); } 70%{ box-shadow:0 0 0 8px rgba(228,71,29,0); } 100%{ box-shadow:0 0 0 0 rgba(228,71,29,0); }
   }
   @keyframes dotPulseAmber{
-    0%{ box-shadow:0 0 0 0 rgba(169,120,47,.4); } 70%{ box-shadow:0 0 0 8px rgba(169,120,47,0); } 100%{ box-shadow:0 0 0 0 rgba(169,120,47,0); }
+    0%{ box-shadow:0 0 0 0 rgba(184,130,51,.4); } 70%{ box-shadow:0 0 0 8px rgba(184,130,51,0); } 100%{ box-shadow:0 0 0 0 rgba(184,130,51,0); }
   }
   .card.garage{ background:transparent; border-style:dashed; }
   .card.invite{ background:transparent; border-style:dashed; }
@@ -472,7 +472,7 @@
   .cs-step-num { font-family:var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--accent-ink); text-transform: uppercase; }
   .cs-step-content h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
   .cs-step-content p { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
-  .cs-step-content code { background: rgba(237, 238, 234,.08); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; } /* TRIAL: was rgba(18,21,26,.06), a dark tint that goes invisible on a dark page */
+  .cs-step-content code { background: rgba(255,255,255,.08); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; } /* TRIAL: was rgba(18,21,26,.06), a dark tint that goes invisible on a dark page */
 
   /* ================= S1 hero ================= */
   /* No animation on this page by design — static layout only, sized to content. */
