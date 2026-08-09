@@ -205,6 +205,105 @@
   .workbench-content img { max-width: 100%; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.4); cursor: zoom-in; }
   .workbench-content pre { font-size: 13px; color: var(--ink-dark); white-space: pre-wrap; font-family: 'Inter', monospace; margin-top: 12px; }
 
+  /* ================= Veritio cloud chat (inline embed) ================= */
+  .embed-col {
+    width: 100%;
+    max-width: min(680px, 92vw);
+    margin: 0 auto;
+  }
+  .chat-embed {
+    position: relative;
+    width: 100%;
+    height: clamp(440px, 68vh, 620px);
+    background: var(--panel-dark);
+    border: 1px solid var(--edge-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 34px rgba(0,0,0,.3);
+  }
+  .chat-embed iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none; display: block;
+    background: #fff;
+  }
+  .chat-embed-status {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+    color: var(--muted-dark); font-size: 15px; line-height: 1.6;
+  }
+  .chat-embed-status a { color: var(--accent-hi); text-decoration: none; }
+  .embed-note {
+    margin-top: 10px;
+    font-size: 12px; color: var(--muted-dark); opacity: .85; text-align: center;
+  }
+
+  .veritio-tile {
+    display: block;
+    text-decoration: none;
+    background: var(--panel-dark);
+    border: 1px solid var(--edge-dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
+  }
+  .veritio-tile:hover, .veritio-tile:focus-visible { transform: translateY(-2px); border-color: var(--accent-hi); }
+  .veritio-tile h3 { font-size: 18px; font-weight: 700; color: var(--ink-dark); letter-spacing: -.01em; margin-bottom: 10px; }
+  .veritio-tile p { font-size: 15px; color: var(--muted-dark); line-height: 1.6; }
+  .veritio-tile p + p { margin-top: 12px; }
+  .veritio-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 14px; font-weight: 600; color: var(--accent-hi); }
+
+  /* ---- preview panel under the chat ---- */
+  .preview-panel {
+    margin-top: 24px;
+    background: var(--panel-dark);
+    border: 1px solid var(--edge-dark);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .preview-head {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.03);
+    border-bottom: 1px solid var(--edge-dark);
+    font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted-dark);
+  }
+  .preview-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+  .preview-chips button {
+    font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none;
+    color: var(--muted-dark); background: none; cursor: pointer;
+    border: 1px solid rgba(133,182,255,.2); border-radius: 12px; padding: 4px 10px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .preview-chips button:hover,
+  .preview-chips button:focus-visible,
+  .preview-chips button[aria-pressed="true"] { color: var(--accent-hi); border-color: rgba(133,182,255,.5); }
+  .preview-body { padding: 20px; min-height: 176px; display: flex; align-items: center; justify-content: center; }
+  .preview-empty { color: var(--muted-dark); font-size: 14px; line-height: 1.6; text-align: center; }
+  .preview-card { display: grid; grid-template-columns: minmax(0, 190px) 1fr; gap: 20px; align-items: center; width: 100%; }
+  /* one footprint for every preview: nothing cropped, nothing lopsided */
+  .preview-card img {
+    width: 100%; display: block;
+    aspect-ratio: 4 / 3; object-fit: contain;
+    border-radius: 8px; border: 1px solid var(--edge-dark); background: #0D1117;
+  }
+  .preview-card h4 { font-size: 17px; font-weight: 700; color: var(--ink-dark); letter-spacing: -.01em; margin-bottom: 6px; }
+  .preview-card p { font-size: 14px; color: var(--muted-dark); line-height: 1.6; }
+  .preview-links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+  .preview-links a { font-size: 13px; font-weight: 600; color: var(--accent-hi); text-decoration: none; }
+  .preview-links a:hover { text-decoration: underline; }
+  @media (max-width: 560px){
+    .preview-card { grid-template-columns: 1fr; }
+    .preview-head { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .veritio-tile { transition: none; }
+    .veritio-tile:hover, .veritio-tile:focus-visible { transform: none; }
+  }
+
 </style>
 </head>
 <body class="page-enter">
@@ -272,6 +371,36 @@
       <!-- Video Panel (Hidden by default) -->
       <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:0 16px 34px rgba(0,0,0,.4);">
       </div>
+    </div>
+  </section>
+
+  <!-- Cloud chat (Chatty by Veritio Digital) — sits below the local model -->
+  <section class="wrap" style="padding: 0 24px 64px;">
+    <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">Cloud chat by Veritio Digital</h2>
+    <div class="embed-col">
+      <div class="chat-embed" id="chatty-embed">
+        <div class="chat-embed-status" id="chatty-status">Loading the chat window…</div>
+      </div>
+      <p class="embed-note">Unlike the local model above, this one is hosted — messages go to chatty.veritiodigital.com.</p>
+
+      <!-- Preview panel: shows the thing being discussed. Chips drive it today;
+           it also listens for chat events, should the widget ever emit any. -->
+      <div class="preview-panel">
+        <div class="preview-head">
+          <span>Preview</span>
+          <div class="preview-chips" id="preview-chips"></div>
+        </div>
+        <div class="preview-body" id="preview-body">
+          <div class="preview-empty">Pick a topic — you'll get a shot of it and a link to its user guide.</div>
+        </div>
+      </div>
+
+      <a class="veritio-tile" href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">
+        <h3>Chatty, by Veritio Digital</h3>
+        <p>The window above is Chatty: live chat with an AI chatbot trained on your own docs, FAQs and site content, so people get an answer at 2am instead of a contact form. Installing it is one script tag — that's the whole integration, which is exactly how this kind of thing should feel.</p>
+        <p>Veritio Digital runs it as a hosted product: bot and human in the same inbox, a hand-off to a real person when the bot reaches its limit, and a 30-day free trial to see whether it earns its place. Worth a look if you'd rather answer a question once than a hundred times.</p>
+        <span class="veritio-link">veritiodigital.com →</span>
+      </a>
     </div>
   </section>
 </main>
@@ -570,6 +699,199 @@
     chatInput.focus();
     startIdleTimer();
   }
+</script>
+
+<!-- Chatty widget (Veritio Digital) — this page only, not site-wide -->
+<script async src="https://chatty.veritiodigital.com/widget.js" data-key="fbea77b17b1fb40363cf0cc1daec79e5"></script>
+<script>
+/* The vendor widget ships as a fixed launcher bubble plus a floating panel.
+   This page wants it as a full inline window, so we adopt the iframe it
+   injects into #chatty-embed and hide the bubble. Nothing here patches the
+   vendor script — if its markup ever changes, none of this matches and the
+   widget simply stays a bubble. */
+(function(){
+  var ORIGIN = 'https://chatty.veritiodigital.com';
+  var host = document.getElementById('chatty-embed');
+  var status = document.getElementById('chatty-status');
+  if (!host) return;
+
+  var adopted = false;
+
+  function hideLauncher(){
+    var btns = document.querySelectorAll('body > button[aria-label="Open chat"]');
+    for (var i = 0; i < btns.length; i++){ btns[i].style.display = 'none'; }
+  }
+
+  function adopt(){
+    if (adopted) return true;
+    var frame = document.querySelector('body > iframe[src^="' + ORIGIN + '"]');
+    if (!frame) return false;
+    adopted = true;
+    frame.style.cssText = '';          /* drop the vendor's fixed positioning */
+    frame.setAttribute('title', 'Chat with Chatty by Veritio Digital');
+    host.appendChild(frame);
+    if (status && status.parentNode) status.parentNode.removeChild(status);
+    hideLauncher();
+    setTimeout(hideLauncher, 300);
+    setTimeout(hideLauncher, 1500);
+    return true;
+  }
+
+  if (!adopt()){
+    var obs = new MutationObserver(function(){
+      hideLauncher();
+      if (adopt()) obs.disconnect();
+    });
+    obs.observe(document.body, { childList: true });
+    setTimeout(function(){
+      obs.disconnect();
+      if (!adopted && status){
+        status.innerHTML = 'The chat window didn\'t load. You can reach it at <a href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a>.';
+      }
+    }, 12000);
+  }
+})();
+</script>
+
+<!-- Preview panel: the workbench for the cloud chat -->
+<script>
+(function(){
+  var chipsEl = document.getElementById('preview-chips');
+  var bodyEl  = document.getElementById('preview-body');
+  if (!chipsEl || !bodyEl) return;
+
+  /* Every image and link here points at something that exists in this repo or
+     at a live page. Add a topic by adding an entry — nothing else to change. */
+  var TOPICS = [
+    {
+      key: 'nuptia',
+      chip: 'Nuptia',
+      title: 'Nuptia — Wedding Concierge',
+      img: '../assets/nuptia-hero.jpg',
+      context: 'https://calmdownoscar.com/apps/#wedding-concierge',
+      blurb: 'Conversational wedding planning for Mac and iOS: venue search, budgets, guest lists and seating, kept in sync across devices with CloudKit.',
+      links: [
+        { label: 'User guide →', href: 'https://nuptia.wedding/guide/', external: true },
+        { label: 'Mac App Store →', href: 'https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019', external: true }
+      ],
+      match: /nuptia|wedding|seating|guest list|concierge/i
+    },
+    {
+      key: 'unlidisk',
+      chip: 'Unli Disk',
+      title: 'Unli Disk',
+      img: '../assets/unlidisk_diskmap.png',
+      context: 'https://calmdownoscar.com/apps/unlidisk/',
+      blurb: 'A disk-space analyzer, developer-junk cleaner and photo-library organizer for macOS. Everything happens on device.',
+      links: [
+        { label: 'User guide →', href: '../apps/unlidisk/user_guide.html' },
+        { label: 'Overview →', href: '../apps/unlidisk/' }
+      ],
+      match: /unli ?disk|disk space|disk map|storage|junk/i
+    },
+    {
+      key: 'clearspace',
+      chip: 'ClearSpace',
+      title: 'ClearSpace',
+      img: '../assets/clearspace-icon.png',
+      context: 'https://calmdownoscar.com/apps/clearspace/',
+      blurb: "Sorts your photo library by what it's actually costing you — biggest videos and photos first. Live on the App Store.",
+      links: [
+        { label: 'User guide →', href: '../apps/clearspace/user_guide.html' },
+        { label: 'App Store →', href: 'https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807', external: true }
+      ],
+      match: /clear ?space|photo library|photos app/i
+    },
+    {
+      key: 'unlirice',
+      chip: 'Unli Rice',
+      title: 'Unli Rice',
+      img: '../assets/unli-rice-hero.png',
+      context: 'https://calmdownoscar.com/unlirice/',
+      blurb: 'A persistent memory layer for AI agents on the Mac — an append-only local note log every connected agent reads and writes.',
+      links: [
+        { label: 'Overview →', href: '../unlirice/' },
+        { label: 'Source →', href: 'https://github.com/CalixOscar/unli-rice', external: true }
+      ],
+      match: /unli ?rice|memory layer|agent memory|vault/i
+    },
+    {
+      key: 'studio',
+      chip: 'The studio',
+      title: 'Peter & Oscar',
+      img: '../assets/Oscar.jpeg',
+      context: 'https://calmdownoscar.com/aboutme/',
+      blurb: 'The story behind calmdownoscar, a solo independent app studio — and how the apps actually get built.',
+      links: [
+        { label: 'About me →', href: '../aboutme/' },
+        { label: 'How I work →', href: '../how_I_work/' }
+      ],
+      match: /peter|oscar|creator|about (you|him|the)|studio|who (are|is)/i
+    }
+  ];
+
+  var current = null;
+
+  /* The one channel their widget actually accepts: it listens for
+     `relay:page_url` and forwards the URL to their backend as the visitor's
+     page context (fire-and-forget — it ignores the response and never touches
+     the conversation or the UI). So a chip can tell the chat what the visitor
+     is looking at. One-way; we still can't read anything back. */
+  function tellChat(url){
+    var frame = document.querySelector('#chatty-embed iframe');
+    if (!frame || !frame.contentWindow || !url) return;
+    try {
+      frame.contentWindow.postMessage({ type: 'relay:page_url', url: url }, 'https://chatty.veritiodigital.com');
+    } catch (e) { /* noop */ }
+  }
+
+  function render(topic){
+    current = topic.key;
+    tellChat(topic.context);
+    var links = topic.links.map(function(l){
+      var attrs = l.external ? ' target="_blank" rel="noopener noreferrer"' : '';
+      return '<a href="' + l.href + '"' + attrs + '>' + l.label + '</a>';
+    }).join('');
+    bodyEl.innerHTML =
+      '<div class="preview-card">' +
+        '<img src="' + topic.img + '" alt="' + topic.title + '">' +
+        '<div>' +
+          '<h4>' + topic.title + '</h4>' +
+          '<p>' + topic.blurb + '</p>' +
+          '<div class="preview-links">' + links + '</div>' +
+        '</div>' +
+      '</div>';
+    var btns = chipsEl.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++){
+      btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-key') === topic.key ? 'true' : 'false');
+    }
+  }
+
+  TOPICS.forEach(function(topic){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = topic.chip;
+    btn.setAttribute('data-key', topic.key);
+    btn.setAttribute('aria-pressed', 'false');
+    btn.addEventListener('click', function(){ render(topic); });
+    chipsEl.appendChild(btn);
+  });
+
+  /* The chat window is a cross-origin iframe and its widget emits nothing to
+     this page, so it cannot drive the panel today. If Veritio ever posts
+     message events out, this picks them up with no further changes: any
+     message from their origin carrying a text field gets keyword-matched. */
+  window.addEventListener('message', function(e){
+    if (e.origin !== 'https://chatty.veritiodigital.com') return;
+    var d = e.data;
+    if (!d || typeof d !== 'object') return;
+    var text = typeof d.text === 'string' ? d.text : (typeof d.message === 'string' ? d.message : '');
+    if (!text) return;
+    for (var i = 0; i < TOPICS.length; i++){
+      if (TOPICS[i].match.test(text) && TOPICS[i].key !== current){ render(TOPICS[i]); return; }
+    }
+  });
+})();
 </script>
 
 </body>
