@@ -461,24 +461,11 @@
   .cs-step-content code { background: rgba(18, 21, 26,.06); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
 
   /* ================= S1 hero ================= */
+  /* No animation on this page by design — static layout only, sized to content. */
   .hero{
-    min-height:52svh;                  /* svh, not vh — mobile URL bar */
-    display:flex; flex-direction:column; justify-content:flex-start;
-    padding:0 0 clamp(40px, 7vh, 88px);
+    padding-bottom:clamp(24px, 4vh, 40px);   /* top padding comes from section:first-of-type */
   }
-  section.hero:first-of-type{ padding-top:clamp(40px, 8vh, 88px); }
   .hero .wrap{ width:100%; }
-  .hero-inner{ will-change:transform; }
-  .hero-eyebrow{
-    font-family:var(--font-mono);
-    font-size:var(--step--1); font-weight:500; letter-spacing:.01em;
-    text-transform:uppercase; color:var(--muted);
-    margin-bottom:clamp(20px, 4vh, 36px);
-    display:flex; flex-wrap:wrap; gap:0 14px;
-  }
-  .hero-eyebrow span{ display:inline-flex; gap:14px; }
-  .hero-eyebrow span::after{ content:"/"; color:var(--edge); }
-  .hero-eyebrow span:last-child::after{ content:none; }
   .hero h1{
     font-family:var(--font-display);
     font-size:var(--step-3); font-weight:800;
@@ -489,38 +476,6 @@
     font-size:var(--step-1); color:var(--muted);
     max-width:46ch; line-height:1.35;
     margin-top:clamp(20px, 3.5vh, 32px);
-  }
-  .hero-links{ display:flex; flex-wrap:wrap; gap:24px; margin-top:clamp(24px, 4vh, 40px); }
-  .hero-links a{
-    font-size:var(--step-0); color:var(--ink); text-decoration:none;
-    border-bottom:1px solid var(--edge); padding-bottom:3px;
-    min-height:44px; display:inline-flex; align-items:center;
-    transition:border-color var(--base) var(--ease);
-  }
-  .hero-links a:hover, .hero-links a:focus-visible{ border-bottom-color:var(--accent); }
-  .hero-links .arrow{ display:inline-block; margin-left:6px; transition:transform var(--base) var(--ease); }
-  .hero-links a:hover .arrow{ transform:translateX(3px); }
-
-  /* scroll affordance — the only looping animation on the page, and it is 1px wide */
-  .hero-scroll{
-    margin-top:clamp(24px, 3.5vh, 40px);
-    width:1px; height:40px; background:var(--edge);
-    position:relative; overflow:hidden;
-  }
-  .hero-scroll::after{
-    content:""; position:absolute; left:0; top:0;
-    width:1px; height:12px; background:var(--accent);
-    animation:scrollHint 2.4s var(--ease) infinite;
-  }
-  @keyframes scrollHint{ from{ transform:translateY(-12px); } to{ transform:translateY(40px); } }
-
-  @media (prefers-reduced-motion: reduce){
-    .hero-scroll::after{ animation:none; transform:translateY(14px); }
-    .hero-inner{ transform:none !important; }
-  }
-  @media (max-width:640px){
-    .hero{ min-height:auto; padding:clamp(40px,8vh,72px) 0 clamp(48px,8vh,80px); }
-    .hero-inner{ transform:none !important; }
   }
 </style>
 </head>
@@ -548,7 +503,6 @@
         <p class="hero-lede">
           On-device when the data is yours, relayed through a server when it isn't.
         </p>
-        <div class="hero-scroll" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -561,7 +515,7 @@
 
         <!-- Wedding Concierge -->
         <article class="card live reveal" id="wedding-concierge">
-          <span class="status"><i class="dot"></i>Mac App Store · iOS Awaiting Review</span>
+          <span class="status"><i class="dot"></i>Live in Mac App Store · iOS Awaiting Review</span>
           <div class="card-head">
             <img class="app-icon" src="assets/nuptia-icon.png" alt="Wedding Concierge app icon" width="44" height="44">
             <div>
@@ -820,7 +774,6 @@
 (function(){
   var video = document.querySelector('.bg-video');
   var scrim = document.querySelector('.bg-scrim');
-  var heroInner = document.querySelector('.hero-inner');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (video && !reduceMotion.matches){
     var ready = false;
@@ -876,15 +829,6 @@
 
     function scrubToScroll(){
       ticking = false;
-
-      // Hero text parallax at 0.06x, capped at 120px. Written from this same
-      // rAF tick rather than a second listener, and transform-only. Runs
-      // regardless of video readiness, so it can't stall on a slow decode.
-      if (heroInner && window.innerWidth > 640){
-        var shift = Math.min(120, window.scrollY * 0.06);
-        heroInner.style.transform = 'translate3d(0,' + shift.toFixed(2) + 'px,0)';
-      }
-
       if (!ready || !video.duration) return;
       var progress = maxScroll > startOffset ? Math.min(1, Math.max(0, (window.scrollY - startOffset) / (maxScroll - startOffset))) : 0;
       target = progress * video.duration;
