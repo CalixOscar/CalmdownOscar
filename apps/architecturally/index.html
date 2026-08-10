@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#141B22">
+<title>Architecturally — calmdownoscar</title>
+<meta name="description" content="Architecturally is an AI home concept generator for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough, then preview it in rough 3D.">
+<meta property="og:title" content="Architecturally — calmdownoscar">
+<meta property="og:description" content="Architecturally is an AI home concept generator for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough, then preview it in rough 3D.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calmdownoscar.com/apps/architecturally/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  :root{
+    --bg:      #141B22;
+    --panel:   rgba(255,255,255,.05);
+    --edge:    rgba(255,255,255,.09);
+    --edge-hi: rgba(133,182,255,.4);
+    --accent:  #85B6FF;
+    --ink:     #E8EEF4;
+    --muted:   #8FA0AE;
+    --topbar-h: 76px;
+    --window-chrome: #E8EDF0;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--accent); color:#fff; }
+  body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--topbar-h);
+    overflow-x:hidden;
+  }
+  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--topbar-h);
+    background:rgba(20,27,34,.86);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--edge);
+  }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
+  .mark span{ color:var(--accent); }
+  nav a{
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    margin-left:22px;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+
+  main{ padding:56px 0 96px; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 20px;
+  }
+  .status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: dotPulse 2.2s ease-out infinite;
+  }
+  @keyframes dotPulse {
+    0% { box-shadow: 0 0 0 0 currentColor; }
+    70% { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .product-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+  .hero-icon{
+    width: 68px; height: 68px; border-radius: 17px;
+    background: var(--accent); color: #10161f;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 30px; flex-shrink: 0;
+    box-shadow: 0 8px 22px rgba(32,43,54,.20);
+  }
+  h1{
+    font-weight: 800;
+    font-size: clamp(32px, 6vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+  h1 span{ color: var(--accent); }
+  .lede{ margin-top: 16px; max-width: 64ch; font-size: 17px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; }
+
+  .meta{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .pill{
+    color: var(--muted); border: 1px solid var(--edge); border-radius: 20px;
+    padding: 4px 12px; font-size: 12px; font-weight: 500; background: transparent;
+  }
+
+  .section-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--edge);
+  }
+
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 860px) {
+    .showcase-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .showcase-wide { margin-bottom: 40px; }
+  .showcase-wide .window-body img { width: 100%; }
+
+  .showcase-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(6px);
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .showcase-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--edge-hi);
+    box-shadow: 0 16px 34px rgba(32,43,54,.12);
+  }
+
+  .window-header {
+    background: var(--window-chrome);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--edge);
+    justify-content: space-between;
+  }
+  .window-dots { display: flex; gap: 6px; }
+  .window-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot-red { background: #FF5F56; }
+  .dot-yellow { background: #FFBD2E; }
+  .dot-green { background: #27C93F; }
+
+  .window-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .window-body {
+    padding: 18px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .window-body.dark-body {
+    background: #0B0F14;
+    padding: 0;
+  }
+  .window-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 4px 14px rgba(32, 43, 54, 0.06);
+  }
+  .window-body.dark-body img { border-radius: 0; border: none; box-shadow: none; display: block; width: 100%; }
+
+  .card-info {
+    padding: 22px 20px;
+    border-top: 1px solid var(--edge);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .card-info h3 {
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .card-info h3 span { color: var(--accent); }
+  .card-info p {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .engine-note {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 56px;
+    backdrop-filter: blur(6px);
+  }
+  .engine-note h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .engine-note p {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .engine-note code {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .tech-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 28px 24px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 48px;
+  }
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .tech-item h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.09);
+    padding-bottom: 4px;
+  }
+  .tech-item p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .tech-item p strong { color: var(--ink); }
+
+  .action-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 24px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 36px;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .action-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--edge-hi);
+    box-shadow: 0 14px 34px rgba(32,43,54,.14);
+  }
+  .action-card a.applink {
+    color: var(--ink); font-weight: 600; font-size: 14px; text-decoration: none;
+    transition: color .2s ease;
+  }
+  .action-card a.applink:hover { color: var(--accent); }
+  .action-card a.applink .arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.7,.3,1); }
+  .action-card a.applink:hover .arrow { transform: translateX(5px); }
+
+  .back {
+    display: inline-block; margin-top: 16px;
+    color: var(--ink); font-weight: 500; text-decoration: none; font-size: 14px;
+    transition: color .2s ease;
+  }
+  .back:hover { color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--edge); padding: 22px 0 40px;
+    color: var(--muted); font-size: 13px; margin-top: 64px;
+  }
+  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  .reveal {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width:640px){
+    .nav { flex-direction: column; align-items: flex-start; padding: 14px 0; height: auto; }
+    header { position: static; }
+    body { padding-top: 0; }
+    nav a { margin-left: 0; margin-right: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html { scroll-behavior: auto; }
+    .showcase-card, .action-card { transition: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="../../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="../../how_I_work/">How I Work</a>
+      <a href="../../the_studio/">The Studio</a>
+      <a href="../../aboutme/">About Me</a>
+      <a href="../../hobbies/">Hobbies</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="status-badge reveal">
+      <span class="dot"></span>
+      iPadOS · AI Home Concept Generator
+    </div>
+
+    <div class="product-head reveal">
+      <div class="hero-icon">A</div>
+      <h1>Architectur<span>ally</span></h1>
+    </div>
+
+    <p class="lede reveal">Turns a lot and a wishlist into a home you can walk through. Describe how you want to live, draw a plan by hand, or paste a public YouTube walkthrough, and Architecturally builds an editable floor plan with a rough 3D preview — before you pay a professional to draw it properly. Native SwiftUI for iPad.</p>
+
+    <div class="meta reveal">
+      <span class="pill">iPadOS</span>
+      <span class="pill">Constraint-Aware AI</span>
+      <span class="pill">Voice-Driven Canvas</span>
+      <span class="pill">Rough 3D Preview</span>
+      <span class="pill">Video-to-Plan</span>
+    </div>
+
+    <!-- 2D plan showcase, wide -->
+    <div class="showcase-card showcase-wide reveal">
+      <div class="window-header">
+        <div class="window-dots">
+          <span class="window-dot dot-red"></span>
+          <span class="window-dot dot-yellow"></span>
+          <span class="window-dot dot-green"></span>
+        </div>
+        <span class="window-title">iPadOS — Floor Plan Editor</span>
+        <div style="width: 39px;"></div>
+      </div>
+      <div class="window-body dark-body">
+        <img src="../assets/architecturally_2d.png"
+             alt="Architecturally's 2D floor plan editor showing a sample home called Courtyard Retreat, with labelled rooms including Living, Kitchen, Bedrooms, and a central Courtyard, each with measurements.">
+      </div>
+      <div class="card-info">
+        <h3>The plan, always editable <span>never locked</span></h3>
+        <p>Every wall, door, and window on the canvas is a real object you can drag, resize, or redraw — whether you drew it yourself, generated it from a brief, or reconstructed it from a video. Rooms carry live dimensions as you move them, so a change to one wall updates the numbers everywhere else.</p>
+      </div>
+    </div>
+
+    <!-- Showcase Grid: Home + 3D -->
+    <div class="showcase-grid reveal">
+      <div class="showcase-card">
+        <div class="window-header">
+          <div class="window-dots">
+            <span class="window-dot dot-red"></span>
+            <span class="window-dot dot-yellow"></span>
+            <span class="window-dot dot-green"></span>
+          </div>
+          <span class="window-title">iPadOS — Projects</span>
+          <div style="width: 39px;"></div>
+        </div>
+        <div class="window-body dark-body">
+          <img src="../assets/architecturally_home.png"
+               alt="Architecturally's Projects home screen with three starting points: Start a conversation, Start from scratch, and Video to plan, plus two sample homes to explore.">
+        </div>
+        <div class="card-info">
+          <h3>Three ways in</h3>
+          <p>Describe the home in your own words, start from a blank canvas, or hand it a walkthrough video — the same editable plan comes out the other side regardless of which door you walk through.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <div class="window-header">
+          <div class="window-dots">
+            <span class="window-dot dot-red"></span>
+            <span class="window-dot dot-yellow"></span>
+            <span class="window-dot dot-green"></span>
+          </div>
+          <span class="window-title">iPadOS — Rough 3D</span>
+          <div style="width: 39px;"></div>
+        </div>
+        <div class="window-body dark-body">
+          <img src="../assets/architecturally_3d.png"
+               alt="Architecturally's rough 3D massing preview of the Courtyard Retreat plan, showing extruded walls, doors, and windows with no roof or finishes yet.">
+        </div>
+        <div class="card-info">
+          <h3>Massing, not a render</h3>
+          <p>Walls extrude live from the 2D drawing into a roofless massing model — orbit, pan, and zoom to judge scale and flow in seconds, without leaving the app or waiting on a render queue.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engine note -->
+    <div class="engine-note reveal">
+      <h4>Requirements survive the exploration</h4>
+      <p>A conversation with Architecturally produces a structured concept brief before any geometry — lot constraints, programme, hard requirements, and assumptions, kept as <code>ProjectBrief</code> data attached to the concept. Styles, 3D views, and exports can change without silently dropping the bedroom count or the setback you specified.</p>
+    </div>
+
+    <!-- Architecture & status section -->
+    <section style="padding: 0 0 16px;">
+      <div class="section-label reveal">Architecture &amp; status</div>
+
+      <div class="tech-card reveal">
+        <div class="tech-grid">
+          <div class="tech-item">
+            <h4>Platform</h4>
+            <p>Native iPad app in <strong>Swift</strong> and <strong>SwiftUI</strong>, targeting iPadOS 18.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Generation backend</h4>
+            <p>A <strong>Vercel</strong> API proxy forwards briefs, canvas commands, and video URLs to <strong>Google Gemini</strong> — provider keys never ship in the app.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Local-first storage</h4>
+            <p>Floor plans and concepts live on-device. AI credit balance syncs through your own private <strong>iCloud</strong> account via CloudKit — not a server we control.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Video-to-plan</h4>
+            <p>A public YouTube URL is sent to Gemini for inspection; the video itself is never downloaded or stored by Architecturally.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Credits, not a subscription</h4>
+            <p>20 free AI credits on iCloud sign-in. Drawing, editing, saving, and rough 3D previews never cost credits.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action links -->
+    <div class="action-card reveal">
+      <a class="applink" href="user_guide.html">Read the User Guide <span class="arrow">→</span></a>
+      <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">→</span></a>
+      <a class="applink" href="mailto:peter@calmdownoscar.com">Email Peter <span class="arrow">→</span></a>
+    </div>
+
+    <a class="back reveal" href="../">← Back to Apps</a>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+</footer>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var revealEls = document.querySelectorAll('.reveal');
+  if (reduce.matches || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
