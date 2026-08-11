@@ -90,6 +90,7 @@
     --panel:   rgba(255,255,255,0.4);
     --edge-hi: rgba(228,71,29,.4);
     --progress:#B88233;   /* TRIAL: was #A9782F, which is 4.48:1 on the dark bg — just under AA, and it's real small text (the amber "Awaiting Review" status on 3 cards). Brightened to 5.19:1. Revert to #A9782F with the light theme. */
+    --live-green:#34C759;   /* Apple system green — ~8.6:1 on the dark bg, used for "shipped/live" status text and the App Store badge pill */
     --topbar-h: calc(64px + var(--sat));
   }
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -204,17 +205,30 @@
     display:flex; align-items:center; gap:8px;
   }
   .card.live .status{ color:var(--accent-ink); }
+  .card.shipped .status{ color:var(--live-green); }
   .card.progress .status{ color:var(--progress); }
   .card.garage .status{ color:var(--muted); }
   .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:dotPulse 2.2s ease-out infinite; }
   .dot.amber{ background:var(--progress); animation:dotPulseAmber 2.2s ease-out infinite; }
-  .dot, .dot.amber{ animation-play-state:paused; }
-  html.is-scrolling .dot, html.is-scrolling .dot.amber{ animation-play-state:running; }
+  .dot.green{ background:var(--live-green); animation:dotPulseGreen 2.2s ease-out infinite; }
+  .dot, .dot.amber, .dot.green{ animation-play-state:paused; }
+  html.is-scrolling .dot, html.is-scrolling .dot.amber, html.is-scrolling .dot.green{ animation-play-state:running; }
+  .store-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); color:var(--live-green);
+    border:1px solid var(--live-green);
+    border-radius:var(--radius);
+    padding:4px 9px; font-size:12px; margin-top:8px;
+  }
+  .store-pill svg{ width:13px; height:13px; flex-shrink:0; }
   @keyframes dotPulse{
     0%{ box-shadow:0 0 0 0 rgba(228,71,29,.45); } 70%{ box-shadow:0 0 0 8px rgba(228,71,29,0); } 100%{ box-shadow:0 0 0 0 rgba(228,71,29,0); }
   }
   @keyframes dotPulseAmber{
     0%{ box-shadow:0 0 0 0 rgba(184,130,51,.4); } 70%{ box-shadow:0 0 0 8px rgba(184,130,51,0); } 100%{ box-shadow:0 0 0 0 rgba(184,130,51,0); }
+  }
+  @keyframes dotPulseGreen{
+    0%{ box-shadow:0 0 0 0 rgba(52,199,89,.4); } 70%{ box-shadow:0 0 0 8px rgba(52,199,89,0); } 100%{ box-shadow:0 0 0 0 rgba(52,199,89,0); }
   }
   .card.garage{ background:transparent; border-style:dashed; }
   .card.invite{ background:transparent; border-style:dashed; }
@@ -624,8 +638,8 @@
         </article>
 
         <!-- ClearSpace -->
-        <article class="card progress reveal" id="clearspace">
-          <span class="status"><i class="dot"></i>Live on the App Store</span>
+        <article class="card shipped reveal" id="clearspace">
+          <span class="status"><i class="dot green"></i>Live in App Store</span>
           <div class="card-head">
             <img class="app-icon" src="assets/clearspace-icon.png" alt="ClearSpace app icon" width="44" height="44">
             <div>
@@ -639,7 +653,11 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
+          <a class="store-pill" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">
+            <svg viewBox="0 0 384 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141 8 184.8 8 273.5c0 25.9 4.7 52.7 14.2 80.4 12.7 36.7 58.4 126.7 106.2 125.2 25-.6 42.7-17.8 75.3-17.8 31.7 0 48 17.8 75.9 17.8 48.2-.7 89.5-82.5 101.6-119.3-64.7-30.5-62.5-89.3-62.5-91.1zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            iOS App Store
+          </a>
+          <p style="color:var(--muted); font-size:15px; margin-top:8px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
