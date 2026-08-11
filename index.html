@@ -91,6 +91,7 @@
     --edge-hi: rgba(228,71,29,.4);
     --progress:#B88233;   /* TRIAL: was #A9782F, which is 4.48:1 on the dark bg — just under AA, and it's real small text (the amber "Awaiting Review" status on 3 cards). Brightened to 5.19:1. Revert to #A9782F with the light theme. */
     --live-green:#34C759;   /* Apple system green — ~8.6:1 on the dark bg, used for "shipped/live" status text and the App Store badge pill */
+    --status-red:#E5484D;   /* in development / not yet submitted — distinct from --accent so it doesn't read as the brand color */
     --topbar-h: calc(64px + var(--sat));
   }
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -207,20 +208,16 @@
   .card.live .status{ color:var(--accent-ink); }
   .card.shipped .status{ color:var(--live-green); }
   .card.progress .status{ color:var(--progress); }
+  .card.dev .status{ color:var(--status-red); }
   .card.garage .status{ color:var(--muted); }
   .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:dotPulse 2.2s ease-out infinite; }
   .dot.amber{ background:var(--progress); animation:dotPulseAmber 2.2s ease-out infinite; }
   .dot.green{ background:var(--live-green); animation:dotPulseGreen 2.2s ease-out infinite; }
-  .dot, .dot.amber, .dot.green{ animation-play-state:paused; }
-  html.is-scrolling .dot, html.is-scrolling .dot.amber, html.is-scrolling .dot.green{ animation-play-state:running; }
-  .store-pill{
-    display:inline-flex; align-items:center; gap:6px;
-    font-family:var(--font-mono); color:var(--live-green);
-    border:1px solid var(--live-green);
-    border-radius:var(--radius);
-    padding:4px 9px; font-size:12px; margin-top:8px;
-  }
-  .store-pill svg{ width:13px; height:13px; flex-shrink:0; }
+  .dot.red{ background:var(--status-red); animation:dotPulseRed 2.2s ease-out infinite; }
+  .dot, .dot.amber, .dot.green, .dot.red{ animation-play-state:paused; }
+  html.is-scrolling .dot, html.is-scrolling .dot.amber, html.is-scrolling .dot.green, html.is-scrolling .dot.red{ animation-play-state:running; }
+  .store-badge{ display:inline-block; margin-top:12px; line-height:0; }
+  .store-badge img{ display:block; height:40px; width:auto; }
   @keyframes dotPulse{
     0%{ box-shadow:0 0 0 0 rgba(228,71,29,.45); } 70%{ box-shadow:0 0 0 8px rgba(228,71,29,0); } 100%{ box-shadow:0 0 0 0 rgba(228,71,29,0); }
   }
@@ -229,6 +226,9 @@
   }
   @keyframes dotPulseGreen{
     0%{ box-shadow:0 0 0 0 rgba(52,199,89,.4); } 70%{ box-shadow:0 0 0 8px rgba(52,199,89,0); } 100%{ box-shadow:0 0 0 0 rgba(52,199,89,0); }
+  }
+  @keyframes dotPulseRed{
+    0%{ box-shadow:0 0 0 0 rgba(229,72,77,.4); } 70%{ box-shadow:0 0 0 8px rgba(229,72,77,0); } 100%{ box-shadow:0 0 0 0 rgba(229,72,77,0); }
   }
   .card.garage{ background:transparent; border-style:dashed; }
   .card.invite{ background:transparent; border-style:dashed; }
@@ -542,8 +542,8 @@
       <div class="app-grid">
 
         <!-- Wedding Concierge -->
-        <article class="card live reveal" id="wedding-concierge">
-          <span class="status"><i class="dot"></i>Live in Mac App Store · iOS Awaiting Review</span>
+        <article class="card progress reveal" id="wedding-concierge">
+          <span class="status"><i class="dot amber"></i>Live in Mac App Store · iOS Awaiting Review</span>
           <div class="card-head">
             <img class="app-icon" src="assets/nuptia-icon.png" alt="Wedding Concierge app icon" width="44" height="44">
             <div>
@@ -589,8 +589,8 @@
         </article>
 
         <!-- Unli Rice -->
-        <article class="card live reveal" id="unli-rice">
-          <span class="status"><i class="dot"></i>Mac App Store · Open Source</span>
+        <article class="card shipped reveal" id="unli-rice">
+          <span class="status"><i class="dot green"></i>Mac App Store · Open Source</span>
           <div class="card-head">
             <img class="app-icon" src="assets/unli-rice-icon.png" alt="Unli Rice app icon" width="44" height="44">
             <div>
@@ -653,11 +653,7 @@
               </div>
             </div>
           </div>
-          <a class="store-pill" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">
-            <svg viewBox="0 0 384 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141 8 184.8 8 273.5c0 25.9 4.7 52.7 14.2 80.4 12.7 36.7 58.4 126.7 106.2 125.2 25-.6 42.7-17.8 75.3-17.8 31.7 0 48 17.8 75.9 17.8 48.2-.7 89.5-82.5 101.6-119.3-64.7-30.5-62.5-89.3-62.5-91.1zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-            iOS App Store
-          </a>
-          <p style="color:var(--muted); font-size:15px; margin-top:8px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
@@ -683,8 +679,11 @@
             </div>
           </div>
 
+          <a class="store-badge" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" width="120" height="40">
+          </a>
+
           <div class="links">
-            <a class="applink" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">Get it on the App Store <span class="arrow">→</span></a>
             <a class="privacy-link" href="clearspace/privacy.html">Privacy Policy</a>
           </div>
         </article>
@@ -737,8 +736,8 @@
         </article>
 
         <!-- Architecturally -->
-        <article class="card progress reveal" id="architecturally">
-          <span class="status"><i class="dot amber"></i>In Development</span>
+        <article class="card dev reveal" id="architecturally">
+          <span class="status"><i class="dot red"></i>In Development</span>
           <div class="card-head">
             <div class="app-icon" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px;">A</div>
             <div>
