@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#141B22">
 <title>Architecturally — calmdownoscar</title>
-<meta name="description" content="Architecturally is an AI home concept generator for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough, then preview it in rough 3D.">
+<meta name="description" content="Architecturally is an AI home concept generator and CAD drafting workspace for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough — with a copilot that runs on-device via MLX or in the cloud.">
 <meta property="og:title" content="Architecturally — calmdownoscar">
-<meta property="og:description" content="Architecturally is an AI home concept generator for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough, then preview it in rough 3D.">
+<meta property="og:description" content="Architecturally is an AI home concept generator and CAD drafting workspace for iPad. Describe a lot and a wishlist, draw it by hand, or reconstruct a plan from a YouTube walkthrough — with a copilot that runs on-device via MLX or in the cloud.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://calmdownoscar.com/apps/architecturally/">
 <meta name="twitter:card" content="summary_large_image">
@@ -357,13 +357,14 @@
       <h1>Architectur<span>ally</span></h1>
     </div>
 
-    <p class="lede reveal">Turns a lot and a wishlist into a home you can walk through. Describe how you want to live, draw a plan by hand, or paste a public YouTube walkthrough, and Architecturally builds an editable floor plan with a rough 3D preview — before you pay a professional to draw it properly. Native SwiftUI for iPad.</p>
+    <p class="lede reveal">Turns a lot and a wishlist into a home you can walk through. Describe how you want to live, draw a plan by hand, or paste a public YouTube walkthrough, and Architecturally builds an editable floor plan, a real CAD drawing, and a 3D you can stand inside — before you pay a professional to draw it properly. The copilot runs on the iPad itself where the hardware allows, and in the cloud where it doesn't. Native SwiftUI for iPad.</p>
 
     <div class="meta reveal">
       <span class="pill">iPadOS</span>
-      <span class="pill">Constraint-Aware AI</span>
-      <span class="pill">Voice-Driven Canvas</span>
-      <span class="pill">Rough 3D Preview</span>
+      <span class="pill">On-Device MLX</span>
+      <span class="pill">Cloud Fallback</span>
+      <span class="pill">CAD Drafting</span>
+      <span class="pill">3D Walkthrough</span>
       <span class="pill">Video-to-Plan</span>
     </div>
 
@@ -437,6 +438,84 @@
       <p>A conversation with Architecturally produces a structured concept brief before any geometry — lot constraints, programme, hard requirements, and assumptions, kept as <code>ProjectBrief</code> data attached to the concept. Styles, 3D views, and exports can change without silently dropping the bedroom count or the setback you specified.</p>
     </div>
 
+    <!-- Copilot section -->
+    <section style="padding: 0 0 16px;">
+      <div class="section-label reveal">The copilot — on the iPad, or in the cloud</div>
+
+      <div class="engine-note reveal">
+        <h4>One command, three engines behind it</h4>
+        <p>Ask the drawing for something — "draft a 3-bedroom plan", "widen the hallway", "furnish the living room" — and a router decides who answers: a deterministic interpreter for edits that need no model at all, a language model running on the iPad itself, or the cloud. The choice is yours to fix: <code>Automatic</code>, <code>On device only</code>, or <code>Cloud</code>. It changes latency, cost, and privacy — never what is allowed to reach your drawing.</p>
+      </div>
+
+      <div class="tech-card reveal">
+        <div class="tech-grid">
+          <div class="tech-item">
+            <h4>On-device via MLX</h4>
+            <p>A 4-bit <strong>Llama 3.2 3B Instruct</strong> runs locally through <strong>MLX Swift</strong>, on Apple silicon, using the iPad's own GPU. Weights are downloaded once on request, kept out of iCloud backup, and released the moment the app goes to the background — so a model you aren't using isn't holding 2 GB hostage.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Nothing leaves the device</h4>
+            <p>In <code>On device only</code>, the drawing, the brief, and the catalog never touch a network. It works in airplane mode, on a site with no signal, and it costs no AI credits — local inference is free.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Cloud for the rest</h4>
+            <p>Not every iPad can carry a 3B model. Below the memory floor the copilot simply uses <strong>Gemini 3.6 Flash</strong> through the app's own relay instead — same commands, same panel, no feature held back. A 6 GB iPad gets the full copilot; it just answers from a server.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Escalation, not a dead end</h4>
+            <p>On <code>Automatic</code>, a capable device drafts locally and hands the hard briefs up to the cloud when the local answer falls short. The proposal says which engine wrote it and flags when it was escalated, so you always know what you're reading.</p>
+          </div>
+          <div class="tech-item">
+            <h4>A floor, not a lock</h4>
+            <p>The local model is offered by default only above roughly <strong>8 GB of memory</strong> — M-series iPads and Pro iPhones — because a model that gets killed mid-draft is worse than one never offered. The recommendation is stated plainly and can be overridden per device.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Same gate for every engine</h4>
+            <p>Local and cloud answers are intent only — catalog ids, materials, millimetre offsets, layer names. Never document ids or timestamps. The app rebuilds every proposal from live state and validates it again before committing, so a hallucinated identifier cannot reach the drawing, and you still press Apply.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAD & 3D section -->
+    <section style="padding: 0 0 16px;">
+      <div class="section-label reveal">Drafting &amp; 3D</div>
+
+      <div class="engine-note reveal">
+        <h4>A real drawing underneath the sketch</h4>
+        <p>What looks like a sketch is a proper CAD document: millimetre geometry on named layers, drawn in whichever unit you think in — millimetres, centimetres, metres, or inches. Line, polyline, arc, rectangle, circle, wall, door, window, dimension, and text tools, with hatching, snapping, and undo on every step.</p>
+      </div>
+
+      <div class="tech-card reveal">
+        <div class="tech-grid">
+          <div class="tech-item">
+            <h4>Sheets at an exact scale</h4>
+            <p>Publish to <strong>PDF or SVG</strong> at a true 1:N drawing scale on A4 through A1, Letter, or Tabloid — with a title block, not a screenshot of the canvas.</p>
+          </div>
+          <div class="tech-item">
+            <h4>DXF in and out</h4>
+            <p>Import a <strong>DXF</strong> to draft over someone else's survey or plan, and export one to hand your work to an architect's own CAD without retyping a wall.</p>
+          </div>
+          <div class="tech-item">
+            <h4>A furnished house catalog</h4>
+            <p>Nearly 200 built-in assets — seating, beds, kitchen and bathroom fittings, lighting, rugs, doors, windows, roofs, outdoor structures — plus room packages that drop a whole furnished bedroom or kitchen in one tap. Every asset carries both its plan symbol and its 3D shape.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Twenty plans to start from</h4>
+            <p>Apartments, condos, and houses from one to five bedrooms, generated from a room programme rather than downloaded — open one, then revise it in place instead of starting a second drawing beside it. The furniture travels with its room when a plan is redrafted.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Massing, live from the plan</h4>
+            <p>Walls, openings, and furniture extrude straight out of the 2D drawing into a <strong>SceneKit</strong> model. Orbit, pan, and zoom to judge scale and flow — the scene is a disposable snapshot, so opening the viewer can never alter or re-save your drawing.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Walk it at eye height</h4>
+            <p>Drop into the model at <strong>1.6 m</strong> and walk the plan: doors swing and slide on their hinges, stairs carry you between storeys, and walls stop you where real ones would. It's the fastest way to find out that a hallway you drew is too narrow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Architecture & status section -->
     <section style="padding: 0 0 16px;">
       <div class="section-label reveal">Architecture &amp; status</div>
@@ -448,8 +527,12 @@
             <p>Native iPad app in <strong>Swift</strong> and <strong>SwiftUI</strong>, targeting iPadOS 18.</p>
           </div>
           <div class="tech-item">
-            <h4>Generation backend</h4>
-            <p>A <strong>Vercel</strong> API proxy forwards briefs, canvas commands, and video URLs to <strong>Google Gemini</strong> — provider keys never ship in the app.</p>
+            <h4>Inference</h4>
+            <p><strong>MLX Swift</strong> on-device where the hardware carries it; otherwise a <strong>Vercel</strong> relay forwards briefs, canvas commands, and video URLs to <strong>Google Gemini</strong>. Provider keys never ship in the app, and the relay keeps nothing after it answers.</p>
+          </div>
+          <div class="tech-item">
+            <h4>Drawing engine</h4>
+            <p>Millimetre-accurate CAD geometry on named layers, with <strong>DXF</strong> import and export and scaled <strong>PDF/SVG</strong> sheet publishing.</p>
           </div>
           <div class="tech-item">
             <h4>Local-first storage</h4>
@@ -461,7 +544,7 @@
           </div>
           <div class="tech-item">
             <h4>Credits, not a subscription</h4>
-            <p>20 free AI credits on iCloud sign-in. Drawing, editing, saving, and rough 3D previews never cost credits.</p>
+            <p>20 free AI credits on iCloud sign-in. Drawing, editing, saving, 3D previews, and anything the on-device model answers never cost credits.</p>
           </div>
         </div>
       </div>
