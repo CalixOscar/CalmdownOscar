@@ -84,9 +84,7 @@
     height:var(--nav-h);
     padding-top:var(--sat);
     display:flex; align-items:center;
-    background:rgba(20,27,34,.85);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
+    background:rgba(20,27,34,.97);
     border-bottom:1px solid rgba(255,255,255,.09);
   }
   .site-header .wrap{
@@ -148,7 +146,6 @@
     min-height: 400px;
     background: #141B22; border: 1px solid rgba(255,255,255,.1);
     border-radius: 12px; display: flex; flex-direction: column;
-    box-shadow: 0 16px 34px rgba(0,0,0,.3);
     font-family: 'Inter', monospace; overflow: hidden;
   }
   .terminal-header {
@@ -202,7 +199,7 @@
     color: var(--muted-dark);
     font-size: 15px; text-align: center;
   }
-  .workbench-content img { max-width: 100%; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.4); cursor: zoom-in; }
+  .workbench-content img { max-width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); cursor: zoom-in; }
   .workbench-content pre { font-size: 13px; color: var(--ink-dark); white-space: pre-wrap; font-family: 'Inter', monospace; margin-top: 12px; }
 
   /* ================= Veritio cloud chat (inline embed) ================= */
@@ -219,7 +216,6 @@
     border: 1px solid var(--edge-dark);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 16px 34px rgba(0,0,0,.3);
   }
   .chat-embed iframe {
     position: absolute; inset: 0;
@@ -364,7 +360,7 @@
         </div>
       </div>
       <!-- Video Panel (Hidden by default) -->
-      <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1); box-shadow:0 16px 34px rgba(0,0,0,.4);">
+      <div id="video-panel" style="display:none; width:100%; aspect-ratio: 16/9; background:#000; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1);">
       </div>
     </div>
   </section>
@@ -511,8 +507,8 @@
         if (!overlay) {
           overlay = document.createElement('div');
           overlay.id = 'fullscreen-overlay';
-          overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; display:none; justify-content:center; align-items:center; cursor:zoom-out; backdrop-filter:blur(8px);';
-          overlay.innerHTML = '<img id="overlay-img" style="max-width:92vw; max-height:92vh; border-radius:8px; box-shadow:0 16px 48px rgba(0,0,0,0.6); object-fit:contain;" />';
+          overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; display:none; justify-content:center; align-items:center; cursor:zoom-out;';
+          overlay.innerHTML = '<img id="overlay-img" style="max-width:92vw; max-height:92vh; border-radius:8px; object-fit:contain;" />';
           overlay.addEventListener('click', () => { overlay.style.display = 'none'; });
           document.body.appendChild(overlay);
         }
@@ -640,7 +636,7 @@
         const imgData = await imgRes.value.json();
         if (imgData && imgData.url) {
           const imgHtml = `
-            <img src="${imgData.url}" alt="${imgData.alt}" style="max-width:100%; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.4);" />
+            <img src="${imgData.url}" alt="${imgData.alt}" style="max-width:100%; border-radius:8px; border:1px solid rgba(255,255,255,.1);" />
             <div style="margin-top:8px; color:#8FA0AE; font-size:11px; text-align:center;">Source: <a href="${imgData.sourceUrl}" target="_blank" style="color:#85B6FF; text-decoration:none;">${imgData.sourceDomain}</a></div>
           `;
           updateWorkbench(imgHtml);

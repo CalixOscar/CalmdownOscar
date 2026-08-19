@@ -133,9 +133,7 @@
     position:fixed; top:0; left:0; right:0; z-index:10;
     height:var(--topbar-h);
     padding-top:var(--sat);
-    background:rgba(20, 27, 34,.82);   /* TRIAL: was rgba(238,242,246,.82) */
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    background:rgba(20, 27, 34,.96);   /* TRIAL: was rgba(238,242,246,.82); blur dropped per anti-slop guardrails, opacity raised so the nav still separates from content without it */
     border-bottom:1px solid var(--edge);
     display:flex; align-items:center;
   }
@@ -210,26 +208,12 @@
   .card.progress .status{ color:var(--progress); }
   .card.dev .status{ color:var(--status-red); }
   .card.garage .status{ color:var(--muted); }
-  .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:dotPulse 2.2s ease-out infinite; }
-  .dot.amber{ background:var(--progress); animation:dotPulseAmber 2.2s ease-out infinite; }
-  .dot.green{ background:var(--live-green); animation:dotPulseGreen 2.2s ease-out infinite; }
-  .dot.red{ background:var(--status-red); animation:dotPulseRed 2.2s ease-out infinite; }
-  .dot, .dot.amber, .dot.green, .dot.red{ animation-play-state:paused; }
-  html.is-scrolling .dot, html.is-scrolling .dot.amber, html.is-scrolling .dot.green, html.is-scrolling .dot.red{ animation-play-state:running; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); }
+  .dot.amber{ background:var(--progress); }
+  .dot.green{ background:var(--live-green); }
+  .dot.red{ background:var(--status-red); }
   .store-badge{ display:inline-block; margin-top:12px; line-height:0; }
   .store-badge img{ display:block; height:40px; width:auto; }
-  @keyframes dotPulse{
-    0%{ box-shadow:0 0 0 0 rgba(228,71,29,.45); } 70%{ box-shadow:0 0 0 8px rgba(228,71,29,0); } 100%{ box-shadow:0 0 0 0 rgba(228,71,29,0); }
-  }
-  @keyframes dotPulseAmber{
-    0%{ box-shadow:0 0 0 0 rgba(184,130,51,.4); } 70%{ box-shadow:0 0 0 8px rgba(184,130,51,0); } 100%{ box-shadow:0 0 0 0 rgba(184,130,51,0); }
-  }
-  @keyframes dotPulseGreen{
-    0%{ box-shadow:0 0 0 0 rgba(52,199,89,.4); } 70%{ box-shadow:0 0 0 8px rgba(52,199,89,0); } 100%{ box-shadow:0 0 0 0 rgba(52,199,89,0); }
-  }
-  @keyframes dotPulseRed{
-    0%{ box-shadow:0 0 0 0 rgba(229,72,77,.4); } 70%{ box-shadow:0 0 0 8px rgba(229,72,77,0); } 100%{ box-shadow:0 0 0 0 rgba(229,72,77,0); }
-  }
   .card.garage{ background:transparent; border-style:dashed; }
   .card.invite{ background:transparent; border-style:dashed; }
   .card h3{
@@ -300,7 +284,7 @@
   .pulse{ fill:var(--accent); }
   .halo{ fill:none; stroke:var(--accent); stroke-width:2; opacity:0; }
   .diagram:not(.built) .pulse,
-  .diagram:not(.built) .halo{ opacity:0 !important; }
+  .diagram:not(.built) .halo{ opacity:0; }
   .pulse, .halo{ transition:opacity .4s ease; }
   .diagram-caption{
     font-size:12px; letter-spacing:.02em;
@@ -321,10 +305,10 @@
     .dot{ animation:none; }
     .card{ transition:none; }
     html{ scroll-behavior:auto; }
-    .pulse, .halo{ opacity:0 !important; }
+    .pulse, .halo{ opacity:0; }
     .node-group{ opacity:1; transform:none; transition:none; }
     .trace{ transition:none; }
-    .bg-video, .bg-scrim{ transform:none !important; }
+    .bg-video, .bg-scrim{ transform:none; }
   }
 
   /* ================= case studies ================= */

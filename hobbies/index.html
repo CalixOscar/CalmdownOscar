@@ -82,10 +82,8 @@
     height:var(--nav-h);
     padding-top:var(--sat);
     display:flex; align-items:center;
-    background:rgba(238,242,246,.75);
-    background:color-mix(in srgb, rgba(20,27,34,.78) calc(var(--dark) * 100%), rgba(238,242,246,.75));
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
+    background:rgba(238,242,246,.96);
+    background:color-mix(in srgb, rgba(20,27,34,.96) calc(var(--dark) * 100%), rgba(238,242,246,.96));
     border-bottom:1px solid var(--edge);
     border-bottom-color:color-mix(in srgb, rgba(255,255,255,.09) calc(var(--dark) * 100%), var(--edge));
   }
@@ -142,7 +140,6 @@
     background:#1C252E;
     border-radius:12px;
     border:1px solid var(--edge);
-    box-shadow:0 12px 36px rgba(32,43,54,.08);
   }
   .clip video{
     position:absolute; inset:0;
@@ -197,9 +194,7 @@
     font-size: 13px;
     font-weight: 500;
     color: rgba(255,255,255,0.85);
-    background: rgba(15, 23, 32, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(15, 23, 32, 0.88);
     padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid rgba(255,255,255,0.1);
@@ -220,7 +215,7 @@
     .clip-heading .word{ opacity:1; transform:none; transition:none; }
     .reel-pin{ height:auto; }
     .reel-stage{ position:static; height:auto; overflow:visible; }
-    .reel{ transform:none !important; }
+    .reel{ transform:none; }
     html{ scroll-behavior:auto; }
   }
 </style>
@@ -283,7 +278,7 @@
   <!-- TikTok Embed Section -->
   <section class="wrap" style="padding: 64px 24px 48px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
     <h2 style="font-size: 18px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
-    <div id="tiktokPanel" style="width: 100%; max-width: min(600px, 88vw); margin: 0 auto; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px; box-shadow: 0 16px 34px rgba(32,43,54,.04);">
+    <div id="tiktokPanel" style="width: 100%; max-width: min(600px, 88vw); margin: 0 auto; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px;">
       <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 100%; min-width: 288px; width: 100%; margin: 0 auto;">
         <section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir on TikTok</a></section>
       </blockquote>
