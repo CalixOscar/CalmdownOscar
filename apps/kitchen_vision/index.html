@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#141B22">
+<title>Kitchen Vision — Pickleball Scoring, 3-Number Callouts, VAR &amp; Tournament Desk — calmdownoscar</title>
+<meta name="description" content="Turn the iPhones and iPads you already own into a smart pickleball scoreboard, 3-number callout co-pilot (0-0-2), VAR slow-mo replay, and multi-court tournament desk. 100% offline.">
+<meta property="og:title" content="Kitchen Vision — Pickleball Scoring &amp; Tournament Scoreboard">
+<meta property="og:description" content="Turn the iPhones and iPads you already own into a smart pickleball scoreboard, 3-number callout co-pilot (0-0-2), VAR slow-mo replay, and multi-court tournament desk. 100% offline.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calmdownoscar.com/kitchen_vision/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  :root{
+    --bg:        #141B22;
+    --panel:     rgba(255,255,255,.05);
+    --panel-lift:#1E2933;
+    --edge:      rgba(255,255,255,.09);
+    --edge-hi:   rgba(255, 107, 0, 0.45);
+    --accent:    #FF6B00;
+    --accent-amber: #FFB300;
+    --accent-glow: rgba(255, 107, 0, 0.25);
+    --ink:       #E8EEF4;
+    --muted:     #8FA0AE;
+    --green:     #34C759;
+    --topbar-h:  calc(64px + var(--sat));
+    --window-chrome: #1A232D;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  ::selection{ background:var(--accent); color:#000; }
+  body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--topbar-h);
+    overflow-x:hidden;
+  }
+  .wrap{ max-width:940px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    height:var(--topbar-h);
+    padding-top:var(--sat);
+    background:rgba(20,27,34,.92);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--edge);
+  }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
+  .mark span{ color:var(--accent); }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  nav::-webkit-scrollbar{ display:none; }
+  nav a{
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
+    margin-left:22px;
+    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
+  }
+  nav a:hover, nav a:focus-visible{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+
+  main{ padding:48px 0 96px; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: 6px 14px;
+    background: rgba(255, 107, 0, 0.12);
+    border: 1px solid rgba(255, 107, 0, 0.35);
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .status-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .hero{ margin-bottom:64px; }
+  h1{
+    font-size:clamp(32px, 6vw, 48px);
+    font-weight:900;
+    letter-spacing:-.025em;
+    line-height:1.1;
+    margin-bottom:18px;
+    color:#fff;
+  }
+  .lead{
+    font-size:clamp(17px, 2.2vw, 20px);
+    color:var(--muted);
+    line-height:1.55;
+    max-width:760px;
+    margin-bottom:28px;
+  }
+
+  .pills{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:36px; }
+  .pill{
+    font-size:12px; font-weight:600; color:var(--ink);
+    background:var(--panel); border:1px solid var(--edge);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:64px; }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-radius:18px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .card-num{
+    font-size:12px;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .card h3{
+    font-size:18px;
+    font-weight:800;
+    color:#fff;
+    letter-spacing:-.01em;
+  }
+  .card p{
+    font-size:14.5px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+
+  /* Screenshot Showcase */
+  .shots-section{ margin-bottom:64px; }
+  .section-title{
+    font-size:22px;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:10px;
+  }
+  .section-sub{
+    font-size:15px;
+    color:var(--muted);
+    margin-bottom:24px;
+  }
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+  }
+  .shot-card{
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .shot-card img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-bottom:1px solid var(--edge);
+  }
+  .shot-caption{
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .shot-sub{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:400;
+    margin-top:2px;
+  }
+
+  footer{
+    border-top:1px solid var(--edge);
+    padding:40px 0;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .foot{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .foot a{ color:var(--muted); text-decoration:none; }
+  .foot a:hover{ color:var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="../">calmdownoscar<span>.</span></a>
+    <nav>
+      <a href="../">All Apps</a>
+      <a href="./">Kitchen Vision</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <div class="status-badge">
+        <span class="dot"></span>
+        In Development · iOS / iPadOS
+      </div>
+      <h1>Kitchen Vision</h1>
+      <p class="lead">Officiate, score, and replay pickleball like a pro. Handles the 0-0-2 opening serve, side-out server rotations, 3-number callouts, VAR slow-mo replay, and tournament desks — 100% offline on the iPhones and iPads you already own.</p>
+      
+      <div class="pills">
+        <span class="pill">iOS 17+</span>
+        <span class="pill">Side-Out &amp; MLP Rally</span>
+        <span class="pill">0-0-2 Callout Engine</span>
+        <span class="pill">VAR &frac14;&times; Slow-Mo</span>
+        <span class="pill">100% Offline P2P</span>
+        <span class="pill">Master Desk</span>
+      </div>
+    </div>
+
+    <!-- Screenshots Showcase (Dark Mode) -->
+    <div class="shots-section">
+      <h2 class="section-title">In-App Experience</h2>
+      <p class="section-sub">High-contrast Dark Mode design built for outdoor sunshine courts and indoor club lighting alike.</p>
+      
+      <div class="gallery">
+        <div class="shot-card">
+          <img src="../assets/kitchen_vision/splash_screen.png" alt="Kitchen Vision Cinematic Splash Screen" loading="lazy">
+          <div class="shot-caption">
+            Cinematic Optical Reveal
+            <div class="shot-sub">Optical laser sweep &amp; 3D ball-tracking visualization</div>
+          </div>
+        </div>
+
+        <div class="shot-card">
+          <img src="../assets/kitchen_vision/home_screen.png" alt="Kitchen Vision Home Screen Hub" loading="lazy">
+          <div class="shot-caption">
+            Home Hub
+            <div class="shot-sub">Casual Quick Match vs Full Tournament Officiating</div>
+          </div>
+        </div>
+
+        <div class="shot-card">
+          <img src="../assets/kitchen_vision/casual_hub.png" alt="Casual Pickleball Modes" loading="lazy">
+          <div class="shot-caption">
+            Casual Pickleball
+            <div class="shot-sub">Quick 11-point Side-Out match &amp; Living Room Practice</div>
+          </div>
+        </div>
+
+        <div class="shot-card">
+          <img src="../assets/kitchen_vision/tournament_modes.png" alt="Tournament Officiating Modes" loading="lazy">
+          <div class="shot-caption">
+            Tournament Officiating
+            <div class="shot-sub">Solo Umpire, Multi-Camera Mesh &amp; Master Desk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Features Grid -->
+    <div class="grid">
+      <div class="card">
+        <div class="card-num">01 · Rule Engine</div>
+        <h3>The 0-0-2 Side-Out Rule Kept For You</h3>
+        <p>Pickleball doubles begins with only one server ("0-0-2"), rotates through Server 1 and Server 2 on subsequent side-outs, and requires server score parity matching the right/left courts. Kitchen Vision calculates the exact 3-number callout on every point so arguments never stall the match.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-num">02 · Officiating</div>
+        <h3>Handheld Solo Umpire &amp; Instant Slow-Mo</h3>
+        <p>Run the entire game with simple single-thumb tap and swipe gestures. When a kitchen fault or baseline line-call is disputed, open instant &frac14;&times; slow-motion review from local rolling memory with frame-stepping before committing the call.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-num">03 · Mesh Rig</div>
+        <h3>Multi-Phone Net-Post Synchronization</h3>
+        <p>Pair 2 to 3 iPhones peer-to-peer with no Wi-Fi router. The devices achieve sub-millisecond hardware clock synchronization, recording synchronized multi-angle video with Hawkeye 3D ray tracing.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-num">04 · Tournament Desk</div>
+        <h3>Multi-Court Live Standings Master Desk</h3>
+        <p>Organize club round robins and elimination brackets on an iPad Master Desk. Court umpires connect instantly by scanning a QR code, streaming real-time live scores and match completions to the central desk.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>&copy; 2026 calmdownoscar. All rights reserved.</div>
+    <div style="display:flex; gap:18px;">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="../">calmdownoscar.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

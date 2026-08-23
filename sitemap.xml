@@ -36,4 +36,8 @@
     <loc>https://calmdownoscar.com/shuttle_vision/</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://calmdownoscar.com/kitchen_vision/</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
