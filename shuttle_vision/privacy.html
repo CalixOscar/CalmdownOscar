@@ -170,7 +170,7 @@
       <p>Shuttle Vision uses your camera to track rallies and generate slow-motion replay, entirely on-device. Saving a rally clip writes it to your own Photos library through Apple's PhotoKit, at your explicit action — the app never uploads or transmits footage anywhere else.</p>
 
       <h2>Local network and multi-device pairing</h2>
-      <p>Pairing two or three phones into a rig, and syncing tournament scores across courts, happens directly between your own devices over MultipeerConnectivity — Bluetooth and local Wi-Fi, with no internet connection and no server in between. Local Network permission is used only to discover those devices; nothing leaves your court.</p>
+      <p>Pairing two or three phones into a rig, and syncing tournament scores across courts, happens directly between your own devices over MultipeerConnectivity — Bluetooth and local Wi-Fi, with no internet connection and no server in between. Local Network permission is used only to discover those devices; nothing leaves your court. This traffic is not separately encrypted, the same way a scoreboard shouted across a net isn't — it's readable only to devices in range during your match, never sent anywhere beyond it.</p>
 
       <h2>Purchases</h2>
       <p>The lifetime Shuttle Vision Pro unlock is a one-time in-app purchase, handled entirely by Apple through StoreKit. We never see your payment details — Apple processes the transaction and tells the app only whether it succeeded.</p>
