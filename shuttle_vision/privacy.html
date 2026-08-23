@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#141B22">
+<link rel="icon" href="../assets/favicon/shuttle-vision-favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/shuttle-vision-favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/shuttle-vision-favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/favicon/shuttle-vision-touch-icon.png">
+<title>Privacy Policy — Shuttle Vision</title>
+<meta name="description" content="Privacy policy for Shuttle Vision, the multi-camera badminton replay and tournament scoreboard app from calmdownoscar.">
+<meta property="og:title" content="Privacy Policy — Shuttle Vision">
+<meta property="og:description" content="Privacy policy for Shuttle Vision, the multi-camera badminton replay and tournament scoreboard app from calmdownoscar.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calmdownoscar.com/shuttle_vision/privacy.html">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  :root{
+    --bg:      #141B22;
+    --panel:   rgba(255,255,255,.05);
+    --edge:    rgba(255,255,255,.09);
+    --edge-hi: rgba(0,229,255,.4);
+    --accent:  #00E5FF;
+    --accent-orange: #E4471D;
+    --ink:     #E8EEF4;
+    --muted:   #8FA0AE;
+    --topbar-h: 76px;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  ::selection{ background:var(--accent); color:#000; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--topbar-h);
+  }
+  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--topbar-h);
+    background:rgba(20,27,34,.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--edge);
+  }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
+  .mark span{ color:var(--accent-orange); }
+  nav a{
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
+    margin-left:22px;
+    transition:color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+  main{ padding:56px 0 96px; }
+  .heading{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
+  .app-icon{
+    width:44px; height:44px; border-radius:11px; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(32,43,54,.18);
+  }
+  .kicker{
+    display:block;
+    color:var(--accent);
+    font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  h1{ font-size:clamp(26px, 5vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.15; }
+  .updated{ margin-top:12px; color:var(--muted); font-size:14px; }
+  .policy{ margin-top:38px; }
+  .policy h2{
+    font-size:16px; font-weight:700; letter-spacing:-.005em;
+    color:var(--ink);
+    margin:32px 0 10px;
+  }
+  .policy h2:first-child{ margin-top:0; }
+  .policy p, .policy li{ color:var(--muted); font-size:16px; }
+  .policy p + p{ margin-top:12px; }
+  .policy ul{ margin:10px 0 0 20px; }
+  .policy li + li{ margin-top:6px; }
+  .policy strong{ color:var(--ink); font-weight:600; }
+  .policy a{ color:var(--accent); text-decoration:underline; text-decoration-color:var(--edge-hi); }
+  .policy a:hover{ text-decoration-color:var(--accent); }
+  .card{
+    margin-top:40px;
+    background:var(--panel);
+    border:1px solid var(--edge);
+    border-radius:10px;
+    padding:22px 24px;
+    display:flex; flex-direction:column; gap:10px;
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  }
+  .card a.applink{
+    color:var(--ink); font-weight:600; font-size:14px; text-decoration:none;
+    transition:color .2s ease;
+  }
+  .card a.applink:hover{ color:var(--accent); }
+  .card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
+  .card a.applink:hover .arrow{ transform:translateX(5px); }
+  .back{
+    display:inline-block; margin-top:32px;
+    color:var(--ink); font-weight:500; text-decoration:none; font-size:14px;
+    transition:color .2s ease;
+  }
+  .back:hover{ color:var(--accent); }
+  footer{
+    border-top:1px solid var(--edge); padding:22px 0 40px;
+    color:var(--muted); font-size:13px;
+  }
+  footer a{ color:var(--muted); transition:color .2s ease; }
+  footer a:hover{ color:var(--accent); }
+  @media (max-width:640px){
+    .nav{ flex-direction:column; align-items:flex-start; padding:14px 0; height:auto; }
+    header{ position:static; }
+    body{ padding-top:0; }
+    nav a{ margin-left:0; margin-right:18px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <nav>
+      <a href="./">Shuttle Vision</a>
+      <a href="../#shuttlevision">Apps</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="heading">
+      <img class="app-icon" src="../assets/shuttle-vision-icon.png" alt="" width="44" height="44">
+      <span class="kicker">Shuttle Vision</span>
+    </div>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 23, 2026</p>
+
+    <div class="policy">
+      <h2>The short version</h2>
+      <p>Shuttle Vision collects nothing. There is no account, no analytics, and no server the app talks to. Every rally it scores, every clip it records, and every rig it pairs happens on your own devices, and nothing about your match ever leaves them except to your own phone's Photos library when you choose to save a clip.</p>
+
+      <h2>What we don't collect</h2>
+      <ul>
+        <li><strong>Video and footage</strong> — camera capture, rally clips, and replay buffers are processed and stored entirely on-device. Nothing is uploaded anywhere.</li>
+        <li><strong>Personal information</strong> — no name, email, or contact details are collected, unless you choose to email us for support. Player and team names you enter for scoring stay on your device.</li>
+        <li><strong>Location</strong> — not collected or read.</li>
+        <li><strong>Usage analytics</strong> — Shuttle Vision has no analytics SDK, first-party or third-party. We cannot see how you use the app, and we don't try to.</li>
+        <li><strong>Advertising identifiers</strong> — not read. Shuttle Vision carries no ads and no ad framework.</li>
+      </ul>
+
+      <h2>Camera and photo library</h2>
+      <p>Shuttle Vision uses your camera to track rallies and generate slow-motion replay, entirely on-device. Saving a rally clip writes it to your own Photos library through Apple's PhotoKit, at your explicit action — the app never uploads or transmits footage anywhere else.</p>
+
+      <h2>Local network and multi-device pairing</h2>
+      <p>Pairing two or three phones into a rig, and syncing tournament scores across courts, happens directly between your own devices over MultipeerConnectivity — Bluetooth and local Wi-Fi, with no internet connection and no server in between. Local Network permission is used only to discover those devices; nothing leaves your court.</p>
+
+      <h2>Purchases</h2>
+      <p>The lifetime Shuttle Vision Pro unlock is a one-time in-app purchase, handled entirely by Apple through StoreKit. We never see your payment details — Apple processes the transaction and tells the app only whether it succeeded.</p>
+
+      <h2>Data sharing</h2>
+      <p>There is nothing of yours to share, because nothing is collected. The only party involved at all is Apple, for purchase processing and for delivering the app itself.</p>
+
+      <h2>Data retention</h2>
+      <p>Match state, rosters, and calibration are stored only in the app on your own device, the same way any iOS app remembers a setting. Removing the app removes them.</p>
+
+      <h2>Children's privacy</h2>
+      <p>Shuttle Vision is not directed at children under 13, and since it collects no personal information from anyone, none is collected from them either.</p>
+
+      <h2>Your rights</h2>
+      <ul>
+        <li><strong>Nothing to access or export</strong> — we hold no data about you to hand over.</li>
+        <li><strong>Delete</strong> — removing the app removes every local match, roster, and clip it kept.</li>
+        <li><strong>Camera, Photos, and Local Network permissions</strong> — grant or revoke at any time in iOS Settings → Privacy &amp; Security.</li>
+      </ul>
+
+      <h2>Third-party services</h2>
+      <p>Shuttle Vision uses Apple's AVFoundation for camera capture, PhotoKit for saving clips, MultipeerConnectivity for offline device pairing, and StoreKit for the one in-app purchase. Nothing else.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this ever changes — for instance, if a future version adds analytics or a network feature — that change will be reflected here first, and called out in the App Store release notes.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy, or anything else: <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></p>
+    </div>
+
+    <div class="card">
+      <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">→</span></a>
+    </div>
+
+    <a class="back" href="./">← Back to Shuttle Vision</a>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+</footer>
+</body>
+</html>
