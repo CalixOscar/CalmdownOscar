@@ -66,9 +66,6 @@
   .heading{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
   .app-icon{
     width:44px; height:44px; border-radius:11px; flex-shrink:0;
-    background: linear-gradient(135deg, #FF6B00, #FFB300);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
     box-shadow:0 4px 12px rgba(255,107,0,.25);
   }
   .kicker{
@@ -129,7 +126,7 @@
 <main>
   <div class="wrap">
     <div class="heading">
-      <div class="app-icon">🏓</div>
+      <img class="app-icon" src="../assets/kitchen_vision/icon.png" alt="Kitchen Vision app icon">
       <div>
         <span class="kicker">Privacy Policy</span>
         <h1>Kitchen Vision</h1>
@@ -158,10 +155,10 @@
       <p>If you choose to export a rally replay clip or highlight video, Kitchen Vision requests permission to add items to your Photo Library (<code>NSPhotoLibraryAddUsageDescription</code>). The app only saves video clips you explicitly export and does not read or scan your existing photo library.</p>
 
       <h2>4. Local Network &amp; P2P Connectivity</h2>
-      <p>Kitchen Vision uses Apple's MultipeerConnectivity framework (Wi-Fi and Bluetooth P2P) to synchronize scores and cameras between paired iPhones and iPads (e.g. Master Desk, Solo Umpire, and Multi-Camera Mesh). All communications travel over encrypted, direct device-to-device local wireless connections. No internet connection or external Wi-Fi router is required or used.</p>
+      <p>Kitchen Vision uses Apple's MultipeerConnectivity framework (Wi-Fi and Bluetooth P2P) to synchronize scores and cameras between paired iPhones and iPads (e.g. Master Desk, Solo Umpire, and Multi-Camera Mesh). No internet connection or external Wi-Fi router is required or used. This traffic is not separately encrypted, the same way a scoreboard shouted across a net isn't — it's readable only to devices in range during your match, never sent anywhere beyond it.</p>
 
       <h2>5. In-App Purchases</h2>
-      <p>Kitchen Vision Pro subscriptions are processed securely by Apple via the standard iOS StoreKit framework. CalmdownOscar never receives or stores your credit card, billing address, or financial information.</p>
+      <p>The Kitchen Vision Pro lifetime unlock is a one-time purchase processed securely by Apple via the standard iOS StoreKit framework — not a subscription. CalmdownOscar never receives or stores your credit card, billing address, or financial information.</p>
 
       <h2>6. Contact</h2>
       <p>If you have any questions or feedback regarding this Privacy Policy, please contact us at <a href="mailto:oscar@calmdownoscar.com">oscar@calmdownoscar.com</a>.</p>
