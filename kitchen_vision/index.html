@@ -21,6 +21,14 @@
     font-display:swap;
   }
   :root{
+    /* .wrap sizes its gutters with max(24px, var(--sal)) and --topbar-h uses --sat.
+       Without these defined, those custom properties are invalid, which invalidates the
+       whole max() and drops padding to 0 — every line of text on the page sat flush
+       against the edge of the screen on a phone. */
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
     --bg:        #141B22;
     --panel:     rgba(255,255,255,.05);
     --panel-lift:#1E2933;

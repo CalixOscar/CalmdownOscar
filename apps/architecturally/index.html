@@ -324,7 +324,13 @@
   .reveal.in { opacity: 1; transform: none; }
 
   @media (max-width:640px){
-    .nav { flex-direction: column; align-items: flex-start; padding: 14px 0; height: auto; }
+    .nav {
+      flex-direction: column; align-items: flex-start; height: auto;
+      /* Long-hand on purpose: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
+         shorthand here also reset .wrap's side gutters and pushed the logo and links flush
+         against the edge of the screen on every phone. */
+      padding-top: 14px; padding-bottom: 14px;
+    }
     header { position: static; }
     body { padding-top: 0; }
     nav a { margin-left: 0; margin-right: 18px; }

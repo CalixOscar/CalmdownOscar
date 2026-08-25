@@ -294,7 +294,10 @@
     background: var(--panel);
     border: 1px solid var(--edge);
     border-radius: 14px;
-    overflow: hidden;
+    /* Was overflow:hidden, which rounded the corners and silently cut the last columns
+       off on a phone. Scrolling keeps the radius and keeps the data reachable. */
+    overflow-x: auto;
+    overflow-y: hidden;
     margin-bottom: 48px;
   }
   table {
@@ -490,7 +493,17 @@
   footer a:hover { color: var(--accent); }
 
   @media (max-width:640px){
-    .nav { flex-direction: column; align-items: flex-start; padding: 14px 0; height: auto; }
+    .nav {
+      flex-direction: column; align-items: flex-start; height: auto;
+      /* Long-hand on purpose: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
+         shorthand here also reset .wrap's side gutters and pushed the logo and links flush
+         against the edge of the screen on every phone. */
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    /* The column switch above makes `nav` a flex item sized to its own content, so its
+       overflow-x:auto never engages and the whole page is dragged wide by the link row.
+       Stretching it back to the container width is what lets the links scroll instead. */
+    nav { align-self: stretch; min-width: 0; max-width: 100%; }
     header { position: static; }
     body { padding-top: 0; }
     nav a { margin-left: 0; margin-right: 18px; }
