@@ -254,6 +254,31 @@
   }
   a.privacy-link:hover{ color:var(--accent-ink); }
 
+  /* ================= promo preview banners ================= */
+  .card-preview {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    max-height: 420px;
+    margin: 10px 0 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--edge);
+    background: rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(.2,.7,.3,1);
+  }
+  .card:hover .card-preview img {
+    transform: scale(1.02);
+  }
+
   /* ================= pipeline diagram ================= */
   .diagram{ margin-top:6px; }
   .diagram svg{ width:100%; height:auto; display:block; overflow:visible; }
@@ -415,6 +440,10 @@
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">An iOS/macOS wedding-planning concierge — not a bare chatbot. The LLM is one piece of a system that also handles sync, credentials, and grounding.</p>
 
+          <div class="card-preview">
+            <img src="assets/promo/promo_nuptia.jpg" alt="Wedding Concierge planning studio" width="1920" height="1080" loading="lazy">
+          </div>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
               <div class="cs-step-num">01 · Grounding & state</div>
@@ -471,6 +500,10 @@
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">A persistent memory layer for multi-agent LLM workflows, built because every new AI session starting cold was burning tokens and causing hallucination loops.</p>
 
+          <div class="card-preview">
+            <img src="assets/promo/promo_unlirice.jpg" alt="Unli Rice modular memory hardware" width="1920" height="1080" loading="lazy">
+          </div>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
               <div class="cs-step-num">01 · Why</div>
@@ -521,6 +554,10 @@
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Built because I rarely have two free hands — my son follows me around like a shadow, and typing an idea on a phone one-handed usually means losing it. So I talk it instead: one tap, transcribed on-device, and it’s done. No rewriting it later — the note is already there on my MacBook and readable by whichever LLM I want to think it through with.</p>
 
+          <div class="card-preview">
+            <img src="assets/promo/promo_unlicapture.jpg" alt="Unli Rice Capture minimalist voice recorder" width="1920" height="1080" loading="lazy">
+          </div>
+
           <div class="links">
             <a class="applink" href="unlirice/">Product Page <span class="arrow">→</span></a>
             <a class="applink" href="https://github.com/CalixOscar/unli-rice">Source on GitHub <span class="arrow">→</span></a>
@@ -545,6 +582,10 @@
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
 
+          <div class="card-preview">
+            <img src="assets/promo/promo_clearspace.jpg" alt="ClearSpace decluttered photo studio" width="1920" height="1080" loading="lazy">
+          </div>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
               <div class="cs-step-num">01 · Detection method</div>
@@ -561,10 +602,10 @@
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Status</div>
+              <div class="cs-step-num">03 · Cross-platform Pro</div>
               <div class="cs-step-content">
-                <h4>Where it's headed</h4>
-                <p>The reworked chat/concierge interface passed review and is live now. If the same duplicate-cleanup engine sounds useful for your whole Mac, not just your photo library, <a href="#unlidisk">Unli Disk</a> brings it to macOS.</p>
+                <h4>Mac companion sync</h4>
+                <p>ClearSpace 1.2 is live with instant 0ms previews, pinch-to-zoom inspection, and finishable monthly cohorts. If you own <a href="#unlidisk">Unli Disk for Mac</a>, ClearSpace Pro is automatically unlocked on your iPhone via iCloud.</p>
               </div>
             </div>
           </div>
@@ -574,6 +615,7 @@
           </a>
 
           <div class="links">
+            <a class="applink" href="apps/clearspace/">Product Page <span class="arrow">→</span></a>
             <a class="privacy-link" href="apps/clearspace/privacy.html">Privacy Policy</a>
           </div>
         </article>
@@ -593,7 +635,11 @@
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native macOS storage map and dev-cache analyzer, built to find what generic visualizers miss and delete none of it by accident. Now live on the Mac App Store.</p>
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native macOS storage map and dev-cache analyzer, built to find what generic visualizers miss and sweep photo libraries safely. Includes ClearSpace Pro for iPhone.</p>
+
+          <div class="card-preview">
+            <img src="assets/promo/promo_unlidisk.jpg" alt="Unli Disk reclaimed storage design" width="1920" height="1080" loading="lazy">
+          </div>
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
@@ -611,10 +657,10 @@
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Code reuse</div>
+              <div class="cs-step-num">03 · Includes ClearSpace Pro</div>
               <div class="cs-step-content">
-                <h4>Shared engine, not a one-off</h4>
-                <p>The photo-auditing code lives in <code>Packages/UnliDiskPhotos</code>, the same engine ClearSpace uses — deliberate reuse across studio projects rather than separate builds each time.</p>
+                <h4>Shared engine, cross-platform Pro</h4>
+                <p>The photo-auditing code lives in <code>Packages/UnliDiskPhotos</code>, the same engine ClearSpace uses. Purchasing Unli Disk ($14.99 one-time) automatically unlocks ClearSpace Pro on your iPhone via iCloud.</p>
               </div>
             </div>
           </div>
@@ -646,6 +692,10 @@
             </div>
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Built because nobody in a casual game can reliably say whose serve it is, which box it comes from, or what the score actually is. Turns the iPhones you already own into a scoreboard that keeps the rules for you, with slow-motion replay for the rallies that are genuinely disputed — 100% offline.</p>
+
+          <div class="card-preview">
+            <img src="assets/promo/promo_shuttlevision.jpg" alt="Shuttle Vision iPhone scoreboard on sunlit desk" width="1920" height="1080" loading="lazy">
+          </div>
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
@@ -694,6 +744,10 @@
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Engineered specifically for Pickleball. Solves the doubles scoring puzzle by automatically computing Server 1 / Server 2 rotations, court parity, and 3-number callouts ("0-0-2"), paired with instant slow-motion rolling video review and multi-court tournament master desks.</p>
 
+          <div class="card-preview">
+            <img src="assets/promo/promo_kitchenvision.jpg" alt="Kitchen Vision iPhone referee review on sunlit desk" width="1920" height="1080" loading="lazy">
+          </div>
+
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
               <div class="cs-step-num">01 · The 0-0-2 Puzzle</div>
@@ -741,6 +795,10 @@
             </div>
           </div>
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">iPad sketch-to-3D floorplan engine. Freehand stylus strokes become millimetre-accurate CAD geometry, then a 3D model you can walk through — with a design copilot that runs on the iPad itself when the hardware allows.</p>
+
+          <div class="card-preview">
+            <img src="assets/promo/promo_architecturally.jpg" alt="Architecturally iPad Pro 3D CAD engine on drafting desk" width="1920" height="1080" loading="lazy">
+          </div>
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
