@@ -9,3 +9,5 @@ apps/assets/Oscar.jpeg
 PROJECT_NOTES.md
 AGENTS.md
 CLAUDE.md
+scripts/lint-project-notes.sh
+docs/decisions-log-archive.md

@@ -13,7 +13,9 @@ enough contrast to survive.
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-SITE = "$SITE_ROOT"
+SITE = os.environ.get(
+    "SITE_ROOT", os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 OUT = os.path.join(SITE, "assets", "favicon")
 os.makedirs(OUT, exist_ok=True)
 
@@ -57,10 +59,15 @@ studio_512.save(os.path.join(OUT, "favicon.ico"), sizes=[(16, 16), (32, 32), (48
 
 # --- Shuttle Vision --------------------------------------------------------
 
-app = Image.open(
-    "$SHUTTLE_VISION_ICON_DIR/"
-    "Assets.xcassets/AppIcon.appiconset/ShuttleVision-AppIcon.png"
-).convert("RGB")
+# Source icon lives in the Shuttle Vision app project, outside this repository.
+# Point SHUTTLE_VISION_ICON at it to regenerate those two favicons.
+shuttle_icon = os.environ.get("SHUTTLE_VISION_ICON")
+if not shuttle_icon:
+    raise SystemExit(
+        "Set SHUTTLE_VISION_ICON to the ShuttleVision-AppIcon.png path to regenerate "
+        "the Shuttle Vision favicons; studio favicons above are already written."
+    )
+app = Image.open(shuttle_icon).convert("RGB")
 
 app.resize((180, 180), Image.LANCZOS).save(os.path.join(OUT, "shuttle-vision-touch-icon.png"), optimize=True)
 
