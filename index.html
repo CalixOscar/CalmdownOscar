@@ -254,29 +254,46 @@
   }
   a.privacy-link:hover{ color:var(--accent-ink); }
 
-  /* ================= promo preview banners ================= */
-  .card-preview {
-    width: 100%;
-    aspect-ratio: 2 / 1;
-    max-height: 420px;
-    margin: 10px 0 16px;
-    border-radius: var(--radius);
-    border: 1px solid var(--edge);
-    background: rgba(0, 0, 0, 0.22);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* ================= app screenshots =================
+     Real captures from the apps themselves, downscaled into WebP derivatives
+     under assets/screens/ (16 shots, ~440 KB total, from ~7 MB of originals).
+     Cards with several portrait shots lay them out as a shelf; the band shape
+     stays the same on every card so the grid still reads as one column.
+     drop-shadow, not box-shadow: with object-fit:contain a box-shadow traces
+     the letterboxed element box rather than the visible screenshot. */
+  .card-preview{
+    width:100%;
+    aspect-ratio:2 / 1;
+    max-height:380px;
+    margin:10px 0 16px;
+    padding:16px;
+    border-radius:var(--radius);
+    border:1px solid var(--edge);
+    background:rgba(0,0,0,.22);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
   }
-  .card-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s cubic-bezier(.2,.7,.3,1);
+  .card-preview img{
+    height:100%;
+    width:auto;
+    max-width:100%;
+    object-fit:contain;
+    border-radius:3px;
+    filter:drop-shadow(0 10px 26px rgba(0,0,0,.55));
+    transition:transform var(--slow) var(--ease);
   }
-  .card:hover .card-preview img {
-    transform: scale(1.02);
+  .card:hover .card-preview img{ transform:translateY(-4px); }
+  /* Phones: a 2:1 band leaves the screenshots about 120px tall, which is too
+     small to read anything in. 3:2 buys back roughly half again. */
+  @media (max-width:720px){
+    .card-preview{ aspect-ratio:3 / 2; padding:10px; gap:8px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .card-preview img{ transition:none; }
+    .card:hover .card-preview img{ transform:none; }
   }
 
   /* ================= pipeline diagram ================= */
@@ -441,7 +458,8 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">An iOS/macOS wedding-planning concierge — not a bare chatbot. The LLM is one piece of a system that also handles sync, credentials, and grounding.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_nuptia.jpg" alt="Wedding Concierge planning studio" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/nuptia-concierge.webp" alt="Wedding Concierge: the AI Concierge on iPad, answering a bus-rental question with real local operators, capacities and prices rather than invented ones" width="1400" height="1049" loading="lazy" decoding="async">
+            <img src="assets/screens/nuptia-board.webp" alt="Wedding Concierge on iPhone: the wedding board, with the venue and photographer already booked and the guest list, seating and budget still open" width="350" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -501,7 +519,7 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">A persistent memory layer for multi-agent LLM workflows, built because every new AI session starting cold was burning tokens and causing hallucination loops.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_unlirice.jpg" alt="Unli Rice modular memory hardware" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/unlirice-automation.webp" alt="Unli Rice on macOS: the Automation screen, where the agent autonomy level, the schedule and the indexed source folders are set — every structural change stays queued for approval" width="1400" height="875" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -555,7 +573,8 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Built because I rarely have two free hands — my son follows me around like a shadow, and typing an idea on a phone one-handed usually means losing it. So I talk it instead: one tap, transcribed on-device, and it’s done. No rewriting it later — the note is already there on my MacBook and readable by whichever LLM I want to think it through with.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_unlicapture.jpg" alt="Unli Rice Capture minimalist voice recorder" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/unlicapture-welcome.webp" alt="Unli Rice Capture: the welcome screen, explaining one-tap recording and on-device transcription" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/unlicapture-notes.webp" alt="Unli Rice Capture: captured thoughts already listed as synced, readable notes" width="350" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="links">
@@ -583,7 +602,9 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_clearspace.jpg" alt="ClearSpace decluttered photo studio" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/clearspace-timeline.webp" alt="ClearSpace: the full timeline sorted biggest first, each thumbnail tagged with its size, and 4,535 unhearted items totalling 22 GB" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/clearspace-batch.webp" alt="ClearSpace: batch selection, with keep, heart, add-to-album and delete offered as separate actions" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/clearspace-coreloop.webp" alt="ClearSpace: the core loop spelled out — sorted by size or month, heart to keep, then clear the rest" width="350" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -638,7 +659,7 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native macOS storage map and dev-cache analyzer, built to find what generic visualizers miss and sweep photo libraries safely. Includes ClearSpace Pro for iPhone.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_unlidisk.jpg" alt="Unli Disk reclaimed storage design" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/unlidisk-diskmap.webp" alt="Unli Disk: the Disk Map view, showing reclaimable space alongside a measured directory breakdown" width="1400" height="880" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -675,6 +696,72 @@
           </div>
         </article>
 
+        <!-- OpenGrail -->
+        <article class="card shipped reveal" id="opengrail">
+          <span class="status"><i class="dot green"></i>Live on the Web &#183; Open Source</span>
+          <div class="card-head">
+            <div class="app-icon" style="background:rgba(255,255,255,.06); border:1px solid var(--edge); display:flex; align-items:center; justify-content:center;">
+              <svg viewBox="0 0 44 44" width="30" height="30" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="var(--accent)" stroke-width="1.6">
+                  <circle cx="22" cy="22" r="15"/>
+                  <circle cx="22" cy="22" r="7"/>
+                  <path d="M22 7 V37 M7 22 H37"/>
+                </g>
+                <g fill="var(--accent)">
+                  <circle cx="22" cy="7" r="2.8"/>
+                  <circle cx="37" cy="22" r="2.8"/>
+                  <circle cx="22" cy="37" r="2.8"/>
+                  <circle cx="7" cy="22" r="2.8"/>
+                </g>
+              </svg>
+            </div>
+            <div>
+              <h3>OpenGrail</h3>
+              <div class="meta" style="margin-top:4px;">
+                <span class="pill">Web</span>
+                <span class="pill">React / Vite</span>
+                <span class="pill">Static &#8212; No Backend</span>
+                <span class="pill">Canvas Force Graph</span>
+                <span class="pill">MIT</span>
+              </div>
+            </div>
+          </div>
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">An open visual atlas of comparative religion, theology and ancient mythology &#8212; 695 traditions and 1,088 relationships you can actually move through, instead of 695 encyclopedia pages that never link to one another.</p>
+
+          <div class="card-preview">
+            <img src="assets/screens/opengrail-atlas.webp" alt="OpenGrail: the force-directed atlas with all eleven clusters laid out and the major traditions labelled" width="1400" height="840" loading="lazy" decoding="async">
+          </div>
+
+          <div class="cs-steps" style="margin-top:10px;">
+            <div class="cs-step">
+              <div class="cs-step-num">01 &#183; Source of truth</div>
+              <div class="cs-step-content">
+                <h4>Markdown in, graph out</h4>
+                <p>Every tradition is a Markdown file with validated frontmatter. A build script resolves the links between them, computes backlinks, and deterministically regenerates a single <code>graph.json</code> &#8212; so the interface never needs a content API, and a correction is a pull request against a text file rather than a write to a database nobody else can see.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-num">02 &#183; Sourcing rule</div>
+              <div class="cs-step-content">
+                <h4>Coordinates are resolved, never remembered</h4>
+                <p>Each origin pin is two separable steps: an editorial decision about which place a tradition came from, and a mechanical lookup of that place against Wikidata, recording the entity ID that supplied the numbers. That second step is not ceremony &#8212; writing coordinates from memory had produced a Petra that resolved to a particle accelerator and a Tiberias in Indonesia, and the review catches that class of error before it ships.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-num">03 &#183; What it costs to run</div>
+              <div class="cs-step-content">
+                <h4>Nothing to trust</h4>
+                <p>The atlas is a static bundle: no backend, no analytics, no accounts, and no AI service in the loop when you read it. Epistemic-tier filters mark how well attested a claim is instead of flattening scholarship and folklore into one confident voice. MIT licensed, with the full record set public.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="links">
+            <a class="applink" href="opengrail/">Open the Atlas <span class="arrow">&#8594;</span></a>
+            <a class="applink" href="https://github.com/CalixOscar/OpenGrail">Source on GitHub <span class="arrow">&#8594;</span></a>
+          </div>
+        </article>
+
         <!-- Shuttle Vision -->
         <article class="card progress reveal" id="shuttlevision">
           <span class="status"><i class="dot amber"></i>Awaiting Review</span>
@@ -694,7 +781,8 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Built because nobody in a casual game can reliably say whose serve it is, which box it comes from, or what the score actually is. Turns the iPhones you already own into a scoreboard that keeps the rules for you, with slow-motion replay for the rallies that are genuinely disputed — 100% offline.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_shuttlevision.jpg" alt="Shuttle Vision iPhone scoreboard on sunlit desk" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/shuttlevision-scoreboard.webp" alt="Shuttle Vision: the match scoreboard, showing which team serves and from which box" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/shuttlevision-tournament.webp" alt="Shuttle Vision: the tournament desk on iPad, running live courts, fixtures and a standings leaderboard" width="570" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -745,7 +833,9 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">Engineered specifically for Pickleball. Solves the doubles scoring puzzle by automatically computing Server 1 / Server 2 rotations, court parity, and 3-number callouts ("0-0-2"), paired with instant slow-motion rolling video review and multi-court tournament master desks.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_kitchenvision.jpg" alt="Kitchen Vision iPhone referee review on sunlit desk" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/kitchenvision-scoreboard.webp" alt="Kitchen Vision: the pickleball scoreboard at the opening serve" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/kitchenvision-hub.webp" alt="Kitchen Vision: the casual hub, offering a quick match or living-room practice" width="350" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/kitchenvision-tournament.webp" alt="Kitchen Vision: the tournament dashboard tracking two live courts at once" width="350" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
@@ -797,7 +887,8 @@
           <p style="color:var(--muted); font-size:15px; margin-top:2px;">iPad sketch-to-3D floorplan engine. Freehand stylus strokes become millimetre-accurate CAD geometry, then a 3D model you can walk through — with a design copilot that runs on the iPad itself when the hardware allows.</p>
 
           <div class="card-preview">
-            <img src="assets/promo/promo_architecturally.jpg" alt="Architecturally iPad Pro 3D CAD engine on drafting desk" width="1920" height="1080" loading="lazy">
+            <img src="assets/screens/architecturally-3d.webp" alt="Architecturally: a floorplan extruded into a walkable 3D model on iPad" width="570" height="760" loading="lazy" decoding="async">
+            <img src="assets/screens/architecturally-2d.webp" alt="Architecturally: the same plan as parametric CAD geometry on named layers" width="570" height="760" loading="lazy" decoding="async">
           </div>
 
           <div class="cs-steps" style="margin-top:10px;">
