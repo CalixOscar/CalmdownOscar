@@ -7,17 +7,37 @@
       "permanent": true
     },
     {
+      "source": "/apps/",
+      "destination": "/#apps",
+      "permanent": true
+    },
+    {
       "source": "/clearspace/work_in_progress",
       "destination": "/#clearspace",
       "permanent": true
     },
     {
-      "source": "/clearspace/work_in_progress/:path*",
+      "source": "/clearspace/work_in_progress/",
       "destination": "/#clearspace",
       "permanent": true
     },
     {
-      "source": "/apps/architecturally/:path*",
+      "source": "/clearspace/work_in_progress/:path+",
+      "destination": "/#clearspace",
+      "permanent": true
+    },
+    {
+      "source": "/apps/architecturally",
+      "destination": "/#apps",
+      "permanent": false
+    },
+    {
+      "source": "/apps/architecturally/",
+      "destination": "/#apps",
+      "permanent": false
+    },
+    {
+      "source": "/apps/architecturally/:path+",
       "destination": "/#apps",
       "permanent": false
     }
