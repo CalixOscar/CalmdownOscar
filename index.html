@@ -15,7 +15,8 @@
 <meta property="og:title" content="calmdownoscar | Independent App Studio">
 <meta property="og:description" content="Solo independent app studio building privacy-first Swift apps with on-device and cloud AI — relay architecture, model routing, grounding, and multi-agent development workflows.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://calmdownoscar.com/">
+<meta property="og:url" content="https://www.calmdownoscar.com/">
+<link rel="canonical" href="https://www.calmdownoscar.com/">
 <meta name="twitter:card" content="summary_large_image">
 <style>
   @font-face{
@@ -546,7 +547,7 @@
             </div>
           </div>
 
-          <a class="store-badge" href="https://apps.apple.com/app/unli-rice">
+          <a class="store-badge" href="https://apps.apple.com/app/unli-rice/id6792837485">
             <img src="assets/mac-app-store-badge.svg" alt="Download on the Mac App Store" width="156" height="40">
           </a>
 
@@ -631,7 +632,7 @@
             </div>
           </div>
 
-          <a class="store-badge" href="https://apps.apple.com/ph/app/clearspace-organize-photos/id6749827807">
+          <a class="store-badge" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">
             <img src="assets/app-store-badge.svg" alt="Download on the App Store" width="120" height="40">
           </a>
 
@@ -686,7 +687,7 @@
             </div>
           </div>
 
-          <a class="store-badge" href="https://apps.apple.com/app/unli-disk">
+          <a class="store-badge" href="https://apps.apple.com/app/unli-disk/id6797325817">
             <img src="assets/mac-app-store-badge.svg" alt="Download on the Mac App Store" width="156" height="40">
           </a>
 
@@ -865,73 +866,6 @@
           <div class="links">
             <a class="applink" href="kitchen_vision/">Kitchen Vision Page <span class="arrow">→</span></a>
             <a class="privacy-link" href="kitchen_vision/privacy.html">Privacy Policy</a>
-          </div>
-        </article>
-
-        <!-- Architecturally -->
-        <article class="card dev reveal" id="architecturally">
-          <span class="status"><i class="dot red"></i>In Development</span>
-          <div class="card-head">
-            <div class="app-icon" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px;">A</div>
-            <div>
-              <h3>Architecturally</h3>
-              <div class="meta" style="margin-top:4px;">
-                <span class="pill">iPadOS</span>
-                <span class="pill">MLX On-Device</span>
-                <span class="pill">Cloud Fallback</span>
-                <span class="pill">CAD Engine</span>
-                <span class="pill">SceneKit 3D</span>
-              </div>
-            </div>
-          </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">iPad sketch-to-3D floorplan engine. Freehand stylus strokes become millimetre-accurate CAD geometry, then a 3D model you can walk through — with a design copilot that runs on the iPad itself when the hardware allows.</p>
-
-          <div class="card-preview">
-            <img src="assets/screens/architecturally-3d.webp" alt="Architecturally: a floorplan extruded into a walkable 3D model on iPad" width="570" height="760" loading="lazy" decoding="async">
-            <img src="assets/screens/architecturally-2d.webp" alt="Architecturally: the same plan as parametric CAD geometry on named layers" width="570" height="760" loading="lazy" decoding="async">
-          </div>
-
-          <div class="cs-steps" style="margin-top:10px;">
-            <div class="cs-step">
-              <div class="cs-step-num">01 · Problem</div>
-              <div class="cs-step-content">
-                <h4>Sketch, not CAD</h4>
-                <p>CAD tools demand a steep learning curve for something as simple as roughing out a floorplan with a child-safety zone or a pet area penned in.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <div class="cs-step-num">02 · Design choice</div>
-              <div class="cs-step-content">
-                <h4>A structured layer between stylus and AI</h4>
-                <p>Freehand strokes get interpreted into parametric floorplan geometry first; the 3D models and AI proposals are generated from that structured data, not straight from raw stylus input. Constraining what the generative step sees is what keeps its output usable.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <div class="cs-step-num">03 · Inference split</div>
-              <div class="cs-step-content">
-                <h4>MLX on the iPad, cloud on the rest</h4>
-                <p>A 4-bit Llama 3.2 3B runs locally through MLX Swift on devices with roughly 8 GB of memory or more — free, offline, nothing about the drawing leaving the iPad. Below that floor the same copilot answers from Gemini 3.6 Flash through a Vercel relay, so a less premium device loses the privacy and the airplane-mode trick but no features. On Automatic, a capable device drafts locally and escalates only the briefs it can't carry.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <div class="cs-step-num">04 · The drawing itself</div>
-              <div class="cs-step-content">
-                <h4>Real CAD, not a picture of one</h4>
-                <p>Millimetre geometry on named layers, DXF import and export, and PDF/SVG sheets published at an exact 1:N scale. Nearly 200 catalog assets carry both a plan symbol and a 3D shape, so the same drawing extrudes into a SceneKit model you can orbit — or walk at 1.6 m eye height, through doors that open and up stairs between storeys.</p>
-              </div>
-            </div>
-            <div class="cs-step">
-              <div class="cs-step-num">05 · Status</div>
-              <div class="cs-step-content">
-                <h4>Where it's at</h4>
-                <p>Feature-complete build. The MLX path is wired end to end and compiles for hardware, but local inference needs a Metal device — so it stays untested until it runs on a real iPad. No App Store listing yet.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="links">
-            <a class="applink" href="apps/architecturally/">Architecturally Page <span class="arrow">→</span></a>
-            <a class="privacy-link" href="apps/architecturally/privacy.html">Privacy Policy</a>
           </div>
         </article>
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://calmdownoscar.com/sitemap.xml
+Sitemap: https://www.calmdownoscar.com/sitemap.xml
