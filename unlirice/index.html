@@ -186,6 +186,30 @@
   .card-info h3 span { color: var(--accent); }
   .card-info p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
 
+  .shot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .shot-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .shot-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--edge-hi);
+    box-shadow: 0 16px 34px rgba(32,43,54,.12);
+  }
+  .shot-card img { display: block; width: 100%; height: auto; background: #0B0F14; }
+  .shot-caption { display: block; padding: 12px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--edge); }
+  @media (max-width: 640px) {
+    .shot-grid { grid-template-columns: 1fr; }
+  }
+
   /* ================= pipeline steps ================= */
   .pipeline {
     display: grid;
@@ -352,11 +376,30 @@
         <div style="width: 39px;"></div>
       </div>
       <div class="window-body">
-        <img src="../apps/assets/unli-rice-hero.png" alt="Unli Rice on macOS — a persistent memory layer for AI agents, showing the note log and connected agents." loading="lazy">
+        <img src="../apps/assets/unli-rice-hero.png" alt="Unli Rice on macOS — the Home screen, showing what your AI tools know about you and how many notes are stored." loading="lazy">
       </div>
       <div class="card-info">
         <h3>One log, every agent <span>reads and writes the same notes</span></h3>
         <p>The vault lives on your Mac as an append-only event log — no note is ever silently overwritten, structural changes are proposed rather than applied automatically, and every entry carries the name of the agent that wrote it. Switch from Claude to Codex mid-task and the context is already there.</p>
+      </div>
+    </div>
+
+    <div class="shot-grid reveal">
+      <div class="shot-card">
+        <img src="../apps/assets/unli-rice-shot-map.webp" alt="Unli Rice Map — every note plotted as a connected graph, clustered by project" loading="lazy">
+        <span class="shot-caption">Map — every note, clustered by project</span>
+      </div>
+      <div class="shot-card">
+        <img src="../apps/assets/unli-rice-shot-connect.webp" alt="Unli Rice Setup & Tools — connecting Claude Code, Claude Desktop, Cursor, Antigravity and Codex over MCP" loading="lazy">
+        <span class="shot-caption">Connect — one config block per tool</span>
+      </div>
+      <div class="shot-card">
+        <img src="../apps/assets/unli-rice-shot-notes.webp" alt="Unli Rice Notes — searchable list of every note, with source tags and timestamps" loading="lazy">
+        <span class="shot-caption">Notes — searchable, tagged, append-only</span>
+      </div>
+      <div class="shot-card">
+        <img src="../apps/assets/unli-rice-shot-todo.webp" alt="Unli Rice To do — derived automatically from your repos and notes tagged todo, nothing tracked by hand" loading="lazy">
+        <span class="shot-caption">To do — derived, not maintained by hand</span>
       </div>
     </div>
 
