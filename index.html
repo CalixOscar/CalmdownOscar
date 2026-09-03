@@ -354,6 +354,17 @@
      small to read anything in. 3:2 buys back roughly half again. */
   @media (max-width:720px){
     .card-preview{ aspect-ratio:3 / 2; padding:10px; gap:8px; }
+    /* Touch targets: these links sat at 23-33px, well under the 44px finger
+       target Apple asks for. Give every one of them a full-height hit area on
+       small screens only. The rows already flex-wrap, so taller items reflow
+       rather than collide, and desktop is untouched. */
+    .links{ gap:2px 20px; align-items:center; }
+    a.applink,
+    a.privacy-link{
+      display:inline-flex; align-items:center;
+      min-height:44px; box-sizing:border-box;
+    }
+    .links a.applink{ margin-top:0; padding-top:0; }
   }
   @media (prefers-reduced-motion: reduce){
     .card-preview img{ transition:none; }
