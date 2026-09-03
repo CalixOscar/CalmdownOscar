@@ -148,18 +148,81 @@
     text-decoration:none; letter-spacing:-.02em; flex-shrink:0;
   }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none; }
+  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; }
   nav a{
     color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
     transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent-ink); font-weight:600; }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  @media (max-width:640px){
-    .topbar .wrap{ gap:12px; }
-    nav{ gap:14px; }
-    nav a{ font-size:13px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid var(--edge);
+      border-radius:var(--radius);
+      cursor:pointer;
+      padding:0;
+      color:var(--ink);
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:var(--ink);
+      border-radius:1px;
+      transition:transform var(--fast) var(--ease), opacity var(--fast) var(--ease);
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid var(--edge);
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--topbar-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:var(--ink);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
   }
 
   .reveal{
@@ -389,28 +452,171 @@
   .cs-step-content code { background: rgba(255,255,255,.08); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; } /* TRIAL: was rgba(18,21,26,.06), a dark tint that goes invisible on a dark page */
 
   /* ================= S1 hero ================= */
-  /* No animation on this page by design — static layout only, sized to content. */
+  /* Sized compactly so the hero and app index are visible above the fold. */
   .hero{
-    padding-bottom:clamp(24px, 4vh, 40px);   /* top padding comes from section:first-of-type */
+    padding-top:clamp(20px, 3vh, 36px);
+    padding-bottom:clamp(16px, 2.5vh, 28px);
   }
   .hero .wrap{ width:100%; }
   .hero h1{
     font-family:var(--font-display);
-    font-size:clamp(25px, 1rem + 3.15vw, 60px); font-weight:800;
-    line-height:1.05; letter-spacing:-.02em; color:var(--ink);
+    font-size:clamp(25px, 1rem + 3.15vw, 54px); font-weight:800;
+    line-height:1.08; letter-spacing:-.02em; color:var(--ink);
   }
-  .hero h1 .stop{ color:var(--accent); }   /* large display — 3:1 threshold, passes */
-  .hero-lede{
-    font-size:var(--step-1); color:var(--muted);
-    max-width:46ch; line-height:1.35;
-    margin-top:clamp(20px, 3.5vh, 32px);
+  .hero h1 .stop{ color:var(--accent); }
+  .hero-intro{
+    font-size:clamp(15px, 0.95rem + 0.3vw, 18px);
+    color:var(--ink);
+    max-width:56ch;
+    line-height:1.45;
+    margin-top:clamp(12px, 2vh, 18px);
   }
+  .hero-sub{
+    font-size:clamp(13px, 0.85rem + 0.2vw, 15px);
+    color:var(--muted);
+    max-width:54ch;
+    line-height:1.45;
+    margin-top:6px;
+  }
+  .hero-links{
+    margin-top:clamp(14px, 2vh, 20px);
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .hero-contact{
+    font-size:14px;
+    font-weight:500;
+    color:var(--muted);
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  .hero-contact:hover{ color:var(--accent-ink); }
+
+  /* ================= app index grid ================= */
+  .app-index{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+    margin-bottom:48px;
+  }
+  @media (max-width:1023px){
+    .app-index{ grid-template-columns:repeat(2, 1fr); gap:12px; }
+  }
+  @media (max-width:599px){
+    .app-index{ grid-template-columns:1fr; gap:10px; margin-bottom:36px; }
+  }
+
+  .index-tile{
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--edge);
+    border-radius:var(--radius);
+    padding:14px;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:transform var(--base) var(--ease), border-color var(--base) var(--ease), background var(--base) var(--ease);
+  }
+  .index-tile:hover{
+    transform:translateY(-2px);
+    border-color:var(--accent);
+    background:rgba(255,255,255,.06);
+  }
+  .index-tile:focus-visible{
+    outline:1px solid var(--accent);
+    outline-offset:2px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .index-tile{ transition:none; }
+    .index-tile:hover{ transform:none; }
+  }
+
+  .index-tile-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .index-icon{
+    width:32px;
+    height:32px;
+    border-radius:6px;
+    flex-shrink:0;
+    object-fit:cover;
+  }
+  .index-text-icon{
+    width:32px;
+    height:32px;
+    border-radius:6px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--edge);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:.02em;
+    flex-shrink:0;
+  }
+  .index-status{
+    font-family:var(--font-mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+  }
+  .index-status.live{ color:var(--live-green); }
+  .index-status.progress{ color:var(--progress); }
+  .index-status.dev{ color:var(--status-red); }
+
+  .index-tile .index-name{
+    font-size:14px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.01em;
+    margin:0;
+    line-height:1.25;
+  }
+  .index-desc{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.45;
+    margin:0;
+  }
+  .index-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+    margin-top:auto;
+    padding-top:4px;
+  }
+  .index-pills .pill{
+    font-size:10.5px;
+    padding:2px 6px;
+  }
+
+  /* ================= about section ================= */
+  .about{ padding:40px 0 76px; }
+  .about-content p{ font-size:16px; color:var(--ink); line-height:1.65; margin-bottom:14px; }
+  .about-content p.about-sub{ font-size:15px; color:var(--muted); margin-bottom:20px; }
 </style>
 </head>
+<body>
 <header class="topbar">
   <div class="wrap">
     <a class="mark" href="./">calmdown<span>oscar</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
       <a href="how_I_work/">How I Work</a>
       <a href="the_studio/">The Studio</a>
       <a href="playground/">Playground</a>
@@ -428,15 +634,132 @@
     <div class="wrap">
       <div class="hero-inner">
         <h1>Built at night, while Oscar sleeps<span class="stop">.</span></h1>
-        <p class="hero-lede">
-          On-device when the data is yours, relayed through a server when it isn't.
-        </p>
+        <p class="hero-intro">I'm Peter. I build small iPhone, iPad and Mac apps — for photos, storage, notes and wedding planning — and I ship them on my own.</p>
+        <p class="hero-sub">On-device when the data is yours, relayed through a server when it isn't.</p>
+        <div class="hero-links">
+          <a class="applink" href="#apps">See the apps <span class="arrow">↓</span></a>
+          <a class="applink" href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com <span class="arrow">↗</span></a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="apps" id="apps" style="padding-top:30px;">
+  <section class="apps" id="apps" style="padding-top:16px;">
     <div class="wrap">
+
+      <!-- App Index Grid -->
+      <div class="app-index">
+
+        <!-- Wedding Concierge -->
+        <a class="index-tile" href="#wedding-concierge">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/nuptia-icon.png" alt="Wedding Concierge icon" width="32" height="32" loading="eager">
+            <span class="index-status live"><i class="dot green"></i>App Store</span>
+          </div>
+          <h3 class="index-name">Wedding Concierge</h3>
+          <p class="index-desc">AI wedding-planning concierge with grounded vendor search and shared state.</p>
+          <div class="index-pills">
+            <span class="pill">macOS</span>
+            <span class="pill">iOS</span>
+          </div>
+        </a>
+
+        <!-- Unli Rice -->
+        <a class="index-tile" href="#unli-rice">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/unli-rice-icon.png" alt="Unli Rice icon" width="32" height="32" loading="eager">
+            <span class="index-status live"><i class="dot green"></i>Mac App Store</span>
+          </div>
+          <h3 class="index-name">Unli Rice</h3>
+          <p class="index-desc">Persistent memory layer for multi-agent LLM workflows connected via MCP.</p>
+          <div class="index-pills">
+            <span class="pill">macOS</span>
+            <span class="pill">iOS</span>
+          </div>
+        </a>
+
+        <!-- Unli Rice Capture -->
+        <a class="index-tile" href="#unli-rice-capture">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/unli-rice-capture-icon.png" alt="Unli Rice Capture icon" width="32" height="32" loading="eager">
+            <span class="index-status live"><i class="dot green"></i>App Store</span>
+          </div>
+          <h3 class="index-name">Unli Rice Capture</h3>
+          <p class="index-desc">One-tap voice capture with on-device transcription that syncs to macOS.</p>
+          <div class="index-pills">
+            <span class="pill">iOS</span>
+          </div>
+        </a>
+
+        <!-- ClearSpace -->
+        <a class="index-tile" href="#clearspace">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/clearspace-icon.png" alt="ClearSpace icon" width="32" height="32" loading="eager">
+            <span class="index-status live"><i class="dot green"></i>App Store</span>
+          </div>
+          <h3 class="index-name">ClearSpace</h3>
+          <p class="index-desc">Native Swift/PhotosKit organizer with duplicate and blur detection.</p>
+          <div class="index-pills">
+            <span class="pill">iOS</span>
+          </div>
+        </a>
+
+        <!-- Unli Disk -->
+        <a class="index-tile" href="#unlidisk">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/unlidisk-icon.png" alt="Unli Disk icon" width="32" height="32" loading="eager">
+            <span class="index-status live"><i class="dot green"></i>Mac App Store</span>
+          </div>
+          <h3 class="index-name">Unli Disk</h3>
+          <p class="index-desc">macOS storage map and dev-cache analyzer that sweeps libraries safely.</p>
+          <div class="index-pills">
+            <span class="pill">macOS</span>
+          </div>
+        </a>
+
+        <!-- OpenGrail -->
+        <a class="index-tile" href="#opengrail">
+          <div class="index-tile-top">
+            <div class="index-icon index-text-icon" aria-hidden="true">OG</div>
+            <span class="index-status live"><i class="dot green"></i>Web</span>
+          </div>
+          <h3 class="index-name">OpenGrail</h3>
+          <p class="index-desc">Visual atlas of comparative religion and mythology across 695 traditions.</p>
+          <div class="index-pills">
+            <span class="pill">Web</span>
+          </div>
+        </a>
+
+        <!-- Shuttle Vision -->
+        <a class="index-tile" href="#shuttlevision">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/shuttle-vision-icon.png" alt="Shuttle Vision icon" width="32" height="32" loading="eager">
+            <span class="index-status progress"><i class="dot amber"></i>Awaiting Review</span>
+          </div>
+          <h3 class="index-name">Shuttle Vision</h3>
+          <p class="index-desc">Turns iPhones into an offline badminton scoreboard with slow-motion VAR replay.</p>
+          <div class="index-pills">
+            <span class="pill">iOS</span>
+            <span class="pill">iPadOS</span>
+          </div>
+        </a>
+
+        <!-- Kitchen Vision -->
+        <a class="index-tile" href="#kitchenvision">
+          <div class="index-tile-top">
+            <img class="index-icon" src="assets/kitchen_vision/icon.png" alt="Kitchen Vision icon" width="32" height="32" loading="eager">
+            <span class="index-status dev"><i class="dot red"></i>In Development</span>
+          </div>
+          <h3 class="index-name">Kitchen Vision</h3>
+          <p class="index-desc">Pickleball scoring and VAR review with automated 3-number callouts.</p>
+          <div class="index-pills">
+            <span class="pill">iOS</span>
+            <span class="pill">iPadOS</span>
+          </div>
+        </a>
+
+      </div>
+
       <div class="section-label reveal">Apps & Case Studies</div>
       <p class="section-lede reveal">How each app actually works: what runs on-device, what talks to a server, and why it's split that way.</p>
       <div class="app-grid">
@@ -559,7 +882,7 @@
 
         <!-- Unli Rice Capture -->
         <article class="card shipped reveal" id="unli-rice-capture">
-          <span class="status"><i class="dot amber"></i>Awaiting Review</span>
+          <span class="status"><i class="dot green"></i>Live on the App Store</span>
           <div class="card-head">
             <img class="app-icon" src="assets/unli-rice-capture-icon.png" alt="Unli Rice Capture app icon" width="44" height="44">
             <div>
@@ -577,6 +900,10 @@
             <img src="assets/screens/unlicapture-welcome.webp" alt="Unli Rice Capture: the welcome screen, explaining one-tap recording and on-device transcription" width="350" height="760" loading="lazy" decoding="async">
             <img src="assets/screens/unlicapture-notes.webp" alt="Unli Rice Capture: captured thoughts already listed as synced, readable notes" width="350" height="760" loading="lazy" decoding="async">
           </div>
+
+          <a class="store-badge" href="https://apps.apple.com/app/unli-rice-capture/id6800863948">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" width="120" height="40">
+          </a>
 
           <div class="links">
             <a class="applink" href="unlirice/">Product Page <span class="arrow">→</span></a>
@@ -596,7 +923,7 @@
                 <span class="pill">PhotosKit</span>
                 <span class="pill">Swift / SwiftUI</span>
                 <span class="pill">100% Local ML</span>
-                <span class="pill">Zero Telemetry</span>
+                <span class="pill">No Telemetry</span>
               </div>
             </div>
           </div>
@@ -620,14 +947,14 @@
               <div class="cs-step-num">02 · Safety</div>
               <div class="cs-step-content">
                 <h4>Non-destructive by design</h4>
-                <p>The core flow is blunt on purpose: pick a period, heart the photos to keep, then one button deletes everything in that period without a heart. Skip the period filter and that button can queue 30,000+ photos at once — so every deletion routes through iOS's own Recently Deleted instead of a hard delete, giving a 30-day window to undo exactly that mistake.</p>
+                <p>The core flow is blunt on purpose: pick a period, heart the photos to keep, then one button deletes everything in that period without a heart. Skip the period filter and that button can queue 30,000+ photos at once — so every deletion routes through iOS's own Recently Deleted instead of a hard delete, giving up to a 30-day window in Recently Deleted to undo that mistake.</p>
               </div>
             </div>
             <div class="cs-step">
               <div class="cs-step-num">03 · Cross-platform Pro</div>
               <div class="cs-step-content">
                 <h4>Mac companion sync</h4>
-                <p>ClearSpace 1.2 is live with instant 0ms previews, pinch-to-zoom inspection, and finishable monthly cohorts. If you own <a href="#unlidisk">Unli Disk for Mac</a>, ClearSpace Pro is automatically unlocked on your iPhone via iCloud.</p>
+                <p>ClearSpace 1.2 is live with previews that open from a prebuilt thumbnail cache, pinch-to-zoom inspection, and finishable monthly cohorts. If you own <a href="#unlidisk">Unli Disk for Mac</a>, ClearSpace Pro is automatically unlocked on your iPhone via iCloud.</p>
               </div>
             </div>
           </div>
@@ -816,8 +1143,8 @@
         </article>
 
         <!-- Kitchen Vision -->
-        <article class="card progress reveal" id="kitchenvision">
-          <span class="status"><i class="dot amber"></i>Awaiting Review</span>
+        <article class="card dev reveal" id="kitchenvision">
+          <span class="status"><i class="dot red"></i>In Development</span>
           <div class="card-head">
             <img class="app-icon" src="assets/kitchen_vision/icon.png" alt="Kitchen Vision app icon" width="44" height="44">
             <div>
@@ -843,7 +1170,7 @@
             <div class="cs-step">
               <div class="cs-step-num">01 · The 0-0-2 Puzzle</div>
               <div class="cs-step-content">
-                <h4>Never argue the 3-number callout</h4>
+                <h4>Resolving the 3-number callout</h4>
                 <p>Pickleball doubles scoring has a unique opening serve rule: only one partner serves at match start (0-0-2). On side-outs, both players serve in turn (Server 1 then Server 2), swapping left and right boxes upon winning points. Kitchen Vision tracks the exact serve number, receiving positions, and audible callout automatically.</p>
               </div>
             </div>
@@ -873,6 +1200,23 @@
 
       <div style="margin-top:40px; text-align:center;">
         <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent-ink);">The multi-agent workflow <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="section-label reveal">About</div>
+      <div class="about-content reveal" style="max-width:68ch;">
+        <p>I'm Peter. Oscar is my son — he's the reason this studio has a name, and he's still working on the calm part. The apps that make it to the App Store are built out of real necessity: tools born to solve my own development friction, or engineered to balance everyday life while raising a family.</p>
+        <p class="about-sub">My background spans enterprise systems, systems architecture, and wiring LLMs into relays, on-device models, and structured data so they behave predictably. When not shipping software, I'm usually thinking about quiet roads and riding motorcycles.</p>
+        <div class="links" style="display:flex; flex-wrap:wrap; gap:16px 24px; padding-top:4px;">
+          <a class="applink" href="https://apps.apple.com/developer/id1832327005">Apple Developer <span class="arrow">→</span></a>
+          <a class="applink" href="https://github.com/CalixOscar">GitHub <span class="arrow">→</span></a>
+          <a class="applink" href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com <span class="arrow">→</span></a>
+          <a class="applink" href="aboutme/">More about me <span class="arrow">→</span></a>
+        </div>
       </div>
     </div>
   </section>
@@ -1079,6 +1423,63 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
+    });
   }
 })();
 </script>
