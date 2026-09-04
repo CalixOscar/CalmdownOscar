@@ -51,6 +51,13 @@ decode, no loading spinner) instead of asserting zero latency.
 Use phrasing like "previews open immediately from a local frame-0 decode, with no loading
 spinner." Keep each sentence's surrounding structure intact.
 
+> **Correction, 2026-09-04:** the replacement phrasing above was itself wrong and has been
+> undone. Neither app does a frame-0 decode. Both open a preview with a *synchronous,
+> network-disabled `.fastFormat` `PHImageManager.requestImage`* — the poster still Photos
+> has already cached on the device (`Sources/UnliDiskiOS/PhotoDetailScreen.swift` init,
+> `Sources/UnliDisk/Views/PhotoDetailViewer.swift` `fastOptions`). The live copy now says
+> "the still Photos has already cached on the device". Do not reintroduce "frame-0".
+
 Leave `index.html:76` (`--fast: 140ms`) and `index.html:1422`
 (`transitionDelay = '0ms'`) alone — those are CSS, not claims.
 

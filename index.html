@@ -709,7 +709,7 @@
             <span class="index-status live"><i class="dot green"></i>App Store</span>
           </div>
           <h3 class="index-name">ClearSpace</h3>
-          <p class="index-desc">Native Swift/PhotosKit organizer with duplicate and blur detection.</p>
+          <p class="index-desc">Native Swift/PhotoKit photo cleaner that sorts a library biggest-first.</p>
           <div class="index-pills">
             <span class="pill">iOS</span>
           </div>
@@ -931,14 +931,14 @@
               <h3>ClearSpace</h3>
               <div class="meta" style="margin-top:4px;">
                 <span class="pill">iOS</span>
-                <span class="pill">PhotosKit</span>
+                <span class="pill">PhotoKit</span>
                 <span class="pill">Swift / SwiftUI</span>
-                <span class="pill">100% Local ML</span>
+                <span class="pill">100% On-Device</span>
                 <span class="pill">No Telemetry</span>
               </div>
             </div>
           </div>
-          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotosKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
+          <p style="color:var(--muted); font-size:15px; margin-top:2px;">Native Swift/PhotoKit rebuild, born from my own 40,000-photo library — real, not hypothetical. Now live on the App Store.</p>
 
           <div class="card-preview">
             <img src="assets/screens/clearspace-timeline.webp" alt="ClearSpace: the full timeline sorted biggest first, each thumbnail tagged with its size, and 4,535 unhearted items totalling 22 GB" width="350" height="760" loading="lazy" decoding="async">
@@ -948,10 +948,10 @@
 
           <div class="cs-steps" style="margin-top:10px;">
             <div class="cs-step">
-              <div class="cs-step-num">01 · Detection method</div>
+              <div class="cs-step-num">01 · Ordering</div>
               <div class="cs-step-content">
-                <h4>Signal, not a model</h4>
-                <p>What ships today isn't a model call at all: a 64-bit perceptual hash surfaces candidate duplicate pairs, Apple's Vision feature-print distance confirms the match, and a Laplacian blur score catches soft shots — all through Apple's Vision framework, no model download. An earlier version added an on-device VLM as a refinement pass on top of that; it made the scan slower for little gain, so it was cut. Classical signal was the better call.</p>
+                <h4>Codec-aware size, not pixel count</h4>
+                <p>Sorting biggest-first is only useful if the sizes are right, and a flat pixels-to-bytes coefficient is wrong in opposite directions for the two things you're comparing — it over-counts a HEIC still by ~2.7x and under-counts a slo-mo clip by ~5.5x. The estimator reads dimensions, duration and codec off the asset's own metadata, so a 40,000-item library sorts instantly without opening a single file. Every figure is shown with a <code>~</code> because it is an estimate, not a measurement.</p>
               </div>
             </div>
             <div class="cs-step">
@@ -990,7 +990,7 @@
               <div class="meta" style="margin-top:4px;">
                 <span class="pill">macOS</span>
                 <span class="pill">AppKit / SwiftUI</span>
-                <span class="pill">PhotosKit Core</span>
+                <span class="pill">PhotoKit Core</span>
                 <span class="pill">Dev Cache Engine</span>
               </div>
             </div>
@@ -1017,7 +1017,14 @@
               </div>
             </div>
             <div class="cs-step">
-              <div class="cs-step-num">03 · Includes ClearSpace Pro</div>
+              <div class="cs-step-num">03 · Detection method</div>
+              <div class="cs-step-content">
+                <h4>Signal, not a model</h4>
+                <p>The Mac app's duplicate and blur pass isn't a model call at all: a 64-bit perceptual hash surfaces candidate pairs, Apple's Vision feature-print distance confirms the match, and a Laplacian blur score catches soft shots — all through Apple's Vision framework, no model download. An earlier version added an on-device VLM as a refinement pass on top of that; it made the scan slower for little gain, so it was cut. Classical signal was the better call. This one is Mac-only for now — <a href="#clearspace">ClearSpace</a> on iPhone does not claim it.</p>
+              </div>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-num">04 · Includes ClearSpace Pro</div>
               <div class="cs-step-content">
                 <h4>Shared engine, cross-platform Pro</h4>
                 <p>The photo-auditing code lives in <code>Packages/UnliDiskPhotos</code>, the same engine ClearSpace uses. Purchasing Unli Disk ($14.99 one-time) automatically unlocks ClearSpace Pro on your iPhone via iCloud.</p>
