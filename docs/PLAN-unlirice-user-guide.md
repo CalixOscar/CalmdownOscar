@@ -156,3 +156,54 @@ tools present in the reference table; every relative path resolves; the page mak
 network requests, all same-origin (document, app icon, self-hosted font) and none
 third-party; no horizontal overflow at 375px, with the tool table scrolling inside its own
 container.
+
+## Stage 3 — brief for Codex
+
+Shipped as PR #1 on branch `docs/unlirice-user-guide`. Page: `unlirice/user_guide.html`.
+
+**This is no longer a pre-mortem, and pretending otherwise would waste the pass.** The page
+is built, so there is no design left to break on paper. What is missing is the thing the
+pre-mortem would have caught: nobody has tried to falsify it. Your job is the same in
+character — try to break it, output concrete objections, do not re-plan and do not rewrite
+the page — but the target is the built artifact and the intent doc, not this plan.
+
+**Ground truth is `~/Documents/Projects/Unli Rice/Sources/`, not this document and not the
+page.** Where the guide and the code disagree, the code wins. The guide was written against
+`unli-rice@1f49c0f`; check `git log` in that repo for anything newer that invalidates a
+claim.
+
+Claims to verify one at a time, because each is load-bearing and a wrong one is worse than a
+missing one:
+
+1. **Two connection paths.** MCP config block, and the zero-config folder at
+   `~/Documents/Unli Rice/`. `Sources/UnliRice/ConnectView.swift`. Is the folder path right,
+   and is the list of named tools complete and correctly named?
+2. **"Unli Rice never opens or edits that file."** Confirm nothing writes to a client config.
+3. **The Trust Center field list** — client name and version, timestamps, tool name, success,
+   and *never* tool arguments or note content. `Sources/UnliRiceCore/MCP/ConnectionActivity.swift`.
+   This is a privacy claim; it is exact or it comes off the page.
+4. **The janitor can add a tag or raise a flag and nothing else.** Confirm it cannot archive,
+   retitle, merge, or resolve.
+5. **No permanent delete.** Note that `TrashService` exists and can purge. The guide says
+   there is no permanent delete tool, scoped to the MCP surface. Decide whether that scoping
+   is honest or whether it misleads a user who later finds purge in the app.
+6. **Snapshot and restore semantics** — byte-for-byte capture, SHA-256 manifest, restore
+   appends only missing events and never replaces. `Sources/UnliRiceCore/VaultSnapshot.swift`.
+7. **The to-do derivation**, including the "as of the last snapshot" label and the claim that
+   nothing is stored and nothing can be ticked. `Sources/UnliRiceCore/StudioTodo.swift`.
+8. **Capture mirrors repos and to-dos read-only.** Confirm it cannot write them.
+9. **All 14 tool descriptions** against the schemas the server actually serves today.
+
+Then the questions the code cannot answer:
+
+- **What will a new user hit that the guide does not mention?** This is the real risk. The
+  guide was written by something that already knew the app, so its blind spots are invisible
+  from the inside. Read `docs/intent/INTENT-001-unlirice-user-guide.md` — "what solved looks
+  like" is the spec — and say where the page fails it.
+- **Can someone connect their first agent from section 2 alone?** Walk it literally.
+- Does anything on the page make a claim the site cannot verify — App Store status, a version,
+  a release date? There should be none.
+- Is the "nothing deletes" framing reassuring where it should be warning, or the reverse?
+
+Output a list of concrete objections, each naming the section and the evidence. An objection
+you cannot back with a file and line is a note, not an objection.
