@@ -463,7 +463,7 @@
           <li><a href="#what">What Unli Rice is</a></li>
           <li><a href="#setup">Set it up</a></li>
           <li><a href="#notes">How to think about a note</a></li>
-          <li><a href="#append-only">Nothing deletes</a></li>
+          <li><a href="#append-only">What can and cannot delete</a></li>
           <li><a href="#layers">The three layers</a></li>
           <li><a href="#panes">The panes</a></li>
           <li><a href="#iphone">The iPhone app</a></li>
@@ -506,15 +506,20 @@
         </section>
 
         <section class="g-section reveal" id="append-only">
-          <h2>4. Nothing deletes</h2>
-          <p>This is the part that surprises people, so it is better stated here than discovered later.</p>
+          <h2>4. What can and cannot delete</h2>
+          <p>This is the part that surprises people, so it is better stated here than discovered later. The short version: <strong>no agent can delete anything. You can.</strong></p>
+          <h3>What agents can do</h3>
           <ul>
             <li><strong>Appending never replaces.</strong> Adding to a note puts text at the end. Earlier content, including another agent&rsquo;s, stays where it was.</li>
-            <li><strong>Archiving is the closest thing to delete, and it is reversible.</strong> It hides a note from the default listings. There is no permanent delete tool.</li>
+            <li><strong>Archiving is as close to deleting as an agent gets, and it is reversible.</strong> It hides a note from the default listings and nothing more.</li>
             <li><strong>Every note carries its own history.</strong> Open the event timeline for any note and you get each change, who made it, and when.</li>
             <li><strong>Structural changes are proposed, not applied.</strong> An agent that suspects a duplicate or a contradiction raises a flag for you. Raising a flag changes nothing by itself.</li>
           </ul>
-          <p>The point of all of it is that you can trust what the log says happened. A record anything can quietly rewrite is a record you have to verify some other way.</p>
+          <p>This is not a matter of agents being asked nicely. Deleting is not in the set of things they are able to express: the tools they are given are built from the safe layer, and the code that can remove history lives outside it.</p>
+          <h3>What you can do</h3>
+          <p>You can purge a note, from the app, by hand. It is deliberately yours alone &mdash; it never runs on a schedule and no agent and no background job can reach it.</p>
+          <p>Even then it is gentler than it sounds. Every event belonging to that note is written out in full first, and the whole log is copied to a backup before anything is rewritten, so a purge can be restored and the result is identical to what you had. What a purge genuinely destroys is the log&rsquo;s <em>continuity</em> &mdash; those lines are no longer in the live file &mdash; rather than the content itself.</p>
+          <p>The point of all of it is that you can trust what the log says happened. A record that anything in the system could quietly rewrite is a record you would have to verify some other way.</p>
         </section>
 
         <section class="g-section reveal" id="layers">
@@ -577,7 +582,7 @@
                 <tr><td><code>append_to_note</code></td><td>Adds content to the end of a note. Never replaces or removes what is already there.</td></tr>
                 <tr><td><code>tag_note</code></td><td>Adds a tag.</td></tr>
                 <tr><td><code>untag_note</code></td><td>Removes a tag. This is how you correct a tag the janitor got wrong.</td></tr>
-                <tr><td><code>archive_note</code></td><td>Hides a note from default listings, with a reason. Reversible, and the closest thing to delete that exists.</td></tr>
+                <tr><td><code>archive_note</code></td><td>Hides a note from default listings, with a reason. Reversible, and the closest to deleting that any agent can get.</td></tr>
                 <tr><td><code>unarchive_note</code></td><td>Brings an archived note back.</td></tr>
                 <tr><td><code>flag_for_review</code></td><td>Queues a concern for you &mdash; a suspected duplicate, a conflict, a proposed merge. Never applies the change itself.</td></tr>
                 <tr><td><code>pending_reviews</code></td><td>Lists every unresolved flag across all notes, oldest first.</td></tr>

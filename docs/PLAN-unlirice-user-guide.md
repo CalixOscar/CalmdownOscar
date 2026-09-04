@@ -184,9 +184,13 @@ missing one:
    This is a privacy claim; it is exact or it comes off the page.
 4. **The janitor can add a tag or raise a flag and nothing else.** Confirm it cannot archive,
    retitle, merge, or resolve.
-5. **No permanent delete.** Note that `TrashService` exists and can purge. The guide says
-   there is no permanent delete tool, scoped to the MCP surface. Decide whether that scoping
-   is honest or whether it misleads a user who later finds purge in the app.
+5. ~~**No permanent delete.**~~ **Resolved 2026-09-04, before review — the founder called the
+   original claim misleading and it was.** The page said there is no permanent delete tool,
+   which was true only of the MCP surface while `TrashService` can purge from the app.
+   Section 4 is now "What can and cannot delete" and splits the two: agents cannot express
+   deletion at all (the tool catalog is built from `NoteService`, and `TrashService` sits
+   outside it), while the founder can purge by hand, with every event written out first and
+   the log backed up before rewrite. Still verify that description against `Trash.swift`.
 6. **Snapshot and restore semantics** — byte-for-byte capture, SHA-256 manifest, restore
    appends only missing events and never replaces. `Sources/UnliRiceCore/VaultSnapshot.swift`.
 7. **The to-do derivation**, including the "as of the last snapshot" label and the claim that
