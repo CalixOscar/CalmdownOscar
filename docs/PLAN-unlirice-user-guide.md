@@ -157,57 +157,104 @@ network requests, all same-origin (document, app icon, self-hosted font) and non
 third-party; no horizontal overflow at 375px, with the tool table scrolling inside its own
 container.
 
-## Stage 3 — brief for Codex
+## Stage 3 — brief for Codex (refreshed 2026-09-04, supersedes the first version)
 
-Shipped as PR #1 on branch `docs/unlirice-user-guide`. Page: `unlirice/user_guide.html`.
+Live at `https://www.calmdownoscar.com/unlirice/user_guide.html`. Source at
+`unlirice/user_guide.html` on `main`. Merged as PR #1 and #2.
 
-**This is no longer a pre-mortem, and pretending otherwise would waste the pass.** The page
-is built, so there is no design left to break on paper. What is missing is the thing the
-pre-mortem would have caught: nobody has tried to falsify it. Your job is the same in
-character — try to break it, output concrete objections, do not re-plan and do not rewrite
-the page — but the target is the built artifact and the intent doc, not this plan.
+**This is not a pre-mortem.** The page is built and shipped, so there is no design left to
+break on paper. Your job is the same in character — falsify it, produce concrete objections,
+do not re-plan and do not rewrite the page — but the target is the live artifact.
 
-**Ground truth is `~/Documents/Projects/Unli Rice/Sources/`, not this document and not the
-page.** Where the guide and the code disagree, the code wins. The guide was written against
-`unli-rice@1f49c0f`; check `git log` in that repo for anything newer that invalidates a
-claim.
+**Ground truth is `~/Documents/Projects/Unli Rice/Sources/`.** Not this plan, not the page,
+and not that repo's `AGENTS.md` or `PROJECT_NOTES.md` — see the failure mode below for why
+that distinction has already cost four corrections.
 
-Claims to verify one at a time, because each is load-bearing and a wrong one is worse than a
-missing one:
+### 1. The primary question: does this serve both audiences?
 
-1. **Two connection paths.** MCP config block, and the zero-config folder at
-   `~/Documents/Unli Rice/`. `Sources/UnliRice/ConnectView.swift`. Is the folder path right,
-   and is the list of named tools complete and correctly named?
-2. **"Unli Rice never opens or edits that file."** Confirm nothing writes to a client config.
-3. **The Trust Center field list** — client name and version, timestamps, tool name, success,
-   and *never* tool arguments or note content. `Sources/UnliRiceCore/MCP/ConnectionActivity.swift`.
-   This is a privacy claim; it is exact or it comes off the page.
-4. **The janitor can add a tag or raise a flag and nothing else.** Confirm it cannot archive,
-   retitle, merge, or resolve.
-5. ~~**No permanent delete.**~~ **Resolved 2026-09-04, before review — the founder called the
-   original claim misleading and it was.** The page said there is no permanent delete tool,
-   which was true only of the MCP surface while `TrashService` can purge from the app.
-   Section 4 is now "What can and cannot delete" and splits the two: agents cannot express
-   deletion at all (the tool catalog is built from `NoteService`, and `TrashService` sits
-   outside it), while the founder can purge by hand, with every event written out first and
-   the log backed up before rewrite. Still verify that description against `Trash.swift`.
-6. **Snapshot and restore semantics** — byte-for-byte capture, SHA-256 manifest, restore
-   appends only missing events and never replaces. `Sources/UnliRiceCore/VaultSnapshot.swift`.
-7. **The to-do derivation**, including the "as of the last snapshot" label and the claim that
-   nothing is stored and nothing can be ticked. `Sources/UnliRiceCore/StudioTodo.swift`.
-8. **Capture mirrors repos and to-dos read-only.** Confirm it cannot write them.
-9. **All 14 tool descriptions** against the schemas the server actually serves today.
+**The founder's stated goal is that Unli Rice is usable by a brand-new hobby developer and
+by a senior developer. The founder is the former and reports that the app currently leans
+towards the latter.** That judgement is the most important thing for this pass to test,
+because everyone else who has looked at this — including whatever wrote the page — was
+already fluent.
 
-Then the questions the code cannot answer:
+The guide gives you concrete evidence to start from. **"MCP" appears four times and is never
+once expanded.** `mcpServers`, `corpus`, `shard`, `memory.md`, `repository snapshot`,
+`remote`, `stack defaults` and `event log` are all used as though known. Section 7 (The
+panes) describes a repositories pane and a branch graph, and Section 10 tells a stuck reader
+to "publish a new repository snapshot" without saying what that is or how.
 
-- **What will a new user hit that the guide does not mention?** This is the real risk. The
-  guide was written by something that already knew the app, so its blind spots are invisible
-  from the inside. Read `docs/intent/INTENT-001-unlirice-user-guide.md` — "what solved looks
-  like" is the spec — and say where the page fails it.
-- **Can someone connect their first agent from section 2 alone?** Walk it literally.
-- Does anything on the page make a claim the site cannot verify — App Store status, a version,
-  a release date? There should be none.
-- Is the "nothing deletes" framing reassuring where it should be warning, or the reverse?
+Work the beginner path literally and report where it breaks:
 
-Output a list of concrete objections, each naming the section and the evidence. An objection
-you cannot back with a file and line is a note, not an objection.
+- Read Section 2 as somebody who has installed a Mac app and used Claude in a browser, and
+  has never edited a JSON config file. Where do they stop? Is "paste the block into that
+  tool's own configuration file" an instruction or an assumption?
+- Which sections are *only* meaningful if you use git daily? Say whether the guide should
+  explain them, signpost them as optional, or whether this is not a guide problem at all.
+- Is anything actively discouraging — a passage that tells a beginner this product is not
+  for them?
+
+**Then say honestly whether the lean is fixable in the guide.** The panes are derived from
+git state; a to-do list computed from unpushed commits is senior-developer-shaped by
+construction, and no amount of rewriting changes that. If your conclusion is that the lean
+is in the product rather than the documentation, say so plainly and name what you saw. That
+is a more useful finding than a list of words to define, and it belongs in a new intent doc
+rather than in an edit to this page.
+
+### 2. Resolved — do not re-raise
+
+- **The delete claim.** The first brief asked whether "there is no permanent delete tool" was
+  misleading. It was, the founder said so, and it is fixed. Section 5 is now "What can and
+  cannot delete" and splits agents (cannot express deletion; the tool catalog is built from
+  `NoteService` and `TrashService` sits outside it) from the founder (can purge by hand,
+  never on a schedule, with every event written out and the log backed up first). Verify the
+  new description against `Trash.swift` — but the old objection is spent.
+- **Three claims corrected on 2026-09-04** in the self-audit, listed below. Check the
+  replacements, not the originals.
+
+### 3. Claims to verify, each against a named file
+
+Sections 1–4 and 6–11 were checked once already. Re-check anyway; one pass found four errors.
+
+1. **Section 2, two connection paths** — the config block and the folder at
+   `~/Documents/Unli Rice/`. `ConnectView.swift`, `MCPTarget.swift`. Tool list complete and
+   correctly named?
+2. **"Unli Rice never opens or edits that file."** Confirm nothing writes a client config.
+3. **Section 3 is new and has never been reviewed.** House rules presets and their names
+   (`HouseRulesPreset.swift`), the claim that choosing a preset never writes to the note
+   store, the labelled token estimate, the four profile templates and their fields
+   (`ProfileTemplate.swift`, `ProfileBuilder.swift`), and the seed notes — one-time, only on
+   an empty log, tagged `guide`, and the janitor's minimum-tag-use reason for them
+   (`Onboarding.swift`).
+4. **Section 3's identity claim.** "No personal information about anybody ships with the
+   app." Grep the whole app, not just `Sources/` — bundles, plists, assets, presets. If
+   anything personal ships anywhere, that sentence has to come down immediately.
+5. **Section 8, corrected.** Capture's to-do mirror is read-only for items but writes a
+   stamped note to `Repo: <project>` (`TodoView.save`). Is the new wording right, and is
+   there any *other* write path from the phone the page does not mention?
+6. **Section 9**, snapshot and restore semantics — `VaultSnapshot.swift`.
+7. **Section 7**, the to-do derivation and the "as of the last snapshot" label —
+   `StudioTodo.swift`.
+8. **Section 7**, Trust Center field list — `ConnectionActivity.swift`. Privacy claim: exact
+   or removed.
+9. **The janitor may add a tag or raise a flag and nothing else.**
+10. **All 14 tool descriptions** against the schemas the server serves today.
+
+### 4. The failure mode to hunt
+
+Every error found so far has the same shape: **a claim sourced from a document rather than
+from code, then stated on the page as fact.** Four instances, all in one short page — the
+delete claim, "nothing is destroyed", "nothing reads these by default" (taken from
+`AGENTS.md`), and the read-only phone. Assume there are more and that they will look exactly
+as confident as everything around them. A sentence that reads as settled is not evidence
+that it was checked.
+
+### 5. Output
+
+A list of concrete objections. Each names the section, what is wrong, and the file and line
+that settles it. An objection you cannot back with a file is a note, not an objection.
+
+Order them by what would embarrass the founder most if a stranger found it first, not by how
+easy they are to fix. The two-audience question in §1 is the one to spend the most time on;
+it is also the only part of this brief where I cannot give you the answer to check against,
+which is exactly why it is being asked of you.
