@@ -72,8 +72,7 @@
   .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
   .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none; }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
   nav a{
     color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
     margin-left:22px;
@@ -81,8 +80,75 @@
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  @media (max-width:640px){
-    nav a{ margin-left:14px; font-size:13px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid var(--edge);
+      border-radius:8px;
+      cursor:pointer;
+      padding:0;
+      color:var(--ink);
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:currentColor;
+      border-radius:1px;
+      transition:transform 140ms ease, opacity 140ms ease;
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid var(--edge);
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--topbar-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:var(--ink);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+      margin-left:0;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
   }
 
   main{ padding:56px 0 96px; }
@@ -330,10 +396,14 @@
 </style>
 </head>
 <body>
-<header>
+<header class="topbar">
   <div class="wrap nav">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
       <a href="../how_I_work/">How I Work</a>
       <a href="../the_studio/">The Studio</a>
       <a href="../playground/">Playground</a>
@@ -406,7 +476,7 @@
     <!-- What's coming -->
     <section style="padding: 0 0 16px;">
       <div class="section-label reveal">What's coming</div>
-      <p class="section-lede reveal">Unli Rice today is Mac-only — the log lives on one machine. The next piece closes the one real gap: capturing a thought when you're not at the Mac.</p>
+      <p class="section-lede reveal">Unli Rice centers on the local Mac event log, paired with a shipped iOS capture companion for recording thoughts on the go. Point the phone at an iCloud folder and the two connect; leave it unset and nothing leaves the phone.</p>
 
       <div class="pipeline">
         <div class="step reveal">
@@ -419,10 +489,10 @@
 
         <div class="connector reveal">↓</div>
 
-        <div class="step future reveal">
+        <div class="step reveal">
           <div class="step-num">2</div>
           <div>
-            <div class="step-head"><h4>iOS Capture — satellite note-taker</h4><span class="step-tag">In development</span></div>
+            <div class="step-head"><h4>iOS Capture — satellite note-taker</h4><a class="step-tag" href="https://apps.apple.com/app/unli-rice-capture/id6800863948" style="text-decoration:none; color:#fff;">Shipping now</a></div>
             <p>A one-screen iPhone app for the thought you have while walking: record, live transcript, done. No chat app to open, no model to pick, no 30-second dictation cutoff. Audio is written to disk before transcription ever starts, so a capture never depends on a network connection to survive.</p>
             <div style="margin-top: 16px; display: flex; gap: 14px; flex-wrap: wrap;">
               <div style="max-width: 260px; flex: 1 1 220px; border-radius: 22px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 10px 28px rgba(32,43,54,.18);">
@@ -440,8 +510,8 @@
         <div class="step reveal">
           <div class="step-num">3</div>
           <div>
-            <div class="step-head"><h4>Sync — per-device shards</h4><span class="step-tag">In development</span></div>
-            <p>The phone never touches the Mac's log directly. It writes its own append-only file, synced over iCloud Drive; the Mac imports and merges by content, never by overwrite. A phone offline for a week and a Mac that catches up later resolve the same way — nothing lost, nothing duplicated.</p>
+            <div class="step-head"><h4>Sync — per-device shards</h4><span class="step-tag">Shipping now</span></div>
+            <p>Sync is off until you choose an iCloud folder in Settings. Once you do, the phone still never touches the Mac's log directly: it writes its own append-only file into that folder, and the Mac imports and merges by content, never by overwrite. A phone offline for a week and a Mac that catches up later resolve the same way — nothing lost, nothing duplicated.</p>
           </div>
         </div>
       </div>
@@ -471,7 +541,7 @@
           </div>
           <div class="tech-item">
             <h4>Local privacy</h4>
-            <p><strong>Local storage, no account.</strong> Notes are files on your Mac — no sync service, no tracking, no account server — and iOS Capture transcribes on-device with SpeechAnalyzer. The one thing that travels is what you ask an assistant to read: Unli Rice serves notes over MCP, so a connected cloud assistant sees the notes it requests. Point it at a local model and nothing leaves at all.</p>
+            <p><strong>Local storage, no account.</strong> Notes are files on your Mac — no tracking, no account server, and no sync service of mine in between; the optional phone-to-Mac hop is your own iCloud folder. iOS Capture transcribes on-device with SpeechAnalyzer, and the recorded audio never leaves the phone. The one thing that travels is what you ask an assistant to read: Unli Rice serves notes over MCP, so a connected cloud assistant sees the notes it requests. Point it at a local model and nothing leaves at all.</p>
           </div>
           <div class="tech-item">
             <h4>Multi-agent</h4>
@@ -511,6 +581,63 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
+    });
   }
 })();
 </script>

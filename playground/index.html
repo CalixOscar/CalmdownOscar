@@ -103,8 +103,7 @@
   .mark span{
     color:var(--accent-hi);
   }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none; }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
   nav a{
     color:var(--muted-dark); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
     margin-left:24px;
@@ -114,9 +113,75 @@
     color:var(--accent-hi);
   }
   a:focus-visible{ outline:1px solid var(--accent-hi); outline-offset:3px; }
-  @media (max-width:640px){
-    .site-header .wrap{ gap:12px; }
-    nav a{ margin-left:14px; font-size:13px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid var(--edge-dark);
+      border-radius:8px;
+      cursor:pointer;
+      padding:0;
+      color:var(--ink-dark);
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent-hi);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:currentColor;
+      border-radius:1px;
+      transition:transform 140ms ease, opacity 140ms ease;
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid var(--edge-dark);
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--nav-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:var(--ink-dark);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+      margin-left:0;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
   }
 
   main { flex: 1; }
@@ -304,10 +369,14 @@
 </head>
 <body class="page-enter">
 
-<header class="site-header">
+<header class="site-header topbar">
   <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
       <a href="../how_I_work/">How I Work</a>
       <a href="../the_studio/">The Studio</a>
       <a href="./" aria-current="page">Playground</a>
@@ -333,7 +402,7 @@
   <section class="wrap" style="padding: 0 24px 48px;">
     <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">Tiny motorcycle model llm</h2>
     <div style="max-width:min(680px, 92vw); margin: 0 auto 20px; font-size: 13px; color: #4ADE80; opacity: 0.9; text-align: center;">
-      Requirement: WebGPU support and unified memory (M1+ iPad/Mac or desktop GPU recommended). The model downloads once, then runs in your browser — your prompts and its replies stay on your device. The pictures and clips beside it do not: the search terms go through this site's server to Serper, and the media loads from whoever hosts it.
+      Requirement: WebGPU support and unified memory (M1+ iPad/Mac or desktop GPU recommended). The model downloads once and runs in your browser, so inference happens on your device. Your messages do not stay there: each one is also used as a search query, sent through this site's server to Serper to fetch the pictures and clips beside it, and the media loads from whoever hosts it.
     </div>
     <div class="dashboard-grid">
       <!-- Top Column: Workbench (Image) -->
@@ -794,6 +863,63 @@
       var open = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
       if (open) wrap.setAttribute('hidden', ''); else wrap.removeAttribute('hidden');
+    });
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
     });
   }
 })();

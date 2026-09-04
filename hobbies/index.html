@@ -105,8 +105,7 @@
     color:var(--accent);
     color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
   }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none; }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
   nav a{
     color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
     color:color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted));
@@ -118,9 +117,75 @@
     color:color-mix(in srgb, var(--accent-hi) calc(var(--dark) * 100%), var(--accent));
   }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  @media (max-width:640px){
-    .site-header .wrap{ gap:12px; }
-    nav a{ margin-left:14px; font-size:13px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge));
+      border-radius:8px;
+      cursor:pointer;
+      padding:0;
+      color:color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink));
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:currentColor;
+      border-radius:1px;
+      transition:transform 140ms ease, opacity 140ms ease;
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge));
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--nav-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink));
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+      margin-left:0;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
   }
 
   /* ================= the scroll-scrub video reel ================= */
@@ -227,10 +292,14 @@
 </head>
 <body class="page-enter">
 
-<header class="site-header">
+<header class="site-header topbar">
   <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
       <a href="../how_I_work/">How I Work</a>
       <a href="../the_studio/">The Studio</a>
       <a href="../playground/">Playground</a>
@@ -283,9 +352,17 @@
   <!-- TikTok Embed Section -->
   <section class="wrap" style="padding: 64px 24px 48px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px;">
     <h2 style="font-size: 18px; font-weight: 700; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); text-transform: uppercase; letter-spacing: 0.05em;">TikTok Updates</h2>
-    <div id="tiktokPanel" style="width: 100%; max-width: min(600px, 88vw); margin: 0 auto; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px;">
+    <div id="tiktokPanel" style="width: 100%; max-width: min(600px, 88vw); margin: 0 auto; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: color-mix(in srgb, var(--panel-dark) calc(var(--dark) * 100%), var(--panel)); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 16px; padding: 24px; gap: 20px;">
+      <div id="tiktokConsent" style="text-align: center; max-width: 440px;">
+        <p style="font-size: 14px; color: color-mix(in srgb, var(--muted-dark) calc(var(--dark) * 100%), var(--muted)); margin-bottom: 14px; line-height: 1.5;">
+          Loading this feed fetches third-party scripts and media directly from TikTok.
+        </p>
+        <button id="loadTikTokBtn" type="button" style="display: inline-flex; align-items: center; justify-content: center; font-family: inherit; font-size: 14px; font-weight: 600; color: color-mix(in srgb, var(--ink-dark) calc(var(--dark) * 100%), var(--ink)); background: rgba(255,255,255,0.08); border: 1px solid color-mix(in srgb, var(--edge-dark) calc(var(--dark) * 100%), var(--edge)); border-radius: 8px; padding: 10px 20px; min-height: 44px; cursor: pointer;">
+          Load TikTok Feed
+        </button>
+      </div>
       <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@free_pjutir" data-unique-id="free_pjutir" data-embed-type="creator" style="max-width: 100%; min-width: 288px; width: 100%; margin: 0 auto;">
-        <section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed">@free_pjutir on TikTok</a></section>
+        <section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@free_pjutir?refer=creator_embed" style="color: var(--accent); text-decoration: underline;">@free_pjutir on TikTok ↗</a></section>
       </blockquote>
     </div>
   </section>
@@ -383,13 +460,18 @@
     window.addEventListener('resize', scrub);
   }
 
-  /* ----- TikTok Embed Autoload ----- */
-  (function loadTikTok(){
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.tiktok.com/embed.js';
-    document.body.appendChild(s);
-  })();
+  /* ----- TikTok Embed Click-to-Load ----- */
+  var loadTikTokBtn = document.getElementById('loadTikTokBtn');
+  var tiktokConsent = document.getElementById('tiktokConsent');
+  if (loadTikTokBtn) {
+    loadTikTokBtn.addEventListener('click', function(){
+      if (tiktokConsent) tiktokConsent.style.display = 'none';
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.tiktok.com/embed.js';
+      document.body.appendChild(s);
+    });
+  }
 
   /* ----- scroll-reveal ----- */
   var revealEls = document.querySelectorAll('.reveal');
@@ -402,6 +484,63 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
+    });
   }
 })();
 </script>

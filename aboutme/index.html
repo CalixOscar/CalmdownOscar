@@ -106,8 +106,7 @@
     text-decoration:none; flex-shrink:0;
   }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  nav::-webkit-scrollbar{ display:none; }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
   nav a{
     color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
     margin-left:24px;
@@ -115,9 +114,75 @@
   }
   nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
   a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  @media (max-width:640px){
-    .topbar .wrap{ gap:12px; }
-    nav a{ margin-left:14px; font-size:13px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid var(--edge);
+      border-radius:8px;
+      cursor:pointer;
+      padding:0;
+      color:var(--ink);
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:var(--ink);
+      border-radius:1px;
+      transition:transform 140ms ease, opacity 140ms ease;
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid var(--edge);
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--topbar-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:var(--ink);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+      margin-left:0;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
   }
 
   /* ================= hero ================= */
@@ -193,7 +258,11 @@
 <header class="topbar">
   <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
       <a href="../how_I_work/">How I Work</a>
       <a href="../the_studio/">The Studio</a>
       <a href="../playground/">Playground</a>
@@ -317,6 +386,63 @@
     window.addEventListener('resize', measure);
     window.addEventListener('scroll', onScroll, { passive: true });
     measure();
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
+    });
   }
 })();
 </script>
