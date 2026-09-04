@@ -416,6 +416,11 @@
   .callout{ border-left:3px solid var(--accent); background:rgba(133,182,255,.07); border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 18px; }
   .callout p{ margin:0; color:var(--ink); }
   .callout.warn{ border-left-color:var(--progress); background:rgba(184,130,51,.08); }
+  kbd{
+    font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.82em;
+    background:rgba(255,255,255,.08); border:1px solid var(--edge);
+    border-bottom-width:2px; border-radius:5px; padding:2px 6px; white-space:nowrap;
+  }
   .verified{ font-size:13px; color:var(--muted); margin-bottom:12px; }
   .tablewrap{ overflow-x:auto; border:1px solid var(--edge); border-radius:12px; }
   table{ border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
@@ -479,24 +484,39 @@
         <section class="g-section reveal" id="what">
           <h2>1. What Unli Rice is</h2>
           <p>Unli Rice is a local note log that your AI tools share. Claude, Codex, Cursor, Antigravity &mdash; every agent you connect reads and writes into the same log, so you stop re-explaining the same context to each one in turn.</p>
+          <p>They connect over <strong>MCP</strong>, the Model Context Protocol: a standard way for an AI tool to reach something outside itself. In practice it means you paste one block of settings into each tool once, and that tool can then read and write your notes. You will see MCP used as shorthand throughout the rest of this guide and inside the app.</p>
           <p>The log is append-only: writes add, they do not overwrite, and every write records which agent made it. Removing anything is something only you can do, by hand, and it is covered below. It runs on your Mac, and the notes stay there unless you move them.</p>
         </section>
 
         <section class="g-section reveal" id="setup">
           <h2>2. Set it up</h2>
-          <p>Install Unli Rice, open it, and go to the Connect screen. There are two ways to connect a tool, and you can use both.</p>
+          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get the block for that tool, already filled in. You do not have to go looking for a settings screen, and you can reach the same thing later from the Connect screen if you add another tool.</p>
+          <p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
 
-          <h3>Copy a configuration block (MCP)</h3>
-          <p>Unli Rice has ready-made configuration for Claude Code, Claude Desktop, Cursor, Antigravity, and Codex / ChatGPT, plus a custom option for anything else. Pick your tool, press copy, and paste the block into that tool&rsquo;s own configuration file, inside its <code>mcpServers</code> object, keeping any servers already there.</p>
-          <div class="callout">
-            <p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Nothing on your machine is changed on your behalf.</p>
-          </div>
-
-          <h3>Or point a tool at the folder</h3>
-          <p>Some tools read local files rather than speaking MCP. For those, Unli Rice keeps a zero-config workspace folder at <code>~/Documents/Unli Rice/</code> that you can point them at instead. You can choose a different folder from the same screen.</p>
+          <h3>Where the block goes</h3>
+          <p>You paste it in yourself, into a file belonging to that tool. <strong>Unli Rice shows you the exact file for the tool you picked</strong>, because it is different for every one of them:</p>
+          <ul>
+            <li><strong>Claude Code</strong> &mdash; <code>.mcp.json</code>, in a project folder you choose</li>
+            <li><strong>Claude Desktop</strong> &mdash; <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+            <li><strong>Cursor</strong> &mdash; <code>~/.cursor/mcp.json</code></li>
+            <li><strong>Antigravity</strong> &mdash; <code>.agents/mcp_config.json</code>, in a project folder you choose</li>
+            <li><strong>Codex / ChatGPT</strong> &mdash; <code>~/.codex/config.toml</code></li>
+          </ul>
+          <p>A leading <code>~</code> means your home folder. In Finder, press <kbd>Cmd</kbd>&#8202;+&#8202;<kbd>Shift</kbd>&#8202;+&#8202;<kbd>G</kbd> and paste the path to go straight there.</p>
 
           <div class="callout warn">
-            <p><strong>The one thing that catches everyone:</strong> an agent loads its configuration when its session starts. A tool that was already running will not see Unli Rice until you restart it completely. If the status above the block does not update, restart the tool first, then check the block really did land inside <code>mcpServers</code> in the right file.</p>
+            <p><strong>There is no single MCP config format, and this trips people up.</strong> Four of those five files are JSON, where the block goes inside an <code>mcpServers</code> object alongside any servers already there. <strong>Codex / ChatGPT is TOML instead</strong> &mdash; <code>~/.codex/config.toml</code>, where the block is a <code>[mcp_servers.unlirice]</code> table. The app gives you the right shape for the tool you picked, so copy the block it shows you rather than one you saw somewhere else. If you add a tool that is not on the list, Unli Rice picks the format from the file extension you point it at.</p>
+          </div>
+
+          <div class="callout">
+            <p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Whatever is already in there stays exactly as it is, and nothing on your machine is changed on your behalf.</p>
+          </div>
+
+          <h3>Or point a tool at the folder instead</h3>
+          <p>Some tools read local files rather than speaking MCP. For those there is nothing to configure: Unli Rice keeps a workspace folder at <code>~/Documents/Unli Rice/</code> and you point the tool at it. You can pick a different folder on the same screen. If pasting config blocks is not something you want to do, start here.</p>
+
+          <div class="callout warn">
+            <p><strong>The one thing that catches everyone:</strong> a tool reads its configuration when it starts up. One that was already running will not see Unli Rice until you quit it completely and open it again. If the status on the Connect screen does not change, restart the tool first. If it still does not connect, check that the block landed in the right file, and in the right place inside it &mdash; inside the <code>mcpServers</code> object for a JSON file, or as its own <code>[mcp_servers.unlirice]</code> table in <code>config.toml</code>.</p>
           </div>
         </section>
 
