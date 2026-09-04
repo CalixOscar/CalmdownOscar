@@ -8,8 +8,14 @@ ignored (see the guardrails, "A plan's own Handoff does not bind anything").
 
 ## Decisions on the intent's open questions
 
-1. **URL: `/unlirice/guide/`.** Sibling of the positioning page, obvious in a sitemap,
-   leaves `/unlirice/docs/` free if developer docs ever land.
+1. **URL: `/unlirice/user_guide.html`.** *Revised during the build, 2026-09-04.* The plan
+   originally said `/unlirice/guide/`, chosen in the abstract. The site already has this
+   convention and it was missed at stage 2: ClearSpace and UnliDisk both ship
+   `apps/<name>/user_guide.html`, and both sit in `sitemap.xml` at priority `0.6`. Matching
+   an existing convention beats a fresh one, and the plan's own constraint said to match what
+   the site already does. Being one level shallower also means the guide's relative paths are
+   identical to its sibling `index.html` rather than a level deeper — one fewer thing to get
+   wrong.
 2. **One page, with a sticky in-page contents list.** Several pages would need navigation
    the site does not have, and the guide's value is that one Cmd-F finds anything. "Easy to
    read" is bought with a contents rail, short sections and plain sentences — not with
@@ -43,9 +49,9 @@ few lines, ship without it: the rail works as plain anchors.
 
 | File | Action |
 | --- | --- |
-| `unlirice/guide/index.html` | **New.** The guide. |
+| `unlirice/user_guide.html` | **New.** The guide. |
 | `unlirice/index.html` | **Edit.** One link to the guide, in the existing layout. No restructuring. |
-| `sitemap.xml` | **Edit.** Add `/unlirice/guide/`. |
+| `sitemap.xml` | **Edit.** Add `/unlirice/user_guide.html` at priority 0.6, beside the `/unlirice/` entry. |
 | `assets/` | Untouched unless reusing the existing webp. |
 
 Nothing else. If the build wants to touch a fourth file, that is a plan change — escalate.
@@ -116,7 +122,7 @@ Traceable to the intent's "what solved looks like":
 3. Every one of the 14 MCP tools appears in the reference table.
 4. The page loads with no network request to any origin the rest of the site does not
    already use. Check the network panel, do not assume.
-5. `/unlirice/guide/` is in `sitemap.xml` and reachable by a link from `/unlirice/`.
+5. `/unlirice/user_guide.html` is in `sitemap.xml` and reachable by a link from `/unlirice/`.
 6. No claim about App Store status, version, or release timing appears anywhere.
 7. The page renders correctly at 375px wide.
 
@@ -138,7 +144,15 @@ Traceable to the intent's "what solved looks like":
 Generating the tool table from source; new screenshots; a search box; developer docs; any
 change to the positioning page beyond one link; anything about Unli Disk.
 
-## Next
+## Status
 
-Codex pre-mortem against this plan, then Claude adjusts, then the swarm builds. Not settled
-until the stage-4 pass has run.
+**Built by Claude Code on 2026-09-04, at the founder's explicit instruction** ("swarm is
+busy, do it yourself"). The Codex pre-mortem and the stage-4 adjustment pass were skipped by
+the same decision. One plan decision changed during the build — the URL, above — because the
+repo contradicted it.
+
+Verified after the build: page and product-page link render; `sitemap.xml` parses; all 14 MCP
+tools present in the reference table; every relative path resolves; the page makes three
+network requests, all same-origin (document, app icon, self-hosted font) and none
+third-party; no horizontal overflow at 375px, with the tool table scrolling inside its own
+container.
