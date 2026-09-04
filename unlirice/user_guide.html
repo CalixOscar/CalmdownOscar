@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#141B22">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
+<title>Unli Rice — User Guide — calmdownoscar</title>
+<meta name="description" content="How to use Unli Rice: connect an agent, understand the append-only note log, read the panes, and know what to check when something looks wrong.">
+<meta property="og:title" content="Unli Rice — User Guide">
+<meta property="og:description" content="How to use Unli Rice: connect an agent, understand the append-only note log, read the panes, and know what to check when something looks wrong.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.calmdownoscar.com/unlirice/user_guide.html">
+<link rel="canonical" href="https://www.calmdownoscar.com/unlirice/user_guide.html">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{
+    font-family:'Inter';
+    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
+        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  :root{
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+
+    --bg:      #141B22;
+    --panel:   rgba(255,255,255,.05);
+    --edge:    rgba(255,255,255,.09);
+    --edge-hi: rgba(133,182,255,.4);
+    --accent:  #85B6FF;
+    --accent-2:#8A5FD1;
+    --progress:#B88233;
+    --ink:     #E8EEF4;
+    --muted:   #8FA0AE;
+    --topbar-h: calc(64px + var(--sat));
+    --window-chrome: #E8EDF0;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  ::selection{ background:var(--accent); color:#fff; }
+  body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding-top:var(--topbar-h);
+    overflow-x:hidden;
+  }
+  .wrap{ max-width:920px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    height:var(--topbar-h);
+    padding-top:var(--sat);
+    background:rgba(20,27,34,.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--edge);
+  }
+  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
+  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
+  .mark span{ color:var(--accent); }
+  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
+  nav a{
+    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
+    margin-left:22px;
+    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
+  }
+  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
+  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:767px){
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:44px;
+      height:44px;
+      background:transparent;
+      border:1px solid var(--edge);
+      border-radius:8px;
+      cursor:pointer;
+      padding:0;
+      color:var(--ink);
+      flex-shrink:0;
+    }
+    .nav-toggle:focus-visible{
+      outline:1px solid var(--accent);
+      outline-offset:2px;
+    }
+    .nav-toggle-bar{
+      display:block;
+      width:18px;
+      height:2px;
+      background:currentColor;
+      border-radius:1px;
+      transition:transform 140ms ease, opacity 140ms ease;
+    }
+    .topbar.nav-open .nav-toggle-bar:first-child{
+      transform:translateY(3.5px) rotate(45deg);
+    }
+    .topbar.nav-open .nav-toggle-bar:last-child{
+      transform:translateY(-3.5px) rotate(-45deg);
+    }
+    nav{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:rgba(20, 27, 34, .98);
+      border-bottom:1px solid var(--edge);
+      padding:12px 24px calc(16px + var(--sab));
+      flex-direction:column;
+      gap:2px;
+      align-items:stretch;
+      overflow-y:auto;
+      max-height:calc(100vh - var(--topbar-h));
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .topbar.nav-open nav{
+      display:flex;
+    }
+    nav a{
+      font-size:15px;
+      padding:10px 0;
+      min-height:44px;
+      color:var(--ink);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      width:100%;
+      margin-left:0;
+    }
+    nav a:last-child{
+      border-bottom:none;
+    }
+  }
+
+  main{ padding:56px 0 96px; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 20px;
+  }
+  .status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: dotPulse 2.2s ease-out infinite;
+  }
+  @keyframes dotPulse {
+    0% { box-shadow: 0 0 0 0 currentColor; }
+    70% { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .product-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+  .hero-icon{
+    width: 68px; height: 68px; border-radius: 17px;
+    box-shadow: 0 8px 22px rgba(32,43,54,.20);
+    flex-shrink: 0;
+  }
+  h1{
+    font-weight: 800;
+    font-size: clamp(32px, 6vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+  h1 span{ color: var(--accent); }
+  .lede{ margin-top: 16px; max-width: 64ch; font-size: 17px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; }
+
+  .meta{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .pill{
+    color: var(--muted); border: 1px solid var(--edge); border-radius: 20px;
+    padding: 4px 12px; font-size: 12px; font-weight: 500; background: transparent;
+  }
+
+  .section-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--edge);
+  }
+  .section-lede{ font-size: 14.5px; color: var(--muted); max-width: 62ch; margin-bottom: 28px; }
+
+  /* ================= showcase styling ================= */
+  .showcase-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(6px);
+    margin-bottom: 48px;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .showcase-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--edge-hi);
+    box-shadow: 0 16px 34px rgba(32,43,54,.12);
+  }
+  .window-header {
+    background: var(--window-chrome);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--edge);
+    justify-content: space-between;
+  }
+  .window-dots { display: flex; gap: 6px; }
+  .window-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot-red { background: #FF5F56; }
+  .dot-yellow { background: #FFBD2E; }
+  .dot-green { background: #27C93F; }
+  .window-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
+  .window-body { padding: 0; background: #0B0F14; }
+  .window-body img { display: block; width: 100%; height: auto; }
+  .card-info { padding: 22px 20px; border-top: 1px solid var(--edge); background: rgba(255, 255, 255, 0.05); }
+  .card-info h3 { font-weight: 700; font-size: 17px; margin-bottom: 8px; color: var(--ink); }
+  .card-info h3 span { color: var(--accent); }
+  .card-info p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+
+  .shot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .shot-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .shot-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--edge-hi);
+    box-shadow: 0 16px 34px rgba(32,43,54,.12);
+  }
+  .shot-card img { display: block; width: 100%; height: auto; background: #0B0F14; }
+  .shot-caption { display: block; padding: 12px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--edge); }
+  @media (max-width: 640px) {
+    .shot-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ================= pipeline steps ================= */
+  .pipeline {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    backdrop-filter: blur(6px);
+  }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: var(--accent); color: #fff;
+    flex-shrink: 0;
+  }
+  .step.future .step-num { background: var(--accent-2); }
+  .step-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .step h4 { font-size: 15.5px; font-weight: 700; color: var(--ink); }
+  .step-tag {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    padding: 2px 8px; border-radius: 20px; color: #fff; background: var(--accent);
+  }
+  .step.future .step-tag { background: var(--accent-2); }
+  .step p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+  .step p code { background: rgba(255, 255, 255, 0.09); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  .connector { text-align: center; color: var(--edge-hi); font-size: 18px; line-height: 1; margin: -4px 0; }
+
+  /* ================= tech card ================= */
+  .tech-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 28px 24px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 48px;
+  }
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .tech-item h4 {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent); margin-bottom: 8px; border-bottom: 1px dashed rgba(255, 255, 255, 0.09); padding-bottom: 4px;
+  }
+  .tech-item p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+  .tech-item p strong { color: var(--ink); }
+
+  /* ================= engine note ================= */
+  .engine-note {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 56px;
+    backdrop-filter: blur(6px);
+  }
+  .engine-note h4 {
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .engine-note p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+
+  /* ================= action links card ================= */
+  .action-card {
+    background: var(--panel);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 24px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 36px;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .action-card:hover { transform: translateY(-3px); border-color: var(--edge-hi); box-shadow: 0 14px 34px rgba(32,43,54,.14); }
+  .action-card a.applink { color: var(--ink); font-weight: 600; font-size: 14px; text-decoration: none; transition: color .2s ease; }
+  .action-card a.applink:hover { color: var(--accent); }
+  .action-card a.applink .arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.7,.3,1); }
+  .action-card a.applink:hover .arrow { transform: translateX(5px); }
+
+  .back { display: inline-block; margin-top: 16px; color: var(--ink); font-weight: 500; text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .back:hover { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--edge); padding: 22px 0 calc(40px + var(--sab)); color: var(--muted); font-size: 13px; margin-top: 64px; }
+  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; padding: 4px 0; min-height: 44px; display: inline-flex; align-items: center; }
+  footer a:hover { color: var(--accent); }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width:640px){
+    .nav {
+      flex-direction: column; align-items: flex-start; height: auto;
+      /* Long-hand on purpose: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
+         shorthand here also reset .wrap's side gutters and pushed the logo and links flush
+         against the edge of the screen on every phone. */
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    /* The column switch above makes `nav` a flex item sized to its own content, so its
+       overflow-x:auto never engages and the whole page is dragged wide by the link row.
+       Stretching it back to the container width is what lets the links scroll instead. */
+    nav { align-self: stretch; min-width: 0; max-width: 100%; }
+    header { position: static; }
+    body { padding-top: 0; }
+    nav a { margin-left: 0; margin-right: 18px; }
+    .step { grid-template-columns: auto 1fr; padding: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html { scroll-behavior: auto; }
+    .showcase-card, .action-card { transition: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+<style>
+  /* Guide-only. Nothing else on the site needs these. */
+  .guide-wrap{ max-width:1180px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  .guide-grid{ display:block; }
+  .toc{ background:var(--panel); border:1px solid var(--edge); border-radius:14px; padding:20px 22px; margin:0 0 40px; }
+  .toc h2{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:12px; }
+  .toc ol{ list-style:none; counter-reset:toc; }
+  .toc li{ counter-increment:toc; }
+  .toc a{ display:block; padding:7px 0; color:var(--ink); text-decoration:none; font-size:14.5px; transition:color .2s ease; }
+  .toc a::before{ content:counter(toc) "."; color:var(--muted); margin-right:10px; font-variant-numeric:tabular-nums; }
+  .toc a:hover{ color:var(--accent); }
+  .g-section{ margin:0 0 52px; scroll-margin-top:calc(var(--topbar-h) + 16px); }
+  .g-section > h2{ font-size:23px; line-height:1.3; font-weight:650; margin-bottom:14px; letter-spacing:-.01em; }
+  .g-section h3{ font-size:16px; font-weight:600; margin:26px 0 8px; }
+  .g-section p{ color:#C8D4DE; margin-bottom:14px; }
+  .g-section ul{ margin:0 0 16px; padding-left:20px; color:#C8D4DE; }
+  .g-section li{ margin-bottom:8px; }
+  .g-section a{ color:var(--accent); }
+  code{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.88em; background:rgba(255,255,255,.06); border:1px solid var(--edge); border-radius:4px; padding:1px 5px; word-break:break-word; }
+  .callout{ border-left:3px solid var(--accent); background:rgba(133,182,255,.07); border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 18px; }
+  .callout p{ margin:0; color:var(--ink); }
+  .callout.warn{ border-left-color:var(--progress); background:rgba(184,130,51,.08); }
+  .verified{ font-size:13px; color:var(--muted); margin-bottom:12px; }
+  .tablewrap{ overflow-x:auto; border:1px solid var(--edge); border-radius:12px; }
+  table{ border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
+  th, td{ text-align:left; padding:11px 16px; border-bottom:1px solid var(--edge); vertical-align:top; }
+  th{ color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  tr:last-child td{ border-bottom:none; }
+  td:first-child{ white-space:nowrap; }
+  @media (min-width:1000px){
+    .guide-grid{ display:grid; grid-template-columns:230px minmax(0,1fr); gap:56px; align-items:start; }
+    .toc{ position:sticky; top:calc(var(--topbar-h) + 24px); margin:0; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav id="main-nav">
+      <a href="../how_I_work/">How I Work</a>
+      <a href="../the_studio/">The Studio</a>
+      <a href="../playground/">Playground</a>
+      <a href="../aboutme/">About Me</a>
+      <a href="../hobbies/">Hobbies</a>
+      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="guide-wrap">
+
+    <div class="product-head reveal" style="margin-bottom:10px">
+      <img class="hero-icon" src="../apps/assets/unli-rice-icon.png" alt="Unli Rice app icon" width="68" height="68">
+      <h1>User <span>Guide</span></h1>
+    </div>
+    <p class="lede reveal" style="margin-bottom:44px">Everything you need to run Unli Rice, in the order you will need it. Nine sections and a tool reference. If you want what Unli Rice <em>is</em> rather than how to use it, start on the <a href="./" style="color:var(--accent)">product page</a>.</p>
+
+    <div class="guide-grid">
+      <div class="toc reveal">
+        <h2>Contents</h2>
+        <ol>
+          <li><a href="#what">What Unli Rice is</a></li>
+          <li><a href="#setup">Set it up</a></li>
+          <li><a href="#notes">How to think about a note</a></li>
+          <li><a href="#append-only">What can and cannot delete</a></li>
+          <li><a href="#layers">The three layers</a></li>
+          <li><a href="#panes">The panes</a></li>
+          <li><a href="#iphone">The iPhone app</a></li>
+          <li><a href="#data">Your data</a></li>
+          <li><a href="#trouble">When something looks wrong</a></li>
+          <li><a href="#tools">Tool reference</a></li>
+        </ol>
+      </div>
+
+      <div>
+
+        <section class="g-section reveal" id="what">
+          <h2>1. What Unli Rice is</h2>
+          <p>Unli Rice is a local note log that your AI tools share. Claude, Codex, Cursor, Antigravity &mdash; every agent you connect reads and writes into the same log, so you stop re-explaining the same context to each one in turn.</p>
+          <p>The log is append-only. Nothing is overwritten and nothing is destroyed, and every write records which agent made it. It runs on your Mac, and the notes stay there unless you move them.</p>
+        </section>
+
+        <section class="g-section reveal" id="setup">
+          <h2>2. Set it up</h2>
+          <p>Install Unli Rice, open it, and go to the Connect screen. There are two ways to connect a tool, and you can use both.</p>
+
+          <h3>Copy a configuration block (MCP)</h3>
+          <p>Unli Rice has ready-made configuration for Claude Code, Claude Desktop, Cursor, Antigravity, and Codex / ChatGPT, plus a custom option for anything else. Pick your tool, press copy, and paste the block into that tool&rsquo;s own configuration file, inside its <code>mcpServers</code> object, keeping any servers already there.</p>
+          <div class="callout">
+            <p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Nothing on your machine is changed on your behalf.</p>
+          </div>
+
+          <h3>Or point a tool at the folder</h3>
+          <p>Some tools read local files rather than speaking MCP. For those, Unli Rice keeps a zero-config workspace folder at <code>~/Documents/Unli Rice/</code> that you can point them at instead. You can choose a different folder from the same screen.</p>
+
+          <div class="callout warn">
+            <p><strong>The one thing that catches everyone:</strong> an agent loads its configuration when its session starts. A tool that was already running will not see Unli Rice until you restart it completely. If the status above the block does not update, restart the tool first, then check the block really did land inside <code>mcpServers</code> in the right file.</p>
+          </div>
+        </section>
+
+        <section class="g-section reveal" id="notes">
+          <h2>3. How to think about a note</h2>
+          <p>A note has a title, a body, tags, and links. Link one note to another by writing its title in double brackets &mdash; <code>[[Wiki: index]]</code> &mdash; and Unli Rice keeps the connection in both directions. A link to a note that does not exist yet is fine; it marks something worth writing.</p>
+          <p>Every write also carries a <strong>source</strong>: the name of whoever made it. <code>claude</code>, <code>codex</code>, <code>antigravity</code>, you. This is what makes a shared log readable later, because it separates a conclusion an agent reasoned its way to from a line a machine put there. Two sources belong to the app itself and no agent should borrow them: <code>janitor</code> and <code>ingest</code>.</p>
+        </section>
+
+        <section class="g-section reveal" id="append-only">
+          <h2>4. What can and cannot delete</h2>
+          <p>This is the part that surprises people, so it is better stated here than discovered later. The short version: <strong>no agent can delete anything. You can.</strong></p>
+          <h3>What agents can do</h3>
+          <ul>
+            <li><strong>Appending never replaces.</strong> Adding to a note puts text at the end. Earlier content, including another agent&rsquo;s, stays where it was.</li>
+            <li><strong>Archiving is as close to deleting as an agent gets, and it is reversible.</strong> It hides a note from the default listings and nothing more.</li>
+            <li><strong>Every note carries its own history.</strong> Open the event timeline for any note and you get each change, who made it, and when.</li>
+            <li><strong>Structural changes are proposed, not applied.</strong> An agent that suspects a duplicate or a contradiction raises a flag for you. Raising a flag changes nothing by itself.</li>
+          </ul>
+          <p>This is not a matter of agents being asked nicely. Deleting is not in the set of things they are able to express: the tools they are given are built from the safe layer, and the code that can remove history lives outside it.</p>
+          <h3>What you can do</h3>
+          <p>You can purge a note, from the app, by hand. It is deliberately yours alone &mdash; it never runs on a schedule and no agent and no background job can reach it.</p>
+          <p>Even then it is gentler than it sounds. Every event belonging to that note is written out in full first, and the whole log is copied to a backup before anything is rewritten, so a purge can be restored and the result is identical to what you had. What a purge genuinely destroys is the log&rsquo;s <em>continuity</em> &mdash; those lines are no longer in the live file &mdash; rather than the content itself.</p>
+          <p>The point of all of it is that you can trust what the log says happened. A record that anything in the system could quietly rewrite is a record you would have to verify some other way.</p>
+        </section>
+
+        <section class="g-section reveal" id="layers">
+          <h2>5. The three layers</h2>
+          <p>Notes are not all the same kind of thing, and knowing which one you are holding is most of reading the log well.</p>
+          <ul>
+            <li><strong>Raw files.</strong> Verbatim copies of what was brought in &mdash; documents, session transcripts. Nothing reads these by default.</li>
+            <li><strong>Index entries.</strong> The <code>Session:</code> and <code>Doc:</code> notes, one per raw file, written automatically. These are machine-built descriptions, <em>not</em> conclusions. They tell you whether a file is the one you want. If it matters, open the file.</li>
+            <li><strong>Wiki hubs.</strong> Notes titled <code>Wiki: &lt;topic&gt;</code>, written by a reasoning agent. Each says what exists for a topic and where the real authority is. This is the only layer with judgement in it, which is also the reason it is the layer that goes stale.</li>
+          </ul>
+          <p>Start at the note titled <code>Wiki: index</code>. It exists so you do not have to read a corpus of hundreds to find the four notes that matter.</p>
+        </section>
+
+        <section class="g-section reveal" id="panes">
+          <h2>6. The panes</h2>
+          <p><strong>Notes.</strong> Search, read, tag, and open any note&rsquo;s history. Search is keyword matching over titles, bodies and tags.</p>
+          <p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which commits are on no remote anywhere.</p>
+          <p><strong>To-Do.</strong> <em>Nothing here is stored, and nothing can be ticked off.</em> Every item is computed from the state that makes it true, so an item disappears when the work is genuinely done &mdash; push the commits and &ldquo;on no remote&rdquo; goes away on its own. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. A stored checklist drifts from reality the moment someone does the work without ticking the box. Deriving is how this one stays honest.</p>
+          <p><strong>Trust Center.</strong> Read-only checks: whether the log and its folder are writable, which MCP clients have checked in, whether a recovery point exists, and what the background worker is doing. Client check-ins record the client&rsquo;s name and version, timestamps, the tool name, and whether it succeeded &mdash; never tool arguments, and never note content.</p>
+          <p><strong>Notices.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
+          <p><strong>Profiles and House Rules.</strong> What connected agents are told about how to behave in your log &mdash; the conventions they are handed when they attach.</p>
+          <p><strong>Automation.</strong> Background work: bringing in documents and sessions from folders you have nominated, and the janitor.</p>
+        </section>
+
+        <section class="g-section reveal" id="iphone">
+          <h2>7. The iPhone app</h2>
+          <p>Unli Rice Capture is a satellite, not a second copy of the app. It records audio and transcribes it, takes typed notes, and mirrors your repositories and to-do list <strong>read-only</strong> &mdash; it shows them, it does not edit them.</p>
+          <p>The Mac holds the log. The phone syncs its own per-device shard into it, which is what lets both write without either one clobbering the other.</p>
+        </section>
+
+        <section class="g-section reveal" id="data">
+          <h2>8. Your data</h2>
+          <p>The log is one append-only file with your raw sources beside it. You can point Unli Rice at a different folder for it, and the app tells you which one it currently has open.</p>
+          <h3>Recovery points</h3>
+          <p>A snapshot copies the event log byte for byte, together with your raw files and the small settings belonging to that log, and checksums all of it with SHA-256 so it can be verified later. <strong>Restoring never replaces your current log.</strong> It appends only the events that are missing and copies only the files that are absent, which keeps the append-only rule intact and means a restore cannot cost you anything you already had.</p>
+          <h3>What the janitor may do</h3>
+          <p>The background janitor can add a tag or raise a flag. That is the whole list. It cannot archive, retitle, merge, or resolve anything. A tag it added is a suggestion &mdash; remove it if it is wrong, and it will not put it back. A flag it raised is a proposal waiting for you.</p>
+        </section>
+
+        <section class="g-section reveal" id="trouble">
+          <h2>9. When something looks wrong</h2>
+          <p><strong>A tool I connected does not appear.</strong> Restart that tool completely so it reloads its configuration, then confirm the block is inside the <code>mcpServers</code> object of the right file. Configuration is read once, when the session starts.</p>
+          <p><strong>Notes I expected are missing.</strong> Confirm which log the app has open. It reports this, and it is the first thing to check rather than the last. A banner about a corpus that is unreachable or stranded means what it says: there are notes in a log the app is not currently serving, and nothing has been lost.</p>
+          <p><strong>The to-do list looks out of date.</strong> It is derived, so it is only as fresh as what it derived from. Publish a new repository snapshot, and give any project you care about a <code>memory.md</code> with a next step in it &mdash; that is what turns a cached item into a live one.</p>
+          <p><strong>Nothing is being brought in automatically.</strong> Check that background routines are switched on, and that the folders you want scanned have been granted. A folder has to be chosen through the file picker before the app may read it.</p>
+        </section>
+
+        <section class="g-section reveal" id="tools">
+          <h2>10. Tool reference</h2>
+          <p>What a connected agent can do over MCP. Every write takes a <code>source</code>, so the log stays attributable.</p>
+          <p class="verified">Verified against <code>unli-rice@1f49c0f</code> on 2026-09-04.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>search_notes</code></td><td>Keyword search over titles, bodies and tags. Substring matching, not semantic.</td></tr>
+                <tr><td><code>list_notes</code></td><td>Lists notes, most recently updated first.</td></tr>
+                <tr><td><code>get_note</code></td><td>Fetches a single note by id.</td></tr>
+                <tr><td><code>create_note</code></td><td>Creates a note. Always a new one &mdash; it never overwrites an existing note.</td></tr>
+                <tr><td><code>append_to_note</code></td><td>Adds content to the end of a note. Never replaces or removes what is already there.</td></tr>
+                <tr><td><code>tag_note</code></td><td>Adds a tag.</td></tr>
+                <tr><td><code>untag_note</code></td><td>Removes a tag. This is how you correct a tag the janitor got wrong.</td></tr>
+                <tr><td><code>archive_note</code></td><td>Hides a note from default listings, with a reason. Reversible, and the closest to deleting that any agent can get.</td></tr>
+                <tr><td><code>unarchive_note</code></td><td>Brings an archived note back.</td></tr>
+                <tr><td><code>flag_for_review</code></td><td>Queues a concern for you &mdash; a suspected duplicate, a conflict, a proposed merge. Never applies the change itself.</td></tr>
+                <tr><td><code>pending_reviews</code></td><td>Lists every unresolved flag across all notes, oldest first.</td></tr>
+                <tr><td><code>resolve_review</code></td><td>Marks a flag resolved, once you have decided what to do about it.</td></tr>
+                <tr><td><code>note_history</code></td><td>The immutable event history for one note, oldest first, with attribution and timestamps.</td></tr>
+                <tr><td><code>transaction_log</code></td><td>Raw recent events across the whole log, most recent first &mdash; the audit trail.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="applinks reveal">
+          <a class="applink" href="./">Unli Rice product page <span class="arrow">&rarr;</span></a>
+          <a class="applink" href="https://github.com/CalixOscar/unli-rice">Source on GitHub <span class="arrow">&rarr;</span></a>
+          <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">&rarr;</span></a>
+        </div>
+
+        <a class="back reveal" href="./">&larr; Back to Unli Rice</a>
+
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="wrap">&copy; 2026 calmdownoscar &middot; <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+</footer>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var revealEls = document.querySelectorAll('.reveal');
+  if (reduce.matches || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  // --- Mobile nav disclosure ---
+  var navToggle = document.querySelector('.nav-toggle');
+  var topbar = document.querySelector('.topbar');
+  var mainNav = document.getElementById('main-nav');
+
+  function closeNav(){
+    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    topbar.classList.remove('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleNav(){
+    if (!topbar || !navToggle) return;
+    var isOpen = topbar.classList.contains('nav-open');
+    if (isOpen) {
+      closeNav();
+      navToggle.focus();
+    } else {
+      topbar.classList.add('nav-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  if (navToggle && topbar){
+    navToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
+        closeNav();
+      }
+    });
+
+    if (mainNav){
+      mainNav.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          closeNav();
+        });
+      });
+    }
+
+    window.addEventListener('resize', function(){
+      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
+        closeNav();
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
