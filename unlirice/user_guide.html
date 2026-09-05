@@ -413,6 +413,7 @@
   .g-section li{ margin-bottom:8px; }
   .g-section a{ color:var(--accent); }
   code{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.88em; background:rgba(255,255,255,.06); border:1px solid var(--edge); border-radius:4px; padding:1px 5px; word-break:break-word; }
+  pre.snip{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; line-height:1.55; color:#C8D4DE; background:rgba(255,255,255,.04); border:1px solid var(--edge); border-radius:10px; padding:14px 16px; margin:0 0 16px; overflow-x:auto; }
   .callout{ border-left:3px solid var(--accent); background:rgba(133,182,255,.07); border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 18px; }
   .callout p{ margin:0; color:var(--ink); }
   .callout.warn{ border-left-color:var(--progress); background:rgba(184,130,51,.08); }
@@ -485,12 +486,12 @@
           <h2>1. What Unli Rice is</h2>
           <p>Unli Rice is a local note log that your AI tools share. Claude, Codex, Cursor, Antigravity &mdash; every agent you connect reads and writes into the same log, so you stop re-explaining the same context to each one in turn.</p>
           <p>They connect over <strong>MCP</strong>, the Model Context Protocol: a standard way for an AI tool to reach something outside itself. In practice it means you paste one block of settings into each tool once, and that tool can then read and write your notes. You will see MCP used as shorthand throughout the rest of this guide and inside the app.</p>
-          <p>The log is append-only: writes add, they do not overwrite, and every write records which agent made it. Removing anything is something only you can do, by hand, and it is covered below. It runs on your Mac, and the notes stay there unless you move them.</p>
+          <p>The log is append-only: writes add, they do not overwrite, and every write is stamped with the name the tool gave for itself. Removing anything is something only you can do, by hand, and it is covered below. It runs on your Mac, and the notes stay there unless you move them.</p>
         </section>
 
         <section class="g-section reveal" id="setup">
           <h2>2. Set it up</h2>
-          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get the block for that tool, already filled in. You do not have to go looking for a settings screen, and you can reach the same thing later from the Connect screen if you add another tool.</p>
+          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later from the Connect screen if you add another tool.</p>
           <p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
 
           <h3>Where the block goes</h3>
@@ -500,23 +501,59 @@
             <li><strong>Claude Desktop</strong> &mdash; <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
             <li><strong>Cursor</strong> &mdash; <code>~/.cursor/mcp.json</code></li>
             <li><strong>Antigravity</strong> &mdash; <code>.agents/mcp_config.json</code>, in a project folder you choose</li>
-            <li><strong>Codex / ChatGPT</strong> &mdash; <code>~/.codex/config.toml</code></li>
+            <li><strong>Codex CLI</strong> &mdash; <code>~/.codex/config.toml</code></li>
+            <li><strong>ChatGPT in a browser</strong> &mdash; no file at all. It cannot reach your Mac; use <a href="#mirror">the folder route</a> below.</li>
           </ul>
           <p>A leading <code>~</code> means your home folder. In Finder, press <kbd>Cmd</kbd>&#8202;+&#8202;<kbd>Shift</kbd>&#8202;+&#8202;<kbd>G</kbd> and paste the path to go straight there.</p>
 
           <div class="callout warn">
-            <p><strong>There is no single MCP config format, and this trips people up.</strong> Four of those five files are JSON, where the block goes inside an <code>mcpServers</code> object alongside any servers already there. <strong>Codex / ChatGPT is TOML instead</strong> &mdash; <code>~/.codex/config.toml</code>, where the block is a <code>[mcp_servers.unlirice]</code> table. The app gives you the right shape for the tool you picked, so copy the block it shows you rather than one you saw somewhere else. If you add a tool that is not on the list, Unli Rice picks the format from the file extension you point it at.</p>
+            <p><strong>There is no single MCP config format, and this trips people up.</strong> Four of those files are JSON. <strong>Codex CLI is TOML instead</strong> &mdash; <code>~/.codex/config.toml</code>, where the block is a <code>[mcp_servers.unlirice]</code> table added at the end of the file, on its own. The app gives you the right shape for the tool you picked, so copy the block it shows you rather than one you saw somewhere else. If you add a tool that is not on the list, Unli Rice picks the format from the file extension you point it at.</p>
+          </div>
+
+          <h3>Pasting into a JSON file that already has something in it</h3>
+          <p>Read this part before you paste, because it is the one step where a small mistake produces a file that looks fine and never connects. What the app copies for a JSON tool is a <em>complete file</em>, not a fragment. It already has the <code>mcpServers</code> wrapper around it:</p>
+          <pre class="snip">{
+  "mcpServers": {
+    "unlirice": {
+      "command": "/Applications/Unli Rice.app/Contents/MacOS/unlirice-mcp",
+      "args": []
+    }
+  }
+}</pre>
+          <p>So there are two cases, and which one you are in depends on what is already in the file you opened:</p>
+          <ul>
+            <li><strong>The file is empty, or does not exist yet.</strong> Paste the block exactly as copied, save, and you are done.</li>
+            <li><strong>The file already has an <code>mcpServers</code> object with other servers in it.</strong> Do <em>not</em> paste the whole block. Paste only the inner <code>"unlirice": { &hellip; }</code> part, inside the <code>mcpServers</code> object that is already there, with a comma after the entry above it.</li>
+          </ul>
+          <p>The second case ends up looking like this &mdash; one <code>mcpServers</code>, with your servers side by side inside it:</p>
+          <pre class="snip">{
+  "mcpServers": {
+    "something-you-already-had": {
+      "command": "..."
+    },
+    "unlirice": {
+      "command": "/Applications/Unli Rice.app/Contents/MacOS/unlirice-mcp",
+      "args": []
+    }
+  }
+}</pre>
+          <div class="callout warn">
+            <p><strong>The mistake to avoid:</strong> pasting the copied block <em>inside</em> an <code>mcpServers</code> object that already exists. That leaves you with one <code>mcpServers</code> nested inside another, which is not a shape any tool understands &mdash; and most fail quietly rather than say so. If the word <code>mcpServers</code> appears twice in the file, that is the bug.</p>
           </div>
 
           <div class="callout">
             <p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Whatever is already in there stays exactly as it is, and nothing on your machine is changed on your behalf.</p>
           </div>
 
-          <h3>Or point a tool at the folder instead</h3>
-          <p>Some tools read local files rather than speaking MCP. For those there is nothing to configure: Unli Rice keeps a workspace folder at <code>~/Documents/Unli Rice/</code> and you point the tool at it. You can pick a different folder on the same screen. If pasting config blocks is not something you want to do, start here.</p>
+          <h3 id="mirror">Or point a tool at the folder instead</h3>
+          <p>Some tools read local files rather than speaking MCP, and ChatGPT in a browser cannot reach your Mac at all. For those, Unli Rice keeps a plain-Markdown folder at <code>~/Documents/Unli Rice/</code> that you point a tool at, upload, or copy from. You can pick a different folder on the same screen. If pasting config blocks is not something you want to do, start here.</p>
 
           <div class="callout warn">
-            <p><strong>The one thing that catches everyone:</strong> a tool reads its configuration when it starts up. One that was already running will not see Unli Rice until you quit it completely and open it again. If the status on the Connect screen does not change, restart the tool first. If it still does not connect, check that the block landed in the right file, and in the right place inside it &mdash; inside the <code>mcpServers</code> object for a JSON file, or as its own <code>[mcp_servers.unlirice]</code> table in <code>config.toml</code>.</p>
+            <p><strong>That folder is a copy, and it only goes one way.</strong> Unli Rice writes your notes out into it; nothing reads back. An assistant that edits a file in there has edited the copy and not your notes, and the edit disappears the next time the folder is rebuilt. Deleting the folder costs you nothing, for the same reason. This is a way to <em>hand</em> your context to a tool, not a way to let that tool write into your log &mdash; only an MCP connection does that. It is the honest trade for tools that cannot speak MCP, and it is worth knowing which one you are on.</p>
+          </div>
+
+          <div class="callout warn">
+            <p><strong>The one thing that catches everyone:</strong> a tool reads its configuration when it starts up. One that was already running will not see Unli Rice until you quit it completely and open it again. If the status on the Connect screen does not change, restart the tool first. If it still does not connect, check that the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it for a JSON file, or its own <code>[mcp_servers.unlirice]</code> table in <code>config.toml</code>.</p>
           </div>
         </section>
 
@@ -525,14 +562,14 @@
           <p>An agent that knows nothing about you gives you generic answers and re-asks the same questions. This is where you fix that once instead of at the start of every session. Two separate features, with confusingly similar names.</p>
 
           <h3>House Rules &mdash; how agents should behave</h3>
-          <p>The instructions every connected assistant reads. Three are built in: <strong>Standard Memory</strong>, balanced conventions for a shared multi-agent memory; <strong>Codebase Memory</strong>, aimed at architecture decisions, migrations, verification and handoffs; and <strong>Minimalist</strong>. Edit one, or import your own.</p>
+          <p>Your standing instructions for how agents should behave, saved as a note in your log. It is worth being exact about what that buys you: House Rules is <em>a note an assistant can find and read</em>, not text injected into every session. What Unli Rice tells a tool on connection is that a vault exists and is worth searching; the House Rules note is then one of the things it finds. An assistant that reads your notes at the start of a session &mdash; which is precisely what the built-in rules ask for &mdash; picks it up. One that never searches will not, and the fix for that is a line in that tool's own setup telling it to. Three presets are built in: <strong>Standard Memory</strong>, balanced conventions for a shared multi-agent memory; <strong>Codebase Memory</strong>, aimed at architecture decisions, migrations, verification and handoffs; and <strong>Minimalist</strong>. Edit one, or import your own.</p>
           <p>Choosing a preset <strong>never writes to your notes by itself</strong>. It is a draft until you apply it. The editor shows the character count and an approximate token count, labelled as an estimate because tokenizers differ between models &mdash; these are words every agent pays for in every session, so it is worth seeing the size.</p>
 
           <h3>The Profile Builder &mdash; who you are and what you are working on</h3>
           <p>A wizard that turns your situation into the context agents are handed: your name and role, your mission, the persona and tone you want them to use, formatting preferences, the principles you work by, your stack defaults, your dos and don&rsquo;ts, and a list of your projects with a one-line description and a status each. You can add per-platform overlays too &mdash; the built-in ones cover Apple and Web &mdash; so rules that only apply to one kind of work stay attached to that work.</p>
           <p>Four templates to start from: <strong>Studio Standard</strong> (the author&rsquo;s own setup, generalised, and the recommended starting point), <strong>Solo Developer</strong>, <strong>Writer / Researcher</strong>, and <strong>Minimalist</strong>. Take all of a template or the parts that fit.</p>
           <div class="callout">
-            <p><strong>No personal information about anybody ships with the app.</strong> The templates carry placeholders you replace &mdash; a name field reading &ldquo;Founder&rdquo;, a project called &ldquo;Flagship App&rdquo; described as &ldquo;replace with your own&rdquo;. The Studio Standard template is the shape of the author&rsquo;s setup, not its contents. Nothing in Unli Rice knows who you are until you tell it, and what you tell it stays on your Mac.</p>
+            <p><strong>No real names, projects or history are baked into the templates.</strong> They carry placeholders you replace &mdash; a name field reading &ldquo;Founder&rdquo;, a project called &ldquo;Flagship App&rdquo; described as &ldquo;replace with your own&rdquo;. The Studio Standard template is the shape of the author&rsquo;s setup, not its contents. Nothing in Unli Rice knows who <em>you</em> are until you tell it, and what you tell it stays on your Mac. (The app does carry the author&rsquo;s name in its copyright line and links to a public GitHub account for support and the privacy policy, the way any app does.)</p>
           </div>
 
           <h3>Guardrails are the part worth the time</h3>
@@ -547,6 +584,7 @@
           <h2>4. How to think about a note</h2>
           <p>A note has a title, a body, tags, and links. Link one note to another by writing its title in double brackets &mdash; <code>[[Wiki: index]]</code> &mdash; and Unli Rice keeps the connection in both directions. A link to a note that does not exist yet is fine; it marks something worth writing.</p>
           <p>Every write also carries a <strong>source</strong>: the name of whoever made it. <code>claude</code>, <code>codex</code>, <code>antigravity</code>, you. This is what makes a shared log readable later, because it separates a conclusion an agent reasoned its way to from a line a machine put there. Two sources belong to the app itself and no agent should borrow them: <code>janitor</code> and <code>ingest</code>.</p>
+          <p>Be clear-eyed about what a source is, though. The calling tool supplies that name itself and Unli Rice records what it was handed. It is an honest label from an honest tool, not an identity check &mdash; anything you connect could put any word there, including one of those two. That is fine for the job it does, which is letting you read the log back later and see who was working. It is not a security boundary, and nothing important rests on it: what an agent can do is fixed by the tools it is given, not by the name it signs.</p>
         </section>
 
         <section class="g-section reveal" id="append-only">
@@ -574,14 +612,14 @@
             <li><strong>Index entries.</strong> The <code>Session:</code> and <code>Doc:</code> notes, one per raw file, written automatically. These are machine-built descriptions, <em>not</em> conclusions. They tell you whether a file is the one you want. If it matters, open the file.</li>
             <li><strong>Wiki hubs.</strong> Notes titled <code>Wiki: &lt;topic&gt;</code>, written by a reasoning agent. Each says what exists for a topic and where the real authority is. This is the only layer with judgement in it, which is also the reason it is the layer that goes stale.</li>
           </ul>
-          <p>Start at the note titled <code>Wiki: index</code>. It exists so you do not have to read a corpus of hundreds to find the four notes that matter.</p>
+          <p>Once you have one, start at the note titled <code>Wiki: index</code>. It exists so you do not have to read a corpus of hundreds to find the four notes that matter. <strong>It is not there on your first day.</strong> A new log is seeded with two notes and neither is a wiki hub; hubs get written when there is something worth hubbing, by an agent you ask to write one. Once you have a few dozen notes, asking for it is a reasonable thing to do.</p>
         </section>
 
         <section class="g-section reveal" id="panes">
           <h2>7. The panes</h2>
           <p><strong>Notes.</strong> Search, read, tag, and open any note&rsquo;s history. Search is keyword matching over titles, bodies and tags.</p>
-          <p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which commits are on no remote anywhere.</p>
-          <p><strong>To-Do.</strong> <em>Nothing here is stored, and nothing can be ticked off.</em> Every item is computed from the state that makes it true, so an item disappears when the work is genuinely done &mdash; push the commits and &ldquo;on no remote&rdquo; goes away on its own. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. A stored checklist drifts from reality the moment someone does the work without ticking the box. Deriving is how this one stays honest.</p>
+          <p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which branch tips are not on any remote this clone has fetched. That is worth reading precisely, because it is a narrower claim than it sounds: it compares the tip of each branch against the remote refs already fetched here. It does not walk individual commits, and it cannot speak for a remote it has never fetched from. Read it as &ldquo;nothing I know about has this&rdquo;, which is still the useful warning.</p>
+          <p><strong>To-Do.</strong> Two kinds of item live here and they behave differently, which is the thing to learn about this pane. <em>Derived</em> items are computed from the state that makes them true, and they have no checkbox because there is nothing to check &mdash; the item goes away when the state does. A stored checklist drifts from reality the moment someone does the work without ticking the box; deriving is how this half stays honest. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. <em>AI-flagged</em> items are the other kind: an agent that spots something worth doing writes an ordinary note and tags it <code>todo</code>. Those are stored, like any note, and they carry a <strong>Done</strong> button that archives the note behind them.</p>
           <p><strong>Trust Center.</strong> Read-only checks: whether the log and its folder are writable, which MCP clients have checked in, whether a recovery point exists, and what the background worker is doing. Client check-ins record the client&rsquo;s name and version, timestamps, the tool name, and whether it succeeded &mdash; never tool arguments, and never note content.</p>
           <p><strong>Notices.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
           <p><strong>House Rules and the Profile Builder.</strong> What connected agents are told about you and how to behave. See <a href="#profile">telling your agents who you are</a>.</p>
@@ -592,31 +630,32 @@
         <section class="g-section reveal" id="iphone">
           <h2>8. The iPhone app</h2>
           <p>Unli Rice Capture is a satellite, not a second copy of the app. It records audio and transcribes it, and it takes typed notes.</p>
-          <p>It also mirrors your repositories and your to-do list. <strong>The items themselves are read-only</strong> &mdash; you cannot tick one off or change it from the phone, because they are derived on the Mac from the state of your repositories. What you can do is tap an item and write a note against it: what you type is appended to that project&rsquo;s note, stamped with the project, the item, and the time. The phone reads the list and writes notes about it. It never edits the list.</p>
-          <p>The Mac holds the log. The phone syncs its own per-device shard into it, which is what lets both write without either one clobbering the other.</p>
+          <p>It handles notes you already have, too: you can add to an existing note instead of starting a new one, and archive a capture or bring it back, all from the phone.</p>
+          <p>It also mirrors your repositories and your to-do list. <strong>Derived items are read-only on the phone</strong> &mdash; you cannot tick one off, because they are computed on the Mac from the state of your repositories. What you can do is tap one and write a note against it: what you type is appended to that project&rsquo;s note, stamped with the project, the item, and the time. AI-flagged items behave the same as they do on the Mac: they are notes, so they have a <strong>Done</strong> button that archives them.</p>
+          <p>The Mac holds the log, and the phone syncs its own per-device shard into it, which is what lets both write without either one clobbering the other &mdash; <strong>but only once you have given it somewhere shared to sync to</strong>. The first time you capture something the phone asks where captures should go, and &ldquo;Keep on this device only&rdquo; is a real answer to that question. Choose it and nothing reaches your Mac until you change it in Settings. To sync, pick a folder in iCloud Drive on the phone and point the Mac at the same one.</p>
         </section>
 
         <section class="g-section reveal" id="data">
           <h2>9. Your data</h2>
           <p>The log is one append-only file with your raw sources beside it. You can point Unli Rice at a different folder for it, and the app tells you which one it currently has open.</p>
           <h3>Recovery points</h3>
-          <p>A snapshot copies the event log byte for byte, together with your raw files and the small settings belonging to that log, and checksums all of it with SHA-256 so it can be verified later. <strong>Restoring never replaces your current log.</strong> It appends only the events that are missing and copies only the files that are absent, which keeps the append-only rule intact and means a restore cannot cost you anything you already had.</p>
+          <p>A snapshot copies the event log byte for byte, together with your raw files and the small settings belonging to that log, and checksums all of it with SHA-256 so it can be verified later. <strong>Restoring never replaces your current log.</strong> It appends only the events that are missing and copies only the files that are absent, which keeps the append-only rule intact and means a restore cannot cost you anything you already had. The trade is that your settings do not come back either: House Rules, routine state and notices are copied <em>into</em> the snapshot, but a restore leaves them sitting there rather than writing over the ones you have now. If you want an old one back, take it out of the snapshot folder yourself.</p>
           <h3>What the janitor may do</h3>
           <p>The background janitor can add a tag or raise a flag. That is the whole list. It cannot archive, retitle, merge, or resolve anything. A tag it added is a suggestion &mdash; remove it if it is wrong, and it will not put it back. A flag it raised is a proposal waiting for you.</p>
         </section>
 
         <section class="g-section reveal" id="trouble">
           <h2>10. When something looks wrong</h2>
-          <p><strong>A tool I connected does not appear.</strong> Restart that tool completely so it reloads its configuration, then confirm the block is inside the <code>mcpServers</code> object of the right file. Configuration is read once, when the session starts.</p>
-          <p><strong>Notes I expected are missing.</strong> Confirm which log the app has open. It reports this, and it is the first thing to check rather than the last. A banner about a corpus that is unreachable or stranded means what it says, and it is specific: it names the path, and for a stranded log it tells you how many notes are in it that the log you are on does not have. Nothing has been lost in either case.</p>
-          <p><strong>The to-do list looks out of date.</strong> It is derived, so it is only as fresh as what it derived from. Publish a new repository snapshot, and give any project you care about a <code>memory.md</code> with a next step in it &mdash; that is what turns a cached item into a live one.</p>
+          <p><strong>A tool I connected does not appear.</strong> Restart that tool completely so it reloads its configuration, then confirm the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it, never two nested ones. See <a href="#setup">pasting into a JSON file</a> above. Configuration is read once, when the session starts.</p>
+          <p><strong>Notes I expected are missing.</strong> Confirm which log the app has open. It reports this, and it is the first thing to check rather than the last. A banner about a corpus that is unreachable or stranded means what it says, and it is specific: it names the path, and for a stranded log it tells you how many notes are in it that the log you are on does not have. A stranded log is intact and waiting. An unreachable one is a different matter: the app can tell you it cannot open that folder, but not why &mdash; an unmounted drive, a folder you renamed, and a folder that was deleted all look the same from here. Check the path it names before assuming which one you are in.</p>
+          <p><strong>The to-do list looks out of date.</strong> It is derived, so it is only as fresh as what it derived from. Publish a new repository snapshot &mdash; that is its own step, and pushing alone does not do it. For a declared next step, give the project a <code>memory.md</code> containing the exact marker <code>**Next step:**</code> with the step after it. The asterisks and the capital N are both load-bearing: <code>next step:</code> or <code>Next Step:</code> will not be found. The project folder also has to sit directly inside a folder you have granted for scanning &mdash; one level down, not nested deeper.</p>
           <p><strong>Nothing is being brought in automatically.</strong> Check that background routines are switched on, and that the folders you want scanned have been granted. A folder has to be chosen through the file picker before the app may read it.</p>
         </section>
 
         <section class="g-section reveal" id="tools">
           <h2>11. Tool reference</h2>
-          <p>What a connected agent can do over MCP. Every write takes a <code>source</code>, so the log stays attributable.</p>
-          <p class="verified">Verified against <code>unli-rice@1f49c0f</code> on 2026-09-04.</p>
+          <p>What a connected agent can do over MCP. Every write takes a <code>source</code> &mdash; the name the calling tool gives for itself &mdash; so the log reads back attributably.</p>
+          <p class="verified">Verified against <code>unli-rice@1f49c0f</code> on 2026-09-05.</p>
           <div class="tablewrap">
             <table>
               <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
@@ -632,7 +671,7 @@
                 <tr><td><code>unarchive_note</code></td><td>Brings an archived note back.</td></tr>
                 <tr><td><code>flag_for_review</code></td><td>Queues a concern for you &mdash; a suspected duplicate, a conflict, a proposed merge. Never applies the change itself.</td></tr>
                 <tr><td><code>pending_reviews</code></td><td>Lists every unresolved flag across all notes, oldest first.</td></tr>
-                <tr><td><code>resolve_review</code></td><td>Marks a flag resolved, once you have decided what to do about it.</td></tr>
+                <tr><td><code>resolve_review</code></td><td>Marks a flag resolved. Meant for after you have decided &mdash; but that is a convention, not a lock. Any connected agent can call it.</td></tr>
                 <tr><td><code>note_history</code></td><td>The immutable event history for one note, oldest first, with attribution and timestamps.</td></tr>
                 <tr><td><code>transaction_log</code></td><td>Raw recent events across the whole log, most recent first &mdash; the audit trail.</td></tr>
               </tbody>
