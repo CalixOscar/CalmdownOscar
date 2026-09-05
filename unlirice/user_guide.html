@@ -413,6 +413,9 @@
   .g-section li{ margin-bottom:8px; }
   .g-section a{ color:var(--accent); }
   code{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.88em; background:rgba(255,255,255,.06); border:1px solid var(--edge); border-radius:4px; padding:1px 5px; word-break:break-word; }
+  figure.shot{ margin:0 0 20px; }
+  figure.shot img{ display:block; width:100%; height:auto; border:1px solid var(--edge); border-radius:10px; }
+  figure.shot figcaption{ font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5; }
   pre.snip{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; line-height:1.55; color:#C8D4DE; background:rgba(255,255,255,.04); border:1px solid var(--edge); border-radius:10px; padding:14px 16px; margin:0 0 16px; overflow-x:auto; }
   .callout{ border-left:3px solid var(--accent); background:rgba(133,182,255,.07); border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 18px; }
   .callout p{ margin:0; color:var(--ink); }
@@ -493,6 +496,11 @@
           <h2>2. Set it up</h2>
           <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later if you add another tool: <strong>More &rarr; Setup &amp; Tools &rarr; AI Tools</strong>, which is the Connect screen referred to throughout this guide. It lists every tool with its config file, a <strong>Copy Configuration</strong> button, and when that tool last checked in.</p>
           <p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
+
+          <figure class="shot">
+            <img src="../apps/assets/unli-rice-shot-connect.webp" alt="The Connect screen: the Unli Rice folder path, then a row per tool — Claude Code, Claude Desktop, Cursor, Antigravity, Codex / ChatGPT — each with its config file and a Copy Configuration button" width="1400" height="879" loading="lazy" decoding="async">
+            <figcaption><strong>More &rarr; Setup &amp; Tools &rarr; AI Tools.</strong> One row per tool, each showing the file its block goes in, a <strong>Copy Configuration</strong> button, and when that tool last checked in. The path at the top is the folder route, and it is the real path &mdash; not <code>~/Documents</code>.</figcaption>
+          </figure>
 
           <h3>Where the block goes</h3>
           <p>You paste it in yourself, into a file belonging to that tool. <strong>Unli Rice shows you the exact file for the tool you picked</strong>, because it is different for every one of them:</p>
