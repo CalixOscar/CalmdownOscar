@@ -491,7 +491,7 @@
 
         <section class="g-section reveal" id="setup">
           <h2>2. Set it up</h2>
-          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later from the Connect screen if you add another tool.</p>
+          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later if you add another tool: <strong>More &rarr; Setup &amp; Tools &rarr; AI Tools</strong>, which is the Connect screen referred to throughout this guide. It lists every tool with its config file, a <strong>Copy Configuration</strong> button, and when that tool last checked in.</p>
           <p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
 
           <h3>Where the block goes</h3>
@@ -546,10 +546,19 @@
           </div>
 
           <h3 id="mirror">Or point a tool at the folder instead</h3>
-          <p>Some tools read local files rather than speaking MCP, and ChatGPT in a browser cannot reach your Mac at all. For those, Unli Rice keeps a plain-Markdown folder at <code>~/Documents/Unli Rice/</code> that you point a tool at, upload, or copy from. You can pick a different folder on the same screen. If pasting config blocks is not something you want to do, start here.</p>
+          <p>Some tools read local files rather than speaking MCP, and ChatGPT in a browser cannot reach your Mac at all. For those, Unli Rice keeps a plain-Markdown folder that you point a tool at, upload, or copy from. If pasting config blocks is not something you want to do, start here.</p>
 
           <div class="callout warn">
-            <p><strong>That folder is a copy, and it only goes one way.</strong> Unli Rice writes your notes out into it; nothing reads back. An assistant that edits a file in there has edited the copy and not your notes, and the edit disappears the next time the folder is rebuilt. Deleting the folder costs you nothing, for the same reason. This is a way to <em>hand</em> your context to a tool, not a way to let that tool write into your log &mdash; only an MCP connection does that. It is the honest trade for tools that cannot speak MCP, and it is worth knowing which one you are on.</p>
+            <p><strong>Do not go looking for that folder in your own Documents.</strong> The App Store build is sandboxed, so its idea of &ldquo;Documents&rdquo; is a private folder inside the app, with a path like <code>~/Library/Containers/com.calmdownoscar.unlirice/Data/Documents/Unli&nbsp;Rice</code>. The screen shows you the real path in full &mdash; copy it from there rather than typing one from memory. If you would rather have the folder somewhere you can actually find, use <strong>Choose Folder&hellip;</strong> on that screen and put it in your real Documents or iCloud Drive. That is also what you do if you want your iPhone to sync into it.</p>
+          </div>
+
+          <p>Inside it there are two things worth knowing apart, because they run in opposite directions:</p>
+          <ul>
+            <li><strong>What Unli Rice writes out</strong> &mdash; <code>Context/</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and a file per note. These are <em>copies</em>, regenerated on a schedule. Editing one edits the copy: your real note is unchanged and your edit disappears the next time the folder is rebuilt. Deleting the whole folder costs you nothing, for the same reason.</li>
+            <li><strong><code>Notes for Unli Rice/</code> &mdash; the drop box, and this one does come back the other way.</strong> Any Markdown file you put in there gets ingested into your real log by the background worker, and becomes an actual note. So a tool that cannot speak MCP can still <em>give</em> you something: have it write a <code>.md</code> file into that folder.</li>
+          </ul>
+          <div class="callout warn">
+            <p><strong>So the folder is a hand-off, not a shared workspace.</strong> Reading is a copy and writing only happens through the drop box &mdash; an assistant cannot edit an existing note this way, only add a new one. Live two-way access to your notes, where a tool reads a note and appends to that same note, is what an MCP connection gives you and this route does not. It is worth knowing which of the two you are on.</p>
           </div>
 
           <div class="callout warn">
@@ -562,6 +571,7 @@
           <p>An agent that knows nothing about you gives you generic answers and re-asks the same questions. This is where you fix that once instead of at the start of every session. Two separate features, with confusingly similar names.</p>
 
           <h3>House Rules &mdash; how agents should behave</h3>
+          <p class="verified">In the app this is <strong>More &rarr; What your AI should always do</strong>. The guide uses &ldquo;House Rules&rdquo; because that is what the feature is called in the notes it writes and in the rest of this page.</p>
           <p>Your standing instructions for how agents should behave, saved as a note in your log. It is worth being exact about what that buys you: House Rules is <em>a note an assistant can find and read</em>, not text injected into every session. What Unli Rice tells a tool on connection is that a vault exists and is worth searching; the House Rules note is then one of the things it finds. An assistant that reads your notes at the start of a session &mdash; which is precisely what the built-in rules ask for &mdash; picks it up. One that never searches will not, and the fix for that is a line in that tool's own setup telling it to. Three presets are built in: <strong>Standard Memory</strong>, balanced conventions for a shared multi-agent memory; <strong>Codebase Memory</strong>, aimed at architecture decisions, migrations, verification and handoffs; and <strong>Minimalist</strong>. Edit one, or import your own.</p>
           <p>Choosing a preset <strong>never writes to your notes by itself</strong>. It is a draft until you apply it. The editor shows the character count and an approximate token count, labelled as an estimate because tokenizers differ between models &mdash; these are words every agent pays for in every session, so it is worth seeing the size.</p>
 
@@ -617,14 +627,28 @@
 
         <section class="g-section reveal" id="panes">
           <h2>7. The panes</h2>
+          <p>The sidebar has eight rows, and most of the settings live behind the last one. Names below are the ones on the buttons.</p>
+
+          <h3>In the sidebar</h3>
+          <p><strong>Home.</strong> What your AI currently knows about you &mdash; your profile context as one readable page, with the note count.</p>
           <p><strong>Notes.</strong> Search, read, tag, and open any note&rsquo;s history. Search is keyword matching over titles, bodies and tags.</p>
           <p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which branch tips are not on any remote this clone has fetched. That is worth reading precisely, because it is a narrower claim than it sounds: it compares the tip of each branch against the remote refs already fetched here. It does not walk individual commits, and it cannot speak for a remote it has never fetched from. Read it as &ldquo;nothing I know about has this&rdquo;, which is still the useful warning.</p>
           <p><strong>To-Do.</strong> Two kinds of item live here and they behave differently, which is the thing to learn about this pane. <em>Derived</em> items are computed from the state that makes them true, and they have no checkbox because there is nothing to check &mdash; the item goes away when the state does. A stored checklist drifts from reality the moment someone does the work without ticking the box; deriving is how this half stays honest. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. <em>AI-flagged</em> items are the other kind: an agent that spots something worth doing writes an ordinary note and tags it <code>todo</code>. Those are stored, like any note, and they carry a <strong>Done</strong> button that archives the note behind them.</p>
+          <p><strong>Needs you.</strong> The flags waiting on a decision, with a count on the row. This is where an agent&rsquo;s proposed merge or suspected duplicate ends up.</p>
+          <p><strong>Your year so far.</strong> A retrospective read back to you from notes you already have.</p>
+          <p><strong>Map.</strong> The link graph &mdash; notes as nodes, double-bracket links as edges.</p>
+
+          <h3>Under More</h3>
+          <p><strong>Setup &amp; Tools.</strong> The Connect screen, plus everything below it in this list.</p>
+          <p><strong>Why not just a text file?</strong> The argument for the whole thing, if you want it.</p>
+          <p><strong>What your AI should always do.</strong> House Rules &mdash; see <a href="#profile">telling your agents who you are</a>.</p>
+          <p><strong>Separate memories.</strong> Profiles: separate note logs, each in its own folder, with one marked as the master. A way to keep unrelated bodies of work apart &mdash; not a way to change how agents behave.</p>
+          <p><strong>The folder your AI can read.</strong> The plain-Markdown folder and its drop box, covered in <a href="#mirror">pointing a tool at the folder</a>.</p>
+          <p><strong>What Runs on Its Own.</strong> Background work: bringing in documents and sessions from folders you have nominated, ingesting the drop box, and the janitor.</p>
+          <p><strong>Archived Notes.</strong> Everything hidden from the default listings, and where you bring one back.</p>
+          <p><strong>Notifications.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
           <p><strong>Trust Center.</strong> Read-only checks: whether the log and its folder are writable, which MCP clients have checked in, whether a recovery point exists, and what the background worker is doing. Client check-ins record the client&rsquo;s name and version, timestamps, the tool name, and whether it succeeded &mdash; never tool arguments, and never note content.</p>
-          <p><strong>Notices.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
-          <p><strong>House Rules and the Profile Builder.</strong> What connected agents are told about you and how to behave. See <a href="#profile">telling your agents who you are</a>.</p>
-          <p><strong>Profiles.</strong> Separate note logs, each in its own folder, with one marked as the master. A way to keep unrelated bodies of work apart &mdash; not a way to change how agents behave.</p>
-          <p><strong>Automation.</strong> Background work: bringing in documents and sessions from folders you have nominated, and the janitor.</p>
+          <p><strong>The Profile Builder</strong> sits inside Setup &amp; Tools rather than on its own row. Same place you connect a tool.</p>
         </section>
 
         <section class="g-section reveal" id="iphone">
