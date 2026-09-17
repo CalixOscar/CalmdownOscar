@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>How I Work — calmdownoscar</title>
-<meta name="description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, pre-mortems, backend architecture, security audits, and post-mortems.">
+<meta name="description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, intent reads, pre-mortems, backend architecture, security audits, and post-mortems.">
 <meta property="og:title" content="How I Work — calmdownoscar">
-<meta property="og:description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, pre-mortems, backend architecture, security audits, and post-mortems.">
+<meta property="og:description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, intent reads, pre-mortems, backend architecture, security audits, and post-mortems.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/how_I_work/">
 <link rel="canonical" href="https://www.calmdownoscar.com/how_I_work/">
@@ -262,7 +262,7 @@
   <section class="how" id="how">
     <div class="wrap">
       <div class="section-label reveal">How I work</div>
-      <p class="section-lede reveal">A five-stage multi-agent methodology, run in a fixed order: feasibility and prompt structuring → the plan → a pre-mortem against it → the revision → the build. Each stage has one job, and no stage gets skipped because the work looks small.</p>
+      <p class="section-lede reveal">A six-stage multi-agent methodology, run in a fixed order: feasibility and prompt structuring → a read against the intent → the plan → a pre-mortem against the plan → the revision → the build. Each stage has one job, and no stage gets skipped because the work looks small.</p>
       
       <div class="grid">
         <div class="card reveal">
@@ -274,15 +274,20 @@
           <p>Gemini Spark is the first point of entry. It reads the raw vault text, checks technical feasibility, benchmarks what already exists, and structures the problem — context, root causes, and what to look at — into the handoff prompt Claude works from. Its output is raw material, not a plan.</p>
         </div>
         <div class="card reveal">
-          <h3>03 · The Plan — and Claude Doesn't Build It</h3>
-          <p>Claude turns that prompt into the architecture: a file-by-file task list, the edge cases, the gotchas. It writes the plan into the project's own docs behind a short handoff pointer. If Claude finds itself starting a long mechanical pass, that's the signal to stop and write the plan instead — building is somebody else's stage.</p>
+          <h3>03 · The Intent Gets Attacked First</h3>
+          <p>Before anything is planned, GPT-6 Astra tries to break the intent doc: is the stated problem the real one, and is the &ldquo;explicitly not this&rdquo; list actually complete? That list is what a swarm's questions get checked against later, so a gap in it surfaces as improvised code three stages downstream. Astra runs the standing AI-failure lens list in the same pass. It returns objections and does not rewrite the intent &mdash; if the read changes what's wanted, that's a new intent doc superseding the old one, never an edit that quietly makes the original look right.</p>
+          <p>This stage exists because the chain used to have three checks and none of them looked at the intent. The plan got attacked, the model's behaviour got attacked, and the business case got attacked six months in &mdash; by which point a wrong premise had been built.</p>
         </div>
         <div class="card reveal">
-          <h3>04 · Pre-Mortem, Then Revision</h3>
+          <h3>04 · The Plan — and Claude Doesn't Build It</h3>
+          <p>Claude turns that prompt into the architecture: a file-by-file task list, the edge cases, the gotchas. It writes the plan into the project's own docs behind a short handoff pointer. If Claude finds itself starting a long mechanical pass, that's the signal to stop and write the plan instead — building is somebody else's stage.</p>
+        </div>
+        <div class="card wide reveal">
+          <h3>05 · Pre-Mortem, Then Revision</h3>
           <p>Codex tries to break the plan on paper before any code exists: where the design fails, what the tests miss, which invariants are unguarded, what the plan assumed about the repo without checking. It returns objections, not a rewrite. Claude then takes a second pass — revising what the objections change, and saying plainly which it declines and why. The plan is settled when that pass ends, not before.</p>
         </div>
         <div class="card wide reveal">
-          <h3>05 · The Swarm Builds It — Over an MCP Bridge</h3>
+          <h3>06 · The Swarm Builds It — Over an MCP Bridge</h3>
           <p>The settled plan is dispatched to the Antigravity swarm through a local MCP bridge rather than by hand. The bridge writes the plan into the target project folder and launches the headless <code>agy</code> CLI there with an explicit directory — necessary, because the swarm resolves its workspace from its own project state, not the shell's, and an unaddressed run silently attaches to whatever project was open last. It has done exactly that, into the wrong repo.</p>
           <p>Nothing the swarm says about itself counts as evidence: a run whose tools were denied still exits clean and reports success. Every build is checked against <code>git diff</code> and a real test run. Anything the plan didn't anticipate goes back to Claude as a plan change, not an improvised fix. Near release Claude runs the security audit — secrets, server-side authorization, per-record ownership, receipt validation — and the app ships through the relay to the App Store. Afterward, Unli Disk clears simulators and dead-end repos off my own machine.</p>
         </div>
@@ -294,10 +299,10 @@
   <section class="pipeline" id="pipeline">
     <div class="wrap">
       <div class="section-label reveal">The pipeline</div>
-      <p class="section-lede reveal" style="margin-bottom:24px;">Visual map of the pipeline: from voice capture through the plan, the pre-mortem, and the swarm that builds it — with the MCP bridge that dispatches the build, and the return loops where one tool checks another’s output before work continues.</p>
+      <p class="section-lede reveal" style="margin-bottom:24px;">Visual map of the pipeline: from voice capture through the intent read, the plan, the pre-mortem, and the swarm that builds it — with the MCP bridge that dispatches the build, and the return loops where one tool checks another’s output before work continues.</p>
       
       <div class="diagram reveal">
-        <svg viewBox="0 0 1000 1070" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: an idea is spoken into Unli Rice Voice Capture on iOS, lands in the Unli Rice Vault, goes to Gemini Spark for feasibility and prompt structuring, then to Claude for the plan and architecture with Unli Rice MCP vault sync alongside it, then to Codex for a pre-mortem on the plan before any code exists, back to Claude for a second pass that revises the plan against the objections, then to the Antigravity swarm which builds it — dispatched through the local MCP bridge that writes the plan into the project folder and runs the agy headless CLI there. The build is verified against git diff, never against the swarm's own success report, with a return loop sending anything unanticipated back to Claude as a plan change rather than an improvised fix. Claude then runs a security audit with a hardening loop back to the swarm, and the app ships via the Vercel proxy and the App Store, after which Unli Disk clears storage.">
+        <svg viewBox="0 0 1000 1170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: an idea is spoken into Unli Rice Voice Capture on iOS, lands in the Unli Rice Vault, goes to Gemini Spark for feasibility and prompt structuring, then to GPT-6 Astra for an adversarial read of the intent doc before any architecture exists, then to Claude for the plan and architecture with Unli Rice MCP vault sync alongside it, then to Codex for a pre-mortem on the plan before any code exists, back to Claude for a second pass that revises the plan against the objections, then to the Antigravity swarm which builds it — dispatched through the local MCP bridge that writes the plan into the project folder and runs the agy headless CLI there. The build is verified against git diff, never against the swarm's own success report, with a return loop sending anything unanticipated back to Claude as a plan change rather than an improvised fix. Claude then runs a security audit with a hardening loop back to the swarm, and the app ships via the Vercel proxy and the App Store, after which Unli Disk clears storage.">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" fill="rgba(255,255,255,.5)"/>
@@ -311,25 +316,26 @@
           <path id="p1"  class="trace" marker-end="url(#arrow)" d="M500,64 L500,112"/>
           <path id="p2"  class="trace" marker-end="url(#arrow)" d="M500,152 L500,200"/>
           <path id="p3"  class="trace" marker-end="url(#arrow)" d="M500,244 L500,292"/>
-          <path id="p4"  class="trace" marker-end="url(#arrow)" d="M500,336 L500,390"/>
-          <path id="p5"  class="trace" marker-end="url(#arrow)" d="M500,434 L500,490"/>
+          <path id="p4"  class="trace" marker-end="url(#arrow)" d="M500,336 L500,392"/>
+          <path id="p5"  class="trace" marker-end="url(#arrow)" d="M500,436 L500,490"/>
           <path id="p6"  class="trace" marker-end="url(#arrow)" d="M500,534 L500,590"/>
           <path id="p7"  class="trace" marker-end="url(#arrow)" d="M500,634 L500,690"/>
           <path id="p8"  class="trace" marker-end="url(#arrow)" d="M500,734 L500,790"/>
           <path id="p9"  class="trace" marker-end="url(#arrow)" d="M500,834 L500,890"/>
-          <path id="p10" class="trace" marker-end="url(#arrow)" d="M500,938 L500,986"/>
+          <path id="p10"  class="trace" marker-end="url(#arrow)" d="M500,934 L500,990"/>
+          <path id="p11" class="trace" marker-end="url(#arrow)" d="M500,1038 L500,1086"/>
 
           <!-- side traces (MCP memory & MCP dispatch bridge) -->
-          <path id="p_claude_vault" class="trace" marker-end="url(#arrow)" d="M640,304 L680,304"/>
-          <path id="p_vault_claude" class="trace" marker-end="url(#arrow)" d="M680,324 L640,324"/>
-          <path id="p_swarm_bridge" class="trace" marker-end="url(#arrow)" d="M640,604 L680,604"/>
-          <path id="p_bridge_swarm" class="trace" marker-end="url(#arrow)" d="M680,624 L640,624"/>
+          <path id="p_claude_vault" class="trace" marker-end="url(#arrow)" d="M640,404 L680,404"/>
+          <path id="p_vault_claude" class="trace" marker-end="url(#arrow)" d="M680,424 L640,424"/>
+          <path id="p_swarm_bridge" class="trace" marker-end="url(#arrow)" d="M640,704 L680,704"/>
+          <path id="p_bridge_swarm" class="trace" marker-end="url(#arrow)" d="M680,724 L640,724"/>
 
           <!-- RETURN ARCS (verification & hardening loops) -->
           <!-- 1. git diff verification -> back to Claude as a plan change -->
-          <path id="p_planchange_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,712 C240,712 240,512 350,512"/>
+          <path id="p_planchange_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,812 C240,812 240,612 350,612"/>
           <!-- 2. Security audit -> back to the swarm for hardening -->
-          <path id="p_hardening_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,812 C190,812 190,612 360,612"/>
+          <path id="p_hardening_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,912 C190,912 190,712 360,712"/>
 
           <!-- nodes -->
           <g class="node-group">
@@ -348,114 +354,123 @@
           </g>
 
           <g class="node-group">
-            <rect class="node-box" x="360" y="292" width="280" height="44" rx="10"/>
-            <text class="node-label" x="500" y="319">2 · Claude (Plan &amp; Architecture)</text>
+            <rect class="node-box" x="340" y="292" width="320" height="44" rx="10"/>
+            <text class="node-label" x="500" y="319">2 · GPT-6 Astra (Intent Read)</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box dim" x="680" y="292" width="220" height="44" rx="10"/>
-            <text class="node-label dim" x="790" y="319">Unli Rice / MCP Vault Sync</text>
+            <rect class="node-box" x="360" y="392" width="280" height="44" rx="10"/>
+            <text class="node-label" x="500" y="419">3 · Claude (Plan &amp; Architecture)</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box" x="350" y="390" width="300" height="44" rx="10"/>
-            <text class="node-label" x="500" y="417">3 · Codex (Pre-Mortem on the Plan)</text>
+            <rect class="node-box dim" x="680" y="392" width="220" height="44" rx="10"/>
+            <text class="node-label dim" x="790" y="419">Unli Rice / MCP Vault Sync</text>
           </g>
 
           <g class="node-group">
             <rect class="node-box" x="350" y="490" width="300" height="44" rx="10"/>
-            <text class="node-label" x="500" y="517">4 · Claude (Plan Revised &amp; Settled)</text>
+            <text class="node-label" x="500" y="517">4 · Codex (Pre-Mortem on the Plan)</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box" x="360" y="590" width="280" height="44" rx="10"/>
-            <text class="node-label" x="500" y="617">5 · Antigravity Swarm (The Build)</text>
+            <rect class="node-box" x="350" y="590" width="300" height="44" rx="10"/>
+            <text class="node-label" x="500" y="617">5 · Claude (Plan Revised &amp; Settled)</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box dim" x="680" y="590" width="240" height="44" rx="10"/>
-            <text class="node-label dim" x="800" y="611">MCP Bridge</text>
-            <text class="node-label dim" x="800" y="627" style="font-size:11px; font-weight:500;">writes PLAN.md · runs agy headless</text>
+            <rect class="node-box" x="360" y="690" width="280" height="44" rx="10"/>
+            <text class="node-label" x="500" y="717">6 · Antigravity Swarm (The Build)</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box" x="340" y="690" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="717">Verify against git diff, not "SUCCESS"</text>
+            <rect class="node-box dim" x="680" y="690" width="240" height="44" rx="10"/>
+            <text class="node-label dim" x="800" y="711">MCP Bridge</text>
+            <text class="node-label dim" x="800" y="727" style="font-size:11px; font-weight:500;">writes PLAN.md · runs agy headless</text>
           </g>
 
           <g class="node-group">
             <rect class="node-box" x="340" y="790" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="817">Claude (Security Audit &amp; Encryption)</text>
+            <text class="node-label" x="500" y="817">Verify against git diff, not "SUCCESS"</text>
           </g>
 
           <g class="node-group">
-            <rect class="node-box output" x="340" y="890" width="320" height="48" rx="12"/>
-            <text class="node-label output" x="500" y="919">Vercel Proxy &amp; App Store Release</text>
-            <circle class="halo" cx="500" cy="914" r="0">
-              <animate attributeName="r" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.706;0.760;1" values="0;0;36;46;46"/>
-              <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.690;0.760;1" values="0;.55;.4;0;0"/>
+            <rect class="node-box" x="340" y="890" width="320" height="44" rx="10"/>
+            <text class="node-label" x="500" y="917">Claude (Security Audit &amp; Encryption)</text>
+          </g>
+
+          <g class="node-group">
+            <rect class="node-box output" x="340" y="990" width="320" height="48" rx="12"/>
+            <text class="node-label output" x="500" y="1019">Vercel Proxy &amp; App Store Release</text>
+            <circle class="halo" cx="500" cy="1014" r="0">
+              <animate attributeName="r" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.781;0.835;1" values="0;0;36;46;46"/>
+              <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.765;0.835;1" values="0;.55;.4;0;0"/>
             </circle>
           </g>
 
           <g class="node-group">
-            <rect class="node-box dim" x="270" y="986" width="460" height="44" rx="10"/>
-            <text class="node-label dim" x="500" y="1013">Unli Disk (Frees storage by deleting simulators &amp; dead end repos)</text>
+            <rect class="node-box dim" x="270" y="1086" width="460" height="44" rx="10"/>
+            <text class="node-label dim" x="500" y="1113">Unli Disk (Frees storage by deleting simulators &amp; dead end repos)</text>
           </g>
 
           <!-- return arc labels -->
-          <text class="diagram-caption" x="330" y="466" text-anchor="end" style="fill:var(--accent); font-weight:600;">Plan change, not a patch</text>
-          <text class="diagram-caption" x="330" y="866" text-anchor="end" style="fill:var(--accent); font-weight:600;">Hardening loop</text>
+          <text class="diagram-caption" x="330" y="566" text-anchor="end" style="fill:var(--accent); font-weight:600;">Plan change, not a patch</text>
+          <text class="diagram-caption" x="330" y="966" text-anchor="end" style="fill:var(--accent); font-weight:600;">Hardening loop</text>
 
           <!-- forward pulses -->
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.075;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p1"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.075;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.076;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p1"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.076;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.150;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p2"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.150;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.151;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p2"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.151;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.225;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p3"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.225;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.226;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p3"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.226;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.300;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p4"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.300;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.301;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p4"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.301;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.375;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.375;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.376;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.376;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.450;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.450;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.451;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.451;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.525;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p7"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.525;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.526;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p7"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.526;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.600;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p8"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.600;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.601;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p8"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.601;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.675;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p9"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.675;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p9"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.750;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p10"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.750;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p10"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" values="0;1;1;0" calcMode="discrete"/>
+          </circle>
+          <circle class="pulse" r="4">
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.826;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p11"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.826;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
 
-          <!-- return pulses along the arcs -->
+          <!-- return-arc pulses: fire one slot after the stage they leave -->
           <circle class="pulse" r="4" style="fill:var(--accent);">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.525;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_planchange_arc"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.525;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_planchange_arc"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
           <circle class="pulse" r="4" style="fill:var(--accent);">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.600;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_hardening_arc"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.600;1" values="0;1;1;0" calcMode="discrete"/>
+            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_hardening_arc"/></animateMotion>
+            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" values="0;1;1;0" calcMode="discrete"/>
           </circle>
         </svg>
       </div>
