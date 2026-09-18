@@ -296,6 +296,19 @@
   }
   .foot a{ color:var(--muted); text-decoration:none; }
   .foot a:hover{ color:var(--accent); }
+
+  .guide-list{ margin:0; padding-left:20px; font-size:14.5px; color:var(--muted); line-height:1.6; }
+  .guide-list li{ margin-bottom:6px; }
+  .guide-list strong{ color:var(--ink); }
+  .cta{
+    background:var(--panel); border:1px solid var(--edge); border-radius:18px;
+    padding:32px 24px; text-align:center; margin-bottom:24px;
+  }
+  .cta h2{ font-size:22px; font-weight:800; color:#fff; margin-bottom:10px; }
+  .cta p{ font-size:15px; color:var(--muted); line-height:1.6; max-width:58ch; margin:0 auto 20px; }
+  .cta p a{ color:var(--ink); }
+  .store-badge{ display:inline-block; line-height:0; }
+  .store-badge img{ height:50px; width:auto; }
 </style>
 </head>
 <body>
@@ -321,7 +334,7 @@
       <img class="hero-icon" src="../assets/kitchen_vision/icon.png" alt="Kitchen Vision App Icon" width="76" height="76">
       <div class="status-badge">
         <span class="dot"></span>
-        Coming Soon · iPhone, iPad &amp; Apple Watch
+        Live on the App Store · iPhone, iPad &amp; Apple Watch
       </div>
       <h1>Kitchen Vision</h1>
       <p class="lead">Score, replay and run pickleball matches on the iPhones and iPads you already own. Kitchen Vision keeps the 0-0-2 start, side-out server rotation and 3-number callout for you, puts any disputed rally one tap away in &frac14;&times; slow motion, and runs a tournament desk &mdash; 100% offline, with an Apple Watch app to keep score from your wrist.</p>
@@ -440,6 +453,67 @@
         <h3>Multi-Court Live Standings on One iPad</h3>
         <p>Organize club round robins and elimination brackets on an iPad Master Desk. Court scorers connect by scanning a QR code and stream live scores and results back to the desk, across up to 7 connected devices &mdash; all peer-to-peer.</p>
       </div>
+    </div>
+
+    <!-- User Guide -->
+    <h2 class="section-title">Getting Started</h2>
+    <p class="section-sub">One phone is enough to score and replay. Add more only when you want more angles or a whole event.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-num">Guide 01 · Casual Match</div>
+        <h3>Score a Game on One Phone</h3>
+        <ol class="guide-list">
+          <li>Mount or prop your iPhone steady beside the court so it sees the whole court. Handheld works for scoring, but the replay shakes.</li>
+          <li>Tap <strong>Start match</strong> on Home. Sides start as &ldquo;Us&rdquo; and &ldquo;Them&rdquo;; open <strong>Match setup</strong> first to type names or tap <strong>Preset names</strong>.</li>
+          <li>Tap or swipe up on a side to award the rally, swipe down to undo. The 3-number callout updates on every point. Tap <strong>VAR Review</strong> to replay a disputed rally.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-num">Guide 02 · Apple Watch</div>
+        <h3>Keep Score From Your Wrist</h3>
+        <ol class="guide-list">
+          <li>The Watch app comes with Kitchen Vision. If it isn't on your watch, install it from the Watch app on your iPhone (watchOS 10 or later).</li>
+          <li>Start a match on your iPhone, then open Kitchen Vision on your watch. The first-named side is yours.</li>
+          <li>Tap or swipe up to score, swipe down to undo. Keep the phone nearby &mdash; the watch is a remote for the match on the phone.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-num">Guide 03 · Multi-Phone Rig</div>
+        <h3>Add a Second or Third Angle</h3>
+        <ol class="guide-list">
+          <li>Host taps <strong>Tournament</strong> &rarr; <strong>Multi-Phone Mesh</strong>, picks Duo or Pro, then taps <strong>Pair with Other Phones</strong>.</li>
+          <li>On each extra phone, tap the QR icon on Home and scan the code, or enter the code shown beneath it. Guests never need Pro.</li>
+          <li>Place the second phone at the opposite net post, and a third beside the court for a side-on angle. No router or internet needed.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-num">Guide 04 · Tournament Desk</div>
+        <h3>Run a Club Event From an iPad</h3>
+        <ol class="guide-list">
+          <li>On an iPad, tap <strong>Tournament</strong> &rarr; <strong>Tournament Desk &amp; Standings</strong> &rarr; <strong>Create Tournament</strong>.</li>
+          <li>Paste your roster and generate Round Robin or elimination fixtures.</li>
+          <li>Open the Master Desk and tap <strong>Connect Court Phone</strong>. Court scorers scan the code, choose their court and score live &mdash; up to 7 connected devices.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-num">Guide 05 · Practice</div>
+        <h3>Drill Alone and Check Your Shot Speed</h3>
+        <ol class="guide-list">
+          <li>Tap <strong>Casual</strong> on Home, then <strong>Living Room Practice</strong>.</li>
+          <li>Stand the phone still and hit the ball in front of the camera. It counts your returns and keeps your best run.</li>
+          <li>Each shot's speed appears as a range, with your best of the session beside it.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="cta">
+      <div class="status-badge"><span class="dot"></span>Live on the App Store</div>
+      <h2>Bring It to Your Next Game</h2>
+      <p>Kitchen Vision is free to download for iPhone and iPad, with the Apple Watch app included. Scoring and VAR replay are free; Kitchen Vision Pro is a one-time lifetime unlock for multi-phone rigs and the tournament desk. Questions or a bug on court? <a href="mailto:peter@calmdownoscar.com?subject=Kitchen%20Vision">Email me</a>.</p>
+      <a class="store-badge" href="https://apps.apple.com/app/kitchen-vision/id6804914154">
+        <img src="../assets/app-store-badge.svg" alt="Download on the App Store" width="150" height="50">
+      </a>
     </div>
   </div>
 </main>
