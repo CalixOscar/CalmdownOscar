@@ -1,0 +1,20 @@
+# Nothing here is served by the site. Keeping it out of the upload keeps
+# Deployment Storage down — every deployment is retained and counts forever.
+
+# Local tooling and agent state
+.claude/
+.git/
+.DS_Store
+
+# Studio notes and internal docs (also gitignored, listed here for CLI deploys)
+AGENTS.md
+CLAUDE.md
+PROJECT_NOTES.md
+README.md
+docs/
+documentation/
+scripts/
+
+# No runtime dependencies: package.json declares none and api/search.js
+# uses bare fetch. A local `npm install` must not reach a deployment.
+node_modules/
