@@ -72,22 +72,21 @@ this repository deliberately.
 - Standardized aspect ratios: 2:1 for macOS apps (Wedding Concierge, Unli Rice, Unli Disk) and 9:16 for iOS/iPadOS apps (Unli Rice Capture, ClearSpace, Shuttle Vision, Kitchen Vision, Architecturally).
 - Mobile screenshots sit centered in a subtle dark inset stage (`rgba(0,0,0,0.22)`) with `max-height: 380px` on desktop and `290px` on mobile (375px), preventing vertical layout stretching while maintaining UI legibility.
 
-## Deploying OpenGrail
+## OpenGrail is no longer deployed from here
 
-`/opengrail/` is not built from this repository. It is a vendored copy of the OpenGrail
-project's production build. To publish a new version:
+`/opengrail/` used to be a vendored copy of the OpenGrail production build, rsynced into
+this repository and published whenever this repository was pushed. It is not any more.
 
-```bash
-# in the OpenGrail project
-npm run verify          # build + tests must pass first
-npm run build
+OpenGrail is its own Vercel project, deployed from `CalixOscar/OpenGrail` and served at
+**https://opengrail.calmdownoscar.com**. Pushing that repository is what publishes it;
+this repository has no part in it. All that remains here is a permanent redirect in
+`vercel.json` from `/opengrail/*` to the subdomain, so old links and indexed URLs still
+resolve.
 
-# vendor the build into this repository
-rsync -a --delete <opengrail>/dist/ ./opengrail/
+The split happened because the vendored build was 68 MB — 81% of everything this site
+uploaded on every deploy, re-shipped in full whenever an unrelated page changed. That is
+what exhausted the 10 GB Vercel Deployment Storage allowance. Per-deploy payload here
+went from 83 MB to roughly 15 MB.
 
-git add opengrail/ && git commit -m "deploy: ..." && git push
-```
-
-Pushing this repository is what triggers the Vercel deploy; pushing OpenGrail does nothing on
-its own. Note that most of the artifact images are byte-identical between builds, so a normal
-deploy touches only the bundle, `graph.json`, and `index.html`.
+`scripts/audit-opengrail.py` moved with the data; it is now `scripts/audit-graph.py` in
+the OpenGrail repository, reading `public/graph.json`.

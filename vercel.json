@@ -2,6 +2,21 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/opengrail",
+      "destination": "https://opengrail.calmdownoscar.com/",
+      "permanent": true
+    },
+    {
+      "source": "/opengrail/",
+      "destination": "https://opengrail.calmdownoscar.com/",
+      "permanent": true
+    },
+    {
+      "source": "/opengrail/:path+",
+      "destination": "https://opengrail.calmdownoscar.com/:path+",
+      "permanent": true
+    },
+    {
       "source": "/apps",
       "destination": "/#apps",
       "permanent": true
