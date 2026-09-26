@@ -188,6 +188,7 @@
   }
   .shot-frame{ background:#000; padding:0; line-height:0; }
   .shot-frame img{ display:block; width:100%; height:auto; }
+  .shot.wide{ grid-column:1 / -1; }
   .shot-info{ padding:18px 18px 20px; border-top:1px solid var(--edge); background:rgba(255,255,255,.05); }
   .shot-info h3{ font-size:15px; font-weight:700; margin-bottom:6px; }
   .shot-info h3 span{ color:var(--accent); }
@@ -349,10 +350,11 @@
       <h1>Clear<span>Space</span></h1>
     </div>
 
-    <p class="lede reveal">A photo cleaner for iPhone that opens your library in the order that actually matters: biggest first. The 2.9&nbsp;GB video you filmed once and never watched leads the grid — the 40&nbsp;KB screenshot does not. Heart what you keep, and one button clears the rest. Native Swift and SwiftUI on Apple's PhotoKit, running entirely on your device.</p>
+    <p class="lede reveal">A photo cleaner for iPhone and iPad that opens your library in the order that actually matters: biggest first. The 2.9&nbsp;GB video you filmed once and never watched leads the grid — the 40&nbsp;KB screenshot does not. Heart what you keep, and one button clears the rest. Native Swift and SwiftUI on Apple's PhotoKit, running entirely on your device.</p>
 
     <div class="meta reveal">
       <span class="pill">iOS 17+</span>
+      <span class="pill">iPhone &amp; iPad</span>
       <span class="pill">Swift / SwiftUI</span>
       <span class="pill">PhotoKit</span>
       <span class="pill">100% On-Device</span>
@@ -393,6 +395,18 @@
     <section>
       <div class="section-label reveal">See it working</div>
       <div class="shots reveal">
+
+        <div class="shot wide">
+          <div class="shot-frame">
+            <img src="../assets/clearspace-shot-ipad-split.webp"
+                 alt="ClearSpace on iPad in landscape: the biggest-first grid on the left with a Delete rest button and '74 unkept, ~202.1 MB' in the side rail, and the tapped waterfall photo shown large on the right with heart, bookmark and trash controls."
+                 width="1400" height="1050" loading="eager" decoding="async">
+          </div>
+          <div class="shot-info">
+            <h3>New in 1.3: <span>grid and photo side by side</span></h3>
+            <p>On iPad, or an iPhone held sideways, tapping a photo opens it beside the grid instead of over it, so your place in the grid never moves. Swap the sides or hide the viewer from the toolbar. It works in Split View and Stage Manager, and on a sideways iPhone the controls move to the edge so photos get the full height.</p>
+          </div>
+        </div>
 
         <div class="shot">
           <div class="shot-frame">
@@ -534,7 +548,7 @@
           </div>
           <div class="tech-item">
             <h4>Current version</h4>
-            <p><strong>1.2</strong> — pinch-to-zoom inspection, finishable monthly cohorts, and the cross-platform Pro unlock.</p>
+            <p><strong>1.3</strong> — grid and photo side by side on iPad and sideways iPhone, photos stored in iCloud that open sharp straight away, videos that start without the wait, and a purchase screen that retries instead of failing silently.</p>
           </div>
         </div>
       </div>
@@ -542,9 +556,9 @@
 
     <!-- ============ mac companion ============ -->
     <div class="engine-note reveal">
-      <h4>Buy the Mac app, get ClearSpace Pro free</h4>
+      <h4>Own the Mac app? ClearSpace Pro is included</h4>
       <p><a href="../unlidisk/" style="color:var(--accent);">Unli Disk</a> is the Mac companion: a disk-space analyzer and photo library cleaner whose Photos tab runs on the exact same engine, packaged as <code>Packages/UnliDiskPhotos</code>.</p>
-      <p>Buying Unli Disk ($14.99 one-time) unlocks ClearSpace Pro on your iPhone automatically. It travels over <strong>iCloud key-value storage</strong> tied to your Apple Account — no sign-in, no server of ours in the middle, and a purchase record is the only thing that moves.</p>
+      <p>Buying Unli Disk ($14.99 one-time) includes ClearSpace Pro. For now it does not unlock by itself: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk" style="color:var(--accent);">email me</a> and you'll get a one-time App Store code that unlocks Pro on your iPhone or iPad. An automatic unlock through your Apple Account is being tested for a later update.</p>
     </div>
 
     <!-- ============ honest limits ============ -->
@@ -584,7 +598,7 @@
         </details>
         <details>
           <summary>I already bought it. Why is a new phone asking again?</summary>
-          <div class="answer">Open the offer screen and tap Restore purchase — it re-checks your Apple Account rather than charging you again. If you own Unli Disk for Mac, Pro also unlocks on its own once you are signed in with the same Apple Account.</div>
+          <div class="answer">Open the offer screen and tap Restore purchase — it re-checks your Apple Account rather than charging you again. If you own Unli Disk for Mac, <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for your ClearSpace Pro code.</div>
         </details>
         <details>
           <summary>What happens to my photos?</summary>
