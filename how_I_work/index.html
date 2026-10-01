@@ -262,7 +262,8 @@
   <section class="how" id="how">
     <div class="wrap">
       <div class="section-label reveal">How I work</div>
-      <p class="section-lede reveal">A six-stage multi-agent methodology, run in a fixed order: feasibility and prompt structuring → a read against the intent → the plan → a pre-mortem against the plan → the revision → the build. Each stage has one job, and no stage gets skipped because the work looks small.</p>
+      <p class="section-lede reveal">I use several AI models that check each other's work before anything gets built. One writes the plan, a different one tries to break it, and nothing is accepted on a tool's own say-so; every result is checked against the actual code changes and a real test run. Below is the method, and why each step exists.</p>
+      <p class="section-lede reveal">The technical version: a six-stage multi-agent methodology, run in a fixed order: feasibility and prompt structuring → a read against the intent → the plan → a pre-mortem against the plan → the revision → the build. Each stage has one job, and no stage gets skipped because the work looks small.</p>
       
       <div class="grid">
         <div class="card reveal">
@@ -290,6 +291,20 @@
           <h3>06 · The Swarm Builds It — Over an MCP Bridge</h3>
           <p>The settled plan is dispatched to the Antigravity swarm through a local MCP bridge rather than by hand. The bridge writes the plan into the target project folder and launches the headless <code>agy</code> CLI there with an explicit directory — necessary, because the swarm resolves its workspace from its own project state, not the shell's, and an unaddressed run silently attaches to whatever project was open last. It has done exactly that, into the wrong repo.</p>
           <p>Nothing the swarm says about itself counts as evidence: a run whose tools were denied still exits clean and reports success. Every build is checked against <code>git diff</code> and a real test run. Anything the plan didn't anticipate goes back to Claude as a plan change, not an improvised fix. Near release Claude runs the security audit — secrets, server-side authorization, per-record ownership, receipt validation — and the app ships through the relay to the App Store. Afterward, Unli Disk clears simulators and dead-end repos off my own machine.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:24px;">
+        <div class="card wide reveal">
+          <h3>What it has produced and caught</h3>
+          <p>Seven apps are published on the App Store under my own account (Nuptia, Unli Rice, Unli Rice Capture, Unli Disk, ClearSpace, Kitchen Vision and Shuttle Vision), plus the OpenGrail web atlas, all built solo with this method.</p>
+          <p>A generated first pass of the OpenGrail atlas had pinned 127 traditions to one point near Jerusalem, the Quakers among them, who began in 1650s Lancashire. The rule that followed is that a claim is derived from a source or it is removed. Origins were remapped against Wikidata, and 248 images whose real subject could not be tied to their tradition were deleted rather than re-captioned. The atlas now holds 695 traditions and 1,088 relationships. <a href="/#opengrail">Read the case study</a>.</p>
+          <p>The delegation failures above are real too: a swarm run that attached to the wrong project, and a run that reported success after its tools were denied. Both are why the checks are now written down and not assumed.</p>
+        </div>
+        <div class="card wide reveal">
+          <h3>How this applies in a team</h3>
+          <p>The method is a small version of AI governance. State the intent and what is explicitly out of scope before planning. Have an independent reviewer attack the plan before anyone builds it. Treat every self-reported success as unverified until the diff and the tests agree. Keep a written record of what failed and the rule that came from it.</p>
+          <p>I learned to value those controls over eleven years in enterprise operations at CGI, where processes, users and support meet in practice. The same discipline applies to rolling out AI assistants and automation in an organisation.</p>
         </div>
       </div>
     </div>
