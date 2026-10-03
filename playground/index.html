@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>Playground — calmdownoscar</title>
-<meta name="description" content="I use this page to try out new web tech — an experimental labs space for client-side AI and WebGPU demos.">
+<meta name="description" content="Experiments that aren’t products yet: a motorcycle assistant that runs a language model in your browser with WebGPU, next to a hosted chat, so you can compare where each one runs and what leaves your device.">
 <meta property="og:title" content="Playground — calmdownoscar">
-<meta property="og:description" content="I use this page to try out new web tech — an experimental labs space for client-side AI and WebGPU demos.">
+<meta property="og:description" content="Experiments that aren’t products yet: a motorcycle assistant that runs a language model in your browser with WebGPU, next to a hosted chat, so you can compare where each one runs and what leaves your device.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/playground/">
 <link rel="canonical" href="https://www.calmdownoscar.com/playground/">
@@ -300,16 +300,6 @@
     color: var(--muted-dark); font-size: 15px; line-height: 1.6;
   }
   .chat-embed-status a { color: var(--accent-hi); text-decoration: none; }
-  .embed-note {
-    margin-top: 12px;
-    font-size: 13px; font-weight: 700; color: #FFD400;
-    text-align: center;
-    background: rgba(255, 212, 0, 0.1);
-    border: 1px solid rgba(255, 212, 0, 0.4);
-    border-radius: 8px;
-    padding: 10px 14px;
-  }
-
   .veritio-tile {
     display: block;
     text-decoration: none;
@@ -360,6 +350,27 @@
     background: rgba(133,182,255,.16); border-color: rgba(133,182,255,.5);
   }
 
+  /* Local vs hosted: the one comparison this page exists to make */
+  .lab-kicker { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-hi); margin-bottom: 12px; }
+  .compare { width: 100%; border-collapse: collapse; margin: 8px 0 8px; font-size: 14px; }
+  .compare caption { text-align: left; font-size: 13px; color: var(--muted-dark); padding-bottom: 10px; }
+  .compare th, .compare td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--edge-dark); line-height: 1.5; }
+  .compare thead th { border-top: 0; font-size: 13px; color: var(--ink-dark); }
+  .compare thead th span { display: block; font-weight: 400; font-size: 12px; color: var(--muted-dark); }
+  .compare tbody th { color: var(--muted-dark); font-weight: 500; width: 26%; }
+  .compare td { color: var(--ink-dark); }
+  .compare td.local { background: rgba(133,182,255,.05); }
+  .compare a { color: var(--accent-hi); }
+  @media (max-width: 600px){
+    .compare, .compare caption, .compare tbody, .compare tr, .compare th, .compare td { display: block; width: 100%; }
+    .compare thead { display: none; }
+    .compare tbody tr { border-top: 1px solid var(--edge-dark); padding: 10px 0; }
+    .compare tbody th { border-top: 0; padding: 4px 0; width: 100%; }
+    .compare td { border-top: 0; padding: 4px 0 4px 12px; }
+    .compare td::before { content: attr(data-label); display: block; font-size: 11px; color: var(--muted-dark); }
+    .compare td.local { background: none; border-left: 2px solid var(--accent-hi); }
+  }
+
   @media (prefers-reduced-motion: reduce){
     .veritio-tile { transition: none; }
     .veritio-tile:hover, .veritio-tile:focus-visible { transform: none; }
@@ -390,17 +401,30 @@
 <main>
   <!-- Page Header / Experiment intro -->
   <div class="wrap" style="padding-top: 48px; padding-bottom: 24px;">
-    <div class="reveal" style="max-width:68ch; margin-bottom:32px;">
-      <h1 style="font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; color: var(--ink-dark); margin-bottom: 12px;">Playground</h1>
+    <div style="max-width:68ch; margin-bottom:28px;">
+      <p class="lab-kicker">Playground · experiments, not products</p>
+      <h1 style="font-size: clamp(30px, 4.4vw, 46px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink-dark); margin-bottom: 14px;">Where does the model run?</h1>
       <p style="font-size: 17px; color: var(--muted-dark); line-height: 1.6;">
-        I use this page to try out new web tech — an experimental labs space distinct from the rest of the site.
+        This is where I try things before they’re ready to be apps. Right now it’s one question asked two ways: a motorcycle assistant whose language model runs in your own browser, and a hosted chat beside it. Same kind of tool, very different answers to what leaves your device.
       </p>
     </div>
+    <table class="compare">
+      <caption>The two experiments on this page, side by side</caption>
+      <thead>
+        <tr><th scope="col"><span>&nbsp;</span></th><th scope="col"><a href="#local-model">Motorcycle assistant</a><span>Runs in your browser</span></th><th scope="col"><a href="#hosted-chat">Chatty</a><span>Hosted by Veritio Digital</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Where the model runs</th><td class="local" data-label="Motorcycle assistant">On your device’s GPU, through WebGPU</td><td data-label="Chatty">On Veritio Digital’s servers</td></tr>
+        <tr><th scope="row">First use</th><td class="local" data-label="Motorcycle assistant">Downloads the model once: 800 MB (1B) or 4 GB (8B)</td><td data-label="Chatty">Nothing to download</td></tr>
+        <tr><th scope="row">What leaves your device</th><td class="local" data-label="Motorcycle assistant">Your question, as a search query through this site’s server to Serper, to fetch the pictures and clips</td><td data-label="Chatty">Every message, to chatty.veritiodigital.com</td></tr>
+        <tr><th scope="row">What you need</th><td class="local" data-label="Motorcycle assistant">WebGPU and unified memory: an M1-or-later Mac or iPad, or a desktop GPU</td><td data-label="Chatty">Any modern browser</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- AI Dashboard Section -->
-  <section class="wrap" style="padding: 0 24px 48px;">
-    <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">Tiny motorcycle model llm</h2>
+  <section class="wrap" id="local-model" style="padding: 0 24px 48px; scroll-margin-top: 90px;">
+    <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">A motorcycle assistant that runs in your browser</h2>
     <div style="max-width:min(680px, 92vw); margin: 0 auto 20px; font-size: 13px; color: #4ADE80; opacity: 0.9; text-align: center;">
       Requirement: WebGPU support and unified memory (M1+ iPad/Mac or desktop GPU recommended). The model downloads once and runs in your browser, so inference happens on your device. Your messages do not stay there: each one is also used as a search query, sent through this site's server to Serper to fetch the pictures and clips beside it, and the media loads from whoever hosts it.
     </div>
@@ -441,7 +465,7 @@
 
   <!-- Cloud chat (Chatty by Veritio Digital) — sits below the local model -->
   <section class="wrap" style="padding: 0 24px 64px;">
-    <h2 style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center;">Cloud chat by Veritio Digital</h2>
+    <h2 id="hosted-chat" style="font-size: 16px; font-weight: 700; color: var(--muted-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px; text-align: center; scroll-margin-top: 90px;">The hosted version: Chatty by Veritio Digital</h2>
     <div class="embed-col">
       <div class="chat-embed" id="chatty-embed">
         <div class="chat-embed-status" id="chatty-status">Loading the chat window…</div>
@@ -459,7 +483,6 @@
         <div class="prompt-templates-body" id="prompt-templates" hidden></div>
       </div>
 
-      <p class="embed-note">Unlike the local model above, this one is hosted — messages go to chatty.veritiodigital.com.</p>
 
       <a class="veritio-tile" href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">
         <h3>Chatty, by Veritio Digital</h3>

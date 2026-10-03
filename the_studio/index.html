@@ -11,9 +11,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>The Studio — calmdownoscar</title>
-<meta name="description" content="Studio DNA, privacy principles, HR-driven data security standards, guardrails, and evals at calmdownoscar.">
+<meta name="description" content="The rules every calmdownoscar app is built under — one-time purchases, data kept close, no secrets in the app — and why no app is ever finished, shown through ClearSpace’s move from React Native to Swift.">
 <meta property="og:title" content="The Studio — calmdownoscar">
-<meta property="og:description" content="Studio DNA, privacy principles, HR-driven data security standards, guardrails, and evals at calmdownoscar.">
+<meta property="og:description" content="The rules every calmdownoscar app is built under, and why no app is ever finished — shown through ClearSpace’s move from React Native to Swift.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/the_studio/">
 <link rel="canonical" href="https://www.calmdownoscar.com/the_studio/">
@@ -33,179 +33,166 @@
     --sal: env(safe-area-inset-left, 0px);
     --sar: env(safe-area-inset-right, 0px);
 
-    --night:    #14181C;
-    --tank:     #F2581C;
-    --pacifier: #BCD9E8;
-
     --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
+    --stage:   #0F151B;
     --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
+    --edge-hi: rgba(255,255,255,.18);
     --accent:  #85B6FF;
     --ink:     #E8EEF4;
     --muted:   #8FA0AE;
+    --green:   #7FD1A8;
+    --amber:   #E3B66B;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
     --topbar-h: calc(64px + var(--sat));
   }
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
+  ::selection{ background:var(--accent); color:#141B22; }
   body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif; font-size:16px; line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
+    padding-top:var(--topbar-h); overflow-x:hidden;
   }
-  .wrap{ max-width:880px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  img{ display:block; max-width:100%; height:auto; }
+  a{ color:inherit; }
+  a:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+  .wrap{ max-width:1160px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
 
   /* ================= top bar ================= */
-  .topbar{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgba(20,27,34,.96);
-    border-bottom:1px solid var(--edge);
-    display:flex; align-items:center;
-  }
-  .topbar .wrap{
-    display:flex; justify-content:space-between; align-items:center; width:100%;
-  }
-  .mark{
-    font-weight:700; font-size:16px; letter-spacing:-.01em; color:var(--ink);
-    text-decoration:none; flex-shrink:0;
-  }
+  .topbar{ position:fixed; top:0; left:0; right:0; z-index:10; height:var(--topbar-h); padding-top:var(--sat); background:rgba(20,27,34,.96); border-bottom:1px solid var(--edge); display:flex; align-items:center; }
+  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; width:100%; }
+  .mark{ font-weight:800; font-size:19px; color:var(--ink); text-decoration:none; letter-spacing:-.02em; flex-shrink:0; }
   .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
-    margin-left:24px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-
+  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; }
+  nav a{ color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap; transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center; }
+  nav a:hover, nav a[aria-current="page"]{ color:var(--accent); }
+  nav a[aria-current="page"]{ font-weight:600; }
   .nav-toggle{ display:none; }
-
   @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:var(--ink);
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgba(20, 27, 34, .98);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
+    .nav-toggle{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:44px; height:44px; background:transparent; border:1px solid var(--edge); border-radius:8px; cursor:pointer; padding:0; color:var(--ink); flex-shrink:0; }
+    .nav-toggle:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+    .nav-toggle-bar{ display:block; width:18px; height:2px; background:var(--ink); border-radius:1px; transition:transform 140ms ease; }
+    .topbar.nav-open .nav-toggle-bar:first-child{ transform:translateY(3.5px) rotate(45deg); }
+    .topbar.nav-open .nav-toggle-bar:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
+    nav{ display:none; position:absolute; top:100%; left:0; right:0; background:rgba(20,27,34,.98); border-bottom:1px solid var(--edge); padding:12px 24px calc(16px + var(--sab)); flex-direction:column; gap:2px; align-items:stretch; overflow-y:auto; max-height:calc(100vh - var(--topbar-h)); box-shadow:0 12px 32px rgba(0,0,0,.5); }
+    .topbar.nav-open nav{ display:flex; }
+    nav a{ font-size:15px; padding:10px 0; color:var(--ink); border-bottom:1px solid rgba(255,255,255,.05); width:100%; }
+    nav a:last-child{ border-bottom:none; }
   }
 
-  /* ================= hero & cards ================= */
-  .hero{ padding:50px 0 30px; }
-  h1.rise{ font-size:clamp(32px, 5vw, 52px); font-weight:800; letter-spacing:-.03em; color:var(--ink); }
-  h1.rise span{ color:var(--accent); }
-  .rise.d1{ font-size:18px; color:var(--muted); margin-top:16px; max-width:640px; line-height:1.65; }
+  /* ================= intro ================= */
+  .intro{ padding:48px 0 0; }
+  .intro-row{ display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:24px 56px; align-items:end; }
+  .intro h1{ font-size:clamp(38px, 1.2rem + 3.8vw, 68px); font-weight:800; line-height:1.03; letter-spacing:-.04em; margin-top:16px; max-width:14ch; }
+  .intro p.lede{ color:var(--muted); font-size:17px; line-height:1.55; max-width:46ch; }
+  .jump{ display:flex; flex-wrap:wrap; gap:0 24px; margin-top:14px; }
+  .jump a{ min-height:44px; display:inline-flex; align-items:center; font-size:14px; font-weight:600; text-decoration:none; color:var(--accent); }
 
-  .section-label{
-    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
-    color:var(--accent); margin-bottom:12px;
-  }
-  .studio-card{
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:14px;
-    padding:32px 28px;
-    margin-bottom:36px;
-  }
-  .studio-card h2{ font-size:22px; font-weight:700; color:var(--ink); margin-bottom:14px; letter-spacing:-.01em; }
-  .studio-card p{ font-size:16px; color:var(--muted); line-height:1.65; }
-  .studio-card p + p{ margin-top:16px; }
-  .studio-card strong{ color:var(--ink); font-weight:600; }
+  /* ================= chapters ================= */
+  .chapter{ padding:96px 0 0; scroll-margin-top:calc(var(--topbar-h) + 8px); }
+  .chapter-head{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px 48px; align-items:end; padding-bottom:22px; margin-bottom:30px; border-bottom:1px solid var(--edge); }
+  .chapter-head h2{ font-size:clamp(28px, 1rem + 2.2vw, 42px); font-weight:800; letter-spacing:-.03em; line-height:1.08; margin-top:10px; }
+  .chapter-head > p{ color:var(--muted); font-size:15px; line-height:1.55; max-width:52ch; }
 
-  .list-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; margin-top:20px; }
-  @media (max-width:680px){ .list-grid{ grid-template-columns:1fr; } }
-  .list-item{
-    background:rgba(255,255,255,.05);
-    border:1px solid var(--edge);
-    border-radius:10px;
-    padding:18px 20px;
-  }
-  .list-item h4{ font-size:14.5px; font-weight:700; color:var(--ink); margin-bottom:6px; }
-  .list-item p{ font-size:14px; color:var(--muted); line-height:1.55; }
+  /* ================= rules ================= */
+  .rule-cols{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:0; border:1px solid var(--edge); border-radius:14px; overflow:hidden; }
+  .rule-col{ padding:24px 24px 10px; }
+  .rule-col + .rule-col{ border-left:1px solid var(--edge); }
+  .rule-col h3{ font-family:var(--font-mono); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); padding-bottom:14px; border-bottom:1px solid var(--edge); }
+  .rules{ list-style:none; }
+  .rules li{ padding:16px 0; }
+  .rules li + li{ border-top:1px solid var(--edge); }
+  .rules strong{ display:block; font-size:16px; font-weight:650; letter-spacing:-.01em; }
+  .rules p{ font-size:14px; color:var(--muted); line-height:1.55; margin-top:4px; }
+  .rules p a{ color:var(--ink); }
+  .tag{ display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-family:var(--font-mono); font-size:11px; letter-spacing:.03em; color:var(--green); border:1px solid rgba(127,209,168,.35); border-radius:999px; padding:2px 9px; }
+  .tag::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .tag.exception{ color:var(--amber); border-color:rgba(227,182,107,.4); }
+  .tag.exception::before{ background:var(--amber); }
+  .rules-note{ margin-top:14px; font-size:13px; color:var(--muted); }
 
-  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); margin-top:60px; }
-  .foot-row{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:10px;
-    font-size:13px; color:var(--muted);
-  }
-  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
+  /* ================= ClearSpace timeline ================= */
+  .timeline{ list-style:none; position:relative; }
+  .timeline::before{ content:''; position:absolute; left:150px; top:8px; bottom:8px; width:1px; background:linear-gradient(180deg, var(--edge-hi), var(--accent) 45%, var(--edge-hi)); }
+  .step{ display:grid; grid-template-columns:150px minmax(0,1fr) minmax(0,.9fr); gap:18px 40px; align-items:start; padding:0 0 40px; position:relative; }
+  .step:last-child{ padding-bottom:0; }
+  .step::before{ content:''; position:absolute; left:150px; top:7px; width:13px; height:13px; margin-left:-6px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); }
+  .step.now::before{ background:var(--accent); box-shadow:0 0 0 5px rgba(133,182,255,.18); }
+  .step.next::before{ border-style:dashed; }
+  .when{ font-family:var(--font-mono); font-size:12px; color:var(--muted); line-height:1.5; padding-right:24px; }
+  .when b{ display:block; font-size:15px; color:var(--ink); font-weight:600; font-family:'Inter', system-ui, sans-serif; letter-spacing:-.01em; }
+  .what{ padding-left:28px; }
+  .what h3{ font-size:20px; font-weight:750; letter-spacing:-.02em; line-height:1.25; }
+  .what p{ font-size:15px; color:var(--muted); line-height:1.6; margin-top:6px; }
+  .what p strong{ color:var(--ink); font-weight:600; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; list-style:none; }
+  .chips li{ font-family:var(--font-mono); font-size:11px; color:var(--muted); border:1px solid var(--edge); border-radius:6px; padding:2px 8px; }
+  .chips li.rule{ color:var(--amber); border-color:rgba(227,182,107,.4); }
+  .chips li.fixed{ color:var(--green); border-color:rgba(127,209,168,.35); }
+  .art{ margin:0; }
+  .art .frame{ position:relative; height:240px; overflow:hidden; border-radius:12px; border:1px solid var(--edge); background:radial-gradient(120% 90% at 50% 100%, #1d2a37 0%, var(--stage) 72%); }
+  .art .frame img{ position:absolute; }
+  .art figcaption{ margin-top:8px; font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  .phone{ border-radius:14px; border:1px solid rgba(255,255,255,.16); box-shadow:0 16px 34px rgba(0,0,0,.5); }
+  .tablet{ border-radius:10px; border:1px solid rgba(255,255,255,.16); box-shadow:0 16px 34px rgba(0,0,0,.5); }
+  .f-native .a1{ left:12%; top:24px; width:34%; }
+  .f-native .a2{ right:12%; top:54px; width:34%; }
+  .f-ipad .a1{ left:8%; top:24px; width:84%; }
+  .rn-card{ height:240px; border-radius:12px; border:1px dashed var(--edge-hi); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px; text-align:center; padding:20px; background:var(--stage); }
+  .rn-card b{ font-family:var(--font-mono); font-size:13px; color:var(--ink); }
+  .rn-card span{ font-size:13px; color:var(--muted); max-width:28ch; }
+  .stack-swap{ display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+  .stack-swap i{ font-style:normal; border:1px solid var(--edge-hi); border-radius:6px; padding:4px 8px; }
+  .stack-swap i.to{ border-color:var(--accent); color:var(--accent); }
+
+  /* ================= the loop ================= */
+  .loop{ list-style:none; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); counter-reset:l; border:1px solid var(--edge); border-radius:14px; overflow:hidden; }
+  .loop li{ counter-increment:l; padding:22px 22px 24px; position:relative; }
+  .loop li + li{ border-left:1px solid var(--edge); }
+  .loop li::before{ content:counter(l, decimal-leading-zero); font-family:var(--font-mono); font-size:12px; color:var(--accent); }
+  .loop li:last-child::after{ content:'↺'; position:absolute; right:18px; top:16px; font-size:18px; color:var(--accent); }
+  .loop h3{ font-size:17px; font-weight:700; margin-top:6px; }
+  .loop p{ font-size:14px; color:var(--muted); line-height:1.55; margin-top:4px; }
+  .others{ margin-top:18px; font-size:15px; color:var(--muted); line-height:1.6; max-width:80ch; }
+  .others a{ color:var(--ink); }
+
+  .close{ padding:88px 0 96px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:20px; }
+  .close p{ font-size:20px; font-weight:700; letter-spacing:-.015em; }
+  .actions{ display:flex; flex-wrap:wrap; gap:8px 22px; }
+  .actions a{ min-height:44px; display:inline-flex; align-items:center; text-decoration:none; font-weight:600; font-size:14px; color:var(--accent); }
+
+  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
+  .foot-row a{ color:var(--muted); text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
   .foot-row a:hover{ color:var(--accent); }
 
-  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
-  .reveal.in{ opacity:1; transform:none; }
-
-  @media (prefers-reduced-motion: reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
-    html{ scroll-behavior:auto; }
+  @media (max-width:900px){
+    .rule-cols{ grid-template-columns:1fr; }
+    .rule-col + .rule-col{ border-left:0; border-top:1px solid var(--edge); }
+    .step{ grid-template-columns:150px minmax(0,1fr); }
+    .art{ grid-column:2; padding-left:28px; }
+    .loop{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .loop li:nth-child(3){ border-left:0; }
+    .loop li:nth-child(n+3){ border-top:1px solid var(--edge); }
   }
+  @media (max-width:700px){
+    .intro-row, .chapter-head{ grid-template-columns:1fr; }
+    .intro{ padding-top:32px; }
+    .chapter{ padding-top:72px; }
+    .timeline::before{ left:6px; }
+    .step{ grid-template-columns:1fr; gap:10px; padding-left:30px; }
+    .step::before{ left:6px; }
+    .when{ padding-right:0; }
+    .what, .art{ padding-left:0; grid-column:auto; }
+    .art .frame, .rn-card{ height:220px; }
+  }
+  @media (max-width:480px){
+    .loop{ grid-template-columns:1fr; }
+    .loop li + li{ border-left:0; border-top:1px solid var(--edge); }
+  }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
 </style>
 </head>
 <body>
@@ -229,78 +216,158 @@
 </header>
 
 <main>
-  <section class="hero">
-    <div class="wrap">
-      <h1 class="rise">the <span>studio.</span></h1>
-      <p class="rise d1">Studio DNA, privacy floor, HR-driven data security standards, and non-negotiable engineering guardrails governing every app built at calmdownoscar.</p>
+
+  <section class="intro" aria-labelledby="intro-title">
+    <div class="wrap intro-row">
+      <div>
+        <p class="kicker">The studio</p>
+        <h1 id="intro-title">Shipped is where an app starts.</h1>
+      </div>
+      <div>
+        <p class="lede">Every calmdownoscar app is built inside a short list of rules, and every app is a first version of something better. ClearSpace shows both: it was rebuilt from scratch to keep the rules, and it keeps changing.</p>
+        <div class="jump"><a href="#rules">The rules ↓</a><a href="#clearspace">ClearSpace, version by version ↓</a></div>
+      </div>
     </div>
   </section>
 
-  <section class="content-section">
+  <!-- ===================== Rules ===================== -->
+  <section class="chapter" id="rules" aria-labelledby="rules-title">
     <div class="wrap">
-      
-      <!-- 01. Product DNA -->
-      <div class="studio-card reveal">
-        <div class="section-label">01 · Studio DNA &amp; Core Values</div>
-        <h2>Apps Built to Put the Phone Down</h2>
-        <p>Software exists to <strong>reduce screen time and decision fatigue</strong>. Success for a calmdownoscar app means the user finishes what they came to do and puts their phone down — not maximizing session length, infinite feeds, or screen time.</p>
-        <p><strong>Business Rails:</strong> Zero ads. No third-party trackers. One-time or lifetime purchases whenever possible. Never use urgency bait, notification spam, or artificial streak counters to hook users.</p>
-      </div>
-
-      <!-- 02. HR-Driven Security & Privacy -->
-      <div class="studio-card reveal">
-        <div class="section-label">02 · HR-Driven Security &amp; Data Privacy</div>
-        <h2>Personal Data Protection as a Priority</h2>
-        <p>Coming from a background in <strong>Human Resources</strong>, safeguarding personal confidentiality is not a legal checklist — it is a foundational duty of trust. Handling sensitive personnel records translated directly into how software and AI architectures are designed here.</p>
-        
-        <div class="list-grid">
-          <div class="list-item">
-            <h4>100% On-Device Processing</h4>
-            <p>Sensitive operations (photo scanning, disk maps, voice notes) execute locally on Apple silicon. Data stays strictly on your device.</p>
-          </div>
-          <div class="list-item">
-            <h4>Zero 3rd-Party Analytics</h4>
-            <p>No SDK trackers, no telemetry scripts, no third-party data broker libraries. Crash visibility uses Apple's native MetricKit.</p>
-          </div>
-          <div class="list-item">
-            <h4>Server-Side Auth Enforcement</h4>
-            <p>UI hides controls, but server endpoints enforce strict per-record authorization. Client claims are never trusted blindly.</p>
-          </div>
-          <div class="list-item">
-            <h4>Zero Secrets in Client Binaries</h4>
-            <p>API keys never ship inside a client binary. Cloud LLM calls route through a stateless relay (see Wedding Concierge) that holds the credential server-side instead.</p>
-          </div>
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Guardrails</p>
+          <h2 id="rules-title">The rules every app is built under.</h2>
+        </div>
+        <p>They are written down once and read by every person and AI tool that works on the code. Where a script checks a rule on every commit, it says so; the rest are checked in review.</p>
+      </header>
+      <div class="rule-cols">
+        <div class="rule-col">
+          <h3>For the people using it</h3>
+          <ul class="rules">
+            <li><strong>Put the phone down</strong><p>An app succeeds when you finish what you came to do and leave. No streaks, infinite feeds, notification spam or urgency bait.</p></li>
+            <li><strong>Pay once, share with family</strong><p>Paid features are one-time purchases — Unli Disk, and Pro in ClearSpace, Shuttle Vision and Kitchen Vision — with Family Sharing switched on where the App Store allows it. No ads, and no third-party analytics or trackers.</p><span class="tag exception">The exception: Wedding Concierge</span><p>Every concierge answer runs on a paid AI service, so it has a subscription to cover that running cost.</p></li>
+            <li><strong>Ask for a rating only after a real success</strong><p>Apple’s own prompt, never in the first session, and never a filter that steers unhappy users away from the store.</p></li>
+          </ul>
+        </div>
+        <div class="rule-col">
+          <h3>For their data</h3>
+          <ul class="rules">
+            <li><strong>Keep data close</strong><p>On the device first; a server only where the job needs one. <a href="../how_I_work/#data">See where each app’s data goes</a>.</p></li>
+            <li><strong>No secrets in the app or the repository</strong><p>API keys live on a server relay, never inside an app.</p><span class="tag">A script scans every commit</span></li>
+            <li><strong>The server checks every request</strong><p>Hidden buttons aren’t security. A request has to prove it owns the record it asks for, and anything uncertain is refused.</p></li>
+            <li><strong>Trust Apple’s receipt, not the app</strong><p>A purchase counts when Apple’s signed transaction says so, not when the app claims it.</p></li>
+          </ul>
+        </div>
+        <div class="rule-col">
+          <h3>For the work itself</h3>
+          <ul class="rules">
+            <li><strong>Plan risky work before code</strong><p>Servers, payments, stored data, AI features and new dependencies get an intent document, a plan and a pre-mortem first.</p><span class="tag">A script checks where plans are filed</span></li>
+            <li><strong>“Success” isn’t evidence</strong><p>No tool’s report counts until the diff and a real build or test run agree.</p></li>
+            <li><strong>Use the smallest tool</strong><p>If a hash and a blur score do the job, no model is called.</p></li>
+            <li><strong>Open where others can teach me</strong><p><a href="https://github.com/CalixOscar/unli-rice">Unli Rice</a> and <a href="https://github.com/CalixOscar/OpenGrail">OpenGrail</a> are open source, because I want to learn from the people who read the code.</p></li>
+          </ul>
         </div>
       </div>
-
-      <!-- 03. Guardrails & Evals -->
-      <div class="studio-card reveal">
-        <div class="section-label">03 · AI Guardrails</div>
-        <h2>How AI Features Are Kept Honest</h2>
-        <p>When a model gets wired into an app, these are the constraints it has to work inside:</p>
-
-        <div class="list-grid">
-          <div class="list-item">
-            <h4>Single Source of Truth</h4>
-            <p>The model and the native UI read and write to the same state — not two systems that can drift apart. Wedding Concierge was built specifically against that failure mode.</p>
-          </div>
-          <div class="list-item">
-            <h4>MCP Ground-Truth Memory</h4>
-            <p>Unli Rice runs over Model Context Protocol (MCP) so every connected agent — Gemini, Claude, Codex, Antigravity — reads from one vault instead of re-explaining context each session.</p>
-          </div>
-          <div class="list-item">
-            <h4>Manual Pre-Mortem Review</h4>
-            <p>Before an App Store submission, I walk through likely edge cases and regressions by hand. It's a manual pass today, not an automated eval suite — worth saying plainly rather than dressing it up.</p>
-          </div>
-          <div class="list-item">
-            <h4>Cloud Where It's Simpler, Local Where It Matters</h4>
-            <p>Not every app needs both. Wedding Concierge currently runs cloud-only, no local fallback — that's a real tradeoff, not a hybrid claim I'm dressing up. ClearSpace goes the other way: photo review runs 100% on-device — a perceptual hash and Apple's Vision framework, not a cloud model — because that task is privacy-sensitive enough to warrant it.</p>
-          </div>
-        </div>
-      </div>
-
+      <p class="rules-note">Rules guide the work; they don’t guarantee it. When an app falls short of one, the app changes — as ClearSpace did.</p>
     </div>
   </section>
+
+  <!-- ===================== ClearSpace timeline ===================== -->
+  <section class="chapter" id="clearspace" aria-labelledby="cs-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Continuous improvement · ClearSpace</p>
+          <h2 id="cs-title">From React Native to Swift, and still going.</h2>
+        </div>
+        <p>ClearSpace started as a cross-platform app. Rebuilding it natively was the price of keeping the rules, and every release since has fixed something real.</p>
+      </header>
+      <ol class="timeline">
+        <li class="step">
+          <p class="when"><b>Version 1.0</b>October 2025</p>
+          <div class="what">
+            <h3>A React Native first version</h3>
+            <p>The first ClearSpace shipped as a React Native app, sold with <strong>monthly and annual subscriptions</strong> — against the studio’s own rule.</p>
+            <ul class="chips"><li>React Native</li><li class="rule">Broke a rule: subscriptions</li></ul>
+          </div>
+          <div class="art"><div class="rn-card" aria-hidden="true"><b>ClearSpace 1.0</b><span>React Native · subscriptions · iOS 14 and later</span></div></div>
+        </li>
+        <li class="step">
+          <p class="when"><b>The rebuild</b>July 2026</p>
+          <div class="what">
+            <h3>Start again, natively</h3>
+            <p>The React Native code couldn’t be carried forward, so ClearSpace was rebuilt from scratch in Swift and SwiftUI on Apple’s PhotoKit — around one photo engine it now shares with <a href="../#unlidisk">Unli Disk</a> on the Mac.</p>
+            <ul class="chips"><li>Swift</li><li>SwiftUI</li><li>PhotoKit</li><li>One engine, two apps</li></ul>
+          </div>
+          <div class="art"><div class="rn-card" aria-hidden="true"><span class="stack-swap"><i>React Native</i>→<i class="to">Swift · SwiftUI</i></span><span>Same App Store listing, new code underneath</span></div></div>
+        </li>
+        <li class="step">
+          <p class="when"><b>Version 1.1</b>August 2026</p>
+          <div class="what">
+            <h3>The native app replaces the old one</h3>
+            <p>The Swift version took over the same App Store listing, and everything it clears goes to Apple Photos’ own Recently Deleted. <strong>The subscriptions are gone</strong>: today, reviewing and deleting one at a time is free, and bulk clearing is a single $9.99 purchase, shareable with family.</p>
+            <ul class="chips"><li class="fixed">Rule kept: pay once</li><li>Native grid</li><li>Recently Deleted, not a hard delete</li></ul>
+          </div>
+          <figure class="art">
+            <div class="frame f-native">
+              <img class="phone a1" src="../assets/screens/clearspace-timeline.webp" alt="ClearSpace native app: the full timeline sorted biggest first, each thumbnail labelled with its size" width="350" height="760" loading="lazy" decoding="async">
+              <img class="phone a2" src="../assets/screens/clearspace-batch.webp" alt="ClearSpace native app: three photos selected, with Heart, Album and Delete as separate actions" width="350" height="760" loading="lazy" decoding="async">
+            </div>
+            <figcaption>Product screenshots · iPhone</figcaption>
+          </figure>
+        </li>
+        <li class="step now">
+          <p class="when"><b>Version 1.3</b>September 2026</p>
+          <div class="what">
+            <h3>Room to look properly</h3>
+            <p>On iPad, or an iPhone held sideways, a tapped photo opens beside the grid so you never lose your place. Photos stored in iCloud open sharp straight away, and purchases retry when the App Store is slow, with a visible button to try again.</p>
+            <ul class="chips"><li>iPad split view</li><li>Sharper iCloud photos</li><li>Sturdier purchases</li></ul>
+          </div>
+          <figure class="art">
+            <div class="frame f-ipad">
+              <img class="tablet a1" src="../apps/assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad: the photo grid on the left and the selected waterfall photo open beside it" width="1400" height="1050" loading="lazy" decoding="async">
+            </div>
+            <figcaption>Product screenshot · iPad</figcaption>
+          </figure>
+        </li>
+        <li class="step next">
+          <p class="when"><b>Next</b>In testing</p>
+          <div class="what">
+            <h3>One purchase across Mac and iPhone, automatically</h3>
+            <p>Buying Unli Disk already includes ClearSpace Pro, but today that means emailing for a code. The automatic unlock is being tested, and it ships when it works on real accounts, not before.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== The loop ===================== -->
+  <section class="chapter" id="loop" aria-labelledby="loop-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Every app</p>
+          <h2 id="loop-title">The same loop, for every app.</h2>
+        </div>
+        <p>None of the apps is finished. Each one sits somewhere in this loop, and goes round again.</p>
+      </header>
+      <ol class="loop">
+        <li><h3>Ship an honest first version</h3><p>The smallest thing that does the job, described exactly as it is.</p></li>
+        <li><h3>Use it on real life</h3><p>ClearSpace began with my own 40,000-photo library, Unli Disk with my own Mac.</p></li>
+        <li><h3>Write down what falls short</h3><p>Gaps become to-dos in Unli Rice, so the next session starts from them.</p></li>
+        <li><h3>Fix it within the rules</h3><p>Even when that means starting again, as ClearSpace did.</p></li>
+      </ol>
+      <p class="others">Each app’s own changes — what was tried, kept and cut — are under “How it’s built” on <a href="../#apps">the apps page</a>.</p>
+    </div>
+  </section>
+
+  <section aria-label="Next">
+    <div class="wrap close">
+      <p>See the rules at work.</p>
+      <div class="actions"><a href="../#apps">The apps →</a><a href="../how_I_work/">How I work →</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com →</a></div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -312,75 +379,28 @@
 
 <script>
 (function(){
-  var revealEls = document.querySelectorAll('.reveal');
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduceMotion.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(function(el){ io.observe(el); });
-  }
-
-  // --- Mobile nav disclosure ---
   var navToggle = document.querySelector('.nav-toggle');
   var topbar = document.querySelector('.topbar');
   var mainNav = document.getElementById('main-nav');
-
+  if (!navToggle || !topbar) return;
   function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    if (!topbar.classList.contains('nav-open')) return;
     topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-expanded', 'false');
   }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
+  navToggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (topbar.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
+    else { topbar.classList.add('nav-open'); navToggle.setAttribute('aria-expanded', 'true'); }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && topbar.classList.contains('nav-open')){ closeNav(); navToggle.focus(); }
+  });
+  document.addEventListener('click', function(e){
+    if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)) closeNav();
+  });
+  if (mainNav) mainNav.querySelectorAll('a').forEach(function(link){ link.addEventListener('click', closeNav); });
+  window.addEventListener('resize', function(){ if (window.innerWidth >= 768) closeNav(); });
 })();
 </script>
 </body>

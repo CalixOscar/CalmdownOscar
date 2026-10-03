@@ -10,10 +10,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
-<title>How Peter Builds — Apple Apps &amp; AI Systems | calmdownoscar</title>
-<meta name="description" content="Peter combines a current full-time enterprise HR role with independent Apple app building. Explore his approach to security boundaries, operational resilience, and accountable AI.">
+<title>How I Work — calmdownoscar</title>
+<meta name="description" content="How Peter builds apps: questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes and how AI-assisted work is kept accountable.">
 <meta property="og:title" content="How I Work — calmdownoscar">
-<meta property="og:description" content="Peter combines a current full-time enterprise HR role with independent Apple app building. Explore his approach to security boundaries, operational resilience, and accountable AI.">
+<meta property="og:description" content="Questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes and how AI-assisted work is kept accountable.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/how_I_work/">
 <link rel="canonical" href="https://www.calmdownoscar.com/how_I_work/">
@@ -33,325 +33,275 @@
     --sal: env(safe-area-inset-left, 0px);
     --sar: env(safe-area-inset-right, 0px);
 
-    --night:    #14181C;
-    --tank:     #F2581C;
-    --pacifier: #BCD9E8;
-
     --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
+    --stage:   #0F151B;
+    --panel:   rgba(255,255,255,.04);
     --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
+    --edge-hi: rgba(255,255,255,.18);
     --accent:  #85B6FF;
     --ink:     #E8EEF4;
     --muted:   #8FA0AE;
+    --green:   #7FD1A8;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --ease: cubic-bezier(.2,.7,.3,1);
     --topbar-h: calc(64px + var(--sat));
   }
   *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
+  ::selection{ background:var(--accent); color:#141B22; }
   body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter', system-ui, sans-serif; font-size:16px; line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
+    padding-top:var(--topbar-h); overflow-x:hidden;
   }
-  .wrap{ max-width:880px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  img{ display:block; max-width:100%; height:auto; }
+  a{ color:inherit; }
+  a:focus-visible, summary:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+  .wrap{ max-width:1160px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
+  .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
 
   /* ================= top bar ================= */
   .topbar{
     position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgba(20,27,34,.96);
-    border-bottom:1px solid var(--edge);
+    height:var(--topbar-h); padding-top:var(--sat);
+    background:rgba(20,27,34,.96); border-bottom:1px solid var(--edge);
     display:flex; align-items:center;
   }
-  .topbar .wrap{
-    display:flex; justify-content:space-between; align-items:center; width:100%;
-  }
-  .mark{
-    font-weight:800; font-size:19px; color:var(--ink);
-    text-decoration:none; letter-spacing:-.02em; flex-shrink:0;
-  }
+  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; width:100%; }
+  .mark{ font-weight:800; font-size:19px; color:var(--ink); text-decoration:none; letter-spacing:-.02em; flex-shrink:0; }
   .mark span{ color:var(--accent); }
   nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a[aria-current="page"]{ color:var(--accent); font-weight:600; }
-
+  nav a{ color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap; transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center; }
+  nav a:hover, nav a[aria-current="page"]{ color:var(--accent); }
+  nav a[aria-current="page"]{ font-weight:600; }
   .nav-toggle{ display:none; }
-
   @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:var(--ink);
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgba(20, 27, 34, .98);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
+    .nav-toggle{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; width:44px; height:44px; background:transparent; border:1px solid var(--edge); border-radius:8px; cursor:pointer; padding:0; color:var(--ink); flex-shrink:0; }
+    .nav-toggle-bar{ display:block; width:18px; height:2px; background:var(--ink); border-radius:1px; transition:transform 140ms ease; }
+    .topbar.nav-open .nav-toggle-bar:first-child{ transform:translateY(3.5px) rotate(45deg); }
+    .topbar.nav-open .nav-toggle-bar:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
+    nav{ display:none; position:absolute; top:100%; left:0; right:0; background:rgba(20,27,34,.98); border-bottom:1px solid var(--edge); padding:12px 24px calc(16px + var(--sab)); flex-direction:column; gap:2px; align-items:stretch; overflow-y:auto; max-height:calc(100vh - var(--topbar-h)); box-shadow:0 12px 32px rgba(0,0,0,.5); }
+    .topbar.nav-open nav{ display:flex; }
+    nav a{ font-size:15px; padding:10px 0; color:var(--ink); border-bottom:1px solid rgba(255,255,255,.05); width:100%; }
+    nav a:last-child{ border-bottom:none; }
   }
 
-  /* ================= headers & text ================= */
-  .section-label{
-    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
-    color:var(--accent); margin-bottom:8px;
-  }
-  .section-lede{ font-size:16px; color:var(--muted); max-width:64ch; margin-bottom:28px; line-height:1.6; }
+  /* ================= shared ================= */
+  section{ scroll-margin-top:calc(var(--topbar-h) + 8px); }
+  .chapter{ padding:104px 0 0; }
+  .chapter-head{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px 48px; align-items:end; padding-bottom:22px; margin-bottom:34px; border-bottom:1px solid var(--edge); }
+  .chapter-head h2{ font-size:clamp(28px, 1rem + 2.2vw, 42px); font-weight:800; letter-spacing:-.03em; line-height:1.08; margin-top:10px; }
+  .chapter-head > p{ color:var(--muted); font-size:15px; line-height:1.55; max-width:52ch; }
+  .shot-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--muted); }
 
-  /* ================= how section ================= */
-  .how{ padding:40px 0 60px; }
-  .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:20px; margin-top:20px; }
-  @media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
-  .card{
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:14px;
-    padding:26px 24px;
-    display:flex; flex-direction:column; gap:10px;
-    transition:transform .3s ease, border-color .3s ease;
-  }
-  .card:hover{ transform:translateY(-2px); border-color:var(--edge-hi); }
-  .card.wide{ grid-column:1 / -1; }
-  .card code{
-    font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size:.92em; padding:1px 5px; border-radius:5px;
-    background:rgba(255,255,255,.06); border:1px solid var(--edge);
-  }
-  .card h3{ font-size:17px; font-weight:700; color:var(--ink); letter-spacing:-.01em; }
-  .card p{ color:var(--muted); font-size:14.5px; line-height:1.6; }
+  /* ================= intro ================= */
+  .intro{ padding:44px 0 0; }
+  .questions{ padding:48px 0 0; }
+  .q-title{ font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); padding-bottom:22px; margin-bottom:34px; border-bottom:1px solid var(--edge); }
+  .q-title span{ display:block; margin-top:6px; font-family:'Inter', system-ui, sans-serif; font-size:14px; letter-spacing:0; text-transform:none; color:var(--muted); }
+  .intro h1{ font-size:clamp(38px, 1.2rem + 3.8vw, 70px); font-weight:800; line-height:1.03; letter-spacing:-.04em; margin-top:16px; max-width:15ch; }
+  .intro-row{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:24px 56px; align-items:end; }
+  .intro-copy p{ color:var(--muted); font-size:17px; line-height:1.55; max-width:46ch; }
+  .intro-copy p + p{ margin-top:12px; }
+  .q-index{ list-style:none; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:0; margin-top:32px; border:1px solid var(--edge); border-radius:12px; overflow:hidden; }
+  .q-index li + li{ border-left:1px solid var(--edge); }
+  .q-index a{ display:block; padding:16px 18px; text-decoration:none; min-height:44px; transition:background .2s ease; }
+  .q-index a:hover{ background:rgba(133,182,255,.07); }
+  .q-index span{ display:block; font-family:var(--font-mono); font-size:11px; color:var(--accent); }
+  .q-index strong{ display:block; font-size:16px; margin-top:2px; }
+  .q-index small{ display:block; font-size:13px; color:var(--muted); line-height:1.4; margin-top:2px; }
 
-  /* ================= pipeline diagram ================= */
-  .pipeline{ padding:20px 0 80px; border-top:1px solid var(--edge); }
-  .diagram{ margin-top:16px; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-  .diagram::-webkit-scrollbar{ display:none; }
-  .diagram svg{ width:100%; min-width:680px; height:auto; display:block; overflow:visible; }
-  .trace{
-    fill:none; stroke:rgba(255,255,255,.5); stroke-width:1.4;
-  }
-  .node-box{
-    fill:rgba(255,255,255,.75);
-    stroke:rgba(255,255,255,.35);
-    stroke-width:1.2;
-  }
-  .node-box.dim{ stroke:rgba(255,255,255,.15); fill:rgba(255,255,255,.45); }
-  .node-box.output{
-    stroke:var(--accent);
-    fill:rgba(255,255,255,.9);
-  }
-  .node-label{
-    font-family:'Inter', sans-serif;
-    font-size:13px; font-weight:600; letter-spacing:-.01em;
-    fill:#12151A; text-anchor:middle;
-  }
-  .node-label.output{ fill:#12151A; }
-  .node-label.dim{ fill:rgba(18,21,26,.75); font-weight:500; }
-  .node-group{
-    opacity:1;
-  }
-  .pulse{ fill:var(--accent); }
-  .halo{ fill:none; stroke:var(--accent); stroke-width:2; }
-  .diagram-caption{
-    font-size:12px; letter-spacing:.02em;
-    fill:var(--muted);
-  }
+  /* ================= evidence rows: question → decision → screenshot ================= */
+  .evidence{ list-style:none; }
+  .ev{ display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr); gap:24px 56px; align-items:center; padding:34px 0; border-top:1px solid var(--edge); scroll-margin-top:calc(var(--topbar-h) + 8px); }
+  .ev:first-child{ border-top:0; padding-top:0; }
+  .ev-q{ position:relative; }
+  .ev-num{ font-family:var(--font-mono); font-size:12px; color:var(--accent); }
+  .ev-q h3{ font-size:15px; font-weight:600; color:var(--muted); margin-top:4px; letter-spacing:.01em; }
+  .ev-q .question{ font-size:clamp(22px, 1rem + 1vw, 28px); font-weight:750; letter-spacing:-.02em; line-height:1.2; margin-top:6px; }
+  .ev-answer{ margin-top:18px; padding-left:16px; border-left:2px solid var(--accent); }
+  .ev-answer p{ font-size:15px; color:var(--muted); line-height:1.6; }
+  .ev-answer p strong{ color:var(--ink); font-weight:600; }
+  .ev-answer a{ display:inline-flex; align-items:center; min-height:44px; font-size:14px; font-weight:600; text-decoration:none; color:var(--accent); }
+  .ev-fig{ margin:0; position:relative; }
+  .ev-fig::before{ content:''; position:absolute; right:100%; top:50%; width:56px; height:1px; background:linear-gradient(90deg, transparent, var(--accent)); }
+  .crop{ position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--edge-hi); box-shadow:0 20px 44px rgba(0,0,0,.45); background:var(--stage); }
+  .crop img{ width:100%; }
+  .mark-box{ position:absolute; border:2px solid var(--accent); border-radius:8px; box-shadow:0 0 0 4px rgba(133,182,255,.18), 0 0 0 999px rgba(8,12,16,.28); pointer-events:none; }
+  .mark-box.light{ box-shadow:0 0 0 4px rgba(133,182,255,.28); }
+  .mark-box + .mark-box{ box-shadow:0 0 0 4px rgba(133,182,255,.18); }
+  .ev-fig figcaption{ display:flex; justify-content:space-between; gap:12px; margin-top:10px; }
+  .ev-fig figcaption span:first-child{ font-size:13px; color:var(--ink); font-weight:600; }
+
+  .law-note{ display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr); gap:20px 56px; margin-top:12px; padding:26px 0 0; border-top:1px solid var(--edge); }
+  .law-note h3{ font-size:16px; font-weight:650; }
+  .law-note p{ font-size:14px; color:var(--muted); line-height:1.65; }
+  .law-note p + p{ margin-top:10px; }
+  .law-note a{ color:var(--ink); }
+
+  /* ================= data lanes ================= */
+  .lanes{ list-style:none; }
+  .lane{ display:grid; grid-template-columns:220px minmax(300px, 1.1fr) minmax(0,1fr); gap:10px 28px; align-items:center; padding:14px 0; border-top:1px solid var(--edge); }
+  .lane-head{ border-top:0; padding:0 0 10px; }
+  .lane-app{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
+  .lane-app img{ width:28px; height:28px; border-radius:7px; }
+  .lane-app .pair-icons{ display:flex; }
+  .lane-app .pair-icons img + img{ margin-left:-8px; box-shadow:0 0 0 2px var(--bg); }
+  .og-chip{ width:28px; height:28px; border-radius:7px; border:1px solid var(--edge-hi); display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--accent); }
+  .track{ position:relative; height:28px; }
+  .track::before{ content:''; position:absolute; left:0; right:0; top:50%; height:1px; background:var(--edge); }
+  .zones{ display:grid; grid-template-columns:repeat(3, 1fr); text-align:center; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+  .flow{ position:absolute; top:50%; height:2px; margin-top:-1px; left:var(--from); right:calc(100% - var(--to)); background:var(--accent); }
+  .flow.opt{ background:repeating-linear-gradient(90deg, var(--accent) 0 6px, transparent 6px 11px); }
+  .dot{ position:absolute; top:50%; left:var(--at); width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--bg); }
+  .dot.opt{ background:var(--bg); border:2px solid var(--accent); }
+  .lane-note{ font-size:14px; color:var(--muted); line-height:1.5; }
+  .lanes-key{ display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:16px; font-size:13px; color:var(--muted); }
+  .lanes-key span{ display:inline-flex; align-items:center; gap:8px; }
+  .lanes-key i{ width:12px; height:12px; border-radius:50%; background:var(--accent); display:inline-block; }
+  .lanes-key i.opt{ background:transparent; border:2px solid var(--accent); }
+
+  /* ================= Unli Rice ================= */
+  .rice{ display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr); gap:28px; align-items:start; }
+  .rice-side{ display:grid; gap:20px; }
+  .rice-fig{ margin:0; }
+  .rice-fig figcaption{ margin-top:10px; font-size:14px; color:var(--muted); line-height:1.5; }
+  .rice-fig figcaption strong{ color:var(--ink); }
+  .pins{ position:relative; }
+  .pin{ position:absolute; width:24px; height:24px; margin:-12px 0 0 -12px; border-radius:50%; background:var(--accent); color:#0F151B; font-family:var(--font-mono); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 3px rgba(15,21,27,.85); }
+  .pin-key{ list-style:none; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px 28px; margin-top:16px; }
+  .pin-key li{ display:grid; grid-template-columns:24px 1fr; gap:10px; font-size:14px; color:var(--muted); line-height:1.5; }
+  .pin-key b{ width:24px; height:24px; border-radius:50%; background:var(--accent); color:#0F151B; font-family:var(--font-mono); font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .pin-key strong{ color:var(--ink); font-weight:600; }
+  .widget{ background:linear-gradient(150deg, #2B2F34, #191C20); border:1px solid #4A525B; border-radius:22px; padding:18px 18px 14px; box-shadow:0 18px 36px rgba(0,0,0,.35); max-width:340px; }
+  .widget-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .widget-top b{ font-size:15px; }
+  .widget-top span{ font-size:12px; color:var(--muted); }
+  .widget ul{ list-style:none; }
+  .widget li{ display:grid; grid-template-columns:16px 1fr; gap:10px; padding:9px 0; border-top:1px solid rgba(255,255,255,.07); font-size:13px; line-height:1.35; }
+  .widget li i{ width:16px; height:16px; border:1.5px solid #A3ACB5; border-radius:50%; margin-top:1px; }
+  .widget li small{ display:block; font-size:11px; color:var(--muted); margin-top:2px; }
+  .widget .more{ font-size:11px; color:var(--muted); padding-top:8px; border-top:1px solid rgba(255,255,255,.07); }
+  .rice-limits{ margin-top:22px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px 28px; padding-top:18px; border-top:1px solid var(--edge); }
+  .rice-limits p{ font-size:14px; color:var(--muted); line-height:1.55; }
+  .rice-limits strong{ color:var(--ink); font-weight:600; }
+  .rice-links{ display:flex; flex-wrap:wrap; gap:0 22px; margin-top:6px; }
+  .rice-links a{ display:inline-flex; align-items:center; min-height:44px; font-size:14px; font-weight:600; text-decoration:none; color:var(--accent); }
+
+  /* ================= craft ================= */
+  .craft{ display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr); gap:32px 56px; align-items:start; }
+  .intent-doc{ margin:0; background:#0F151B; border:1px solid var(--edge-hi); border-radius:12px; padding:22px 22px 18px; font-family:var(--font-mono); font-size:13px; line-height:1.5; box-shadow:0 18px 40px rgba(0,0,0,.35); }
+  .intent-doc .doc-title{ color:var(--ink); font-weight:700; font-size:13px; padding-bottom:12px; border-bottom:1px solid var(--edge); }
+  .intent-doc ol{ list-style:none; margin-top:10px; }
+  .intent-doc li{ padding:7px 0; color:var(--muted); }
+  .intent-doc li::before{ content:'## '; color:var(--accent); }
+  .intent-doc li.hi{ color:var(--ink); }
+  .intent-doc figcaption{ font-family:'Inter', system-ui, sans-serif; margin-top:14px; padding-top:12px; border-top:1px solid var(--edge); font-size:13px; color:var(--muted); line-height:1.5; }
+  .habits{ list-style:none; counter-reset:h; }
+  .habits li{ position:relative; padding:0 0 22px 46px; counter-increment:h; }
+  .habits li::before{ content:counter(h, decimal-leading-zero); position:absolute; left:0; top:2px; font-family:var(--font-mono); font-size:12px; color:var(--accent); }
+  .habits li::after{ content:''; position:absolute; left:8px; top:24px; bottom:4px; width:1px; background:var(--edge); }
+  .habits li:last-child::after{ display:none; }
+  .habits h3{ font-size:18px; font-weight:700; letter-spacing:-.01em; }
+  .habits p{ font-size:15px; color:var(--muted); line-height:1.6; margin-top:4px; }
+  .habits p strong{ color:var(--ink); font-weight:600; }
+  .traps{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); margin-top:34px; border:1px solid var(--edge); border-radius:12px; }
+  .traps div{ padding:18px 20px; }
+  .traps div + div{ border-left:1px solid var(--edge); }
+  .traps span{ font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); }
+  .traps p{ font-size:14px; color:var(--muted); line-height:1.5; margin-top:6px; }
+  .traps p strong{ color:var(--ink); font-weight:600; }
+  .credit{ margin-top:14px; font-size:13px; color:var(--muted); }
+
+  /* ================= technical tree (collapsed) ================= */
+  .tech{ margin-top:104px; border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); }
+  .tech > summary{ cursor:pointer; list-style:none; display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:22px 0; min-height:44px; }
+  .tech > summary::-webkit-details-marker{ display:none; }
+  .tech > summary .sym{ width:34px; height:34px; border:1px solid var(--edge-hi); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); color:var(--accent); }
+  .tech > summary strong{ display:block; font-size:17px; }
+  .tech > summary small{ display:block; font-size:14px; color:var(--muted); }
+  .tech > summary .state{ font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+  .tech[open] > summary .state{ color:var(--accent); }
+  .tech > summary:hover strong{ color:var(--accent); }
+  .tree{ padding:8px 0 40px; }
+  .t-node{ display:flex; align-items:center; gap:14px; max-width:620px; margin:0 auto; padding:16px 20px; border:1px solid #3D5268; border-radius:10px; background:#17222D; }
+  .t-node img{ width:40px; height:40px; border-radius:9px; }
+  .t-node small{ font-family:var(--font-mono); font-size:11px; color:var(--accent); }
+  .t-node h3{ font-size:16px; }
+  .t-node p{ font-size:13px; color:var(--muted); }
+  .t-node.vault{ border-color:var(--accent); }
+  .t-node.verify{ border-color:#5F8F80; background:#172A26; }
+  .t-node.verify small{ color:var(--green); }
+  .trunk{ width:1px; height:26px; background:#5B7896; margin:0 auto; }
+  .branches{ list-style:none; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; max-width:820px; margin:0 auto; }
+  .branches li{ padding:14px; text-align:center; border:1px solid #33475B; border-radius:8px; background:#16212B; }
+  .branches h4, .agents h4{ font-size:14px; }
+  .branches p, .agents p{ font-size:12px; color:var(--muted); }
+  .agents{ list-style:none; display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:10px; }
+  .agents li{ position:relative; border:1px solid #33475B; background:#16212B; border-radius:8px; padding:12px 10px; }
+  .agents small{ font-family:var(--font-mono); font-size:11px; color:var(--accent); }
+  .agents li + li::before{ content:'→'; position:absolute; left:-10px; top:40%; font-size:10px; color:var(--accent); }
+  .tree-note{ text-align:center; margin:12px auto 0; max-width:62ch; font-size:13px; color:var(--muted); }
+
+  /* ================= close ================= */
+  .close{ padding:72px 0 96px; display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:24px 56px; align-items:end; }
+  .close h2{ font-size:clamp(26px, 1rem + 1.8vw, 36px); font-weight:800; letter-spacing:-.025em; line-height:1.15; }
+  .close p{ color:var(--muted); font-size:15px; line-height:1.6; margin-top:12px; max-width:52ch; }
+  .close p a{ color:var(--ink); }
+  .actions{ display:flex; flex-wrap:wrap; gap:12px 20px; align-items:center; }
+  .actions a{ min-height:44px; display:inline-flex; align-items:center; text-decoration:none; font-weight:600; font-size:14px; }
+  .actions .primary{ background:var(--accent); color:#141B22; padding:10px 18px; border-radius:8px; }
+  .actions a:not(.primary):hover{ color:var(--accent); }
 
   footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
-  .foot-row{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:10px;
-    font-size:13px; color:var(--muted);
-  }
-  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
+  .foot-row a{ color:var(--muted); text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
   .foot-row a:hover{ color:var(--accent); }
 
-  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
-  .reveal.in{ opacity:1; transform:none; }
-
+  /* ================= responsive ================= */
+  @media (max-width:980px){
+    .lane{ grid-template-columns:200px minmax(240px, 1fr); }
+    .lane-note{ grid-column:2; }
+    .lane-head .lane-note{ display:none; }
+    .agents{ grid-template-columns:repeat(3, minmax(0,1fr)); }
+    .agents li:nth-child(4)::before{ content:none; }
+  }
+  @media (max-width:820px){
+    .intro-row, .chapter-head, .ev, .law-note, .rice, .craft, .close{ grid-template-columns:1fr; }
+    .ev-fig::before{ display:none; }
+    .ev{ gap:18px; }
+    .q-index{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .q-index li:nth-child(3){ border-left:0; }
+    .q-index li:nth-child(n+3){ border-top:1px solid var(--edge); }
+    .rice-side{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; }
+    .chapter{ padding-top:80px; }
+  }
+  @media (max-width:640px){
+    .intro{ padding-top:32px; }
+    .lane{ grid-template-columns:1fr; gap:8px; padding:16px 0; }
+    .lane-note{ grid-column:1; }
+    .lane-head .lane-app{ display:none; }
+    .pin-key, .rice-limits{ grid-template-columns:1fr; }
+    .rice-side{ grid-template-columns:1fr; }
+    .traps{ grid-template-columns:1fr; }
+    .traps div + div{ border-left:0; border-top:1px solid var(--edge); }
+    .branches{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .agents{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .agents li:nth-child(3)::before, .agents li:nth-child(5)::before{ content:none; }
+    .agents li:nth-child(4)::before{ content:'→'; }
+    .tech > summary{ grid-template-columns:auto 1fr; }
+    .tech > summary .state{ display:none; }
+    .pin{ width:20px; height:20px; margin:-10px 0 0 -10px; font-size:11px; }
+  }
+  @media (max-width:340px){
+    .q-index{ grid-template-columns:1fr; }
+    .q-index li + li{ border-left:0; border-top:1px solid var(--edge); }
+  }
   @media (prefers-reduced-motion: reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
     html{ scroll-behavior:auto; }
+    .q-index a{ transition:none; }
   }
-
-  /* Portfolio: context, evidence, then detail. */
-  .how .wrap{max-width:1120px;}
-  .portfolio-intro{padding:30px 0 48px;}
-  .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
-  .portfolio-intro h1{font-size:clamp(38px,6vw,72px);line-height:1.08;letter-spacing:-.045em;max-width:14ch;margin:20px 0 24px;}
-  .intro-row{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;}
-  .intro-row p{max-width:45ch;color:var(--muted);}
-  .portfolio-actions{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
-  .portfolio-actions a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;}
-  .primary-link{background:var(--accent);color:#141B22;padding:10px 18px;border-radius:6px;font-weight:650;}
-  .context-pair{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--edge);margin:0 0 72px;}
-  .context{padding:28px 32px;position:relative;}
-  .context+ .context{border-left:1px solid var(--edge);background:linear-gradient(120deg,rgba(133,182,255,.07),transparent);}
-  .context h2{font-size:24px;margin:8px 0;letter-spacing:-.02em;}
-  .context p{color:var(--muted);font-size:14px;max-width:40ch;}
-  .context small{display:block;margin-top:20px;color:var(--muted);font-size:12px;}
-  .chapter{display:flex;align-items:baseline;gap:18px;margin:0 0 30px;}
-  .chapter span{font-family:ui-monospace,monospace;color:var(--accent);font-size:12px;}
-  .chapter h2{font-size:clamp(24px,4vw,34px);letter-spacing:-.025em;}
-  .project-row{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:center;padding:32px 0;border-top:1px solid var(--edge);}
-  .project-visual{margin:0;background:#101419;border:1px solid var(--edge);border-radius:8px;overflow:hidden;}
-  .project-visual img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;object-position:top;}
-  .project-visual figcaption{font-size:11px;color:var(--muted);padding:10px 14px;}
-  .project-copy h3{font-size:27px;letter-spacing:-.025em;margin:8px 0 14px;}
-  .project-copy p{color:var(--muted);font-size:15px;max-width:42ch;}
-  .decision{border-left:2px solid var(--accent);padding-left:16px;margin:22px 0;}
-  .decision strong{color:var(--ink);font-weight:550;}
-  .project-copy a{display:inline-flex;align-items:center;min-height:44px;margin-right:18px;}
-  .principles{margin:72px 0;}
-  .boundary-map{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--edge);list-style:none;}
-  .boundary-map li{padding:24px 20px;min-width:0;}
-  .boundary-map li+li{border-left:1px solid var(--edge);}
-  .boundary-map .step{color:var(--accent);font-family:ui-monospace,monospace;font-size:12px;}
-  .boundary-map h3{font-size:17px;margin:14px 0 8px;}
-  .boundary-map p{color:var(--muted);font-size:13px;}
-  .references{margin-top:16px;color:var(--muted);font-size:12px;}
-  .references a{display:inline-block;padding:6px 0;}
-  .working-path{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;list-style:none;margin:24px 0 56px;}
-  .working-path li{border-top:2px solid var(--edge);padding-top:16px;}
-  .working-path span{color:var(--accent);font-size:12px;font-family:ui-monospace,monospace;}
-  .working-path h3{font-size:16px;margin:8px 0;}
-  .working-path p{font-size:13px;color:var(--muted);}
-  .portfolio-story{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);padding:18px 0;margin-bottom:48px;}
-  .portfolio-story summary{cursor:pointer;min-height:44px;align-content:center;}
-  .portfolio-story p{max-width:64ch;color:var(--muted);padding:12px 0;}
-  .portfolio-close{display:flex;justify-content:space-between;gap:32px;align-items:center;padding:32px 0 0;}
-  .portfolio-close h2{font-size:28px;letter-spacing:-.025em;}
-  .portfolio-close p{color:var(--muted);font-size:14px;margin-top:8px;max-width:44ch;}
-  a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}
-  @media(max-width:700px){
-    .intro-row,.context-pair,.project-row{grid-template-columns:1fr;gap:24px;}
-    .context-pair{gap:0;margin-bottom:48px;}
-    .context{padding:24px;}
-    .context+.context{border-left:0;border-top:1px solid var(--edge);}
-    .boundary-map,.working-path{grid-template-columns:1fr 1fr;}
-    .boundary-map li:nth-child(3){border-left:0;}
-    .boundary-map li:nth-child(n+3){border-top:1px solid var(--edge);}
-    .portfolio-close{flex-direction:column;align-items:flex-start;}
-    .principles{margin:48px 0;}
-    .project-row{padding:28px 0;}
-  }
-  @media(max-width:380px){.boundary-map,.working-path{grid-template-columns:1fr;}.boundary-map li+li{border-left:0;border-top:1px solid var(--edge);}}
-
-
-  /* The workbench conveys the relationship before the prose. */
-  .how .wrap{max-width:1280px;}
-  .workbench-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:28px 0 34px;}
-  .workbench-intro h1{font-size:clamp(40px,5.8vw,70px);line-height:1.03;letter-spacing:-.045em;margin-top:18px;}
-  .workbench{display:grid;grid-template-columns:240px minmax(0,1fr);border:1px solid var(--edge);border-radius:14px;background:radial-gradient(ellipse at 65% 45%,rgba(133,182,255,.12),transparent 65%),#111820;overflow:hidden;}
-  .human-zone{padding:34px 22px;background:rgba(188,217,232,.04);border-right:1px dashed rgba(188,217,232,.35);display:flex;flex-direction:column;align-items:center;color:var(--pacifier);}
-  .human-zone svg{width:100%;max-width:200px;height:auto;}
-  .bench-label{font-size:12px;text-align:center;}
-  .boundary-line{border:1px solid rgba(188,217,232,.3);border-radius:6px;padding:10px;margin:24px 0;width:100%;text-align:center;font-size:10px;}
-  .record-stack{position:relative;width:95px;height:80px;margin:10px 0 24px;}
-  .record-stack i{position:absolute;width:75px;height:65px;border:1px solid rgba(188,217,232,.4);border-radius:5px;background:repeating-linear-gradient(to bottom,#17232d 0px,#17232d 12px,#436071 13px,#17232d 14px);}
-  .record-stack i:nth-child(1){left:0;top:0;}.record-stack i:nth-child(2){left:10px;top:8px;}.record-stack i:nth-child(3){left:20px;top:16px;}
-  .human-zone p,.studio-caption p{font-size:14px;line-height:1.5;}.human-zone small,.studio-caption small{color:var(--muted);font-size:11px;}
-  .build-zone{position:relative;min-height:780px;padding:30px;}
-  .connector{position:absolute;top:105px;left:0;width:170px;color:rgba(133,182,255,.4);}.connector svg{width:100%;}
-  .editor-window{width:48%;margin-left:9%;background:#10151c;border:1px solid #3c4e61;border-radius:8px;box-shadow:0 16px 35px #0005;position:relative;}
-  .window-chrome{height:34px;padding:0 12px;display:flex;align-items:center;gap:8px;background:#1f2a36;color:#c5d2df;font-size:10px;border-bottom:1px solid #ffffff15;}
-  .window-chrome span:last-child{margin-left:auto;}.window-chrome img{border-radius:4px;}
-  .editor-body{height:150px;padding:14px;display:flex;gap:14px;position:relative;}
-  .code-gutter{font:11px/19px ui-monospace,monospace;color:#5b6c7d;}.code-lines{width:75%;padding-top:4px;}.code-lines i{display:block;height:5px;background:#85b6ff77;margin:0 0 14px;width:80%;border-radius:2px;}.code-lines i:nth-child(2n){width:60%;margin-left:12px;background:#bcd9e877;}.code-lines i:nth-child(3n){width:43%;margin-left:24px;background:#f2b57577;}
-  .system-nodes{position:absolute;bottom:14px;right:12px;display:flex;gap:6px;align-items:center;background:#10151c;padding:5px;}.system-nodes span{font:10px ui-monospace,monospace;padding:7px;border:1px solid #85b6ff66;border-radius:4px;}.system-nodes b{font-size:12px;font-weight:400;color:var(--accent);}
-  .editor-footer{font:10px ui-monospace,monospace;padding:8px 12px;border-top:1px solid #ffffff15;color:var(--muted);}
-  .apps-composition{position:relative;height:335px;margin-top:-42px;}
-  .app-window{display:block;position:absolute;border:1px solid #4c6075;border-radius:8px;overflow:hidden;background:#11151b;box-shadow:0 24px 40px #0008;text-decoration:none;transition:transform .2s ease,border-color .2s ease;}
-  .app-window:hover{transform:translateY(-5px);border-color:var(--accent);}.app-window .screen{display:block;width:100%;height:auto;}
-  .rice-window{width:55%;left:0;top:82px;z-index:2;}.disk-window{width:55%;left:22%;top:190px;z-index:3;}.wedding-window{width:34%;right:0;top:0;z-index:4;}
-  .studio-caption{position:absolute;right:28px;bottom:20px;display:flex;align-items:center;gap:12px;}.moon{font-size:36px;color:#f2c88c;}
-  .bench-key{display:flex;justify-content:space-between;gap:20px;padding:18px 2px 64px;font-size:12px;color:var(--muted);}
-  .project-row{grid-template-columns:1.4fr 1fr;gap:48px;}.project-visual img{aspect-ratio:auto;}.project-copy .eyebrow{font-size:11px;}
-  @media(max-width:850px){.workbench{grid-template-columns:180px minmax(0,1fr);}.build-zone{min-height:680px;padding:24px 14px;}.editor-window{width:67%;margin-left:0;}.apps-composition{height:290px;}.rice-window{width:63%;top:90px;}.disk-window{width:63%;left:14%;top:205px;}.wedding-window{width:42%;}.human-zone{padding:30px 14px;}.project-row{gap:26px;}}
-  @media(max-width:600px){.workbench-intro{align-items:start;flex-direction:column;}.workbench{grid-template-columns:1fr;}.human-zone{display:grid;grid-template-columns:76px 1fr;gap:8px 18px;border-right:0;border-bottom:1px dashed #bcd9e866;padding:20px;}.human-zone svg{grid-row:1 / 4;}.human-zone .bench-label{text-align:left;}.boundary-line{margin:0;width:fit-content;padding:6px;}.record-stack{display:none;}.human-zone p{font-size:12px;}.build-zone{min-height:650px;padding:24px 14px;}.editor-window{width:72%;}.apps-composition{margin-top:-25px;}.rice-window{width:67%;top:82px;}.disk-window{width:70%;left:10%;top:205px;}.wedding-window{width:43%;}.studio-caption{bottom:16px;}.bench-key{flex-direction:column;gap:4px;padding-bottom:48px;}.project-row{grid-template-columns:1fr;}.window-chrome{padding:0 8px;font-size:9px;}}
-  @media(prefers-reduced-motion:reduce){.app-window{transition:none;}.app-window:hover{transform:none;}}
-  #selected-work{scroll-margin-top:100px;}
-
-
-  .node-section{margin:0 0 72px;}
-  .node-tree{padding:34px;background:linear-gradient(180deg,#17212c,#10161e);border:1px solid var(--edge);border-radius:16px;}
-  .root-node,.vault-node,.verify-node{display:flex;align-items:center;gap:16px;max-width:640px;margin:auto;padding:20px 24px;border:1px solid #48607a;border-radius:10px;background:#1c2937;}
-  .root-node{max-width:510px;background:#18232e;}.node-tree h3{font-size:18px;}.node-tree small{font-size:11px;color:var(--accent);}.node-caption{font-size:11px;color:var(--muted);margin-left:auto;max-width:17ch;}.node-symbol{font-size:30px;color:var(--accent);}.vault-node img{border-radius:10px;}.vault-node{border-color:var(--accent);box-shadow:0 0 28px #85b6ff0c;}
-  .trunk{width:1px;height:28px;background:#6385a8;margin:auto;}
-  .context-branches{display:grid;grid-template-columns:repeat(4,1fr);list-style:none;padding-top:28px;position:relative;gap:16px;max-width:840px;margin:auto;}
-  .context-branches:before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:#6385a8;}.vault-node:after{content:none;}
-  .context-branches li{position:relative;padding:18px;text-align:center;border:1px solid #3d5268;border-radius:8px;background:#17232f;}.context-branches li:before{content:'';position:absolute;top:-28px;height:28px;left:50%;width:1px;background:#6385a8;}.branch-icon{display:block;color:var(--accent);font-size:26px;margin-bottom:8px;}.node-tree h4{font-size:14px;}.node-tree p{font-size:12px;color:var(--muted);}
-  .agent-path{display:grid;grid-template-columns:repeat(6,1fr);list-style:none;gap:10px;}.agent-path li{position:relative;border:1px solid #3d5268;background:#192530;border-radius:8px;padding:14px 10px;}.agent-path h4{margin:5px 0;}.agent-path li+li:before{content:'→';position:absolute;left:-11px;top:42%;color:var(--accent);font-size:10px;}
-  .tree-note{text-align:center;margin:16px auto 0;max-width:65ch;}.verify-node{border-color:#608f80;background:#192e29;}.verify-node>span{font-size:30px;color:#a3d8be;}
-  .output-branches{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px auto 0;max-width:800px;position:relative;}.output-branches:before{content:'';position:absolute;top:-28px;height:28px;width:1px;left:50%;background:#6385a8;}
-  .output-product{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border:1px solid #3d5268;border-radius:14px;}.output-icons{display:flex;gap:14px;margin:20px 0;}.output-icons img{border-radius:12px;}
-  .widget-demo{background:linear-gradient(140deg,#303132,#181b1e);border:1px solid #59616b;border-radius:22px;padding:24px;box-shadow:0 18px 35px #0003;}.widget-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;}.widget-title span{font-size:10px;color:var(--muted);}.widget-demo ul{list-style:none;}.widget-demo li{display:flex;gap:10px;margin:16px 0;font-size:13px;line-height:1.4;}.widget-demo i{display:block;width:16px;height:16px;border:1px solid #a3acb5;border-radius:50%;flex-shrink:0;margin-top:2px;}.widget-demo small{display:block;color:var(--muted);font-size:10px;margin-top:4px;}
-  @media(max-width:800px){.agent-path{grid-template-columns:repeat(3,1fr);}.agent-path li:nth-child(4):before{content:none;}.context-branches{gap:8px;}.context-branches li{padding:14px 6px;}}
-  @media(max-width:600px){.node-tree{padding:20px 14px;}.node-caption{display:none;}.context-branches{grid-template-columns:1fr 1fr;}.context-branches:before,.context-branches li:before{display:none;}.context-branches{border-top:1px solid #6385a8;margin-top:20px;padding-top:20px;}.agent-path{grid-template-columns:1fr 1fr;}.agent-path li:nth-child(3):before,.agent-path li:nth-child(5):before{content:none;}.agent-path li:nth-child(4):before{content:'→';}.output-branches{grid-template-columns:1fr;}.root-node,.vault-node,.verify-node{padding:16px;}.node-tree h3{font-size:16px;}.node-section{margin-bottom:48px;}}
-
-  .technical-tree .node-section{margin:24px 0 0;}
 </style>
 </head>
 <body>
@@ -375,95 +325,330 @@
 </header>
 
 <main>
-  <section class="how" id="how">
+
+  <!-- ===================== Intro ===================== -->
+  <section class="intro" aria-labelledby="intro-title">
     <div class="wrap">
-      <div class="workbench-intro"><div><p class="eyebrow">Peter · Enterprise HR + Independent software</p><h1>People in mind.<br>Software in hand.</h1></div><a href="/#apps" class="primary-link">Explore the apps ↗</a></div>
-      <div class="workbench" aria-label="A visual composition connecting people and protected data to software development and three real app interfaces">
-        <div class="human-zone">
-          <svg viewBox="0 0 200 160" role="img" aria-label="People connected to a protected employee record"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="40" cy="30" r="12"/><path d="M18 72v-8a22 22 0 0 1 44 0v8"/><circle cx="160" cy="30" r="12"/><path d="M138 72v-8a22 22 0 0 1 44 0v8"/><path d="M40 82v30h34m86-30v30h-34"/><rect x="76" y="85" width="48" height="54" rx="6"/><path d="M90 106v-7a10 10 0 0 1 20 0v7"/><rect x="87" y="106" width="26" height="20" rx="3"/><path d="M100 112v8"/></g></svg>
-          <span class="bench-label">People &amp; personal data</span>
-          <div class="boundary-line"><span>Purpose · Access · Oversight</span></div>
-          <div class="record-stack" aria-hidden="true"><i></i><i></i><i></i></div>
-          <p>Enterprise HR<br><small>My full-time work</small></p>
+      <div class="intro-row">
+        <div>
+          <p class="kicker">How I work</p>
+          <h1 id="intro-title">HR taught me the questions. The apps are my answers.</h1>
         </div>
-        <div class="build-zone">
-          <div class="connector" aria-hidden="true"><svg viewBox="0 0 180 100"><path d="M0 50H65Q85 50 85 30V20H180M85 50H180M85 50V80H180" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="85" cy="50" r="5" fill="currentColor"/></svg></div>
-          <div class="editor-window"><div class="window-chrome"><span aria-hidden="true">● ● ●</span><span>calmdownoscar / studio</span></div><div class="editor-body" aria-hidden="true"><div class="code-gutter">01<br>02<br>03<br>04<br>05<br>06</div><div class="code-lines"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="system-nodes"><span>UI</span><b>↔</b><span>State</span><b>↔</b><span>AI</span></div></div><div class="editor-footer">Architecture → Build → Verify</div></div>
-          <div class="apps-composition">
-            <a class="app-window rice-window" href="/unlirice/" aria-label="Explore Unli Rice"><div class="window-chrome"><img src="../assets/unli-rice-icon.png" alt="" width="20" height="20">Unli Rice <span>↗</span></div><img class="screen" src="../assets/screens/unlirice-automation.webp" alt="Unli Rice shared note history and contribution view" width="1400" height="879"></a>
-            <a class="app-window disk-window" href="/#unlidisk" aria-label="Explore Unli Disk"><div class="window-chrome"><img src="../assets/unlidisk-icon.png" alt="" width="20" height="20">Unli Disk <span>↗</span></div><img class="screen" src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk storage map and directory breakdown" width="1400" height="879"></a>
-            <a class="app-window wedding-window" href="/#wedding-concierge" aria-label="Explore Wedding Concierge"><div class="window-chrome"><img src="../assets/nuptia-icon.png" alt="" width="20" height="20">Wedding Concierge <span>↗</span></div><img class="screen" src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge assistant and planning interface" width="1400" height="1049"></a>
-          </div>
-          <div class="studio-caption"><span class="moon" aria-hidden="true">☾</span><p>Independent studio<br><small>Built after Oscar sleeps</small></p></div>
+        <div class="intro-copy">
+          <p>My full-time work is in enterprise HR, where every record belongs to a person and a system has to hold up on an ordinary Monday morning.</p>
+          <p>I bring the same four questions to every app I build. Here is where each one changed a real product.</p>
         </div>
       </div>
-      <div class="bench-key"><span>HR brings the human context.</span><span>The apps make the engineering visible.</span></div>
-      <details class="portfolio-story technical-tree">
-        <summary>For the technically curious: explore the system behind the apps</summary>
-      <section class="node-section" aria-labelledby="tree-title">
-        <div class="chapter"><span>The system behind the work</span><h2 id="tree-title">An idea, with a through-line.</h2></div>
-        <div class="node-tree">
-          <div class="root-node"><span class="node-symbol" aria-hidden="true">◉</span><div><small>Capture</small><h3>A thought worth building</h3></div><span class="node-caption">Voice → Notes</span></div>
+      <ol class="q-index" aria-label="The four questions">
+        <li><a href="#purpose"><span>01</span><strong>Purpose</strong><small>Which data does the task need?</small></a></li>
+        <li><a href="#access"><span>02</span><strong>Access</strong><small>What crosses a boundary?</small></a></li>
+        <li><a href="#oversight"><span>03</span><strong>Oversight</strong><small>Who checks the answer?</small></a></li>
+        <li><a href="#recovery"><span>04</span><strong>Recovery</strong><small>How is a mistake undone?</small></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== Four questions ===================== -->
+  <section class="questions" id="questions" aria-labelledby="questions-title">
+    <div class="wrap">
+      <h2 id="questions-title" class="q-title">Four questions, four decisions you can see <span>Each screenshot is cropped from the shipped app; the outline marks the part that answers the question.</span></h2>
+
+      <ol class="evidence">
+        <li class="ev" id="purpose">
+          <div class="ev-q">
+            <span class="ev-num">01</span>
+            <h3>Purpose</h3>
+            <p class="question">Which data does the task actually need?</p>
+            <div class="ev-answer">
+              <p><strong>Unli Rice Capture</strong> turns speech into a note on the phone. The audio never leaves it, and nothing syncs until you choose an iCloud folder yourself.</p>
+              <a href="../#unli-rice-capture">See the app →</a>
+            </div>
+          </div>
+          <figure class="ev-fig">
+            <div class="crop">
+              <img src="../assets/screens/capture-private.jpg" alt="Unli Rice Capture welcome screen, cropped: Tap to record; It’s saved as a note; Private by default — transcription happens entirely on this device, audio never leaves your phone, and nothing leaves the phone until you choose an iCloud folder" width="900" height="552" loading="lazy" decoding="async">
+              <span class="mark-box" style="left:5%; top:60%; width:90%; height:37%;" aria-hidden="true"></span>
+            </div>
+            <figcaption><span>Unli Rice Capture · iPhone</span><span class="shot-label">Product screenshot, cropped</span></figcaption>
+          </figure>
+        </li>
+
+        <li class="ev" id="access">
+          <div class="ev-q">
+            <span class="ev-num">02</span>
+            <h3>Access</h3>
+            <p class="question">What crosses a boundary, and who allows it?</p>
+            <div class="ev-answer">
+              <p><strong>Unli Rice</strong> never opens or edits another tool’s settings. It gives you a block to paste yourself. In <strong>Wedding Concierge</strong>, the AI key lives on a server relay, never in the app.</p>
+              <a href="../#unli-rice">See the app →</a>
+            </div>
+          </div>
+          <figure class="ev-fig">
+            <div class="crop">
+              <img src="../assets/screens/unlirice-connect.jpg" alt="Unli Rice Connect screen, cropped: copy a configuration block and paste it into your tool yourself; under each tool, Unli Rice never opens or edits this file" width="1367" height="480" loading="lazy" decoding="async">
+              <span class="mark-box" style="left:1%; top:69%; width:54%; height:11%;" aria-hidden="true"></span>
+              <span class="mark-box" style="left:85%; top:60.5%; width:13.8%; height:10.5%;" aria-hidden="true"></span>
+            </div>
+            <figcaption><span>Unli Rice · Mac</span><span class="shot-label">Product screenshot, cropped</span></figcaption>
+          </figure>
+        </li>
+
+        <li class="ev" id="oversight">
+          <div class="ev-q">
+            <span class="ev-num">03</span>
+            <h3>Oversight</h3>
+            <p class="question">Who checks the answer before it counts?</p>
+            <div class="ev-answer">
+              <p><strong>Wedding Concierge</strong> answers from real map and place searches, not the model’s memory, and says it can make mistakes right where you read it. <strong>Shuttle Vision</strong> doesn’t judge a disputed rally: it replays it and lets the players decide.</p>
+              <a href="../#wedding-concierge">See the app →</a>
+            </div>
+          </div>
+          <figure class="ev-fig">
+            <div class="crop">
+              <img src="../assets/screens/nuptia-concierge-chat.jpg" alt="Wedding Concierge chat, cropped: the header reads AI can make mistakes — always double-check details; below, the concierge adds a guest and lists a local bus operator with capacity and a starting price" width="950" height="675" loading="lazy" decoding="async">
+              <span class="mark-box light" style="left:5.5%; top:3%; width:38%; height:7.5%;" aria-hidden="true"></span>
+            </div>
+            <figcaption><span>Wedding Concierge · iPad</span><span class="shot-label">Product screenshot, cropped</span></figcaption>
+          </figure>
+        </li>
+
+        <li class="ev" id="recovery">
+          <div class="ev-q">
+            <span class="ev-num">04</span>
+            <h3>Recovery</h3>
+            <p class="question">If something goes wrong, how is it undone?</p>
+            <div class="ev-answer">
+              <p><strong>ClearSpace</strong> never sweeps a hearted photo, and everything it clears goes to Recently Deleted — up to 30 days to change your mind. <strong>Unli Disk</strong> only ever moves files to the Trash.</p>
+              <a href="../#clearspace">See the app →</a>
+            </div>
+          </div>
+          <figure class="ev-fig">
+            <div class="crop">
+              <img src="../assets/screens/clearspace-coreloop-detail.jpg" alt="ClearSpace core loop, cropped: sorted by size or month; heart to keep, so sweeps never delete it; clear the rest into Apple Photos’ Recently Deleted" width="760" height="505" loading="lazy" decoding="async">
+              <span class="mark-box" style="left:4%; top:72%; width:92%; height:26%;" aria-hidden="true"></span>
+            </div>
+            <figcaption><span>ClearSpace · iPhone</span><span class="shot-label">Product screenshot, cropped</span></figcaption>
+          </figure>
+        </li>
+      </ol>
+
+      <div class="law-note">
+        <h3>Where the questions come from</h3>
+        <div>
+          <p>They follow the principles of the <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">GDPR</a> and, where AI is involved, the <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3">EU AI Act</a>, which lists AI used in recruitment and decisions about workers as high-risk. In HR, I separate AI that helps with administration from AI that evaluates people or influences employment decisions; the use case decides how much risk, fairness and human oversight work it needs.</p>
+          <p>This year I’ve also studied AI regulation, governance and risk mapping to keep those answers current. Asking the questions isn’t a compliance guarantee; it means the conversation with privacy and legal specialists starts from real answers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Data lanes ===================== -->
+  <section class="chapter" id="data" aria-labelledby="data-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Systems</p>
+          <h2 id="data-title">Where each app’s data goes.</h2>
+        </div>
+        <p>Data stays as close to you as the job allows. A server appears only where the job needs one, and its role is stated.</p>
+      </header>
+      <ul class="lanes" aria-label="Where each app’s data goes: on your device, your own iCloud, or a server">
+        <li class="lane lane-head" aria-hidden="true">
+          <span class="lane-app">App</span>
+          <span class="zones"><span>Your device</span><span>Your iCloud</span><span>A server</span></span>
+          <span class="lane-note"></span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><img src="../assets/icons/clearspace.png" alt="" width="28" height="28">ClearSpace</span>
+          <span class="track" aria-hidden="true"><i class="dot" style="--at:16.66%"></i></span>
+          <span class="lane-note">Photos are sorted and reviewed on the iPhone or iPad. No telemetry.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><img src="../assets/icons/unli-disk.png" alt="" width="28" height="28">Unli Disk</span>
+          <span class="track" aria-hidden="true"><i class="dot" style="--at:16.66%"></i></span>
+          <span class="lane-note">Scans and cleans on the Mac. Deletions go to the Trash.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><span class="pair-icons"><img src="../assets/icons/shuttle-vision.png" alt="" width="28" height="28"><img src="../assets/icons/kitchen-vision.png" alt="" width="28" height="28"></span>Shuttle &amp; Kitchen Vision</span>
+          <span class="track" aria-hidden="true"><i class="dot" style="--at:16.66%"></i></span>
+          <span class="lane-note">Phones link to each other directly for replay and scoring. No router, no server.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><img src="../assets/icons/unli-rice-capture.png" alt="" width="28" height="28">Unli Rice Capture</span>
+          <span class="track" aria-hidden="true"><i class="flow opt" style="--from:16.66%; --to:50%"></i><i class="dot" style="--at:16.66%"></i><i class="dot opt" style="--at:50%"></i></span>
+          <span class="lane-note">Speech becomes text on the phone. Notes move only to an iCloud folder you choose.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><img src="../assets/icons/unli-rice.png" alt="" width="28" height="28">Unli Rice</span>
+          <span class="track" aria-hidden="true"><i class="flow opt" style="--from:16.66%; --to:83.33%"></i><i class="dot" style="--at:16.66%"></i><i class="dot opt" style="--at:83.33%"></i></span>
+          <span class="lane-note">Notes live on your Mac. They reach an AI service only through the AI tools you connect, under those tools’ own terms.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><img src="../assets/icons/wedding-concierge.png" alt="" width="28" height="28">Wedding Concierge</span>
+          <span class="track" aria-hidden="true"><i class="flow" style="--from:16.66%; --to:83.33%"></i><i class="dot" style="--at:16.66%"></i><i class="dot" style="--at:50%"></i><i class="dot" style="--at:83.33%"></i></span>
+          <span class="lane-note">Plans sync through your iCloud. Questions to the concierge go through a relay that holds the AI key and limits use.</span>
+        </li>
+        <li class="lane">
+          <span class="lane-app"><span class="og-chip" aria-hidden="true">OG</span>OpenGrail</span>
+          <span class="track" aria-hidden="true"><i class="dot" style="--at:16.66%"></i></span>
+          <span class="lane-note">Static pages in your browser: no accounts, no analytics, no AI service while you read.</span>
+        </li>
+      </ul>
+      <p class="lanes-key"><span><i aria-hidden="true"></i>Always</span><span><i class="opt" aria-hidden="true"></i>Only if you choose</span></p>
+    </div>
+  </section>
+
+  <!-- ===================== Unli Rice ===================== -->
+  <section class="chapter" id="unli-rice" aria-labelledby="rice-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Accountable AI work · Unli Rice</p>
+          <h2 id="rice-title">The context carries over. The work stays visible.</h2>
+        </div>
+        <p>Unli Rice is more than shared memory. It gives every connected AI session the same starting point, and shows what is still open across your projects.</p>
+      </header>
+      <div class="rice">
+        <div class="rice-side">
+          <figure class="rice-fig">
+            <div class="crop"><img src="../assets/screens/unlirice-profile.jpg" alt="Unli Rice home screen, cropped: One memory your AI tools share; What your AI knows about you, with a profile listing the role and the mission — build thoughtful, well-crafted apps at a sustainable, honest pace" width="1162" height="654" loading="lazy" decoding="async"></div>
+            <figcaption><strong>What carries over:</strong> who is building and for whom, the problem and intent behind each project, and the house rules every connected assistant reads at the start of a session.</figcaption>
+          </figure>
+          <figure class="rice-fig">
+            <div class="widget" aria-hidden="true">
+              <div class="widget-top"><b>To do</b><span>4 to do</span></div>
+              <ul>
+                <li><i></i><span>Reply to the two new App Store reviews<small>Suggested by Claude · Recipe Box</small></span></li>
+                <li><i></i><span>Add a dark-mode screenshot to the listing<small>Suggested by Codex · Recipe Box</small></span></li>
+                <li><i></i><span>Renew the web address before 12 October<small>Suggested by ChatGPT · Garden Planner</small></span></li>
+              </ul>
+              <p class="more">+1 more, open Unli Rice</p>
+            </div>
+            <figcaption><strong>The widget</strong> keeps follow-ups your AI assistants filed in view, in plain words, with a Done button. <span class="shot-label">Illustration</span></figcaption>
+          </figure>
+        </div>
+        <figure class="rice-fig">
+          <div class="crop pins">
+            <img src="../assets/screens/unlirice-todo.jpg" alt="Unli Rice To Do screen with demo projects Recipe Box and Garden Planner: one piece of work saved only on this Mac, a next step written in the project’s notes, four follow-ups suggested by Claude, Codex and ChatGPT with Done and Fix with AI buttons, and finished work not yet merged" width="1600" height="1000" loading="lazy" decoding="async">
+            <span class="pin" style="left:13%; top:13.5%;" aria-hidden="true">1</span>
+            <span class="pin" style="left:13%; top:28.8%;" aria-hidden="true">2</span>
+            <span class="pin" style="left:13%; top:44.7%;" aria-hidden="true">3</span>
+            <span class="pin" style="left:13%; top:90.5%;" aria-hidden="true">4</span>
+          </div>
+          <figcaption><span class="shot-label">Product screenshot · Unli Rice 1.3 with a demo vault, no real projects</span></figcaption>
+          <ol class="pin-key">
+            <li><b aria-hidden="true">1</b><span><strong>Not backed up.</strong> Work in a granted project folder that exists only on this Mac.</span></li>
+            <li><b aria-hidden="true">2</b><span><strong>Next step.</strong> What the project’s own notes say should happen next.</span></li>
+            <li><b aria-hidden="true">3</b><span><strong>Suggested by AI.</strong> Follow-ups an assistant filed, with who suggested them and when.</span></li>
+            <li><b aria-hidden="true">4</b><span><strong>Not merged yet.</strong> Finished work that isn’t part of the main version.</span></li>
+          </ol>
+          <div class="rice-limits">
+            <p><strong>What the status can know.</strong> It is read from the folders you grant and the remote branches each repository already knows about. It doesn’t contact remotes or count commits, and items disappear once the work is actually done.</p>
+            <p><strong>What instructions can do.</strong> House rules guide connected assistants; they can’t force them to follow. That’s why changes are proposed for a person to accept, and notes are append-only.</p>
+          </div>
+          <div class="rice-links"><a href="../unlirice/">Unli Rice product page →</a><a href="https://github.com/CalixOscar/unli-rice">Read the source →</a></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Craft ===================== -->
+  <section class="chapter" id="craft" aria-labelledby="craft-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <div>
+          <p class="kicker">Building with AI</p>
+          <h2 id="craft-title">Built isn’t done. Done isn’t good.</h2>
+        </div>
+        <p>AI makes a polished-looking first version cheap. That is exactly when it’s easiest to stop too early, or to ship something that looks like every other app. Four habits keep the speed honest.</p>
+      </header>
+      <div class="craft">
+        <figure class="intent-doc">
+          <p class="doc-title">INTENT-005 — The AI to-do list, on screen, in plain words</p>
+          <ol aria-label="Sections of the intent document">
+            <li class="hi">The problem</li>
+            <li>Who hits it, and when</li>
+            <li class="hi">What “solved” looks like</li>
+            <li class="hi">Explicitly out of scope</li>
+            <li>Fixed constraints</li>
+            <li>Questions discovery could not settle</li>
+          </ol>
+          <figcaption>Section headings from a real intent document, written before the Unli Rice To Do widget was planned. It is never edited to match what got built; if it was wrong, a new one replaces it.</figcaption>
+        </figure>
+        <ol class="habits">
+          <li>
+            <h3>Intent before generation</h3>
+            <p>Every risky feature starts with an intent document: the problem, who meets it, what “solved” looks like and what is out of scope. The studio’s point of view is written down too: <strong>an app succeeds when you finish what you came to do and put the phone down</strong> — no streaks, infinite feeds or notification spam.</p>
+          </li>
+          <li>
+            <h3>Standards in the machine</h3>
+            <p>The same guardrails reach every AI tool at the start of a session. Where a rule can be checked, it is: <strong>a pre-commit hook scans every commit for secrets and misplaced plans</strong>, whichever tool wrote it.</p>
+          </li>
+          <li>
+            <h3>Edit after building</h3>
+            <p>A second model tries to break the plan before any code exists, and no tool’s “success” counts until the diff and a real build agree. <strong>OpenGrail’s generated first pass pinned 127 traditions to one spot near Jerusalem</strong>; it was rebuilt around a sourcing rule rather than patched.</p>
+          </li>
+          <li>
+            <h3>Spend the saved time on the unusual</h3>
+            <p>Speed goes into what a template wouldn’t produce: replay angles from three phones with no router, photo sizes estimated per codec, an atlas instead of 695 pages. <strong>Unusual ideas stay when they help the user</strong>; ones that only slow things down, like Unli Disk’s on-device vision model, go.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="traps">
+        <div><span>The probable</span><p><strong>Does it look like every other app?</strong> A model’s first answer is the most common one, not the one this user needs.</p></div>
+        <div><span>The microwave burrito</span><p><strong>Did I accept it because it looked finished fast?</strong> Strip the styling and walk the whole journey, failures included.</p></div>
+        <div><span>The disposable</span><p><strong>Will someone be able to maintain this next year?</strong> Cheap to make is not the same as cheap to own.</p></div>
+      </div>
+      <p class="credit">The three traps and “built isn’t done, done isn’t good” are borrowed from Katie Dill’s talk at Stripe, “How to scale intent, quality, and artistry with AI.”</p>
+
+      <!-- Technical detail, collapsed by default -->
+      <details class="tech">
+        <summary>
+          <span class="sym" aria-hidden="true">⌥</span>
+          <span><strong>For the technically curious: the pipeline behind the apps</strong><small>Which model does what, and where a person checks the work.</small></span>
+          <span class="state" aria-hidden="true">Expand</span>
+        </summary>
+        <div class="tree">
+          <div class="t-node"><div><small>Capture</small><h3>A thought worth building</h3><p>Spoken into Capture or written as a note</p></div></div>
           <div class="trunk" aria-hidden="true"></div>
-          <div class="vault-node"><img src="../assets/unli-rice-icon.png" alt="" width="44" height="44"><div><small>Persistent context / MCP</small><h3>Unli Rice</h3></div><span class="node-caption">The context travels with the work</span></div>
-          <ul class="context-branches" aria-label="The context Unli Rice carries">
-            <li><span class="branch-icon" aria-hidden="true">◎</span><h4>Identity</h4><p>Creator &amp; user</p></li>
-            <li><span class="branch-icon" aria-hidden="true">◇</span><h4>Intent</h4><p>Problem &amp; outcome</p></li>
-            <li><span class="branch-icon" aria-hidden="true">⊞</span><h4>Guardrails</h4><p>Boundaries &amp; standards</p></li>
-            <li><span class="branch-icon" aria-hidden="true">⑂</span><h4>Repositories</h4><p>Branches &amp; worktrees</p></li>
+          <div class="t-node vault"><img src="../assets/icons/unli-rice.png" alt="" width="40" height="40"><div><small>Shared context over MCP</small><h3>Unli Rice</h3><p>The context travels with the work</p></div></div>
+          <div class="trunk" aria-hidden="true"></div>
+          <ul class="branches" aria-label="The context Unli Rice carries">
+            <li><h4>Identity</h4><p>Creator and user</p></li>
+            <li><h4>Intent</h4><p>Problem and outcome</p></li>
+            <li><h4>Guardrails</h4><p>Boundaries and standards</p></li>
+            <li><h4>Repositories</h4><p>Branches and worktrees</p></li>
           </ul>
           <div class="trunk" aria-hidden="true"></div>
-          <ol class="agent-path" aria-label="The review path for higher-risk changes">
-            <li><small>Spark</small><h4>Frame</h4><p>Feasibility</p></li><li><small>Astra</small><h4>Challenge</h4><p>The intent</p></li><li><small>Claude</small><h4>Plan</h4><p>Architecture</p></li><li><small>Codex</small><h4>Stress-test</h4><p>The plan</p></li><li><small>Claude</small><h4>Revise</h4><p>The trade-offs</p></li><li><small>Build agents</small><h4>Implement</h4><p>The settled plan</p></li>
+          <ol class="agents" aria-label="The review path for higher-risk changes">
+            <li><small>Spark</small><h4>Frame</h4><p>Feasibility</p></li>
+            <li><small>Astra</small><h4>Challenge</h4><p>The intent</p></li>
+            <li><small>Claude</small><h4>Plan</h4><p>Architecture</p></li>
+            <li><small>Codex</small><h4>Pre-mortem</h4><p>The plan</p></li>
+            <li><small>Claude</small><h4>Revise</h4><p>The trade-offs</p></li>
+            <li><small>Build agents</small><h4>Implement</h4><p>The settled plan</p></li>
           </ol>
-          <p class="tree-note">Review depth follows risk. Small changes take a direct path.</p>
+          <p class="tree-note">Review depth follows risk: servers, payments, persisted data, AI features and new dependencies take this path. Copy and layout changes take a direct one.</p>
           <div class="trunk" aria-hidden="true"></div>
-          <div class="verify-node"><span aria-hidden="true">✓</span><div><h3>Verify against the work</h3><p>Diff · Tests · User journey · Security review where relevant</p></div></div>
-          <div class="output-branches">
-            <div class="output-product"><span class="eyebrow">Product</span><div class="output-icons"><img src="../assets/unli-rice-icon.png" alt="Unli Rice" width="48" height="48"><img src="../assets/nuptia-icon.png" alt="Wedding Concierge" width="48" height="48"><img src="../assets/unlidisk-icon.png" alt="Unli Disk" width="48" height="48"></div><h3>Useful software</h3><p>Release &amp; maintain</p></div>
-            <div class="widget-demo"><div class="widget-title"><h3>To Do</h3><span>Illustrative view</span></div><ul><li><i aria-hidden="true"></i><div>Check work not on a known remote<small>From the repository check</small></div></li><li><i aria-hidden="true"></i><div>Review the next product decision<small>AI-filed follow-up · Project context</small></div></li><li><i aria-hidden="true"></i><div>Continue where the last session stopped<small>A clear next step</small></div></li></ul></div>
-          </div>
-          <p class="tree-note">Repository status reflects the latest check and known remote refs. The widget keeps follow-ups visible.</p>
+          <div class="t-node verify"><div><small>Verify against the work</small><h3>Diff · build and tests · the user journey</h3><p>Plus a security review where it applies. A tool’s own “success” is not evidence.</p></div></div>
+          <div class="trunk" aria-hidden="true"></div>
+          <div class="t-node"><div><small>Ship</small><h3>Release and maintain</h3><p>Handoff notes and follow-ups land back in Unli Rice</p></div></div>
         </div>
-      </section>
       </details>
-      <section id="selected-work" aria-labelledby="work-heading">
-        <div class="chapter"><span>01 / In practice</span><h2 id="work-heading">Inside the apps.</h2></div>
-        <article class="project-row">
-          <figure class="project-visual"><img src="../assets/screens/unlirice-automation.webp" alt="Unli Rice showing note activity and contributions over time" width="1400" height="879" loading="lazy"><figcaption>Unli Rice · A view into the shared record</figcaption></figure>
-          <div class="project-copy"><span class="eyebrow">Context / Guardrails / Project follow-through</span><h3>Unli Rice</h3><p>A shared operating context for AI work: who is building, who the product serves, the problem to solve, and the intent and guardrails that guide it.</p><div class="decision"><p><strong>Know the intent. Know where the work stands.</strong><br>Repository checks surface branches, worktrees, and work not recorded on known remotes. Project status and AI-filed follow-ups feed the To Do list and desktop widget. Shared instructions guide agents; they do not guarantee obedience.</p></div><a href="/unlirice/">Explore the product ↗</a><a href="https://github.com/CalixOscar/unli-rice">Read the source ↗</a></div>
-        </article>
-        <article class="project-row">
-          <figure class="project-visual"><img src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge with an assistant conversation and planning navigation" width="1400" height="1049" loading="lazy"><figcaption>Wedding Concierge · The assistant inside a real workflow</figcaption></figure>
-          <div class="project-copy"><span class="eyebrow">AI / Integration</span><h3>Wedding Concierge</h3><p>Planning state, maps, vendor information, and an assistant in one product.</p><div class="decision"><p><strong>Design beyond the model.</strong><br>Trace the information, the service boundaries, and the user’s next step when a lookup fails.</p></div><a href="/#wedding-concierge">Explore the architecture ↗</a></div>
-        </article>
-        <article class="project-row">
-          <figure class="project-visual"><img src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk displaying disk usage, reclaimable space, and a directory breakdown" width="1400" height="879" loading="lazy"><figcaption>Unli Disk · Making storage understandable</figcaption></figure>
-          <div class="project-copy"><span class="eyebrow">Native software / Technical judgment</span><h3>Unli Disk</h3><p>A storage map and photo analysis built around the task.</p><div class="decision"><p><strong>Choose the right amount of AI.</strong><br>Photo comparison uses perceptual hashes, Apple Vision, and blur scoring. A model call is not required for every useful feature.</p></div><a href="/#unlidisk">Explore the product ↗</a></div>
-        </article>
-      </section>
-      <section class="principles" aria-labelledby="principles-heading">
-        <div class="chapter"><span>02 / The HR perspective</span><h2 id="principles-heading">A person behind every record.</h2></div>
-        <ol class="boundary-map" aria-label="Questions I bring to privacy and AI design">
-          <li><span class="step">01 →</span><h3>Purpose</h3><p>What is the task?<br>Which data is necessary?</p></li>
-          <li><span class="step">02 →</span><h3>Access</h3><p>Who can use it?<br>What crosses a boundary?</p></li>
-          <li><span class="step">03 →</span><h3>Oversight</h3><p>Who reviews the outcome?<br>Who remains accountable?</p></li>
-          <li><span class="step">04</span><h3>Lifecycle</h3><p>How long is it retained?<br>How do we recover?</p></li>
-        </ol>
-        <p class="references">Design questions informed by <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">GDPR</a> and the <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3">EU AI Act</a>.</p>
-        <details class="portfolio-story"><summary>How this shapes my approach to AI</summary><p>I distinguish administrative assistance from AI that evaluates candidates or influences employment decisions. The use case determines the questions about risk, fairness, traceability, and meaningful human oversight, with privacy and legal specialists involved where needed.</p></details>
-      </section>
-      <section aria-labelledby="method-heading">
-        <div class="chapter"><span>03 / From idea to upkeep</span><h2 id="method-heading">Make it useful. Keep it accountable.</h2></div>
-        <ol class="working-path">
-          <li><span>01</span><h3>Frame</h3><p>User, task, outcome.<br>Clear boundaries.</p></li>
-          <li><span>02</span><h3>Challenge</h3><p>Review matches risk.<br>Trade-offs stay visible.</p></li>
-          <li><span>03</span><h3>Build &amp; verify</h3><p>The whole journey.<br>Failure and recovery too.</p></li>
-          <li><span>04</span><h3>Maintain</h3><p>Evidence, limitations,<br>and a usable handoff.</p></li>
-        </ol>
-      </section>
-      <details class="portfolio-story"><summary>The studio, and Oscar</summary><p>Outside my enterprise HR role, I’m building calmdownoscar into an independent software studio — usually after my son Oscar falls asleep. After years away, I’ve returned to learning and building software as a deliberate step towards making development my career. The studio is where I turn everyday problems into applications and explore how AI can do useful, accountable work.</p></details>
-      <div class="portfolio-close"><div><h2>Find something useful.</h2><p>Independent products, built alongside my enterprise work. Questions about an app or a collaboration? Get in touch.</p></div><div class="portfolio-actions"><a class="primary-link" href="/#apps">Apps &amp; purchase options ↗</a><a href="mailto:peter@calmdownoscar.com?subject=Product%20or%20collaboration%20enquiry">Get in touch ↗</a></div></div>
+    </div>
+  </section>
+
+  <!-- ===================== Close ===================== -->
+  <section aria-labelledby="close-title">
+    <div class="wrap close">
+      <div>
+        <h2 id="close-title">Working on something where these questions matter?</h2>
+        <p>Whether it’s one of the apps or a problem of your own, I’m glad to talk it through. The rules behind every app are on <a href="../the_studio/">the studio page</a>.</p>
+      </div>
+      <div class="actions">
+        <a class="primary" href="../#apps">Apps &amp; purchase options</a>
+        <a href="mailto:peter@calmdownoscar.com?subject=Product%20or%20collaboration%20enquiry">peter@calmdownoscar.com →</a>
+      </div>
     </div>
   </section>
 
@@ -478,75 +663,36 @@
 
 <script>
 (function(){
-  var revealEls = document.querySelectorAll('.reveal');
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduceMotion.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(function(el){ io.observe(el); });
+  // Expand/collapse label on the technical tree
+  var tech = document.querySelector('.tech');
+  if (tech){
+    var state = tech.querySelector('.state');
+    tech.addEventListener('toggle', function(){ if (state) state.textContent = tech.open ? 'Collapse' : 'Expand'; });
   }
 
-  // --- Mobile nav disclosure ---
+  // Mobile nav disclosure
   var navToggle = document.querySelector('.nav-toggle');
   var topbar = document.querySelector('.topbar');
   var mainNav = document.getElementById('main-nav');
-
+  if (!navToggle || !topbar) return;
   function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
+    if (!topbar.classList.contains('nav-open')) return;
     topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-expanded', 'false');
   }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
+  navToggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (topbar.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
+    else { topbar.classList.add('nav-open'); navToggle.setAttribute('aria-expanded', 'true'); }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && topbar.classList.contains('nav-open')){ closeNav(); navToggle.focus(); }
+  });
+  document.addEventListener('click', function(e){
+    if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)) closeNav();
+  });
+  if (mainNav) mainNav.querySelectorAll('a').forEach(function(link){ link.addEventListener('click', closeNav); });
+  window.addEventListener('resize', function(){ if (window.innerWidth >= 768) closeNav(); });
 })();
 </script>
 </body>
