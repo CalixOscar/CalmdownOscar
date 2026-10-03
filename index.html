@@ -617,6 +617,33 @@
   .about{ padding:40px 0 76px; }
   .about-content p{ font-size:16px; color:var(--ink); line-height:1.65; margin-bottom:14px; }
   .about-content p.about-sub{ font-size:15px; color:var(--muted); margin-bottom:20px; }
+
+  /* A product shelf first; the builder’s story follows the work. */
+  .shop-hero{display:block;min-height:0;padding:48px 0 28px;}
+  .shop-intro{display:grid;grid-template-columns:1.15fr 1fr;gap:48px;align-items:end;margin-bottom:32px;}
+  .shop-eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:16px;}
+  .shop-hero h1{font-size:clamp(40px,6vw,76px);line-height:1.04;letter-spacing:-.045em;max-width:none;}
+  .shop-intro>p{color:var(--muted);max-width:36ch;font-size:16px;padding-bottom:5px;}
+  .product-stage{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:stretch;}
+  .product-stage a{text-decoration:none;display:block;border:1px solid var(--edge);border-radius:12px;background:#141b22;overflow:hidden;}
+  .product-stage a:hover{border-color:var(--accent);}
+  .stage-main{display:flex!important;flex-direction:column;justify-content:space-between;background:radial-gradient(ellipse at top,#29405a,#111820)!important;}
+  .stage-caption{display:flex;align-items:center;gap:12px;padding:22px;}
+  .stage-caption img{border-radius:9px;flex-shrink:0;}.stage-caption span{margin-left:auto;color:var(--accent-ink);font-size:22px;}
+  .stage-caption h2,.stage-sport h2{font-size:20px;letter-spacing:-.02em;color:var(--ink);}.stage-caption p,.stage-sport p{color:var(--muted);font-size:13px;}
+  .stage-screen{width:calc(100% - 36px);height:auto;margin:20px 0 0 36px;border-top:1px solid #657b92;border-left:1px solid #657b92;border-radius:8px 0 0;box-shadow:0 10px 30px #0006;}
+  .stage-side{display:grid;grid-template-rows:1fr auto;gap:20px;}.stage-side>a:first-child{background:linear-gradient(130deg,#202c38,#141b22);}
+  .phone-pair{height:270px;overflow:hidden;display:flex;justify-content:center;gap:16px;padding:8px 20px 0;}
+  .phone-pair img{width:128px;height:auto;align-self:flex-start;border-radius:18px;border:3px solid #3c454f;box-shadow:0 14px 30px #0006;}.phone-pair img+img{margin-top:36px;}
+  .stage-sport{display:grid!important;grid-template-columns:42% 1fr;gap:18px;align-items:center;}.stage-sport>img{width:100%;height:125px;object-fit:cover;object-position:top;}.stage-sport>div{padding:12px 12px 12px 0;}
+  .shop-shortcuts{display:flex;justify-content:space-between;gap:24px;padding:20px 0;font-size:13px;}.shop-shortcuts a{padding:10px 0;}
+  .app-index{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}.index-tile{padding:0;overflow:hidden;gap:12px;}.index-tile-top,.index-tile .index-name,.index-desc,.index-pills{margin-left:16px;margin-right:16px;}.index-pills{margin-bottom:18px;}.index-desc{font-size:13px;}
+  .tile-preview{height:180px;background:#10161d;border-bottom:1px solid var(--edge);overflow:hidden;}.tile-preview img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;}.portrait-preview img{object-fit:contain;padding:12px 0 0;}
+  #apps,.app-grid article{scroll-margin-top:95px;}
+  @media(max-width:800px){.shop-intro{gap:24px;}.app-index{grid-template-columns:repeat(2,minmax(0,1fr));}.product-stage{gap:14px;}.stage-side{gap:14px;}.stage-caption{padding:16px;}.phone-pair{height:230px;gap:10px;}.phone-pair img{width:100px;}.stage-sport{grid-template-columns:1fr;gap:0;}.stage-sport>div{padding:12px 16px;}.stage-sport>img{height:100px;}}
+  @media(max-width:600px){.shop-intro,.product-stage{grid-template-columns:1fr;}.shop-hero{padding-top:32px;}.shop-intro>p{max-width:40ch;}.stage-side{grid-template-columns:1fr 1fr;grid-template-rows:auto;}.phone-pair{height:175px;padding:8px 10px 0;}.phone-pair img{width:75px;}.phone-pair img+img{display:none;}.stage-caption{align-items:start;}.stage-caption img{width:28px;height:28px;}.stage-caption span{display:none;}.stage-caption h2,.stage-sport h2{font-size:16px;}.stage-sport{display:flex!important;flex-direction:column;}.stage-sport>img{height:auto;flex:1;object-fit:cover;min-height:140px;}.app-index{gap:12px;}.tile-preview{height:135px;}.index-tile-top{flex-wrap:wrap;}.index-tile .index-name{font-size:16px;}.shop-shortcuts{flex-wrap:wrap;gap:0 16px;}}
+  @media(max-width:360px){.app-index,.stage-side{grid-template-columns:1fr;}.tile-preview{height:190px;}}
+
 </style>
 </head>
 <body>
@@ -640,19 +667,14 @@
 
 <main>
 
-  <!-- Welcome Studio Hero -->
-  <section class="hero">
+  <section class="hero shop-hero">
     <div class="wrap">
-      <div class="hero-inner">
-        <h1>Enterprise perspective. A builder’s curiosity<span class="stop">.</span></h1>
-        <p class="hero-intro">I'm Peter. I work full time in enterprise HR. Building apps is my hobby — usually after my son Oscar falls asleep. This is where I turn everyday problems into Apple apps and explore how AI can do useful, accountable work.</p>
-        <p class="hero-sub">My day job keeps me close to people, personal data, and operational realities. My apps let you inspect how I think, build, and make architectural trade-offs. Explore a product, or see the thinking behind the work.</p>
-        <div class="hero-links">
-          <a class="applink" href="how_I_work/">How I build <span class="arrow">→</span></a>
-          <a class="applink" href="#apps">Explore the apps <span class="arrow">↓</span></a>
-          <a class="applink" href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com <span class="arrow">↗</span></a>
-        </div>
+      <div class="shop-intro"><div><p class="shop-eyebrow">calmdownoscar / Independent software studio</p><h1>Less friction.<br>More living<span class="stop">.</span></h1></div><p>Apps for the photos, plans, ideas, and games that fill real life. Built from problems I’ve had myself.</p></div>
+      <div class="product-stage" aria-label="Featured apps">
+        <a class="stage-main" href="unlirice/"><div class="stage-caption"><img src="assets/unli-rice-icon.png" alt="" width="40" height="40"><div><h2>Unli Rice</h2><p>Keep your AI work moving.</p></div><span aria-hidden="true">↗</span></div><img class="stage-screen" src="assets/screens/unlirice-automation.webp" alt="Unli Rice showing project note activity and contributions" width="1400" height="879" fetchpriority="high"></a>
+        <div class="stage-side"><a href="apps/clearspace/"><div class="stage-caption"><img src="assets/clearspace-icon.png" alt="" width="36" height="36"><div><h2>ClearSpace</h2><p>Room for what matters.</p></div><span aria-hidden="true">↗</span></div><div class="phone-pair"><img src="assets/screens/clearspace-timeline.webp" alt="ClearSpace photo timeline ordered by size" width="350" height="760"><img src="assets/screens/clearspace-coreloop.webp" alt="ClearSpace photo review interface" width="350" height="760"></div></a><a class="stage-sport" href="shuttle_vision/"><img src="assets/screens/shuttlevision-scoreboard.webp" alt="Shuttle Vision badminton scoreboard" width="1400" height="900" loading="lazy"><div><h2>Shuttle Vision</h2><p>Back to the game. ↗</p></div></a></div>
       </div>
+      <div class="shop-shortcuts"><a href="#apps">Find your app ↓</a><a href="how_I_work/">How I build ↗</a></div>
     </div>
   </section>
 
@@ -664,6 +686,7 @@
 
         <!-- Wedding Concierge -->
         <a class="index-tile" href="#wedding-concierge">
+          <div class="tile-preview"><img src="assets/screens/nuptia-board.webp" alt="Wedding Concierge planning board" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/nuptia-icon.png" alt="Wedding Concierge icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>App Store</span>
@@ -678,12 +701,13 @@
 
         <!-- Unli Rice -->
         <a class="index-tile" href="#unli-rice">
+          <div class="tile-preview"><img src="assets/screens/unlirice-automation.webp" alt="Unli Rice note activity view" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/unli-rice-icon.png" alt="Unli Rice icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>Mac App Store</span>
           </div>
           <h3 class="index-name">Unli Rice</h3>
-          <p class="index-desc">Give your AI tools shared notes, decisions, and memory across sessions.</p>
+          <p class="index-desc">Give AI tools your identity, intent, guardrails, and a clear next step.</p>
           <div class="index-pills">
             <span class="pill">macOS</span>
             <span class="pill">iOS</span>
@@ -692,6 +716,7 @@
 
         <!-- Unli Rice Capture -->
         <a class="index-tile" href="#unli-rice-capture">
+          <div class="tile-preview portrait-preview"><img src="assets/screens/unlicapture-notes.webp" alt="Unli Rice Capture notes on iPhone" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/unli-rice-capture-icon.png" alt="Unli Rice Capture icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>App Store</span>
@@ -705,6 +730,7 @@
 
         <!-- ClearSpace -->
         <a class="index-tile" href="#clearspace">
+          <div class="tile-preview portrait-preview"><img src="assets/screens/clearspace-batch.webp" alt="ClearSpace photo review" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/clearspace-icon.png" alt="ClearSpace icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>App Store</span>
@@ -719,6 +745,7 @@
 
         <!-- Unli Disk -->
         <a class="index-tile" href="#unlidisk">
+          <div class="tile-preview"><img src="assets/screens/unlidisk-diskmap.webp" alt="Unli Disk storage map" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/unlidisk-icon.png" alt="Unli Disk icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>Mac App Store</span>
@@ -732,6 +759,7 @@
 
         <!-- OpenGrail -->
         <a class="index-tile" href="#opengrail">
+          <div class="tile-preview"><img src="assets/screens/opengrail-atlas.webp" alt="OpenGrail interactive atlas" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <div class="index-icon index-text-icon" aria-hidden="true">OG</div>
             <span class="index-status live"><i class="dot green"></i>Web</span>
@@ -745,6 +773,7 @@
 
         <!-- Shuttle Vision -->
         <a class="index-tile" href="#shuttlevision">
+          <div class="tile-preview"><img src="assets/screens/shuttlevision-scoreboard.webp" alt="Shuttle Vision badminton scoreboard" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/shuttle-vision-icon.png" alt="Shuttle Vision icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>App Store</span>
@@ -760,6 +789,7 @@
 
         <!-- Kitchen Vision -->
         <a class="index-tile" href="#kitchenvision">
+          <div class="tile-preview"><img src="assets/screens/kitchenvision-scoreboard.webp" alt="Kitchen Vision pickleball scoreboard" width="1400" height="900" loading="lazy" decoding="async"></div>
           <div class="index-tile-top">
             <img class="index-icon" src="assets/kitchen_vision/icon.png" alt="Kitchen Vision icon" width="32" height="32" loading="eager">
             <span class="index-status live"><i class="dot green"></i>App Store</span>
@@ -775,7 +805,7 @@
 
       </div>
 
-      <div class="section-label reveal">Apps & Case Studies</div>
+      <h2 class="section-label">Inside the apps</h2>
       <p class="section-lede reveal">How each app actually works: what runs on-device, what talks to a server, and why it's split that way.</p>
       <div class="app-grid">
 
@@ -1231,7 +1261,7 @@
       </div>
 
       <div style="margin-top:40px; text-align:center;">
-        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent-ink);">The thinking behind the apps <span class="arrow">→</span></a>
+        <a href="how_I_work/" class="applink" style="font-size:16px; font-weight:600; color:var(--accent-ink);">How the apps are built <span class="arrow">→</span></a>
       </div>
     </div>
   </section>
@@ -1241,8 +1271,9 @@
     <div class="wrap">
       <div class="section-label reveal">About</div>
       <div class="about-content reveal" style="max-width:68ch;">
-        <p>Oscar is my son — he's the reason this studio has a name, and he's still working on the calm part. The apps that make it to the App Store are built out of real necessity: tools born to solve my own development friction, or engineered to balance everyday life while raising a family.</p>
-        <p class="about-sub">I currently work full time in enterprise HR. App building is the hobby I make time for when Oscar sleeps: a place to test ideas, learn deeply, and take responsibility for a product from the first sketch through release and maintenance. Away from the keyboard, I’m usually thinking about quiet roads and riding motorcycles.</p>
+        <p>I’m Peter. Motorcycles are my hobby; Oscar is my son. In the Philippine riding community I know, “Oscar, calm down” is the joke when a rider does something a little unusual. At home, it fits a toddler who seems to be everywhere at once. The studio name belongs to both worlds.</p>
+        <p class="about-sub">I work full time in enterprise HR. After Oscar falls asleep, I turn everyday problems into applications and explore how AI can do useful, accountable work.</p>
+        <p class="about-sub">After years away, I’ve returned to learning and building software — a deliberate step towards making development my career. I like connecting fragmented systems, understanding where they fail, and building practical tools that make everyday life a little easier.</p>
         <div class="links" style="display:flex; flex-wrap:wrap; gap:16px 24px; padding-top:4px;">
           <a class="applink" href="https://apps.apple.com/developer/id1832327005">Apple Developer <span class="arrow">→</span></a>
           <a class="applink" href="https://github.com/CalixOscar">GitHub <span class="arrow">→</span></a>
@@ -1255,7 +1286,6 @@
 
 </main>
 
-  <!-- Work With Me CTA -->
 
 <footer>
   <div class="wrap foot-row">
