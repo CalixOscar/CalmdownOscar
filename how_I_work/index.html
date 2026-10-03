@@ -10,10 +10,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
-<title>How I Work — calmdownoscar</title>
-<meta name="description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, intent reads, pre-mortems, backend architecture, security audits, and post-mortems.">
+<title>How Peter Builds — Apple Apps &amp; AI Systems | calmdownoscar</title>
+<meta name="description" content="Peter combines a current full-time enterprise HR role with independent Apple app building. Explore his approach to security boundaries, operational resilience, and accountable AI.">
 <meta property="og:title" content="How I Work — calmdownoscar">
-<meta property="og:description" content="Multi-agent development methodology and engineering pipeline at calmdownoscar: voice capture, feasibility benchmarks, intent reads, pre-mortems, backend architecture, security audits, and post-mortems.">
+<meta property="og:description" content="Peter combines a current full-time enterprise HR role with independent Apple app building. Explore his approach to security boundaries, operational resilience, and accountable AI.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/how_I_work/">
 <link rel="canonical" href="https://www.calmdownoscar.com/how_I_work/">
@@ -235,6 +235,123 @@
     .reveal{ opacity:1; transform:none; transition:none; }
     html{ scroll-behavior:auto; }
   }
+
+  /* Portfolio: context, evidence, then detail. */
+  .how .wrap{max-width:1120px;}
+  .portfolio-intro{padding:30px 0 48px;}
+  .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+  .portfolio-intro h1{font-size:clamp(38px,6vw,72px);line-height:1.08;letter-spacing:-.045em;max-width:14ch;margin:20px 0 24px;}
+  .intro-row{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;}
+  .intro-row p{max-width:45ch;color:var(--muted);}
+  .portfolio-actions{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
+  .portfolio-actions a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;}
+  .primary-link{background:var(--accent);color:#141B22;padding:10px 18px;border-radius:6px;font-weight:650;}
+  .context-pair{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--edge);margin:0 0 72px;}
+  .context{padding:28px 32px;position:relative;}
+  .context+ .context{border-left:1px solid var(--edge);background:linear-gradient(120deg,rgba(133,182,255,.07),transparent);}
+  .context h2{font-size:24px;margin:8px 0;letter-spacing:-.02em;}
+  .context p{color:var(--muted);font-size:14px;max-width:40ch;}
+  .context small{display:block;margin-top:20px;color:var(--muted);font-size:12px;}
+  .chapter{display:flex;align-items:baseline;gap:18px;margin:0 0 30px;}
+  .chapter span{font-family:ui-monospace,monospace;color:var(--accent);font-size:12px;}
+  .chapter h2{font-size:clamp(24px,4vw,34px);letter-spacing:-.025em;}
+  .project-row{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:center;padding:32px 0;border-top:1px solid var(--edge);}
+  .project-visual{margin:0;background:#101419;border:1px solid var(--edge);border-radius:8px;overflow:hidden;}
+  .project-visual img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;object-position:top;}
+  .project-visual figcaption{font-size:11px;color:var(--muted);padding:10px 14px;}
+  .project-copy h3{font-size:27px;letter-spacing:-.025em;margin:8px 0 14px;}
+  .project-copy p{color:var(--muted);font-size:15px;max-width:42ch;}
+  .decision{border-left:2px solid var(--accent);padding-left:16px;margin:22px 0;}
+  .decision strong{color:var(--ink);font-weight:550;}
+  .project-copy a{display:inline-flex;align-items:center;min-height:44px;margin-right:18px;}
+  .principles{margin:72px 0;}
+  .boundary-map{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--edge);list-style:none;}
+  .boundary-map li{padding:24px 20px;min-width:0;}
+  .boundary-map li+li{border-left:1px solid var(--edge);}
+  .boundary-map .step{color:var(--accent);font-family:ui-monospace,monospace;font-size:12px;}
+  .boundary-map h3{font-size:17px;margin:14px 0 8px;}
+  .boundary-map p{color:var(--muted);font-size:13px;}
+  .references{margin-top:16px;color:var(--muted);font-size:12px;}
+  .references a{display:inline-block;padding:6px 0;}
+  .working-path{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;list-style:none;margin:24px 0 56px;}
+  .working-path li{border-top:2px solid var(--edge);padding-top:16px;}
+  .working-path span{color:var(--accent);font-size:12px;font-family:ui-monospace,monospace;}
+  .working-path h3{font-size:16px;margin:8px 0;}
+  .working-path p{font-size:13px;color:var(--muted);}
+  .portfolio-story{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);padding:18px 0;margin-bottom:48px;}
+  .portfolio-story summary{cursor:pointer;min-height:44px;align-content:center;}
+  .portfolio-story p{max-width:64ch;color:var(--muted);padding:12px 0;}
+  .portfolio-close{display:flex;justify-content:space-between;gap:32px;align-items:center;padding:32px 0 0;}
+  .portfolio-close h2{font-size:28px;letter-spacing:-.025em;}
+  .portfolio-close p{color:var(--muted);font-size:14px;margin-top:8px;max-width:44ch;}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}
+  @media(max-width:700px){
+    .intro-row,.context-pair,.project-row{grid-template-columns:1fr;gap:24px;}
+    .context-pair{gap:0;margin-bottom:48px;}
+    .context{padding:24px;}
+    .context+.context{border-left:0;border-top:1px solid var(--edge);}
+    .boundary-map,.working-path{grid-template-columns:1fr 1fr;}
+    .boundary-map li:nth-child(3){border-left:0;}
+    .boundary-map li:nth-child(n+3){border-top:1px solid var(--edge);}
+    .portfolio-close{flex-direction:column;align-items:flex-start;}
+    .principles{margin:48px 0;}
+    .project-row{padding:28px 0;}
+  }
+  @media(max-width:380px){.boundary-map,.working-path{grid-template-columns:1fr;}.boundary-map li+li{border-left:0;border-top:1px solid var(--edge);}}
+
+
+  /* The workbench conveys the relationship before the prose. */
+  .how .wrap{max-width:1280px;}
+  .workbench-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:28px 0 34px;}
+  .workbench-intro h1{font-size:clamp(40px,5.8vw,70px);line-height:1.03;letter-spacing:-.045em;margin-top:18px;}
+  .workbench{display:grid;grid-template-columns:240px minmax(0,1fr);border:1px solid var(--edge);border-radius:14px;background:radial-gradient(ellipse at 65% 45%,rgba(133,182,255,.12),transparent 65%),#111820;overflow:hidden;}
+  .human-zone{padding:34px 22px;background:rgba(188,217,232,.04);border-right:1px dashed rgba(188,217,232,.35);display:flex;flex-direction:column;align-items:center;color:var(--pacifier);}
+  .human-zone svg{width:100%;max-width:200px;height:auto;}
+  .bench-label{font-size:12px;text-align:center;}
+  .boundary-line{border:1px solid rgba(188,217,232,.3);border-radius:6px;padding:10px;margin:24px 0;width:100%;text-align:center;font-size:10px;}
+  .record-stack{position:relative;width:95px;height:80px;margin:10px 0 24px;}
+  .record-stack i{position:absolute;width:75px;height:65px;border:1px solid rgba(188,217,232,.4);border-radius:5px;background:repeating-linear-gradient(to bottom,#17232d 0px,#17232d 12px,#436071 13px,#17232d 14px);}
+  .record-stack i:nth-child(1){left:0;top:0;}.record-stack i:nth-child(2){left:10px;top:8px;}.record-stack i:nth-child(3){left:20px;top:16px;}
+  .human-zone p,.studio-caption p{font-size:14px;line-height:1.5;}.human-zone small,.studio-caption small{color:var(--muted);font-size:11px;}
+  .build-zone{position:relative;min-height:780px;padding:30px;}
+  .connector{position:absolute;top:105px;left:0;width:170px;color:rgba(133,182,255,.4);}.connector svg{width:100%;}
+  .editor-window{width:48%;margin-left:9%;background:#10151c;border:1px solid #3c4e61;border-radius:8px;box-shadow:0 16px 35px #0005;position:relative;}
+  .window-chrome{height:34px;padding:0 12px;display:flex;align-items:center;gap:8px;background:#1f2a36;color:#c5d2df;font-size:10px;border-bottom:1px solid #ffffff15;}
+  .window-chrome span:last-child{margin-left:auto;}.window-chrome img{border-radius:4px;}
+  .editor-body{height:150px;padding:14px;display:flex;gap:14px;position:relative;}
+  .code-gutter{font:11px/19px ui-monospace,monospace;color:#5b6c7d;}.code-lines{width:75%;padding-top:4px;}.code-lines i{display:block;height:5px;background:#85b6ff77;margin:0 0 14px;width:80%;border-radius:2px;}.code-lines i:nth-child(2n){width:60%;margin-left:12px;background:#bcd9e877;}.code-lines i:nth-child(3n){width:43%;margin-left:24px;background:#f2b57577;}
+  .system-nodes{position:absolute;bottom:14px;right:12px;display:flex;gap:6px;align-items:center;background:#10151c;padding:5px;}.system-nodes span{font:10px ui-monospace,monospace;padding:7px;border:1px solid #85b6ff66;border-radius:4px;}.system-nodes b{font-size:12px;font-weight:400;color:var(--accent);}
+  .editor-footer{font:10px ui-monospace,monospace;padding:8px 12px;border-top:1px solid #ffffff15;color:var(--muted);}
+  .apps-composition{position:relative;height:335px;margin-top:-42px;}
+  .app-window{display:block;position:absolute;border:1px solid #4c6075;border-radius:8px;overflow:hidden;background:#11151b;box-shadow:0 24px 40px #0008;text-decoration:none;transition:transform .2s ease,border-color .2s ease;}
+  .app-window:hover{transform:translateY(-5px);border-color:var(--accent);}.app-window .screen{display:block;width:100%;height:auto;}
+  .rice-window{width:55%;left:0;top:82px;z-index:2;}.disk-window{width:55%;left:22%;top:190px;z-index:3;}.wedding-window{width:34%;right:0;top:0;z-index:4;}
+  .studio-caption{position:absolute;right:28px;bottom:20px;display:flex;align-items:center;gap:12px;}.moon{font-size:36px;color:#f2c88c;}
+  .bench-key{display:flex;justify-content:space-between;gap:20px;padding:18px 2px 64px;font-size:12px;color:var(--muted);}
+  .project-row{grid-template-columns:1.4fr 1fr;gap:48px;}.project-visual img{aspect-ratio:auto;}.project-copy .eyebrow{font-size:11px;}
+  @media(max-width:850px){.workbench{grid-template-columns:180px minmax(0,1fr);}.build-zone{min-height:680px;padding:24px 14px;}.editor-window{width:67%;margin-left:0;}.apps-composition{height:290px;}.rice-window{width:63%;top:90px;}.disk-window{width:63%;left:14%;top:205px;}.wedding-window{width:42%;}.human-zone{padding:30px 14px;}.project-row{gap:26px;}}
+  @media(max-width:600px){.workbench-intro{align-items:start;flex-direction:column;}.workbench{grid-template-columns:1fr;}.human-zone{display:grid;grid-template-columns:76px 1fr;gap:8px 18px;border-right:0;border-bottom:1px dashed #bcd9e866;padding:20px;}.human-zone svg{grid-row:1 / 4;}.human-zone .bench-label{text-align:left;}.boundary-line{margin:0;width:fit-content;padding:6px;}.record-stack{display:none;}.human-zone p{font-size:12px;}.build-zone{min-height:650px;padding:24px 14px;}.editor-window{width:72%;}.apps-composition{margin-top:-25px;}.rice-window{width:67%;top:82px;}.disk-window{width:70%;left:10%;top:205px;}.wedding-window{width:43%;}.studio-caption{bottom:16px;}.bench-key{flex-direction:column;gap:4px;padding-bottom:48px;}.project-row{grid-template-columns:1fr;}.window-chrome{padding:0 8px;font-size:9px;}}
+  @media(prefers-reduced-motion:reduce){.app-window{transition:none;}.app-window:hover{transform:none;}}
+  #selected-work{scroll-margin-top:100px;}
+
+
+  .node-section{margin:0 0 72px;}
+  .node-tree{padding:34px;background:linear-gradient(180deg,#17212c,#10161e);border:1px solid var(--edge);border-radius:16px;}
+  .root-node,.vault-node,.verify-node{display:flex;align-items:center;gap:16px;max-width:640px;margin:auto;padding:20px 24px;border:1px solid #48607a;border-radius:10px;background:#1c2937;}
+  .root-node{max-width:510px;background:#18232e;}.node-tree h3{font-size:18px;}.node-tree small{font-size:11px;color:var(--accent);}.node-caption{font-size:11px;color:var(--muted);margin-left:auto;max-width:17ch;}.node-symbol{font-size:30px;color:var(--accent);}.vault-node img{border-radius:10px;}.vault-node{border-color:var(--accent);box-shadow:0 0 28px #85b6ff0c;}
+  .trunk{width:1px;height:28px;background:#6385a8;margin:auto;}
+  .context-branches{display:grid;grid-template-columns:repeat(4,1fr);list-style:none;padding-top:28px;position:relative;gap:16px;max-width:840px;margin:auto;}
+  .context-branches:before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:#6385a8;}.vault-node:after{content:none;}
+  .context-branches li{position:relative;padding:18px;text-align:center;border:1px solid #3d5268;border-radius:8px;background:#17232f;}.context-branches li:before{content:'';position:absolute;top:-28px;height:28px;left:50%;width:1px;background:#6385a8;}.branch-icon{display:block;color:var(--accent);font-size:26px;margin-bottom:8px;}.node-tree h4{font-size:14px;}.node-tree p{font-size:12px;color:var(--muted);}
+  .agent-path{display:grid;grid-template-columns:repeat(6,1fr);list-style:none;gap:10px;}.agent-path li{position:relative;border:1px solid #3d5268;background:#192530;border-radius:8px;padding:14px 10px;}.agent-path h4{margin:5px 0;}.agent-path li+li:before{content:'→';position:absolute;left:-11px;top:42%;color:var(--accent);font-size:10px;}
+  .tree-note{text-align:center;margin:16px auto 0;max-width:65ch;}.verify-node{border-color:#608f80;background:#192e29;}.verify-node>span{font-size:30px;color:#a3d8be;}
+  .output-branches{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px auto 0;max-width:800px;position:relative;}.output-branches:before{content:'';position:absolute;top:-28px;height:28px;width:1px;left:50%;background:#6385a8;}
+  .output-product{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border:1px solid #3d5268;border-radius:14px;}.output-icons{display:flex;gap:14px;margin:20px 0;}.output-icons img{border-radius:12px;}
+  .widget-demo{background:linear-gradient(140deg,#303132,#181b1e);border:1px solid #59616b;border-radius:22px;padding:24px;box-shadow:0 18px 35px #0003;}.widget-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;}.widget-title span{font-size:10px;color:var(--muted);}.widget-demo ul{list-style:none;}.widget-demo li{display:flex;gap:10px;margin:16px 0;font-size:13px;line-height:1.4;}.widget-demo i{display:block;width:16px;height:16px;border:1px solid #a3acb5;border-radius:50%;flex-shrink:0;margin-top:2px;}.widget-demo small{display:block;color:var(--muted);font-size:10px;margin-top:4px;}
+  @media(max-width:800px){.agent-path{grid-template-columns:repeat(3,1fr);}.agent-path li:nth-child(4):before{content:none;}.context-branches{gap:8px;}.context-branches li{padding:14px 6px;}}
+  @media(max-width:600px){.node-tree{padding:20px 14px;}.node-caption{display:none;}.context-branches{grid-template-columns:1fr 1fr;}.context-branches:before,.context-branches li:before{display:none;}.context-branches{border-top:1px solid #6385a8;margin-top:20px;padding-top:20px;}.agent-path{grid-template-columns:1fr 1fr;}.agent-path li:nth-child(3):before,.agent-path li:nth-child(5):before{content:none;}.agent-path li:nth-child(4):before{content:'→';}.output-branches{grid-template-columns:1fr;}.root-node,.vault-node,.verify-node{padding:16px;}.node-tree h3{font-size:16px;}.node-section{margin-bottom:48px;}}
+
+  .technical-tree .node-section{margin:24px 0 0;}
 </style>
 </head>
 <body>
@@ -258,239 +375,98 @@
 </header>
 
 <main>
-  <!-- 1. How I Work Section -->
   <section class="how" id="how">
     <div class="wrap">
-      <div class="section-label reveal">How I work</div>
-      <p class="section-lede reveal">I use several AI models that check each other's work before anything gets built. One writes the plan, a different one tries to break it, and nothing is accepted on a tool's own say-so; every result is checked against the actual code changes and a real test run. Below is the method, and why each step exists.</p>
-      <p class="section-lede reveal">The technical version: a six-stage multi-agent methodology, run in a fixed order: feasibility and prompt structuring → a read against the intent → the plan → a pre-mortem against the plan → the revision → the build. Each stage has one job, and no stage gets skipped because the work looks small.</p>
-      
-      <div class="grid">
-        <div class="card reveal">
-          <h3>01 · Voice Capture &amp; Vault Ingestion</h3>
-          <p>Ideas get spoken into the Unli Rice iOS app, transcribed to markdown, and synced to the local vault — the same ground-truth memory every connected MCP agent reads from, so no tool starts a session cold.</p>
+      <div class="workbench-intro"><div><p class="eyebrow">Peter · Enterprise HR + Independent software</p><h1>People in mind.<br>Software in hand.</h1></div><a href="/#apps" class="primary-link">Explore the apps ↗</a></div>
+      <div class="workbench" aria-label="A visual composition connecting people and protected data to software development and three real app interfaces">
+        <div class="human-zone">
+          <svg viewBox="0 0 200 160" role="img" aria-label="People connected to a protected employee record"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="40" cy="30" r="12"/><path d="M18 72v-8a22 22 0 0 1 44 0v8"/><circle cx="160" cy="30" r="12"/><path d="M138 72v-8a22 22 0 0 1 44 0v8"/><path d="M40 82v30h34m86-30v30h-34"/><rect x="76" y="85" width="48" height="54" rx="6"/><path d="M90 106v-7a10 10 0 0 1 20 0v7"/><rect x="87" y="106" width="26" height="20" rx="3"/><path d="M100 112v8"/></g></svg>
+          <span class="bench-label">People &amp; personal data</span>
+          <div class="boundary-line"><span>Purpose · Access · Oversight</span></div>
+          <div class="record-stack" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p>Enterprise HR<br><small>My full-time work</small></p>
         </div>
-        <div class="card reveal">
-          <h3>02 · Feasibility &amp; Prompt Structuring</h3>
-          <p>Gemini Spark is the first point of entry. It reads the raw vault text, checks technical feasibility, benchmarks what already exists, and structures the problem — context, root causes, and what to look at — into the handoff prompt Claude works from. Its output is raw material, not a plan.</p>
-        </div>
-        <div class="card reveal">
-          <h3>03 · The Intent Gets Attacked First</h3>
-          <p>Before anything is planned, GPT-6 Astra tries to break the intent doc: is the stated problem the real one, and is the &ldquo;explicitly not this&rdquo; list actually complete? That list is what a swarm's questions get checked against later, so a gap in it surfaces as improvised code three stages downstream. Astra runs the standing AI-failure lens list in the same pass. It returns objections and does not rewrite the intent &mdash; if the read changes what's wanted, that's a new intent doc superseding the old one, never an edit that quietly makes the original look right.</p>
-          <p>This stage exists because the chain used to have three checks and none of them looked at the intent. The plan got attacked, the model's behaviour got attacked, and the business case got attacked six months in &mdash; by which point a wrong premise had been built.</p>
-        </div>
-        <div class="card reveal">
-          <h3>04 · The Plan — and Claude Doesn't Build It</h3>
-          <p>Claude turns that prompt into the architecture: a file-by-file task list, the edge cases, the gotchas. It writes the plan into the project's own docs behind a short handoff pointer. If Claude finds itself starting a long mechanical pass, that's the signal to stop and write the plan instead — building is somebody else's stage.</p>
-        </div>
-        <div class="card wide reveal">
-          <h3>05 · Pre-Mortem, Then Revision</h3>
-          <p>Codex tries to break the plan on paper before any code exists: where the design fails, what the tests miss, which invariants are unguarded, what the plan assumed about the repo without checking. It returns objections, not a rewrite. Claude then takes a second pass — revising what the objections change, and saying plainly which it declines and why. The plan is settled when that pass ends, not before.</p>
-        </div>
-        <div class="card wide reveal">
-          <h3>06 · The Swarm Builds It — Over an MCP Bridge</h3>
-          <p>The settled plan is dispatched to the Antigravity swarm through a local MCP bridge rather than by hand. The bridge writes the plan into the target project folder and launches the headless <code>agy</code> CLI there with an explicit directory — necessary, because the swarm resolves its workspace from its own project state, not the shell's, and an unaddressed run silently attaches to whatever project was open last. It has done exactly that, into the wrong repo.</p>
-          <p>Nothing the swarm says about itself counts as evidence: a run whose tools were denied still exits clean and reports success. Every build is checked against <code>git diff</code> and a real test run. Anything the plan didn't anticipate goes back to Claude as a plan change, not an improvised fix. Near release Claude runs the security audit — secrets, server-side authorization, per-record ownership, receipt validation — and the app ships through the relay to the App Store. Afterward, Unli Disk clears simulators and dead-end repos off my own machine.</p>
+        <div class="build-zone">
+          <div class="connector" aria-hidden="true"><svg viewBox="0 0 180 100"><path d="M0 50H65Q85 50 85 30V20H180M85 50H180M85 50V80H180" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="85" cy="50" r="5" fill="currentColor"/></svg></div>
+          <div class="editor-window"><div class="window-chrome"><span aria-hidden="true">● ● ●</span><span>calmdownoscar / studio</span></div><div class="editor-body" aria-hidden="true"><div class="code-gutter">01<br>02<br>03<br>04<br>05<br>06</div><div class="code-lines"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="system-nodes"><span>UI</span><b>↔</b><span>State</span><b>↔</b><span>AI</span></div></div><div class="editor-footer">Architecture → Build → Verify</div></div>
+          <div class="apps-composition">
+            <a class="app-window rice-window" href="/unlirice/" aria-label="Explore Unli Rice"><div class="window-chrome"><img src="../assets/unli-rice-icon.png" alt="" width="20" height="20">Unli Rice <span>↗</span></div><img class="screen" src="../assets/screens/unlirice-automation.webp" alt="Unli Rice shared note history and contribution view" width="1400" height="879"></a>
+            <a class="app-window disk-window" href="/#unlidisk" aria-label="Explore Unli Disk"><div class="window-chrome"><img src="../assets/unlidisk-icon.png" alt="" width="20" height="20">Unli Disk <span>↗</span></div><img class="screen" src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk storage map and directory breakdown" width="1400" height="879"></a>
+            <a class="app-window wedding-window" href="/#wedding-concierge" aria-label="Explore Wedding Concierge"><div class="window-chrome"><img src="../assets/nuptia-icon.png" alt="" width="20" height="20">Wedding Concierge <span>↗</span></div><img class="screen" src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge assistant and planning interface" width="1400" height="1049"></a>
+          </div>
+          <div class="studio-caption"><span class="moon" aria-hidden="true">☾</span><p>Independent studio<br><small>Built after Oscar sleeps</small></p></div>
         </div>
       </div>
-
-      <div class="grid" style="margin-top:24px;">
-        <div class="card wide reveal">
-          <h3>What it has produced and caught</h3>
-          <p>Seven apps are published on the App Store under my own account (Nuptia, Unli Rice, Unli Rice Capture, Unli Disk, ClearSpace, Kitchen Vision and Shuttle Vision), plus the OpenGrail web atlas, all built solo with this method.</p>
-          <p>A generated first pass of the OpenGrail atlas had pinned 127 traditions to one point near Jerusalem, the Quakers among them, who began in 1650s Lancashire. The rule that followed is that a claim is derived from a source or it is removed. Origins were remapped against Wikidata, and 248 images whose real subject could not be tied to their tradition were deleted rather than re-captioned. The atlas now holds 695 traditions and 1,088 relationships. <a href="/#opengrail">Read the case study</a>.</p>
-          <p>The delegation failures above are real too: a swarm run that attached to the wrong project, and a run that reported success after its tools were denied. Both are why the checks are now written down and not assumed.</p>
+      <div class="bench-key"><span>HR brings the human context.</span><span>The apps make the engineering visible.</span></div>
+      <details class="portfolio-story technical-tree">
+        <summary>For the technically curious: explore the system behind the apps</summary>
+      <section class="node-section" aria-labelledby="tree-title">
+        <div class="chapter"><span>The system behind the work</span><h2 id="tree-title">An idea, with a through-line.</h2></div>
+        <div class="node-tree">
+          <div class="root-node"><span class="node-symbol" aria-hidden="true">◉</span><div><small>Capture</small><h3>A thought worth building</h3></div><span class="node-caption">Voice → Notes</span></div>
+          <div class="trunk" aria-hidden="true"></div>
+          <div class="vault-node"><img src="../assets/unli-rice-icon.png" alt="" width="44" height="44"><div><small>Persistent context / MCP</small><h3>Unli Rice</h3></div><span class="node-caption">The context travels with the work</span></div>
+          <ul class="context-branches" aria-label="The context Unli Rice carries">
+            <li><span class="branch-icon" aria-hidden="true">◎</span><h4>Identity</h4><p>Creator &amp; user</p></li>
+            <li><span class="branch-icon" aria-hidden="true">◇</span><h4>Intent</h4><p>Problem &amp; outcome</p></li>
+            <li><span class="branch-icon" aria-hidden="true">⊞</span><h4>Guardrails</h4><p>Boundaries &amp; standards</p></li>
+            <li><span class="branch-icon" aria-hidden="true">⑂</span><h4>Repositories</h4><p>Branches &amp; worktrees</p></li>
+          </ul>
+          <div class="trunk" aria-hidden="true"></div>
+          <ol class="agent-path" aria-label="The review path for higher-risk changes">
+            <li><small>Spark</small><h4>Frame</h4><p>Feasibility</p></li><li><small>Astra</small><h4>Challenge</h4><p>The intent</p></li><li><small>Claude</small><h4>Plan</h4><p>Architecture</p></li><li><small>Codex</small><h4>Stress-test</h4><p>The plan</p></li><li><small>Claude</small><h4>Revise</h4><p>The trade-offs</p></li><li><small>Build agents</small><h4>Implement</h4><p>The settled plan</p></li>
+          </ol>
+          <p class="tree-note">Review depth follows risk. Small changes take a direct path.</p>
+          <div class="trunk" aria-hidden="true"></div>
+          <div class="verify-node"><span aria-hidden="true">✓</span><div><h3>Verify against the work</h3><p>Diff · Tests · User journey · Security review where relevant</p></div></div>
+          <div class="output-branches">
+            <div class="output-product"><span class="eyebrow">Product</span><div class="output-icons"><img src="../assets/unli-rice-icon.png" alt="Unli Rice" width="48" height="48"><img src="../assets/nuptia-icon.png" alt="Wedding Concierge" width="48" height="48"><img src="../assets/unlidisk-icon.png" alt="Unli Disk" width="48" height="48"></div><h3>Useful software</h3><p>Release &amp; maintain</p></div>
+            <div class="widget-demo"><div class="widget-title"><h3>To Do</h3><span>Illustrative view</span></div><ul><li><i aria-hidden="true"></i><div>Check work not on a known remote<small>From the repository check</small></div></li><li><i aria-hidden="true"></i><div>Review the next product decision<small>AI-filed follow-up · Project context</small></div></li><li><i aria-hidden="true"></i><div>Continue where the last session stopped<small>A clear next step</small></div></li></ul></div>
+          </div>
+          <p class="tree-note">Repository status reflects the latest check and known remote refs. The widget keeps follow-ups visible.</p>
         </div>
-        <div class="card wide reveal">
-          <h3>How this applies in a team</h3>
-          <p>The method is a small version of AI governance. State the intent and what is explicitly out of scope before planning. Have an independent reviewer attack the plan before anyone builds it. Treat every self-reported success as unverified until the diff and the tests agree. Keep a written record of what failed and the rule that came from it.</p>
-          <p>I learned to value those controls over eleven years in enterprise operations at CGI, where processes, users and support meet in practice. The same discipline applies to rolling out AI assistants and automation in an organisation.</p>
-        </div>
-      </div>
+      </section>
+      </details>
+      <section id="selected-work" aria-labelledby="work-heading">
+        <div class="chapter"><span>01 / In practice</span><h2 id="work-heading">The work speaks first.</h2></div>
+        <article class="project-row">
+          <figure class="project-visual"><img src="../assets/screens/unlirice-automation.webp" alt="Unli Rice showing note activity and contributions over time" width="1400" height="879" loading="lazy"><figcaption>Unli Rice · A view into the shared record</figcaption></figure>
+          <div class="project-copy"><span class="eyebrow">Context / Guardrails / Project follow-through</span><h3>Unli Rice</h3><p>A shared operating context for AI work: who is building, who the product serves, the problem to solve, and the intent and guardrails that guide it.</p><div class="decision"><p><strong>Know the intent. Know where the work stands.</strong><br>Repository checks surface branches, worktrees, and work not recorded on known remotes. Project status and AI-filed follow-ups feed the To Do list and desktop widget. Shared instructions guide agents; they do not guarantee obedience.</p></div><a href="/unlirice/">Explore the product ↗</a><a href="https://github.com/CalixOscar/unli-rice">Read the source ↗</a></div>
+        </article>
+        <article class="project-row">
+          <figure class="project-visual"><img src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge with an assistant conversation and planning navigation" width="1400" height="1049" loading="lazy"><figcaption>Wedding Concierge · The assistant inside a real workflow</figcaption></figure>
+          <div class="project-copy"><span class="eyebrow">AI / Integration</span><h3>Wedding Concierge</h3><p>Planning state, maps, vendor information, and an assistant in one product.</p><div class="decision"><p><strong>Design beyond the model.</strong><br>Trace the information, the service boundaries, and the user’s next step when a lookup fails.</p></div><a href="/#wedding-concierge">Explore the architecture ↗</a></div>
+        </article>
+        <article class="project-row">
+          <figure class="project-visual"><img src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk displaying disk usage, reclaimable space, and a directory breakdown" width="1400" height="879" loading="lazy"><figcaption>Unli Disk · Making storage understandable</figcaption></figure>
+          <div class="project-copy"><span class="eyebrow">Native software / Technical judgment</span><h3>Unli Disk</h3><p>A storage map and photo analysis built around the task.</p><div class="decision"><p><strong>Choose the right amount of AI.</strong><br>Photo comparison uses perceptual hashes, Apple Vision, and blur scoring. A model call is not required for every useful feature.</p></div><a href="/#unlidisk">Explore the product ↗</a></div>
+        </article>
+      </section>
+      <section class="principles" aria-labelledby="principles-heading">
+        <div class="chapter"><span>02 / The HR perspective</span><h2 id="principles-heading">A person behind every record.</h2></div>
+        <ol class="boundary-map" aria-label="Questions I bring to privacy and AI design">
+          <li><span class="step">01 →</span><h3>Purpose</h3><p>What is the task?<br>Which data is necessary?</p></li>
+          <li><span class="step">02 →</span><h3>Access</h3><p>Who can use it?<br>What crosses a boundary?</p></li>
+          <li><span class="step">03 →</span><h3>Oversight</h3><p>Who reviews the outcome?<br>Who remains accountable?</p></li>
+          <li><span class="step">04</span><h3>Lifecycle</h3><p>How long is it retained?<br>How do we recover?</p></li>
+        </ol>
+        <p class="references">Design questions informed by <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">GDPR</a> and the <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3">EU AI Act</a>.</p>
+        <details class="portfolio-story"><summary>How this shapes my approach to AI</summary><p>I distinguish administrative assistance from AI that evaluates candidates or influences employment decisions. The use case determines the questions about risk, fairness, traceability, and meaningful human oversight, with privacy and legal specialists involved where needed.</p></details>
+      </section>
+      <section aria-labelledby="method-heading">
+        <div class="chapter"><span>03 / From idea to upkeep</span><h2 id="method-heading">Make it useful. Keep it accountable.</h2></div>
+        <ol class="working-path">
+          <li><span>01</span><h3>Frame</h3><p>User, task, outcome.<br>Clear boundaries.</p></li>
+          <li><span>02</span><h3>Challenge</h3><p>Review matches risk.<br>Trade-offs stay visible.</p></li>
+          <li><span>03</span><h3>Build &amp; verify</h3><p>The whole journey.<br>Failure and recovery too.</p></li>
+          <li><span>04</span><h3>Maintain</h3><p>Evidence, limitations,<br>and a usable handoff.</p></li>
+        </ol>
+      </section>
+      <details class="portfolio-story"><summary>The studio, and Oscar</summary><p>Outside my enterprise HR role, I’m building calmdownoscar into an independent software studio — usually after my son Oscar falls asleep. It’s a personal ambition pursued seriously: creating useful products, deepening my engineering skills, and building work that can stand on its own.</p></details>
+      <div class="portfolio-close"><div><h2>Find something useful.</h2><p>Independent products, built alongside my enterprise work. Product enquiries and collaborations start with a conversation.</p></div><div class="portfolio-actions"><a class="primary-link" href="/#apps">Apps &amp; purchase options ↗</a><a href="mailto:peter@calmdownoscar.com?subject=Product%20or%20collaboration%20enquiry">Get in touch ↗</a></div></div>
     </div>
   </section>
 
-  <!-- 2. The Pipeline SVG Diagram (Below How I Work) -->
-  <section class="pipeline" id="pipeline">
-    <div class="wrap">
-      <div class="section-label reveal">The pipeline</div>
-      <p class="section-lede reveal" style="margin-bottom:24px;">Visual map of the pipeline: from voice capture through the intent read, the plan, the pre-mortem, and the swarm that builds it — with the MCP bridge that dispatches the build, and the return loops where one tool checks another’s output before work continues.</p>
-      
-      <div class="diagram reveal">
-        <svg viewBox="0 0 1000 1170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: an idea is spoken into Unli Rice Voice Capture on iOS, lands in the Unli Rice Vault, goes to Gemini Spark for feasibility and prompt structuring, then to GPT-6 Astra for an adversarial read of the intent doc before any architecture exists, then to Claude for the plan and architecture with Unli Rice MCP vault sync alongside it, then to Codex for a pre-mortem on the plan before any code exists, back to Claude for a second pass that revises the plan against the objections, then to the Antigravity swarm which builds it — dispatched through the local MCP bridge that writes the plan into the project folder and runs the agy headless CLI there. The build is verified against git diff, never against the swarm's own success report, with a return loop sending anything unanticipated back to Claude as a plan change rather than an improvised fix. Claude then runs a security audit with a hardening loop back to the swarm, and the app ships via the Vercel proxy and the App Store, after which Unli Disk clears storage.">
-          <defs>
-            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 z" fill="rgba(255,255,255,.5)"/>
-            </marker>
-            <marker id="arrow-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-            </marker>
-          </defs>
-
-          <!-- forward traces -->
-          <path id="p1"  class="trace" marker-end="url(#arrow)" d="M500,64 L500,112"/>
-          <path id="p2"  class="trace" marker-end="url(#arrow)" d="M500,152 L500,200"/>
-          <path id="p3"  class="trace" marker-end="url(#arrow)" d="M500,244 L500,292"/>
-          <path id="p4"  class="trace" marker-end="url(#arrow)" d="M500,336 L500,392"/>
-          <path id="p5"  class="trace" marker-end="url(#arrow)" d="M500,436 L500,490"/>
-          <path id="p6"  class="trace" marker-end="url(#arrow)" d="M500,534 L500,590"/>
-          <path id="p7"  class="trace" marker-end="url(#arrow)" d="M500,634 L500,690"/>
-          <path id="p8"  class="trace" marker-end="url(#arrow)" d="M500,734 L500,790"/>
-          <path id="p9"  class="trace" marker-end="url(#arrow)" d="M500,834 L500,890"/>
-          <path id="p10"  class="trace" marker-end="url(#arrow)" d="M500,934 L500,990"/>
-          <path id="p11" class="trace" marker-end="url(#arrow)" d="M500,1038 L500,1086"/>
-
-          <!-- side traces (MCP memory & MCP dispatch bridge) -->
-          <path id="p_claude_vault" class="trace" marker-end="url(#arrow)" d="M640,404 L680,404"/>
-          <path id="p_vault_claude" class="trace" marker-end="url(#arrow)" d="M680,424 L640,424"/>
-          <path id="p_swarm_bridge" class="trace" marker-end="url(#arrow)" d="M640,704 L680,704"/>
-          <path id="p_bridge_swarm" class="trace" marker-end="url(#arrow)" d="M680,724 L640,724"/>
-
-          <!-- RETURN ARCS (verification & hardening loops) -->
-          <!-- 1. git diff verification -> back to Claude as a plan change -->
-          <path id="p_planchange_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,812 C240,812 240,612 350,612"/>
-          <!-- 2. Security audit -> back to the swarm for hardening -->
-          <path id="p_hardening_arc" class="trace" marker-end="url(#arrow-accent)" stroke-dasharray="4,4" d="M340,912 C190,912 190,712 360,712"/>
-
-          <!-- nodes -->
-          <g class="node-group">
-            <rect class="node-box" x="360" y="20" width="280" height="44" rx="10"/>
-            <text class="node-label" x="500" y="47">Unli Rice Voice Capture (iOS)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box dim" x="390" y="112" width="220" height="40" rx="10"/>
-            <text class="node-label dim" x="500" y="137">Unli Rice Vault (Notes)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="340" y="200" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="227">1 · Gemini Spark (Feasibility &amp; Structuring)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="340" y="292" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="319">2 · GPT-6 Astra (Intent Read)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="360" y="392" width="280" height="44" rx="10"/>
-            <text class="node-label" x="500" y="419">3 · Claude (Plan &amp; Architecture)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box dim" x="680" y="392" width="220" height="44" rx="10"/>
-            <text class="node-label dim" x="790" y="419">Unli Rice / MCP Vault Sync</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="350" y="490" width="300" height="44" rx="10"/>
-            <text class="node-label" x="500" y="517">4 · Codex (Pre-Mortem on the Plan)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="350" y="590" width="300" height="44" rx="10"/>
-            <text class="node-label" x="500" y="617">5 · Claude (Plan Revised &amp; Settled)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="360" y="690" width="280" height="44" rx="10"/>
-            <text class="node-label" x="500" y="717">6 · Antigravity Swarm (The Build)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box dim" x="680" y="690" width="240" height="44" rx="10"/>
-            <text class="node-label dim" x="800" y="711">MCP Bridge</text>
-            <text class="node-label dim" x="800" y="727" style="font-size:11px; font-weight:500;">writes PLAN.md · runs agy headless</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="340" y="790" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="817">Verify against git diff, not "SUCCESS"</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box" x="340" y="890" width="320" height="44" rx="10"/>
-            <text class="node-label" x="500" y="917">Claude (Security Audit &amp; Encryption)</text>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box output" x="340" y="990" width="320" height="48" rx="12"/>
-            <text class="node-label output" x="500" y="1019">Vercel Proxy &amp; App Store Release</text>
-            <circle class="halo" cx="500" cy="1014" r="0">
-              <animate attributeName="r" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.781;0.835;1" values="0;0;36;46;46"/>
-              <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.765;0.835;1" values="0;.55;.4;0;0"/>
-            </circle>
-          </g>
-
-          <g class="node-group">
-            <rect class="node-box dim" x="270" y="1086" width="460" height="44" rx="10"/>
-            <text class="node-label dim" x="500" y="1113">Unli Disk (Frees storage by deleting simulators &amp; dead end repos)</text>
-          </g>
-
-          <!-- return arc labels -->
-          <text class="diagram-caption" x="330" y="566" text-anchor="end" style="fill:var(--accent); font-weight:600;">Plan change, not a patch</text>
-          <text class="diagram-caption" x="330" y="966" text-anchor="end" style="fill:var(--accent); font-weight:600;">Hardening loop</text>
-
-          <!-- forward pulses -->
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.076;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p1"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.001;0.076;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.151;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p2"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.076;0.151;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.226;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p3"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.151;0.226;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.301;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p4"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.226;0.301;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.376;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p5"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.301;0.376;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.451;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p6"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.376;0.451;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.526;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p7"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.451;0.526;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.601;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p8"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.526;0.601;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p9"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p10"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.826;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p11"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.751;0.826;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-
-          <!-- return-arc pulses: fire one slot after the stage they leave -->
-          <circle class="pulse" r="4" style="fill:var(--accent);">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_planchange_arc"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.601;0.676;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-          <circle class="pulse" r="4" style="fill:var(--accent);">
-            <animateMotion dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" keyPoints="0;0;1;1" calcMode="linear"><mpath href="#p_hardening_arc"/></animateMotion>
-            <animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0;0.676;0.751;1" values="0;1;1;0" calcMode="discrete"/>
-          </circle>
-        </svg>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
