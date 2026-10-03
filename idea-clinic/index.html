@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Idea clinic — calmdownoscar</title>
+<link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
+</head>
+<body>
+<header><a href="/">calmdown<span>oscar</span></a><a href="/#apps">The apps →</a></header>
+<main>
+
+<section id="intro">
+<p class="eyebrow">THE IDEA CLINIC</p><h1>Before you build it,<br>let’s question it.</h1>
+<p class="lede">A few quick questions, most of them a tap. Then take your answers to the AI you already use. It checks what’s out there, pushes on your weak spots, and helps you decide.</p>
+<div id="resume" class="panel resume" hidden><p class="eyebrow">YOU WERE IN THE MIDDLE OF SOMETHING</p><p id="resume-idea" class="resume-idea"></p><div class="actions"><button id="resume-go">Continue where I left off →</button><button id="resume-new" class="secondary">Start a new idea</button></div></div>
+<div class="actions hero-actions" id="hero-actions"><button id="start">Start →</button></div>
+<p class="small privacy">No account, no AI on this site. Your draft stays in this browser until you copy it.</p>
+<ol class="steps">
+<li><span>01</span><strong>Answer a few questions.</strong> About ten, fewer if it turns out to be a tool just for you.</li>
+<li><span>02</span><strong>Read it back.</strong> Change anything that isn’t quite what you meant.</li>
+<li><span>03</span><strong>Take it to your AI.</strong> It does the research and the hard follow-ups, then helps you decide: build it, shrink it, keep it for yourself, or walk away.</li>
+</ol>
+</section>
+
+<section id="interview" hidden>
+<div class="step-row"><p class="eyebrow" id="step"></p><button class="text" id="exit">Back to introduction</button></div>
+<progress id="progress" max="1" value="0" aria-label="Interview progress"></progress>
+<p id="route" class="destination"></p>
+<div class="conversation-grid">
+<form id="answer-form" class="panel conversation" novalidate>
+<p class="eyebrow" id="question-kicker"></p><h1 id="question" tabindex="-1"></h1><p id="hint"></p>
+<div id="choices" class="choices" role="group" aria-labelledby="question"></div>
+<div id="text-entry"><label for="answer">In your own words.</label><textarea id="answer" rows="3" maxlength="800" aria-describedby="answer-help"></textarea><p class="small" id="answer-help">A sentence is enough. <span class="kbd-hint">⌘ / Ctrl + Enter to continue.</span></p></div>
+<div class="actions"><button type="button" class="secondary" id="back">← Back</button><button id="next">Next →</button></div>
+<button type="button" class="text unknown" id="unknown">Not sure yet</button>
+</form>
+<figure class="thought-card" id="thought-card"><blockquote id="thought"></blockquote><figcaption id="author"></figcaption></figure>
+</div></section>
+
+<section id="review" hidden class="narrow"><p class="eyebrow">READ IT BACK</p><h1>Is this what you mean?</h1><p id="review-route"></p>
+<form id="review-form" novalidate><div id="answers" class="panel summary"></div>
+<div class="actions"><button type="button" class="secondary" id="review-back">← Back</button><button>Create my prompt →</button></div></form></section>
+
+<section id="handoff" hidden>
+<div class="step-row"><p class="eyebrow">YOUR PROMPT</p><button id="restart" class="text">Start a new idea</button></div>
+<h1>Now take it to your AI.</h1><p class="lede">Copy the prompt, paste it into a new chat, and answer its questions honestly. The real work happens there.</p>
+<div class="handoff-grid">
+<div class="panel"><label for="prompt" class="field-title">The prompt</label><textarea id="prompt" readonly rows="18" spellcheck="false"></textarea><div class="actions"><button type="button" id="copy">Copy prompt</button><button type="button" id="download" class="secondary">Download .md</button><button type="button" id="edit" class="secondary">Change my answers</button></div><p class="open-in">Then open <a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT ↗</a><a href="https://claude.ai/new" target="_blank" rel="noopener">Claude ↗</a><a href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini ↗</a></p><small>The prompt goes to whichever company runs your assistant. Check it for anything confidential before you paste.</small></div>
+<aside class="panel expect"><p class="eyebrow">WHAT HAPPENS NEXT</p>
+<ol class="how" id="next-product">
+<li><strong>It looks for similar apps,</strong> including any you named.</li>
+<li><strong>It asks about your weak spots,</strong> one question at a time. “I don’t know” is still a fine reply.</li>
+<li><strong>It looks back from a year ahead,</strong> as if it already happened: why it worked, why it might have stalled, and what would have prevented it.</li>
+<li><strong>It writes a decision brief:</strong> what you know and what you’re guessing, a recommendation, and one small test to run next.</li>
+</ol>
+<ol class="how" id="next-personal" hidden>
+<li><strong>It checks whether you need to build anything.</strong> An existing app, a Shortcut or a notes template might already do the job.</li>
+<li><strong>If it’s worth building,</strong> it asks up to three short questions.</li>
+<li><strong>It gives you a tiny plan:</strong> the one job, what to leave out, and what to do in your first sitting.</li>
+</ol>
+<ol class="how" id="next-big" hidden>
+<li><strong>It checks the opening is real,</strong> by looking for anything close. If something exists, better to know on day one.</li>
+<li><strong>It checks it can be built</strong> with today’s technology and within Apple and Android’s limits. If nobody has built it, there may be a reason.</li>
+<li><strong>It asks what would make this spread,</strong> up to three short questions.</li>
+<li><strong>It looks back from two years ahead:</strong> the story of how it spread, and what could have stalled it.</li>
+<li><strong>It writes your plan:</strong> the first version, how it spreads, what it would take, and three steps for this week.</li>
+</ol>
+<div class="thought-rule"></div><p class="small"><strong>If it agrees with everything,</strong> ask it: “What’s the strongest reason not to build this?”</p></aside>
+</div></section>
+
+<p id="status" role="status" aria-live="polite"></p>
+</main><footer>calmdownoscar · Useful questions before useful software.</footer>
+</body></html>

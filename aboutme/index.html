@@ -255,14 +255,12 @@
     html{ scroll-behavior:auto; }
     .bg-video, .bg-scrim{ transform:none; }
   }
+  .oscar-clip{ padding:8px 0 72px; }
+  .oscar-clip video{ display:block; width:auto; max-width:100%; max-height:min(70vh, 560px); border-radius:14px; border:1px solid rgba(255,255,255,.09); }
 </style>
 </head>
 <body>
 
-<div class="bg-stage">
-  <video class="bg-video" src="../assets/oscar-crawl.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
-</div>
-<div class="bg-scrim" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="wrap">
@@ -274,9 +272,7 @@
     <nav id="main-nav">
       <a href="../how_I_work/">How I Work</a>
       <a href="../the_studio/">The Studio</a>
-      <a href="../playground/">Playground</a>
       <a href="./" aria-current="page">About Me</a>
-      <a href="../hobbies/">Hobbies</a>
       <a href="mailto:peter@calmdownoscar.com">Contact</a>
     </nav>
   </div>
@@ -317,11 +313,17 @@
       <h2 class="section-label about-h">Exploring now</h2>
       <p class="rise d1">Digital twins for my apps: synthetic users that behave like real, often impatient people, tapping and scrolling through everything and giving up when something takes too long. The point is to find where an app confuses or loses someone before a real user does. The first one runs Wedding Concierge in the simulator with eight different personas, and hard-coded guardrails make sure a test user can never buy, send or publish anything for real.</p>
 
-      <p class="rise d1" style="margin-top:28px;">Away from the keyboard, I’m usually dreaming of quiet roads on a motorcycle. Want to compare notes on any of this? <a class="inline-link" href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></p>
+      <p class="rise d1" style="margin-top:28px;">Away from the keyboard, I’m usually dreaming of quiet roads on a motorcycle.</p>
 
       <a class="more-link rise" href="../#apps" style="margin-top:32px;">See the apps <span class="arrow">→</span></a>
       <a class="more-link rise" href="../hobbies/" style="margin-top:32px; margin-left:24px;">View hobbies <span class="arrow">→</span></a>
       <a class="more-link rise" href="https://github.com/CalixOscar/unli-rice" style="margin-top:32px; margin-left:24px;">Unli Rice on GitHub <span class="arrow">→</span></a>
+    </div>
+  </section>
+  <!-- Oscar's clip sits below the bio now, not behind it -->
+  <section class="oscar-clip" aria-hidden="true">
+    <div class="wrap">
+      <video src="../assets/oscar-crawl.mp4" muted loop playsinline autoplay preload="metadata"></video>
     </div>
   </section>
 </main>
@@ -329,6 +331,7 @@
 <footer>
   <div class="wrap foot-row">
     <span>© 2026 calmdownoscar · est. 2025</span>
+    <span class="foot-links" style="display:inline-flex;gap:18px;flex-wrap:wrap"><a href="../playground/">Playground</a><a href="../hobbies/">Hobbies</a></span>
     <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
   </div>
 </footer>
@@ -478,6 +481,13 @@
       }
     });
   }
+})();
+</script>
+<script>
+// Respect reduced motion: show the first frame of Oscar's clip instead of looping it.
+(function(){
+  var v = document.querySelector('.oscar-clip video');
+  if (v && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ v.removeAttribute('autoplay'); v.pause(); }
 })();
 </script>
 </body>
