@@ -112,7 +112,7 @@
   /* ================= hero: the apps first =================
      The shelf is the page's index. Each tile is a real screenshot composition
      with a short use line, so the products read even if the text is skipped. */
-  .hero{ padding:44px 0 24px; }
+  .hero{ padding:44px 0 56px; }
   .hero-head{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:20px 48px; align-items:end; margin-bottom:32px; }
   .hero h1{ font-size:clamp(36px, 1.2rem + 3.6vw, 66px); font-weight:800; line-height:1.03; letter-spacing:-.04em; margin-top:14px; }
   .hero h1 .stop{ color:var(--accent); }
@@ -168,24 +168,6 @@
 
   .screens-note{ margin-top:14px; font-size:12px; color:var(--muted); }
 
-  /* ================= how-I-work bridge & about ================= */
-
-  .about{ padding:64px 0; scroll-margin-top:calc(var(--topbar-h) + 8px); }
-  .about-hiw{ font-size:clamp(20px, 1rem + .6vw, 24px); font-weight:800; letter-spacing:-.02em; line-height:1.25; margin-bottom:10px; }
-  .about-hiw a{ color:var(--ink); text-decoration:none; border-bottom:2px solid var(--accent); }
-  .about-hiw a:hover{ color:var(--accent-ink); }
-  .about-work .about-hiw{ color:var(--ink); }
-  .about-grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px 56px; border-top:1px solid var(--edge); padding-top:30px; }
-  .about h2{ grid-column:1 / -1; }
-  .about-name .lead{ font-size:clamp(24px, 1rem + 1.4vw, 32px); font-weight:800; letter-spacing:-.025em; line-height:1.15; margin-bottom:14px; }
-  .about p{ font-size:16px; line-height:1.65; }
-  .about-name p:not(.lead), .about-work p{ color:var(--muted); }
-  .about-work p + p{ margin-top:14px; }
-  .about-name .inline{ color:var(--accent-ink); font-weight:600; text-decoration:none; white-space:nowrap; }
-  .about-links{ display:flex; flex-wrap:wrap; gap:0 22px; margin-top:12px; }
-  .about-links a{ font-size:14px; font-weight:600; text-decoration:none; min-height:44px; display:inline-flex; align-items:center; }
-  .about-links a:hover{ color:var(--accent-ink); }
-
   footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
   .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
   .foot-row a{ color:var(--muted); padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
@@ -202,7 +184,7 @@
   }
   @media (max-width:760px){
     .hero{ padding-top:28px; }
-    .hero-head, .about-grid{ grid-template-columns:1fr; }
+    .hero-head{ grid-template-columns:1fr; }
     .hero-head{ gap:14px; margin-bottom:24px; }
     .shelf{ grid-template-columns:1fr; gap:12px; }
     .tile{ height:300px; }
@@ -214,7 +196,6 @@
     .t-atlas .tile-text{ max-width:none; padding-top:20px; }
     .t-atlas .tile-art{ position:relative; left:auto; margin-top:16px; }
     .t-atlas .tile-art img{ -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 30%); mask-image:linear-gradient(to bottom, transparent 0, #000 30%); }
-    .about{ padding-top:48px; }
   }
   @media (max-width:420px){
     .tile-title{ font-size:19px; }
@@ -330,26 +311,6 @@
   </section>
 
 
-  <!-- ===================== About: who made these (moved up from the bottom) ===================== -->
-  <section class="about" id="about" aria-labelledby="about-title">
-    <div class="wrap about-grid">
-      <h2 class="kicker" id="about-title">About the studio</h2>
-      <div class="about-name">
-        <p class="lead">“Oscar, calm down.”</p>
-        <p>I’m Peter. In the Philippine riding community, it’s the joke when a rider does something a little unusual — and Oscar is also my toddler. The studio is named for both. <a class="inline" href="aboutme/">The full story →</a></p>
-      </div>
-      <div class="about-work">
-        <p class="about-hiw"><a href="how_I_work/">HR taught me the questions. The apps are my answers.</a></p>
-        <p>My full-time work is in enterprise HR, where every record belongs to a person and a system has to hold up on an ordinary Monday morning.</p>
-        <div class="about-links">
-          <a href="how_I_work/">How I Work →</a>
-          <a href="the_studio/">The studio’s rules →</a>
-          <a href="https://apps.apple.com/developer/id1832327005">Apple Developer →</a>
-          <a href="https://github.com/CalixOscar">GitHub →</a>
-        </div>
-      </div>
-    </div>
-  </section>
 
 </main>
 
