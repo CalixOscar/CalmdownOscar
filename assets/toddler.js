@@ -74,7 +74,7 @@
     // crawl in
     crawl.style.transform = 'translate(' + from + 'px,' + cy + 'px)';
     crawl.classList.add('go');
-    await slide(crawl, from, atDot, cy, speed * 0.49, 'cubic-bezier(.3,0,.6,1)');   // an unhurried crawl
+    await slide(crawl, from, atDot, cy, speed * 0.64, 'cubic-bezier(.3,0,.6,1)');   // an unhurried crawl
 
     // reach: hold the frame with the hand on the dot
     crawl.classList.remove('go');
