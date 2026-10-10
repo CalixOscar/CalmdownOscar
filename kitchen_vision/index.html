@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>Kitchen Vision — Pickleball Scoring, 3-Number Callouts, VAR &amp; Tournament Desk — calmdownoscar</title>
 <meta name="description" content="Turn the iPhones and iPads you already own into a pickleball scoreboard with 0-0-2 callouts, VAR slow-mo replay and a multi-court tournament desk, with an Apple Watch app to keep score from your wrist. 100% offline.">
 <meta property="og:title" content="Kitchen Vision — Pickleball Scoring &amp; Tournament Scoreboard">
@@ -12,581 +16,145 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/kitchen_vision/">
 <link rel="canonical" href="https://www.calmdownoscar.com/kitchen_vision/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    /* .wrap sizes its gutters with max(24px, var(--sal)) and --topbar-h uses --sat.
-       Without these defined, those custom properties are invalid, which invalidates the
-       whole max() and drops padding to 0 — every line of text on the page sat flush
-       against the edge of the screen on a phone. */
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-    --bg:        #141B22;
-    --panel:     rgba(255,255,255,.05);
-    --panel-lift:#1E2933;
-    --edge:      rgba(255,255,255,.09);
-    --edge-hi:   rgba(255, 107, 0, 0.45);
-    --accent:    #FF6B00;
-    --accent-amber: #FFB300;
-    --accent-glow: rgba(255, 107, 0, 0.25);
-    --ink:       #E8EEF4;
-    --muted:     #8FA0AE;
-    --green:     #34C759;
-    --topbar-h:  calc(64px + var(--sat));
-    --window-chrome: #1A232D;
-    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#000; }
-  body{
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, -apple-system, sans-serif;
-    font-size:16px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  .wrap{ max-width:940px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
-    margin-left:22px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-
-  .nav-toggle{ display:none; }
-
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:currentColor;
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgb(20,27,34);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
-  }
-
-  main{ padding:48px 0 96px; }
-
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    padding: 6px 14px;
-    background: rgba(255, 107, 0, 0.12);
-    border: 1px solid rgba(255, 107, 0, 0.35);
-    border-radius: 999px;
-    margin-bottom: 20px;
-  }
-  .status-badge .dot {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
-  }
-
-  .hero{ margin-bottom:64px; }
-  .hero-icon{
-    width:76px; height:76px; border-radius:19px;
-    box-shadow: 0 10px 28px rgba(0, 229, 255, 0.18), 0 2px 6px rgba(0,0,0,.4);
-    border: 1px solid rgba(255,255,255,.15);
-    margin-bottom:18px;
-    display:block;
-  }
-  h1{
-    font-size:clamp(32px, 6vw, 48px);
-    font-weight:900;
-    letter-spacing:-.025em;
-    line-height:1.1;
-    margin-bottom:18px;
-    color:#fff;
-  }
-  .lead{
-    font-size:clamp(17px, 2.2vw, 20px);
-    color:var(--muted);
-    line-height:1.55;
-    max-width:760px;
-    margin-bottom:28px;
-  }
-
-  .pills{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:36px; }
-  .pill{
-    font-size:12px; font-weight:600; color:var(--ink);
-    background:var(--panel); border:1px solid var(--edge);
-    padding:5px 12px; border-radius:999px;
-  }
-
-  .grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:64px; }
-  .card{
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:18px;
-    padding:24px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-  .card-num{
-    font-size:12px;
-    font-weight:700;
-    color:var(--accent);
-    letter-spacing:.08em;
-    text-transform:uppercase;
-  }
-  .card h3{
-    font-size:18px;
-    font-weight:800;
-    color:#fff;
-    letter-spacing:-.01em;
-  }
-  .card p{
-    font-size:14.5px;
-    color:var(--muted);
-    line-height:1.6;
-  }
-
-  /* Screenshot Showcase */
-  .shots-section{ margin-bottom:64px; }
-  .section-title{
-    font-size:22px;
-    font-weight:800;
-    color:#fff;
-    margin-bottom:10px;
-  }
-  .section-sub{
-    font-size:15px;
-    color:var(--muted);
-    margin-bottom:24px;
-  }
-  .gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-    gap:20px;
-  }
-  .shot-card{
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:18px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-  }
-  .shot-card img{
-    width:100%;
-    height:auto;
-    display:block;
-    border-bottom:1px solid var(--edge);
-  }
-  .shot-caption{
-    padding:14px 16px;
-    font-size:13.5px;
-    color:var(--ink);
-    font-weight:600;
-  }
-  .shot-sub{
-    font-size:12px;
-    color:var(--muted);
-    font-weight:400;
-    margin-top:2px;
-  }
-
-  footer{
-    border-top:1px solid var(--edge);
-    padding:40px 0;
-    font-size:13.5px;
-    color:var(--muted);
-  }
-  .foot{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:16px;
-  }
-  .foot a{ color:var(--muted); text-decoration:none; }
-  .foot a:hover{ color:var(--accent); }
-
-  .guide-list{ margin:0; padding-left:20px; font-size:14.5px; color:var(--muted); line-height:1.6; }
-  .guide-list li{ margin-bottom:6px; }
-  .guide-list strong{ color:var(--ink); }
-  .cta{
-    background:var(--panel); border:1px solid var(--edge); border-radius:18px;
-    padding:32px 24px; text-align:center; margin-bottom:24px;
-  }
-  .cta h2{ font-size:22px; font-weight:800; color:#fff; margin-bottom:10px; }
-  .cta p{ font-size:15px; color:var(--muted); line-height:1.6; max-width:58ch; margin:0 auto 20px; }
-  .cta p a{ color:var(--ink); }
-  .store-badge{ display:inline-block; line-height:0; }
-  .store-badge img{ height:50px; width:auto; }
+  .s-watch .a1{ left:36%; top:16%; width:28%; }
+  .s-desk .a1{ left:22%; top:8%; width:56%; }
+  .split > .notes{ margin-top:0; }
+  .steps p + p{ margin-top:8px; }
+  .row .n{ margin-right:10px; }
 </style>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap nav">
-    <a class="mark" href="../">calmdownoscar<span>.</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="../">All Apps</a>
-      <a href="./">Kitchen Vision</a>
-      <a href="privacy.html">Privacy</a>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="wrap">
-    <div class="hero">
-      <img class="hero-icon" src="../assets/kitchen_vision/icon.png" alt="Kitchen Vision App Icon" width="76" height="76">
-      <div class="status-badge">
-        <span class="dot"></span>
-        Live on the App Store · iPhone, iPad &amp; Apple Watch
-      </div>
-      <h1>Kitchen Vision</h1>
-      <p class="lead">Score, replay and run pickleball matches on the iPhones and iPads you already own. Kitchen Vision keeps the 0-0-2 start, side-out server rotation and 3-number callout for you, puts any disputed rally one tap away in &frac14;&times; slow motion, and runs a tournament desk &mdash; 100% offline, with an Apple Watch app to keep score from your wrist.</p>
-      
-      <div class="pills">
-        <span class="pill">iOS 17+</span>
-        <span class="pill">Side-Out &amp; MLP Rally</span>
-        <span class="pill">0-0-2 Callouts</span>
-        <span class="pill">VAR &frac14;&times; Slow-Mo</span>
-        <span class="pill">Apple Watch</span>
-        <span class="pill">Shot Speed</span>
-        <span class="pill">100% Offline P2P</span>
-        <span class="pill">Tournament Desk</span>
+
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../assets/kitchen_vision/icon.png" alt="" width="44" height="44"><p class="label">iPhone · iPad · Apple Watch · Live on the App Store</p></div>
+    <h1 class="lede">Kitchen Vision</h1>
+    <p class="by">Score, replay and run pickleball matches on the iPhones and iPads you already own. Kitchen Vision keeps the 0-0-2 start, side-out server rotation and 3-number callout for you, puts any disputed rally one tap away in &frac14;&times; slow motion, and runs a tournament desk &mdash; 100% offline, with an Apple Watch app to keep score from your wrist.</p>
+    <div class="links"><a class="link" href="https://apps.apple.com/app/kitchen-vision/id6804914154">App Store</a><a class="link in" href="privacy.html">Privacy policy</a><a class="link" href="mailto:peter@calmdownoscar.com?subject=Kitchen%20Vision">Email me</a></div>
+  </section>
+
+  <!-- ===================== In the app ===================== -->
+  <section class="block" aria-labelledby="shots-title">
+    <div class="wrap head">
+      <h2 class="label" id="shots-title">In the app</h2>
+      <p>A dark, high-contrast design in clay-court orange, built for bright outdoor courts and indoor club lighting alike.</p>
+    </div>
+    <div class="wrap">
+      <div class="strip">
+        <figure><img src="../assets/kitchen_vision/2026-09/01_splash.jpg" alt="Kitchen Vision splash screen" width="900" height="1955" fetchpriority="high"><figcaption><span><b>Kitchen Vision</b>Your phones become the scoreboard and the replay camera</span></figcaption></figure>
+        <figure><img src="../assets/kitchen_vision/2026-09/02_home.jpg" alt="Kitchen Vision Home screen with Quick Start, Kitchen Vision Pro, match setup and off-court tools" width="900" height="1955"><figcaption><span><b>Home</b>Start a match in one tap &mdash; everything else is one row away</span></figcaption></figure>
+        <figure><img src="../assets/kitchen_vision/2026-09/03_scoreboard.jpg" alt="Kitchen Vision live scoreboard, Defending Champion vs Challenger, with 0-0-2 callout, Let, Replay and VAR Review" width="900" height="1955" loading="lazy"><figcaption><span><b>Live scoreboard</b>Tap or swipe up to score, swipe down to undo, 0-0-2 callout shown</span></figcaption></figure>
+        <figure><img src="../assets/kitchen_vision/2026-09/04_casual.jpg" alt="Kitchen Vision match setup with preset team names Defending Champion vs Challenger" width="900" height="1955" loading="lazy"><figcaption><span><b>Match setup</b>Your side vs opponents &mdash; type names or pick a preset</span></figcaption></figure>
+        <figure><img src="../assets/kitchen_vision/2026-09/05_tournament_hub.jpg" alt="Kitchen Vision tournaments and leagues hub" width="900" height="1955" loading="lazy"><figcaption><span><b>Tournaments &amp; leagues</b>Create an event or join one as a court scorer</span></figcaption></figure>
+        <figure><img src="../assets/kitchen_vision/2026-09/06_paywall.jpg" alt="Kitchen Vision Pro lifetime unlock screen" width="900" height="1955" loading="lazy"><figcaption><span><b>Kitchen Vision Pro</b>One-time lifetime unlock &mdash; multi-camera rigs &amp; tournament desk</span></figcaption></figure>
       </div>
     </div>
+  </section>
 
-    <!-- Screenshots Showcase (Dark Mode) -->
-    <div class="shots-section">
-      <h2 class="section-title">In-App Experience</h2>
-      <p class="section-sub">A dark, high-contrast design in clay-court orange, built for bright outdoor courts and indoor club lighting alike.</p>
-      
-      <div class="gallery">
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/01_splash.jpg" alt="Kitchen Vision splash screen" loading="lazy">
-          <div class="shot-caption">
-            Kitchen Vision
-            <div class="shot-sub">Your phones become the scoreboard and the replay camera</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/02_home.jpg" alt="Kitchen Vision Home screen with Quick Start, Kitchen Vision Pro, match setup and off-court tools" loading="lazy">
-          <div class="shot-caption">
-            Home
-            <div class="shot-sub">Start a match in one tap &mdash; everything else is one row away</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/03_scoreboard.jpg" alt="Kitchen Vision live scoreboard, Defending Champion vs Challenger, with 0-0-2 callout, Let, Replay and VAR Review" loading="lazy">
-          <div class="shot-caption">
-            Live Scoreboard
-            <div class="shot-sub">Tap or swipe up to score, swipe down to undo, 0-0-2 callout shown</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/04_casual.jpg" alt="Kitchen Vision match setup with preset team names Defending Champion vs Challenger" loading="lazy">
-          <div class="shot-caption">
-            Match Setup
-            <div class="shot-sub">Your side vs opponents &mdash; type names or pick a preset</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/watch_score.png" alt="Kitchen Vision on Apple Watch showing Us 10, Them 8" loading="lazy">
-          <div class="shot-caption">
-            Apple Watch
-            <div class="shot-sub">The same team names and live score on your wrist</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/05_tournament_hub.jpg" alt="Kitchen Vision tournaments and leagues hub" loading="lazy">
-          <div class="shot-caption">
-            Tournaments &amp; Leagues
-            <div class="shot-sub">Create an event or join one as a court scorer</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/ipad_tournament_desk.jpg" alt="Kitchen Vision Master Tournament Desk on iPad with live courts and standings" loading="lazy">
-          <div class="shot-caption">
-            Master Tournament Desk
-            <div class="shot-sub">Live courts and standings on one iPad</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="../assets/kitchen_vision/2026-09/06_paywall.jpg" alt="Kitchen Vision Pro lifetime unlock screen" loading="lazy">
-          <div class="shot-caption">
-            Kitchen Vision Pro
-            <div class="shot-sub">One-time lifetime unlock &mdash; multi-camera rigs &amp; tournament desk</div>
-          </div>
-        </div>
+  <!-- ===================== How it works ===================== -->
+  <section class="wrap block" aria-labelledby="how-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="how-title">How it works</h2>
+        <p class="lede-sm">Kitchen Vision does not make line or kitchen calls for you &mdash; it gives you the footage to decide.</p>
+      </div>
+      <ol class="notes">
+        <li><span class="n">01</span><div><b>The 0-0-2 side-out rule, kept for you</b><p>Pickleball doubles begins with only one server (&ldquo;0-0-2&rdquo;), rotates through Server 1 and Server 2 on subsequent side-outs, and requires server score parity matching the right/left courts. Kitchen Vision works out the exact 3-number callout on every point, so arguments never stall the match. MLP-style rally scoring to 21 is built in too.</p></div></li>
+        <li><span class="n">02</span><div><b>Scoring with your thumb, slow-mo when it matters</b><p>Tap or swipe up on a side to award the rally and swipe down to take it back. When a kitchen fault or a line is disputed, tap VAR Review to watch the last rally again in &frac14;&times; slow motion from local rolling memory, step frame by frame, and make the call yourself.</p></div></li>
+        <li><span class="n">03</span><div><b>Every angle, no router</b><p>Pair 2 to 3 iPhones peer-to-peer over Bluetooth and local Wi-Fi &mdash; no router, no internet. Every phone shows the live score, and the extra cameras give you synchronized angles of the same rally to review.</p></div></li>
+        <li><span class="n">04</span><div><b>How hard did you actually hit that?</b><p>Kitchen Vision measures the speed of a shot at the moment it leaves the paddle, correcting for the speed the ball sheds against the air before the camera gets a clean look at it. In practice mode a single phone is enough &mdash; the ball&rsquo;s known width against its size on screen gives the scale, with nothing to calibrate. Readings are shown as a range rather than one number, because that is what the measurement honestly supports.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <article class="wrap case" aria-labelledby="watch-title">
+    <div class="case-text">
+      <p class="label">Apple Watch</p>
+      <h2 class="case-title" id="watch-title">Keep score from your wrist</h2>
+      <p>Start a match on your iPhone and the Apple Watch app shows the same team names &mdash; &ldquo;Us&rdquo; and &ldquo;Them&rdquo; unless you pick your own &mdash; with the live score and who is serving. Tap or swipe up on a side to give it the rally, swipe down to undo. Built for casual games where nobody wants to walk to the phone between points. It is a remote for the match on your phone, not a separate scorer.</p>
+    </div>
+    <div class="case-media">
+      <div class="stage s-watch">
+        <img class="watch a1" src="../assets/kitchen_vision/2026-09/watch_score.png" alt="Kitchen Vision on Apple Watch showing Us 10, Them 8" width="416" height="496" loading="lazy">
       </div>
     </div>
+  </article>
 
-    <!-- Core Features Grid -->
-    <div class="grid">
-      <div class="card">
-        <div class="card-num">01 · Rule Engine</div>
-        <h3>The 0-0-2 Side-Out Rule Kept For You</h3>
-        <p>Pickleball doubles begins with only one server ("0-0-2"), rotates through Server 1 and Server 2 on subsequent side-outs, and requires server score parity matching the right/left courts. Kitchen Vision works out the exact 3-number callout on every point, so arguments never stall the match. MLP-style rally scoring to 21 is built in too.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-num">02 · Replay</div>
-        <h3>Scoring With Your Thumb, Slow-Mo When It Matters</h3>
-        <p>Tap or swipe up on a side to award the rally and swipe down to take it back. When a kitchen fault or a line is disputed, tap VAR Review to watch the last rally again in &frac14;&times; slow motion from local rolling memory, step frame by frame, and make the call yourself. Kitchen Vision does not make line or kitchen calls for you &mdash; it gives you the footage to decide.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-num">03 · Apple Watch</div>
-        <h3>Keep Score From Your Wrist</h3>
-        <p>Start a match on your iPhone and the Apple Watch app shows the same team names &mdash; "Us" and "Them" unless you pick your own &mdash; with the live score and who is serving. Tap or swipe up on a side to give it the rally, swipe down to undo. Built for casual games where nobody wants to walk to the phone between points. It is a remote for the match on your phone, not a separate scorer.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-num">04 · Multi-Phone Rig</div>
-        <h3>Every Angle, No Router</h3>
-        <p>Pair 2 to 3 iPhones peer-to-peer over Bluetooth and local Wi-Fi &mdash; no router, no internet. Every phone shows the live score, and the extra cameras give you synchronized angles of the same rally to review.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-num">05 · Shot Speed</div>
-        <h3>How Hard Did You Actually Hit That?</h3>
-        <p>Kitchen Vision measures the speed of a shot at the moment it leaves the paddle, correcting for the speed the ball sheds against the air before the camera gets a clean look at it. In practice mode a single phone is enough — the ball's known width against its size on screen gives the scale, with nothing to calibrate. Readings are shown as a range rather than one number, because that is what the measurement honestly supports.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-num">06 · Tournament Desk</div>
-        <h3>Multi-Court Live Standings on One iPad</h3>
-        <p>Organize club round robins and elimination brackets on an iPad Master Desk. Court scorers connect by scanning a QR code and stream live scores and results back to the desk, across up to 7 connected devices &mdash; all peer-to-peer.</p>
+  <article class="wrap case" aria-labelledby="desk-title">
+    <div class="case-text">
+      <p class="label">iPad · Kitchen Vision Pro</p>
+      <h2 class="case-title" id="desk-title">Multi-court live standings on one iPad</h2>
+      <p>Organize club round robins and elimination brackets on an iPad Master Desk. Court scorers connect by scanning a QR code and stream live scores and results back to the desk, across up to 7 connected devices &mdash; all peer-to-peer.</p>
+    </div>
+    <div class="case-media">
+      <div class="stage tall s-desk">
+        <img class="tablet a1" src="../assets/kitchen_vision/2026-09/ipad_tournament_desk.jpg" alt="Kitchen Vision Master Tournament Desk on iPad with live courts and standings" width="1100" height="1467" loading="lazy">
       </div>
     </div>
+  </article>
 
-    <!-- User Guide -->
-    <h2 class="section-title">Getting Started</h2>
-    <p class="section-sub">One phone is enough to score and replay. Add more only when you want more angles or a whole event.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="card-num">Guide 01 · Casual Match</div>
-        <h3>Score a Game on One Phone</h3>
-        <ol class="guide-list">
-          <li>Mount or prop your iPhone steady beside the court so it sees the whole court. Handheld works for scoring, but the replay shakes.</li>
-          <li>Tap <strong>Start match</strong> on Home. Sides start as &ldquo;Us&rdquo; and &ldquo;Them&rdquo;; open <strong>Match setup</strong> first to type names or tap <strong>Preset names</strong>.</li>
-          <li>Tap or swipe up on a side to award the rally, swipe down to undo. The 3-number callout updates on every point. Tap <strong>VAR Review</strong> to replay a disputed rally.</li>
-        </ol>
+  <!-- ===================== Getting started ===================== -->
+  <section class="wrap block" aria-labelledby="start-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="start-title">Getting started</h2>
+        <p class="lede-sm">One phone is enough to score and replay.</p>
+        <p>Add more only when you want more angles or a whole event.</p>
       </div>
-      <div class="card">
-        <div class="card-num">Guide 02 · Apple Watch</div>
-        <h3>Keep Score From Your Wrist</h3>
-        <ol class="guide-list">
-          <li>The Watch app comes with Kitchen Vision. If it isn't on your watch, install it from the Watch app on your iPhone (watchOS 10 or later).</li>
-          <li>Start a match on your iPhone, then open Kitchen Vision on your watch. The first-named side is yours.</li>
-          <li>Tap or swipe up to score, swipe down to undo. Keep the phone nearby &mdash; the watch is a remote for the match on the phone.</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-num">Guide 03 · Multi-Phone Rig</div>
-        <h3>Add a Second or Third Angle</h3>
-        <ol class="guide-list">
-          <li>Host taps <strong>Tournament</strong> &rarr; <strong>Multi-Phone Mesh</strong>, picks Duo or Pro, then taps <strong>Pair with Other Phones</strong>.</li>
-          <li>On each extra phone, tap the QR icon on Home and scan the code, or enter the code shown beneath it. Guests never need Pro.</li>
-          <li>Place the second phone at the opposite net post, and a third beside the court for a side-on angle. No router or internet needed.</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-num">Guide 04 · Tournament Desk</div>
-        <h3>Run a Club Event From an iPad</h3>
-        <ol class="guide-list">
-          <li>On an iPad, tap <strong>Tournament</strong> &rarr; <strong>Tournament Desk &amp; Standings</strong> &rarr; <strong>Create Tournament</strong>.</li>
-          <li>Paste your roster and generate Round Robin or elimination fixtures.</li>
-          <li>Open the Master Desk and tap <strong>Connect Court Phone</strong>. Court scorers scan the code, choose their court and score live &mdash; up to 7 connected devices.</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-num">Guide 05 · Practice</div>
-        <h3>Drill Alone and Check Your Shot Speed</h3>
-        <ol class="guide-list">
-          <li>Tap <strong>Casual</strong> on Home, then <strong>Living Room Practice</strong>.</li>
-          <li>Stand the phone still and hit the ball in front of the camera. It counts your returns and keeps your best run.</li>
-          <li>Each shot's speed appears as a range, with your best of the session beside it.</li>
-        </ol>
-      </div>
+      <ol class="rows">
+        <li class="row"><span><span class="n">01</span> Score a game on one phone</span><div class="steps"><p>1. Mount or prop your iPhone steady beside the court so it sees the whole court. Handheld works for scoring, but the replay shakes.</p><p>2. Tap <strong>Start match</strong> on Home. Sides start as &ldquo;Us&rdquo; and &ldquo;Them&rdquo;; open <strong>Match setup</strong> first to type names or tap <strong>Preset names</strong>.</p><p>3. Tap or swipe up on a side to award the rally, swipe down to undo. The 3-number callout updates on every point. Tap <strong>VAR Review</strong> to replay a disputed rally.</p></div></li>
+        <li class="row"><span><span class="n">02</span> Keep score from your wrist</span><div class="steps"><p>1. The Watch app comes with Kitchen Vision. If it isn&rsquo;t on your watch, install it from the Watch app on your iPhone (watchOS 10 or later).</p><p>2. Start a match on your iPhone, then open Kitchen Vision on your watch. The first-named side is yours.</p><p>3. Tap or swipe up to score, swipe down to undo. Keep the phone nearby &mdash; the watch is a remote for the match on the phone.</p></div></li>
+        <li class="row"><span><span class="n">03</span> Add a second or third angle</span><div class="steps"><p>1. Host taps <strong>Tournament</strong> &rarr; <strong>Multi-Phone Mesh</strong>, picks Duo or Pro, then taps <strong>Pair with Other Phones</strong>.</p><p>2. On each extra phone, tap the QR icon on Home and scan the code, or enter the code shown beneath it. Guests never need Pro.</p><p>3. Place the second phone at the opposite net post, and a third beside the court for a side-on angle. No router or internet needed.</p></div></li>
+        <li class="row"><span><span class="n">04</span> Run a club event from an iPad</span><div class="steps"><p>1. On an iPad, tap <strong>Tournament</strong> &rarr; <strong>Tournament Desk &amp; Standings</strong> &rarr; <strong>Create Tournament</strong>.</p><p>2. Paste your roster and generate Round Robin or elimination fixtures.</p><p>3. Open the Master Desk and tap <strong>Connect Court Phone</strong>. Court scorers scan the code, choose their court and score live &mdash; up to 7 connected devices.</p></div></li>
+        <li class="row"><span><span class="n">05</span> Drill alone and check your shot speed</span><div class="steps"><p>1. Tap <strong>Casual</strong> on Home, then <strong>Living Room Practice</strong>.</p><p>2. Stand the phone still and hit the ball in front of the camera. It counts your returns and keeps your best run.</p><p>3. Each shot&rsquo;s speed appears as a range, with your best of the session beside it.</p></div></li>
+      </ol>
     </div>
+  </section>
 
-    <!-- Call to Action -->
-    <div class="cta">
-      <div class="status-badge"><span class="dot"></span>Live on the App Store</div>
-      <h2>Bring It to Your Next Game</h2>
-      <p>Kitchen Vision is free to download for iPhone and iPad, with the Apple Watch app included. Scoring and VAR replay are free; Kitchen Vision Pro is a one-time lifetime unlock for multi-phone rigs and the tournament desk. Questions or a bug on court? <a href="mailto:peter@calmdownoscar.com?subject=Kitchen%20Vision">Email me</a>.</p>
-      <a class="store-badge" href="https://apps.apple.com/app/kitchen-vision/id6804914154">
-        <img src="../assets/app-store-badge.svg" alt="Download on the App Store" width="150" height="50">
-      </a>
+  <!-- ===================== Price ===================== -->
+  <section class="wrap block" aria-labelledby="price-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="price-title">Price</h2>
+      </div>
+      <ul class="rows">
+        <li class="row"><span>Free</span><p>Download for iPhone and iPad, with the Apple Watch app included. Scoring and VAR replay are free.</p></li>
+        <li class="row"><span>Kitchen Vision Pro</span><p>A one-time lifetime unlock for multi-phone rigs and the tournament desk.</p></li>
+        <li class="row"><span>Requires</span><p>iOS 17 or later; watchOS 10 or later for the Watch app.</p></li>
+        <li class="row"><span>Help</span><div><p>Questions or a bug on court? <a href="mailto:peter@calmdownoscar.com?subject=Kitchen%20Vision">Email me</a>.</p><div class="links"><a class="link" href="https://apps.apple.com/app/kitchen-vision/id6804914154">App Store</a><a class="link in" href="privacy.html">Privacy policy</a></div></div></li>
+      </ul>
     </div>
-  </div>
+  </section>
+
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <div>&copy; 2026 calmdownoscar. All rights reserved.</div>
-    <div style="display:flex; gap:18px;">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="../">calmdownoscar.com</a>
-    </div>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
 
-<script>
-(function(){
-  // --- Mobile nav disclosure ---
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-
-  function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
-})();
-</script>
 </body>
 </html>

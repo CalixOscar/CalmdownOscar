@@ -275,8 +275,10 @@ a.row:hover{ color:var(--accent); }
   .case-text > p:not(.label), .aside{ max-width:60ch; }
   .split{ grid-template-columns:1fr; row-gap:24px; }
   .split > :first-child p:not(.label){ max-width:52ch; }
-  .doc{ grid-template-columns:1fr; row-gap:40px; }
-  .doc-side{ position:static; }
+  .doc{ grid-template-columns:minmax(0,1fr); row-gap:40px; }
+  .doc-side{ position:static; order:2; }
+  .doc-side > .label, .doc-side .toc{ display:none; }
+  .doc-side .links{ margin-top:0; }
 }
 @media (max-width:640px){
   .row{ grid-template-columns:1fr; row-gap:6px; }

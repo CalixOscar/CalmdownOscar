@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
@@ -18,628 +16,108 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/unlirice/">
 <link rel="canonical" href="https://www.calmdownoscar.com/unlirice/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --accent-2:#8A5FD1;
-    --progress:#B88233;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: calc(64px + var(--sat));
-    --window-chrome: #E8EDF0;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  .wrap{ max-width:920px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
-    margin-left:22px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-
-  .nav-toggle{ display:none; }
-
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:currentColor;
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgb(20,27,34);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
-  }
-
-  main{ padding:56px 0 96px; }
-
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-bottom: 20px;
-  }
-  .status-badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    animation: dotPulse 2.2s ease-out infinite;
-  }
-  @keyframes dotPulse {
-    0% { box-shadow: 0 0 0 0 currentColor; }
-    70% { box-shadow: 0 0 0 8px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-
-  .product-head {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 14px;
-  }
-  .hero-icon{
-    width: 68px; height: 68px; border-radius: 17px;
-    box-shadow: 0 8px 22px rgba(32,43,54,.20);
-    flex-shrink: 0;
-  }
-  h1{
-    font-weight: 800;
-    font-size: clamp(32px, 6vw, 48px);
-    line-height: 1.08;
-    letter-spacing: -0.015em;
-  }
-  h1 span{ color: var(--accent); }
-  .lede{ margin-top: 16px; max-width: 64ch; font-size: 17px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; }
-
-  .meta{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-  .pill{
-    color: var(--muted); border: 1px solid var(--edge); border-radius: 20px;
-    padding: 4px 12px; font-size: 12px; font-weight: 500; background: transparent;
-  }
-
-  .section-label {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: .02em;
-    color: var(--ink);
-    padding-bottom: 16px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--edge);
-  }
-  .section-lede{ font-size: 14.5px; color: var(--muted); max-width: 62ch; margin-bottom: 28px; }
-
-  /* ================= showcase styling ================= */
-  .showcase-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    backdrop-filter: blur(6px);
-    margin-bottom: 48px;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .showcase-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--edge-hi);
-    box-shadow: 0 16px 34px rgba(32,43,54,.12);
-  }
-  .window-header {
-    background: var(--window-chrome);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--edge);
-    justify-content: space-between;
-  }
-  .window-dots { display: flex; gap: 6px; }
-  .window-dot { width: 9px; height: 9px; border-radius: 50%; }
-  .dot-red { background: #FF5F56; }
-  .dot-yellow { background: #FFBD2E; }
-  .dot-green { background: #27C93F; }
-  .window-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
-  .window-body { padding: 0; background: #0B0F14; }
-  .window-body img { display: block; width: 100%; height: auto; }
-  .card-info { padding: 22px 20px; border-top: 1px solid var(--edge); background: rgba(255, 255, 255, 0.05); }
-  .card-info h3 { font-weight: 700; font-size: 17px; margin-bottom: 8px; color: var(--ink); }
-  .card-info h3 span { color: var(--accent); }
-  .card-info p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
-
-  .shot-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-bottom: 48px;
-  }
-  .shot-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .shot-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--edge-hi);
-    box-shadow: 0 16px 34px rgba(32,43,54,.12);
-  }
-  .shot-card img { display: block; width: 100%; height: auto; background: #0B0F14; }
-  .shot-caption { display: block; padding: 12px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--edge); }
-  @media (max-width: 640px) {
-    .shot-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ================= pipeline steps ================= */
-  .pipeline {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
-  .step {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 22px 24px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 18px;
-    backdrop-filter: blur(6px);
-  }
-  .step-num {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    background: var(--accent); color: #fff;
-    flex-shrink: 0;
-  }
-  .step.future .step-num { background: var(--accent-2); }
-  .step-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
-  .step h4 { font-size: 15.5px; font-weight: 700; color: var(--ink); }
-  .step-tag {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-    padding: 2px 8px; border-radius: 20px; color: #fff; background: var(--accent);
-  }
-  .step.future .step-tag { background: var(--accent-2); }
-  .step p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
-  .step p code { background: rgba(255, 255, 255, 0.09); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
-  .connector { text-align: center; color: var(--edge-hi); font-size: 18px; line-height: 1; margin: -4px 0; }
-
-  /* ================= tech card ================= */
-  .tech-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 28px 24px;
-    backdrop-filter: blur(6px);
-    margin-bottom: 48px;
-  }
-  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-  .tech-item h4 {
-    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--accent); margin-bottom: 8px; border-bottom: 1px dashed rgba(255, 255, 255, 0.09); padding-bottom: 4px;
-  }
-  .tech-item p { font-size: 14px; color: var(--muted); line-height: 1.55; }
-  .tech-item p strong { color: var(--ink); }
-
-  /* ================= engine note ================= */
-  .engine-note {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-left: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 20px 22px;
-    margin-bottom: 56px;
-    backdrop-filter: blur(6px);
-  }
-  .engine-note h4 {
-    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--accent); margin-bottom: 8px;
-  }
-  .engine-note p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
-
-  /* ================= action links card ================= */
-  .action-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 24px 24px;
-    display: flex; flex-direction: column; gap: 14px;
-    backdrop-filter: blur(6px);
-    margin-bottom: 36px;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .action-card:hover { transform: translateY(-3px); border-color: var(--edge-hi); box-shadow: 0 14px 34px rgba(32,43,54,.14); }
-  .action-card a.applink { color: var(--ink); font-weight: 600; font-size: 14px; text-decoration: none; transition: color .2s ease; }
-  .action-card a.applink:hover { color: var(--accent); }
-  .action-card a.applink .arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.7,.3,1); }
-  .action-card a.applink:hover .arrow { transform: translateX(5px); }
-
-  .back { display: inline-block; margin-top: 16px; color: var(--ink); font-weight: 500; text-decoration: none; font-size: 14px; transition: color .2s ease; }
-  .back:hover { color: var(--accent); }
-
-  footer { border-top: 1px solid var(--edge); padding: 22px 0 calc(40px + var(--sab)); color: var(--muted); font-size: 13px; margin-top: 64px; }
-  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; padding: 4px 0; min-height: 44px; display: inline-flex; align-items: center; }
-  footer a:hover { color: var(--accent); }
-
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (max-width:640px){
-    .nav {
-      flex-direction: column; align-items: flex-start; height: auto;
-      /* Long-hand on purpose: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
-         shorthand here also reset .wrap's side gutters and pushed the logo and links flush
-         against the edge of the screen on every phone. */
-      padding-top: 14px; padding-bottom: 14px;
-    }
-    /* The column switch above makes `nav` a flex item sized to its own content, so its
-       overflow-x:auto never engages and the whole page is dragged wide by the link row.
-       Stretching it back to the container width is what lets the links scroll instead. */
-    nav { align-self: stretch; min-width: 0; max-width: 100%; }
-    header { position: static; }
-    body { padding-top: 0; }
-    nav a { margin-left: 0; margin-right: 18px; }
-    .step { grid-template-columns: auto 1fr; padding: 18px; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    html { scroll-behavior: auto; }
-    .showcase-card, .action-card { transition: none; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-  }
+  .grid2{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(16px, 2vw, 24px); }
+  .grid2 figcaption{ margin-top:8px; }
+  .split > .notes{ margin-top:0; }
+  .notes .tag{ display:inline-block; margin-left:8px; font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); border:0; vertical-align:2px; }
+  .notes a.tag:hover{ color:var(--ink); }
+  .phones{ display:grid; grid-template-columns:repeat(2, minmax(0,200px)); gap:14px; margin-top:16px; }
+  .phones img{ width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.12); }
+  .row p + p{ margin-top:10px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
 </style>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap nav">
+
+<header class="top">
+  <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="../aboutme/">About Me</a>
-      <a href="../abouttheapps/">About the apps</a>
-      <a href="../how_I_work/">How I Work</a>
-      <a href="../the_studio/">The Studio</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <div class="wrap">
-    <div class="status-badge reveal">
-      <span class="dot"></span>
-      macOS · Mac App Store · Open Source
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../apps/assets/unli-rice-icon.png" alt="" width="44" height="44"><p class="label">Mac · Mac App Store · Open source</p></div>
+    <h1 class="lede">Unli Rice</h1>
+    <p class="by">A persistent memory layer for AI agents. Claude, Codex, Antigravity, Gemini &mdash; every coding tool you connect reads and writes into the same local note log over MCP, so nothing gets re-explained and no thread is ever really lost between sessions or tools.</p>
+    <div class="links"><a class="link" href="https://apps.apple.com/app/unli-rice/id6792837485">Mac App Store</a><a class="link in" href="user_guide.html">User guide</a><a class="link" href="https://github.com/CalixOscar/unli-rice">Source on GitHub</a><a class="link" href="mailto:peter@calmdownoscar.com">Email support</a></div>
+  </section>
+
+  <article class="wrap case" aria-labelledby="log-title">
+    <div class="case-text">
+      <p class="label">Mac app</p>
+      <h2 class="case-title" id="log-title">One log, every agent <small>reads and writes the same notes</small></h2>
+      <p>The vault lives on your Mac as an append-only event log &mdash; no note is ever silently overwritten, structural changes are proposed rather than applied automatically, and every entry carries the name of the agent that wrote it. Switch from Claude to Codex mid-task and the context is already there.</p>
     </div>
-
-    <div class="product-head reveal">
-      <img class="hero-icon" src="../apps/assets/unli-rice-icon.png" alt="Unli Rice app icon" width="68" height="68">
-      <h1>Unli <span>Rice</span></h1>
-    </div>
-
-    <p class="lede reveal">A persistent memory layer for AI agents. Claude, Codex, Antigravity, Gemini — every coding tool you connect reads and writes into the same local note log over MCP, so nothing gets re-explained and no thread is ever really lost between sessions or tools. Append-only, no destructive delete, every write attributed to whichever agent made it.</p>
-
-    <div class="meta reveal">
-      <span class="pill">macOS</span>
-      <span class="pill">MCP</span>
-      <span class="pill">Memory</span>
-      <span class="pill">Open Source</span>
-      <span class="pill">100% Local</span>
-    </div>
-
-    <div class="showcase-card reveal">
-      <div class="window-header">
-        <div class="window-dots">
-          <span class="window-dot dot-red"></span>
-          <span class="window-dot dot-yellow"></span>
-          <span class="window-dot dot-green"></span>
-        </div>
-        <span class="window-title">macOS — Unli Rice</span>
-        <div style="width: 39px;"></div>
+    <div class="case-media">
+      <div class="shot">
+        <img src="../apps/assets/unli-rice-hero.png" alt="Unli Rice on macOS — the Home screen, showing what your AI tools know about you and how many notes are stored." width="3024" height="1898" fetchpriority="high">
       </div>
-      <div class="window-body">
-        <img src="../apps/assets/unli-rice-hero.png" alt="Unli Rice on macOS — the Home screen, showing what your AI tools know about you and how many notes are stored." loading="lazy">
-      </div>
-      <div class="card-info">
-        <h3>One log, every agent <span>reads and writes the same notes</span></h3>
-        <p>The vault lives on your Mac as an append-only event log — no note is ever silently overwritten, structural changes are proposed rather than applied automatically, and every entry carries the name of the agent that wrote it. Switch from Claude to Codex mid-task and the context is already there.</p>
+      <div class="grid2">
+        <figure><div class="shot"><img src="../apps/assets/unli-rice-shot-map.webp" alt="Unli Rice Map — every note plotted as a connected graph, clustered by project" width="1400" height="879" loading="lazy"></div><figcaption><span>Map &mdash; every note, clustered by project</span></figcaption></figure>
+        <figure><div class="shot"><img src="../apps/assets/unli-rice-shot-connect.webp" alt="Unli Rice Setup &amp; Tools — connecting Claude Code, Claude Desktop, Cursor, Antigravity and Codex over MCP" width="1400" height="879" loading="lazy"></div><figcaption><span>Connect &mdash; one config block per tool</span></figcaption></figure>
+        <figure><div class="shot"><img src="../apps/assets/unli-rice-shot-notes.webp" alt="Unli Rice Notes — searchable list of every note, with source tags and timestamps" width="1400" height="879" loading="lazy"></div><figcaption><span>Notes &mdash; searchable, tagged, append-only</span></figcaption></figure>
+        <figure><div class="shot"><img src="../apps/assets/unli-rice-shot-todo.webp" alt="Unli Rice To do — derived automatically from your repos and notes tagged todo, nothing tracked by hand" width="1400" height="879" loading="lazy"></div><figcaption><span>To do &mdash; derived, not maintained by hand</span></figcaption></figure>
       </div>
     </div>
+  </article>
 
-    <div class="shot-grid reveal">
-      <div class="shot-card">
-        <img src="../apps/assets/unli-rice-shot-map.webp" alt="Unli Rice Map — every note plotted as a connected graph, clustered by project" loading="lazy">
-        <span class="shot-caption">Map — every note, clustered by project</span>
+  <!-- ===================== How it ships ===================== -->
+  <section class="wrap block" aria-labelledby="ships-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="ships-title">How it ships</h2>
+        <p>Unli Rice centers on the local Mac event log, paired with a shipped iOS capture companion for recording thoughts on the go. Point the phone at an iCloud folder and the two connect; leave it unset and nothing leaves the phone.</p>
       </div>
-      <div class="shot-card">
-        <img src="../apps/assets/unli-rice-shot-connect.webp" alt="Unli Rice Setup & Tools — connecting Claude Code, Claude Desktop, Cursor, Antigravity and Codex over MCP" loading="lazy">
-        <span class="shot-caption">Connect — one config block per tool</span>
-      </div>
-      <div class="shot-card">
-        <img src="../apps/assets/unli-rice-shot-notes.webp" alt="Unli Rice Notes — searchable list of every note, with source tags and timestamps" loading="lazy">
-        <span class="shot-caption">Notes — searchable, tagged, append-only</span>
-      </div>
-      <div class="shot-card">
-        <img src="../apps/assets/unli-rice-shot-todo.webp" alt="Unli Rice To do — derived automatically from your repos and notes tagged todo, nothing tracked by hand" loading="lazy">
-        <span class="shot-caption">To do — derived, not maintained by hand</span>
-      </div>
+      <ol class="notes">
+        <li><span class="n">01</span><div><b>Unli Rice &mdash; Mac app <span class="tag">Shipping now</span></b><p>The memory log and MCP server, running locally. Every connected agent reads <code>Wiki: index</code>-style hubs and writes attributed notes into the same append-only history.</p></div></li>
+        <li><span class="n">02</span><div><b>iOS Capture &mdash; satellite note-taker <a class="tag" href="https://apps.apple.com/app/unli-rice-capture/id6800863948">Shipping now ↗</a></b><p>A one-screen iPhone app for the thought you have while walking: record, live transcript, done. No chat app to open, no model to pick, no 30-second dictation cutoff. Audio is written to disk before transcription ever starts, so a capture never depends on a network connection to survive.</p>
+          <div class="phones">
+            <img src="../apps/assets/unli-rice-ios-capture-welcome.png" alt="Unli Rice iOS Capture welcome screen explaining how to record and its on-device privacy model" width="1320" height="2868" loading="lazy">
+            <img src="../apps/assets/unli-rice-ios-capture-notes-dark.png" alt="Unli Rice iOS Capture note list in dark mode, showing recorded thoughts and the microphone button" width="1320" height="2868" loading="lazy">
+          </div></div></li>
+        <li><span class="n">03</span><div><b>Sync &mdash; per-device shards <span class="tag">Shipping now</span></b><p>Sync is off until you choose an iCloud folder in Settings. Once you do, the phone still never touches the Mac&rsquo;s log directly: it writes its own append-only file into that folder, and the Mac imports and merges by content, never by overwrite. A phone offline for a week and a Mac that catches up later resolve the same way &mdash; nothing lost, nothing duplicated.</p></div></li>
+      </ol>
     </div>
+  </section>
 
-    <!-- How it ships -->
-    <section style="padding: 0 0 16px;">
-      <div class="section-label reveal">How it ships</div>
-      <p class="section-lede reveal">Unli Rice centers on the local Mac event log, paired with a shipped iOS capture companion for recording thoughts on the go. Point the phone at an iCloud folder and the two connect; leave it unset and nothing leaves the phone.</p>
-
-      <div class="pipeline">
-        <div class="step reveal">
-          <div class="step-num">1</div>
-          <div>
-            <div class="step-head"><h4>Unli Rice — Mac app</h4><span class="step-tag">Shipping now</span></div>
-            <p>The memory log and MCP server, running locally. Every connected agent reads <code>Wiki: index</code>-style hubs and writes attributed notes into the same append-only history.</p>
-          </div>
-        </div>
-
-        <div class="connector reveal">↓</div>
-
-        <div class="step reveal">
-          <div class="step-num">2</div>
-          <div>
-            <div class="step-head"><h4>iOS Capture — satellite note-taker</h4><a class="step-tag" href="https://apps.apple.com/app/unli-rice-capture/id6800863948" style="text-decoration:none; color:#fff;">Shipping now</a></div>
-            <p>A one-screen iPhone app for the thought you have while walking: record, live transcript, done. No chat app to open, no model to pick, no 30-second dictation cutoff. Audio is written to disk before transcription ever starts, so a capture never depends on a network connection to survive.</p>
-            <div style="margin-top: 16px; display: flex; gap: 14px; flex-wrap: wrap;">
-              <div style="max-width: 260px; flex: 1 1 220px; border-radius: 22px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 10px 28px rgba(32,43,54,.18);">
-                <img src="../apps/assets/unli-rice-ios-capture-welcome.png" alt="Unli Rice iOS Capture welcome screen explaining how to record and its on-device privacy model" style="display: block; width: 100%; height: auto;" loading="lazy">
-              </div>
-              <div style="max-width: 260px; flex: 1 1 220px; border-radius: 22px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 10px 28px rgba(32,43,54,.18);">
-                <img src="../apps/assets/unli-rice-ios-capture-notes-dark.png" alt="Unli Rice iOS Capture note list in dark mode, showing recorded thoughts and the microphone button" style="display: block; width: 100%; height: auto;" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="connector reveal">↓</div>
-
-        <div class="step reveal">
-          <div class="step-num">3</div>
-          <div>
-            <div class="step-head"><h4>Sync — per-device shards</h4><span class="step-tag">Shipping now</span></div>
-            <p>Sync is off until you choose an iCloud folder in Settings. Once you do, the phone still never touches the Mac's log directly: it writes its own append-only file into that folder, and the Mac imports and merges by content, never by overwrite. A phone offline for a week and a Mac that catches up later resolve the same way — nothing lost, nothing duplicated.</p>
-          </div>
-        </div>
+  <!-- ===================== Architecture ===================== -->
+  <section class="wrap block" aria-labelledby="arch-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="arch-title">Architecture &amp; status</h2>
       </div>
-    </section>
-
-    <!-- Ecosystem / Unli Disk -->
-    <section style="padding: 0 0 16px;">
-      <div class="section-label reveal">How this connects to Unli Disk</div>
-      <div class="engine-note reveal">
-        <h4>Independent on purpose</h4>
-        <p>Unli Rice and <a href="../apps/unlidisk/" style="color:var(--accent);text-decoration:none;">Unli Disk</a> are two separate Mac apps from the same one-person studio — different codebases, different data, no shared backend or account system between them. Unli Rice is a memory layer for AI agents; Unli Disk is a disk-space analyzer and cleaner. That separation is deliberate: if one ships late, has a rough App Review cycle, or just has a bad week, the other keeps working exactly as it did before. We're exploring making the two easier to discover together further down the line — but each app is built to stand on its own, fully usable and fully purchasable by itself, permanently.</p>
-      </div>
-    </section>
-
-    <!-- Architecture -->
-    <section style="padding: 0 0 16px;">
-      <div class="section-label reveal">Architecture &amp; status</div>
-      <div class="tech-card reveal">
-        <div class="tech-grid">
-          <div class="tech-item">
-            <h4>Platform</h4>
-            <p>Native <strong>Swift</strong> app with a local <strong>MCP</strong> server — no cloud dependency for the core log.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Data model</h4>
-            <p>Append-only event log. Nothing is destructively deleted; structural changes are proposed, never auto-applied.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Local privacy</h4>
-            <p><strong>Local storage, no account.</strong> Notes are files on your Mac — no tracking, no account server, and no sync service of mine in between; the optional phone-to-Mac hop is your own iCloud folder. iOS Capture transcribes on-device with SpeechAnalyzer, and the recorded audio never leaves the phone. The one thing that travels is what you ask an assistant to read: Unli Rice serves notes over MCP, so a connected cloud assistant sees the notes it requests. Point it at a local model and nothing leaves at all.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Multi-agent</h4>
-            <p>Any MCP-speaking tool can connect — Claude Code, Codex, Antigravity, and others — each identified by name in the log.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Open source</h4>
-            <p>MIT licensed. The core log and MCP server are on GitHub for anyone to read, audit, or build on.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Action links -->
-    <div class="action-card reveal">
-      <a class="applink" href="user_guide.html">Read the user guide <span class="arrow">→</span></a>
-      <a class="applink" href="https://apps.apple.com/app/unli-rice/id6792837485">View on Mac App Store <span class="arrow">→</span></a>
-      <a class="applink" href="https://github.com/CalixOscar/unli-rice">Source on GitHub <span class="arrow">→</span></a>
-      <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">→</span></a>
+      <ul class="rows">
+        <li class="row"><span>Platform</span><p>Native <strong>Swift</strong> app with a local <strong>MCP</strong> server &mdash; no cloud dependency for the core log. Any MCP-speaking tool can connect, each identified by name in the log.</p></li>
+        <li class="row"><span>Local privacy</span><p><strong>Local storage, no account.</strong> Notes are files on your Mac &mdash; no tracking, no account server, and no sync service of mine in between; the optional phone-to-Mac hop is your own iCloud folder. iOS Capture transcribes on-device with SpeechAnalyzer, and the recorded audio never leaves the phone. The one thing that travels is what you ask an assistant to read: Unli Rice serves notes over MCP, so a connected cloud assistant sees the notes it requests. Point it at a local model and nothing leaves at all.</p></li>
+        <li class="row"><span>Open source</span><p>MIT licensed. The core log and MCP server are on <a href="https://github.com/CalixOscar/unli-rice">GitHub</a> for anyone to read, audit, or build on.</p></li>
+        <li class="row"><span>Unli Disk</span><div><p><strong>Independent on purpose.</strong> Unli Rice and <a href="../apps/unlidisk/">Unli Disk</a> are two separate Mac apps from the same one-person studio &mdash; different codebases, different data, no shared backend or account system between them. Unli Rice is a memory layer for AI agents; Unli Disk is a disk-space analyzer and cleaner.</p><p>That separation is deliberate: if one ships late, has a rough App Review cycle, or just has a bad week, the other keeps working exactly as it did before. We&rsquo;re exploring making the two easier to discover together further down the line &mdash; but each app is built to stand on its own, fully usable and fully purchasable by itself, permanently.</p></div></li>
+      </ul>
     </div>
+  </section>
 
-    <a class="back reveal" href="../#apps">← Back to Apps</a>
-  </div>
 </main>
-<footer>
-  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a> · <a href="../playground/">Playground</a> · <a href="../idea-clinic/">Idea clinic</a> · <a href="../hobbies/">Hobbies</a></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
 </footer>
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var revealEls = document.querySelectorAll('.reveal');
-  if (reduce.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(function(el){ io.observe(el); });
-  }
 
-  // --- Mobile nav disclosure ---
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-
-  function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
-})();
-</script>
 </body>
 </html>

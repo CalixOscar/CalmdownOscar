@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
@@ -14,512 +12,90 @@
 <meta name="description" content="How to use Unli Rice: connect an agent, understand the append-only note log, read the panes, and know what to check when something looks wrong.">
 <meta property="og:title" content="Unli Rice — User Guide">
 <meta property="og:description" content="How to use Unli Rice: connect an agent, understand the append-only note log, read the panes, and know what to check when something looks wrong.">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/unlirice/user_guide.html">
 <link rel="canonical" href="https://www.calmdownoscar.com/unlirice/user_guide.html">
 <meta name="twitter:card" content="summary_large_image">
-<style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --accent-2:#8A5FD1;
-    --progress:#B88233;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: calc(64px + var(--sat));
-    --window-chrome: #E8EDF0;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  .wrap{ max-width:920px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
-    margin-left:22px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-
-  .nav-toggle{ display:none; }
-
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:currentColor;
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgb(20,27,34);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
-  }
-
-  main{ padding:56px 0 96px; }
-
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-bottom: 20px;
-  }
-  .status-badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    animation: dotPulse 2.2s ease-out infinite;
-  }
-  @keyframes dotPulse {
-    0% { box-shadow: 0 0 0 0 currentColor; }
-    70% { box-shadow: 0 0 0 8px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-
-  .product-head {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 14px;
-  }
-  .hero-icon{
-    width: 68px; height: 68px; border-radius: 17px;
-    box-shadow: 0 8px 22px rgba(32,43,54,.20);
-    flex-shrink: 0;
-  }
-  h1{
-    font-weight: 800;
-    font-size: clamp(32px, 6vw, 48px);
-    line-height: 1.08;
-    letter-spacing: -0.015em;
-  }
-  h1 span{ color: var(--accent); }
-  .lede{ margin-top: 16px; max-width: 64ch; font-size: 17px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; }
-
-  .meta{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-  .pill{
-    color: var(--muted); border: 1px solid var(--edge); border-radius: 20px;
-    padding: 4px 12px; font-size: 12px; font-weight: 500; background: transparent;
-  }
-
-  .section-label {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: .02em;
-    color: var(--ink);
-    padding-bottom: 16px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--edge);
-  }
-  .section-lede{ font-size: 14.5px; color: var(--muted); max-width: 62ch; margin-bottom: 28px; }
-
-  /* ================= showcase styling ================= */
-  .showcase-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    backdrop-filter: blur(6px);
-    margin-bottom: 48px;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .showcase-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--edge-hi);
-    box-shadow: 0 16px 34px rgba(32,43,54,.12);
-  }
-  .window-header {
-    background: var(--window-chrome);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--edge);
-    justify-content: space-between;
-  }
-  .window-dots { display: flex; gap: 6px; }
-  .window-dot { width: 9px; height: 9px; border-radius: 50%; }
-  .dot-red { background: #FF5F56; }
-  .dot-yellow { background: #FFBD2E; }
-  .dot-green { background: #27C93F; }
-  .window-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
-  .window-body { padding: 0; background: #0B0F14; }
-  .window-body img { display: block; width: 100%; height: auto; }
-  .card-info { padding: 22px 20px; border-top: 1px solid var(--edge); background: rgba(255, 255, 255, 0.05); }
-  .card-info h3 { font-weight: 700; font-size: 17px; margin-bottom: 8px; color: var(--ink); }
-  .card-info h3 span { color: var(--accent); }
-  .card-info p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
-
-  .shot-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-bottom: 48px;
-  }
-  .shot-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .shot-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--edge-hi);
-    box-shadow: 0 16px 34px rgba(32,43,54,.12);
-  }
-  .shot-card img { display: block; width: 100%; height: auto; background: #0B0F14; }
-  .shot-caption { display: block; padding: 12px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--edge); }
-  @media (max-width: 640px) {
-    .shot-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ================= pipeline steps ================= */
-  .pipeline {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
-  .step {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 22px 24px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 18px;
-    backdrop-filter: blur(6px);
-  }
-  .step-num {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    background: var(--accent); color: #fff;
-    flex-shrink: 0;
-  }
-  .step.future .step-num { background: var(--accent-2); }
-  .step-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
-  .step h4 { font-size: 15.5px; font-weight: 700; color: var(--ink); }
-  .step-tag {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-    padding: 2px 8px; border-radius: 20px; color: #fff; background: var(--accent);
-  }
-  .step.future .step-tag { background: var(--accent-2); }
-  .step p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
-  .step p code { background: rgba(255, 255, 255, 0.09); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
-  .connector { text-align: center; color: var(--edge-hi); font-size: 18px; line-height: 1; margin: -4px 0; }
-
-  /* ================= tech card ================= */
-  .tech-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 28px 24px;
-    backdrop-filter: blur(6px);
-    margin-bottom: 48px;
-  }
-  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-  .tech-item h4 {
-    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--accent); margin-bottom: 8px; border-bottom: 1px dashed rgba(255, 255, 255, 0.09); padding-bottom: 4px;
-  }
-  .tech-item p { font-size: 14px; color: var(--muted); line-height: 1.55; }
-  .tech-item p strong { color: var(--ink); }
-
-  /* ================= engine note ================= */
-  .engine-note {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-left: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 20px 22px;
-    margin-bottom: 56px;
-    backdrop-filter: blur(6px);
-  }
-  .engine-note h4 {
-    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--accent); margin-bottom: 8px;
-  }
-  .engine-note p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
-
-  /* ================= action links card ================= */
-  .action-card {
-    background: var(--panel);
-    border: 1px solid var(--edge);
-    border-radius: 12px;
-    padding: 24px 24px;
-    display: flex; flex-direction: column; gap: 14px;
-    backdrop-filter: blur(6px);
-    margin-bottom: 36px;
-    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .action-card:hover { transform: translateY(-3px); border-color: var(--edge-hi); box-shadow: 0 14px 34px rgba(32,43,54,.14); }
-  .action-card a.applink { color: var(--ink); font-weight: 600; font-size: 14px; text-decoration: none; transition: color .2s ease; }
-  .action-card a.applink:hover { color: var(--accent); }
-  .action-card a.applink .arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.7,.3,1); }
-  .action-card a.applink:hover .arrow { transform: translateX(5px); }
-
-  .back { display: inline-block; margin-top: 16px; color: var(--ink); font-weight: 500; text-decoration: none; font-size: 14px; transition: color .2s ease; }
-  .back:hover { color: var(--accent); }
-
-  footer { border-top: 1px solid var(--edge); padding: 22px 0 calc(40px + var(--sab)); color: var(--muted); font-size: 13px; margin-top: 64px; }
-  footer a { color: var(--muted); transition: color .2s ease; text-decoration: none; padding: 4px 0; min-height: 44px; display: inline-flex; align-items: center; }
-  footer a:hover { color: var(--accent); }
-
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (max-width:640px){
-    .nav {
-      flex-direction: column; align-items: flex-start; height: auto;
-      /* Long-hand on purpose: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
-         shorthand here also reset .wrap's side gutters and pushed the logo and links flush
-         against the edge of the screen on every phone. */
-      padding-top: 14px; padding-bottom: 14px;
-    }
-    /* The column switch above makes `nav` a flex item sized to its own content, so its
-       overflow-x:auto never engages and the whole page is dragged wide by the link row.
-       Stretching it back to the container width is what lets the links scroll instead. */
-    nav { align-self: stretch; min-width: 0; max-width: 100%; }
-    header { position: static; }
-    body { padding-top: 0; }
-    nav a { margin-left: 0; margin-right: 18px; }
-    .step { grid-template-columns: auto 1fr; padding: 18px; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    html { scroll-behavior: auto; }
-    .showcase-card, .action-card { transition: none; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-  }
-</style>
-<style>
-  /* Guide-only. Nothing else on the site needs these. */
-  .guide-wrap{ max-width:1180px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  .guide-grid{ display:block; }
-  .toc{ background:var(--panel); border:1px solid var(--edge); border-radius:14px; padding:20px 22px; margin:0 0 40px; }
-  .toc h2{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:12px; }
-  .toc ol{ list-style:none; counter-reset:toc; }
-  .toc li{ counter-increment:toc; }
-  .toc a{ display:block; padding:7px 0; color:var(--ink); text-decoration:none; font-size:14.5px; transition:color .2s ease; }
-  .toc a::before{ content:counter(toc) "."; color:var(--muted); margin-right:10px; font-variant-numeric:tabular-nums; }
-  .toc a:hover{ color:var(--accent); }
-  .g-section{ margin:0 0 52px; scroll-margin-top:calc(var(--topbar-h) + 16px); }
-  .g-section > h2{ font-size:23px; line-height:1.3; font-weight:650; margin-bottom:14px; letter-spacing:-.01em; }
-  .g-section h3{ font-size:16px; font-weight:600; margin:26px 0 8px; }
-  .g-section p{ color:#C8D4DE; margin-bottom:14px; }
-  .g-section ul{ margin:0 0 16px; padding-left:20px; color:#C8D4DE; }
-  .g-section li{ margin-bottom:8px; }
-  .g-section a{ color:var(--accent); }
-  code{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.88em; background:rgba(255,255,255,.06); border:1px solid var(--edge); border-radius:4px; padding:1px 5px; word-break:break-word; }
-  figure.shot{ margin:0 0 20px; }
-  figure.shot img{ display:block; width:100%; height:auto; border:1px solid var(--edge); border-radius:10px; }
-  figure.shot figcaption{ font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5; }
-  pre.snip{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; line-height:1.55; color:#C8D4DE; background:rgba(255,255,255,.04); border:1px solid var(--edge); border-radius:10px; padding:14px 16px; margin:0 0 16px; overflow-x:auto; }
-  .callout{ border-left:3px solid var(--accent); background:rgba(133,182,255,.07); border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 18px; }
-  .callout p{ margin:0; color:var(--ink); }
-  .callout.warn{ border-left-color:var(--progress); background:rgba(184,130,51,.08); }
-  kbd{
-    font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.82em;
-    background:rgba(255,255,255,.08); border:1px solid var(--edge);
-    border-bottom-width:2px; border-radius:5px; padding:2px 6px; white-space:nowrap;
-  }
-  .verified{ font-size:13px; color:var(--muted); margin-bottom:12px; }
-  .tablewrap{ overflow-x:auto; border:1px solid var(--edge); border-radius:12px; }
-  table{ border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
-  th, td{ text-align:left; padding:11px 16px; border-bottom:1px solid var(--edge); vertical-align:top; }
-  th{ color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
-  tr:last-child td{ border-bottom:none; }
-  td:first-child{ white-space:nowrap; }
-  @media (min-width:1000px){
-    .guide-grid{ display:grid; grid-template-columns:230px minmax(0,1fr); gap:56px; align-items:start; }
-    .toc{ position:sticky; top:calc(var(--topbar-h) + 24px); margin:0; }
-  }
-</style>
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap nav">
+
+<header class="top">
+  <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="../aboutme/">About Me</a>
-      <a href="../abouttheapps/">About the apps</a>
-      <a href="../how_I_work/">How I Work</a>
-      <a href="../the_studio/">The Studio</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <div class="guide-wrap">
 
-    <div class="product-head reveal" style="margin-bottom:10px">
-      <img class="hero-icon" src="../apps/assets/unli-rice-icon.png" alt="Unli Rice app icon" width="68" height="68">
-      <h1>User <span>Guide</span></h1>
-    </div>
-    <p class="lede reveal" style="margin-bottom:44px">Everything you need to run Unli Rice, in the order you will need it. Ten sections and a tool reference. If you want what Unli Rice <em>is</em> rather than how to use it, start on the <a href="./" style="color:var(--accent)">product page</a>.</p>
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../apps/assets/unli-rice-icon.png" alt="" width="44" height="44"><p class="label">Unli Rice · User guide</p></div>
+    <h1 class="lede">User guide</h1>
+    <p class="by">Everything you need to run Unli Rice, in the order you will need it. Ten sections and a tool reference. If you want what Unli Rice <em>is</em> rather than how to use it, start on the <a href="./">product page</a>.</p>
+  </section>
 
-    <div class="guide-grid">
-      <div class="toc reveal">
-        <h2>Contents</h2>
-        <ol>
-          <li><a href="#what">What Unli Rice is</a></li>
-          <li><a href="#setup">Set it up</a></li>
-          <li><a href="#profile">Tell your agents who you are</a></li>
-          <li><a href="#notes">How to think about a note</a></li>
-          <li><a href="#append-only">What can and cannot delete</a></li>
-          <li><a href="#layers">The three layers</a></li>
-          <li><a href="#panes">The panes</a></li>
-          <li><a href="#iphone">The iPhone app</a></li>
-          <li><a href="#data">Your data</a></li>
-          <li><a href="#trouble">When something looks wrong</a></li>
-          <li><a href="#tools">Tool reference</a></li>
-        </ol>
-      </div>
-
-      <div>
-
-        <section class="g-section reveal" id="what">
-          <h2>1. What Unli Rice is</h2>
-          <p>Unli Rice is a local note log that your AI tools share. Claude, Codex, Cursor, Antigravity &mdash; every agent you connect reads and writes into the same log, so you stop re-explaining the same context to each one in turn.</p>
-          <p>They connect over <strong>MCP</strong>, the Model Context Protocol: a standard way for an AI tool to reach something outside itself. In practice it means you paste one block of settings into each tool once, and that tool can then read and write your notes. You will see MCP used as shorthand throughout the rest of this guide and inside the app.</p>
-          <p>The log is append-only: writes add, they do not overwrite, and every write is stamped with the name the tool gave for itself. Removing anything is something only you can do, by hand, and it is covered below. It runs on your Mac, and the notes stay there unless you move them.</p>
-        </section>
-
-        <section class="g-section reveal" id="setup">
-          <h2>2. Set it up</h2>
-          <p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later if you add another tool: <strong>More &rarr; Setup &amp; Tools &rarr; AI Tools</strong>, which is the Connect screen referred to throughout this guide. It lists every tool with its config file, a <strong>Copy Configuration</strong> button, and when that tool last checked in.</p>
-          <p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
-
-          <figure class="shot">
-            <img src="../apps/assets/unli-rice-shot-connect.webp" alt="The Connect screen: the Unli Rice folder path, then a row per tool — Claude Code, Claude Desktop, Cursor, Antigravity, Codex / ChatGPT — each with its config file and a Copy Configuration button" width="1400" height="879" loading="lazy" decoding="async">
-            <figcaption><strong>More &rarr; Setup &amp; Tools &rarr; AI Tools.</strong> One row per tool, each showing the file its block goes in, a <strong>Copy Configuration</strong> button, and when that tool last checked in. The path at the top is the folder route, and it is the real path &mdash; not <code>~/Documents</code>.</figcaption>
-          </figure>
-
-          <h3>Where the block goes</h3>
-          <p>You paste it in yourself, into a file belonging to that tool. <strong>Unli Rice shows you the exact file for the tool you picked</strong>, because it is different for every one of them:</p>
-          <ul>
-            <li><strong>Claude Code</strong> &mdash; <code>.mcp.json</code>, in a project folder you choose</li>
-            <li><strong>Claude Desktop</strong> &mdash; <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
-            <li><strong>Cursor</strong> &mdash; <code>~/.cursor/mcp.json</code></li>
-            <li><strong>Antigravity</strong> &mdash; <code>.agents/mcp_config.json</code>, in a project folder you choose</li>
-            <li><strong>Codex CLI</strong> &mdash; <code>~/.codex/config.toml</code></li>
-            <li><strong>ChatGPT in a browser</strong> &mdash; no file at all. It cannot reach your Mac; use <a href="#mirror">the folder route</a> below.</li>
-          </ul>
-          <p>A leading <code>~</code> means your home folder. In Finder, press <kbd>Cmd</kbd>&#8202;+&#8202;<kbd>Shift</kbd>&#8202;+&#8202;<kbd>G</kbd> and paste the path to go straight there.</p>
-
-          <div class="callout warn">
-            <p><strong>There is no single MCP config format, and this trips people up.</strong> Four of those files are JSON. <strong>Codex CLI is TOML instead</strong> &mdash; <code>~/.codex/config.toml</code>, where the block is a <code>[mcp_servers.unlirice]</code> table added at the end of the file, on its own. The app gives you the right shape for the tool you picked, so copy the block it shows you rather than one you saw somewhere else. If you add a tool that is not on the list, Unli Rice picks the format from the file extension you point it at.</p>
-          </div>
-
-          <h3>Pasting into a JSON file that already has something in it</h3>
-          <p>Read this part before you paste, because it is the one step where a small mistake produces a file that looks fine and never connects. What the app copies for a JSON tool is a <em>complete file</em>, not a fragment. It already has the <code>mcpServers</code> wrapper around it:</p>
-          <pre class="snip">{
+  <div class="wrap doc">
+    <aside class="doc-side" aria-label="On this page">
+      <p class="label">Contents</p>
+      <ol class="toc">
+        <li><a href="#what">What Unli Rice is</a></li>
+        <li><a href="#setup">Set it up</a></li>
+        <li><a href="#profile">Tell your agents who you are</a></li>
+        <li><a href="#notes">How to think about a note</a></li>
+        <li><a href="#append-only">What can and cannot delete</a></li>
+        <li><a href="#layers">The three layers</a></li>
+        <li><a href="#panes">The panes</a></li>
+        <li><a href="#iphone">The iPhone app</a></li>
+        <li><a href="#data">Your data</a></li>
+        <li><a href="#trouble">When something looks wrong</a></li>
+        <li><a href="#tools">Tool reference</a></li>
+      </ol>
+      <div class="links"><a class="link in" href="./">Unli Rice</a><a class="link" href="https://apps.apple.com/app/unli-rice/id6792837485">Mac App Store</a><a class="link" href="https://github.com/CalixOscar/unli-rice">Source on GitHub</a><a class="link" href="mailto:peter@calmdownoscar.com">Email support</a></div>
+    </aside>
+    <article class="prose">
+<section id="what">
+<h2>1. What Unli Rice is</h2>
+<p>Unli Rice is a local note log that your AI tools share. Claude, Codex, Cursor, Antigravity &mdash; every agent you connect reads and writes into the same log, so you stop re-explaining the same context to each one in turn.</p>
+<p>They connect over <strong>MCP</strong>, the Model Context Protocol: a standard way for an AI tool to reach something outside itself. In practice it means you paste one block of settings into each tool once, and that tool can then read and write your notes. You will see MCP used as shorthand throughout the rest of this guide and inside the app.</p>
+<p>The log is append-only: writes add, they do not overwrite, and every write is stamped with the name the tool gave for itself. Removing anything is something only you can do, by hand, and it is covered below. It runs on your Mac, and the notes stay there unless you move them.</p>
+</section>
+<section id="setup">
+<h2>2. Set it up</h2>
+<p>Open Unli Rice for the first time and it asks you one question: which tool do you use? Claude, ChatGPT, Cursor, or something else. Answer it and you get what that tool actually needs &mdash; for most, a settings block already filled in; for ChatGPT in a browser, a folder instead, because a web page cannot read files on your Mac. You do not have to go looking for a settings screen, and you can reach the same thing later if you add another tool: <strong>More &rarr; Setup &amp; Tools &rarr; AI Tools</strong>, which is the Connect screen referred to throughout this guide. It lists every tool with its config file, a <strong>Copy Configuration</strong> button, and when that tool last checked in.</p>
+<p>Then the app waits, and tells you when your tool has actually connected. You do not have to guess whether it worked.</p>
+<figure>
+<img src="../apps/assets/unli-rice-shot-connect.webp" alt="The Connect screen: the Unli Rice folder path, then a row per tool — Claude Code, Claude Desktop, Cursor, Antigravity, Codex / ChatGPT — each with its config file and a Copy Configuration button" width="1400" height="879" loading="lazy" decoding="async">
+<figcaption><strong>More &rarr; Setup &amp; Tools &rarr; AI Tools.</strong> One row per tool, each showing the file its block goes in, a <strong>Copy Configuration</strong> button, and when that tool last checked in. The path at the top is the folder route, and it is the real path &mdash; not <code>~/Documents</code>.</figcaption>
+</figure>
+<h3>Where the block goes</h3>
+<p>You paste it in yourself, into a file belonging to that tool. <strong>Unli Rice shows you the exact file for the tool you picked</strong>, because it is different for every one of them:</p>
+<ul>
+<li><strong>Claude Code</strong> &mdash; <code>.mcp.json</code>, in a project folder you choose</li>
+<li><strong>Claude Desktop</strong> &mdash; <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+<li><strong>Cursor</strong> &mdash; <code>~/.cursor/mcp.json</code></li>
+<li><strong>Antigravity</strong> &mdash; <code>.agents/mcp_config.json</code>, in a project folder you choose</li>
+<li><strong>Codex CLI</strong> &mdash; <code>~/.codex/config.toml</code></li>
+<li><strong>ChatGPT in a browser</strong> &mdash; no file at all. It cannot reach your Mac; use <a href="#mirror">the folder route</a> below.</li>
+</ul>
+<p>A leading <code>~</code> means your home folder. In Finder, press <kbd>Cmd</kbd>&#8202;+&#8202;<kbd>Shift</kbd>&#8202;+&#8202;<kbd>G</kbd> and paste the path to go straight there.</p>
+<div class="callout warn">
+<p><strong>There is no single MCP config format, and this trips people up.</strong> Four of those files are JSON. <strong>Codex CLI is TOML instead</strong> &mdash; <code>~/.codex/config.toml</code>, where the block is a <code>[mcp_servers.unlirice]</code> table added at the end of the file, on its own. The app gives you the right shape for the tool you picked, so copy the block it shows you rather than one you saw somewhere else. If you add a tool that is not on the list, Unli Rice picks the format from the file extension you point it at.</p>
+</div>
+<h3>Pasting into a JSON file that already has something in it</h3>
+<p>Read this part before you paste, because it is the one step where a small mistake produces a file that looks fine and never connects. What the app copies for a JSON tool is a <em>complete file</em>, not a fragment. It already has the <code>mcpServers</code> wrapper around it:</p>
+<pre class="snip">{
   "mcpServers": {
     "unlirice": {
       "command": "/Applications/Unli Rice.app/Contents/MacOS/unlirice-mcp",
@@ -527,13 +103,13 @@
     }
   }
 }</pre>
-          <p>So there are two cases, and which one you are in depends on what is already in the file you opened:</p>
-          <ul>
-            <li><strong>The file is empty, or does not exist yet.</strong> Paste the block exactly as copied, save, and you are done.</li>
-            <li><strong>The file already has an <code>mcpServers</code> object with other servers in it.</strong> Do <em>not</em> paste the whole block. Paste only the inner <code>"unlirice": { &hellip; }</code> part, inside the <code>mcpServers</code> object that is already there, with a comma after the entry above it.</li>
-          </ul>
-          <p>The second case ends up looking like this &mdash; one <code>mcpServers</code>, with your servers side by side inside it:</p>
-          <pre class="snip">{
+<p>So there are two cases, and which one you are in depends on what is already in the file you opened:</p>
+<ul>
+<li><strong>The file is empty, or does not exist yet.</strong> Paste the block exactly as copied, save, and you are done.</li>
+<li><strong>The file already has an <code>mcpServers</code> object with other servers in it.</strong> Do <em>not</em> paste the whole block. Paste only the inner <code>"unlirice": { &hellip; }</code> part, inside the <code>mcpServers</code> object that is already there, with a comma after the entry above it.</li>
+</ul>
+<p>The second case ends up looking like this &mdash; one <code>mcpServers</code>, with your servers side by side inside it:</p>
+<pre class="snip">{
   "mcpServers": {
     "something-you-already-had": {
       "command": "..."
@@ -544,259 +120,162 @@
     }
   }
 }</pre>
-          <div class="callout warn">
-            <p><strong>The mistake to avoid:</strong> pasting the copied block <em>inside</em> an <code>mcpServers</code> object that already exists. That leaves you with one <code>mcpServers</code> nested inside another, which is not a shape any tool understands &mdash; and most fail quietly rather than say so. If the word <code>mcpServers</code> appears twice in the file, that is the bug.</p>
-          </div>
-
-          <div class="callout">
-            <p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Whatever is already in there stays exactly as it is, and nothing on your machine is changed on your behalf.</p>
-          </div>
-
-          <h3 id="mirror">Or point a tool at the folder instead</h3>
-          <p>Some tools read local files rather than speaking MCP, and ChatGPT in a browser cannot reach your Mac at all. For those, Unli Rice keeps a plain-Markdown folder that you point a tool at, upload, or copy from. If pasting config blocks is not something you want to do, start here.</p>
-
-          <div class="callout warn">
-            <p><strong>Do not go looking for that folder in your own Documents.</strong> The App Store build is sandboxed, so its idea of &ldquo;Documents&rdquo; is a private folder inside the app, with a path like <code>~/Library/Containers/com.calmdownoscar.unlirice/Data/Documents/Unli&nbsp;Rice</code>. The screen shows you the real path in full &mdash; copy it from there rather than typing one from memory. If you would rather have the folder somewhere you can actually find, use <strong>Choose Folder&hellip;</strong> on that screen and put it in your real Documents or iCloud Drive. That is also what you do if you want your iPhone to sync into it.</p>
-          </div>
-
-          <p>Inside it there are two things worth knowing apart, because they run in opposite directions:</p>
-          <ul>
-            <li><strong>What Unli Rice writes out</strong> &mdash; <code>Context/</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and a file per note. These are <em>copies</em>, regenerated on a schedule. Editing one edits the copy: your real note is unchanged and your edit disappears the next time the folder is rebuilt. Deleting the whole folder costs you nothing, for the same reason.</li>
-            <li><strong><code>Notes for Unli Rice/</code> &mdash; the drop box, and this one does come back the other way.</strong> Any Markdown file you put in there gets ingested into your real log by the background worker, and becomes an actual note. So a tool that cannot speak MCP can still <em>give</em> you something: have it write a <code>.md</code> file into that folder.</li>
-          </ul>
-          <div class="callout warn">
-            <p><strong>So the folder is a hand-off, not a shared workspace.</strong> Reading is a copy and writing only happens through the drop box &mdash; an assistant cannot edit an existing note this way, only add a new one. Live two-way access to your notes, where a tool reads a note and appends to that same note, is what an MCP connection gives you and this route does not. It is worth knowing which of the two you are on.</p>
-          </div>
-
-          <div class="callout warn">
-            <p><strong>The one thing that catches everyone:</strong> a tool reads its configuration when it starts up. One that was already running will not see Unli Rice until you quit it completely and open it again. If the status on the Connect screen does not change, restart the tool first. If it still does not connect, check that the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it for a JSON file, or its own <code>[mcp_servers.unlirice]</code> table in <code>config.toml</code>.</p>
-          </div>
-        </section>
-
-        <section class="g-section reveal" id="profile">
-          <h2>3. Tell your agents who you are</h2>
-          <p>An agent that knows nothing about you gives you generic answers and re-asks the same questions. This is where you fix that once instead of at the start of every session. Two separate features, with confusingly similar names.</p>
-
-          <h3>House Rules &mdash; how agents should behave</h3>
-          <p class="verified">In the app this is <strong>More &rarr; What your AI should always do</strong>. The guide uses &ldquo;House Rules&rdquo; because that is what the feature is called in the notes it writes and in the rest of this page.</p>
-          <p>Your standing instructions for how agents should behave, saved as a note in your log. It is worth being exact about what that buys you: House Rules is <em>a note an assistant can find and read</em>, not text injected into every session. What Unli Rice tells a tool on connection is that a vault exists and is worth searching; the House Rules note is then one of the things it finds. An assistant that reads your notes at the start of a session &mdash; which is precisely what the built-in rules ask for &mdash; picks it up. One that never searches will not, and the fix for that is a line in that tool's own setup telling it to. Three presets are built in: <strong>Standard Memory</strong>, balanced conventions for a shared multi-agent memory; <strong>Codebase Memory</strong>, aimed at architecture decisions, migrations, verification and handoffs; and <strong>Minimalist</strong>. Edit one, or import your own.</p>
-          <p>Choosing a preset <strong>never writes to your notes by itself</strong>. It is a draft until you apply it. The editor shows the character count and an approximate token count, labelled as an estimate because tokenizers differ between models &mdash; these are words every agent pays for in every session, so it is worth seeing the size.</p>
-
-          <h3>The Profile Builder &mdash; who you are and what you are working on</h3>
-          <p>A wizard that turns your situation into the context agents are handed: your name and role, your mission, the persona and tone you want them to use, formatting preferences, the principles you work by, your stack defaults, your dos and don&rsquo;ts, and a list of your projects with a one-line description and a status each. You can add per-platform overlays too &mdash; the built-in ones cover Apple and Web &mdash; so rules that only apply to one kind of work stay attached to that work.</p>
-          <p>Four templates to start from: <strong>Studio Standard</strong> (the author&rsquo;s own setup, generalised, and the recommended starting point), <strong>Solo Developer</strong>, <strong>Writer / Researcher</strong>, and <strong>Minimalist</strong>. Take all of a template or the parts that fit.</p>
-          <div class="callout">
-            <p><strong>No real names, projects or history are baked into the templates.</strong> They carry placeholders you replace &mdash; a name field reading &ldquo;Founder&rdquo;, a project called &ldquo;Flagship App&rdquo; described as &ldquo;replace with your own&rdquo;. The Studio Standard template is the shape of the author&rsquo;s setup, not its contents. Nothing in Unli Rice knows who <em>you</em> are until you tell it, and what you tell it stays on your Mac. (The app does carry the author&rsquo;s name in its copyright line and links to a public GitHub account for support and the privacy policy, the way any app does.)</p>
-          </div>
-
-          <h3>Guardrails are the part worth the time</h3>
-          <p>Inside the builder, guardrails are hard rules rather than preferences &mdash; the things you want refused rather than weighed. The built-in examples give the flavour: never add engagement-maximizing patterns; no ads and no trackers; stay inside the active project&rsquo;s folder; if a fix has not worked after two attempts, stop and write up what was tried instead of looping on variations.</p>
-          <p>Write yours the same way. A guardrail phrased as a preference gets traded away against something else the moment an agent finds a reason.</p>
-
-          <h3>Your first two notes</h3>
-          <p>A brand-new, empty log is seeded once with two short notes tagged <code>guide</code>. They exist because an empty list teaches you nothing about what a note here is for, and because the janitor only proposes a tag once that tag is already in use on a few notes &mdash; so on a genuinely empty log it would have nothing to work with and would look broken. They are ordinary notes. Archive them once you have read them; they are seeded once and will not come back.</p>
-        </section>
-
-        <section class="g-section reveal" id="notes">
-          <h2>4. How to think about a note</h2>
-          <p>A note has a title, a body, tags, and links. Link one note to another by writing its title in double brackets &mdash; <code>[[Wiki: index]]</code> &mdash; and Unli Rice keeps the connection in both directions. A link to a note that does not exist yet is fine; it marks something worth writing.</p>
-          <p>Every write also carries a <strong>source</strong>: the name of whoever made it. <code>claude</code>, <code>codex</code>, <code>antigravity</code>, you. This is what makes a shared log readable later, because it separates a conclusion an agent reasoned its way to from a line a machine put there. Two sources belong to the app itself and no agent should borrow them: <code>janitor</code> and <code>ingest</code>.</p>
-          <p>Be clear-eyed about what a source is, though. The calling tool supplies that name itself and Unli Rice records what it was handed. It is an honest label from an honest tool, not an identity check &mdash; anything you connect could put any word there, including one of those two. That is fine for the job it does, which is letting you read the log back later and see who was working. It is not a security boundary, and nothing important rests on it: what an agent can do is fixed by the tools it is given, not by the name it signs.</p>
-        </section>
-
-        <section class="g-section reveal" id="append-only">
-          <h2>5. What can and cannot delete</h2>
-          <p>This is the part that surprises people, so it is better stated here than discovered later. The short version: <strong>no agent can delete anything. You can.</strong></p>
-          <h3>What agents can do</h3>
-          <ul>
-            <li><strong>Appending never replaces.</strong> Adding to a note puts text at the end. Earlier content, including another agent&rsquo;s, stays where it was.</li>
-            <li><strong>Archiving is as close to deleting as an agent gets, and it is reversible.</strong> It hides a note from the default listings and nothing more.</li>
-            <li><strong>Every note carries its own history.</strong> Open the event timeline for any note and you get each change, who made it, and when.</li>
-            <li><strong>Structural changes are proposed, not applied.</strong> An agent that suspects a duplicate or a contradiction raises a flag for you. Raising a flag changes nothing by itself.</li>
-          </ul>
-          <p>This is not a matter of agents being asked nicely. Deleting is not in the set of things they are able to express: the tools they are given are built from the safe layer, and the code that can remove history lives outside it.</p>
-          <h3>What you can do</h3>
-          <p>You can purge a note, from the app, by hand. It is deliberately yours alone &mdash; it never runs on a schedule and no agent and no background job can reach it.</p>
-          <p>Even then it is gentler than it sounds. Every event belonging to that note is written out in full first, and the whole log is copied to a backup before anything is rewritten, so a purge can be restored and the result is identical to what you had. What a purge genuinely destroys is the log&rsquo;s <em>continuity</em> &mdash; those lines are no longer in the live file &mdash; rather than the content itself.</p>
-          <p>The point of all of it is that you can trust what the log says happened. A record that anything in the system could quietly rewrite is a record you would have to verify some other way.</p>
-        </section>
-
-        <section class="g-section reveal" id="layers">
-          <h2>6. The three layers</h2>
-          <p>Notes are not all the same kind of thing, and knowing which one you are holding is most of reading the log well.</p>
-          <ul>
-            <li><strong>Raw files.</strong> Verbatim copies of whatever was brought in &mdash; documents, session transcripts &mdash; kept in a folder beside the log. You do not read these day to day: the index entries below point at them, and a recovery snapshot preserves them along with the log.</li>
-            <li><strong>Index entries.</strong> The <code>Session:</code> and <code>Doc:</code> notes, one per raw file, written automatically. These are machine-built descriptions, <em>not</em> conclusions. They tell you whether a file is the one you want. If it matters, open the file.</li>
-            <li><strong>Wiki hubs.</strong> Notes titled <code>Wiki: &lt;topic&gt;</code>, written by a reasoning agent. Each says what exists for a topic and where the real authority is. This is the only layer with judgement in it, which is also the reason it is the layer that goes stale.</li>
-          </ul>
-          <p>Once you have one, start at the note titled <code>Wiki: index</code>. It exists so you do not have to read a corpus of hundreds to find the four notes that matter. <strong>It is not there on your first day.</strong> A new log is seeded with two notes and neither is a wiki hub; hubs get written when there is something worth hubbing, by an agent you ask to write one. Once you have a few dozen notes, asking for it is a reasonable thing to do.</p>
-        </section>
-
-        <section class="g-section reveal" id="panes">
-          <h2>7. The panes</h2>
-          <p>The sidebar has eight rows, and most of the settings live behind the last one. Names below are the ones on the buttons.</p>
-
-          <h3>In the sidebar</h3>
-          <p><strong>Home.</strong> What your AI currently knows about you &mdash; your profile context as one readable page, with the note count.</p>
-          <p><strong>Notes.</strong> Search, read, tag, and open any note&rsquo;s history. Search is keyword matching over titles, bodies and tags.</p>
-          <p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which branch tips are not on any remote this clone has fetched. That is worth reading precisely, because it is a narrower claim than it sounds: it compares the tip of each branch against the remote refs already fetched here. It does not walk individual commits, and it cannot speak for a remote it has never fetched from. Read it as &ldquo;nothing I know about has this&rdquo;, which is still the useful warning.</p>
-          <p><strong>To-Do.</strong> Two kinds of item live here and they behave differently, which is the thing to learn about this pane. <em>Derived</em> items are computed from the state that makes them true, and they have no checkbox because there is nothing to check &mdash; the item goes away when the state does. A stored checklist drifts from reality the moment someone does the work without ticking the box; deriving is how this half stays honest. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. <em>AI-flagged</em> items are the other kind: an agent that spots something worth doing writes an ordinary note and tags it <code>todo</code>. Those are stored, like any note, and they carry a <strong>Done</strong> button that archives the note behind them.</p>
-          <p><strong>Needs you.</strong> The flags waiting on a decision, with a count on the row. This is where an agent&rsquo;s proposed merge or suspected duplicate ends up.</p>
-          <p><strong>Your year so far.</strong> A retrospective read back to you from notes you already have.</p>
-          <p><strong>Map.</strong> The link graph &mdash; notes as nodes, double-bracket links as edges.</p>
-
-          <h3>Under More</h3>
-          <p><strong>Setup &amp; Tools.</strong> The Connect screen, plus everything below it in this list.</p>
-          <p><strong>Why not just a text file?</strong> The argument for the whole thing, if you want it.</p>
-          <p><strong>What your AI should always do.</strong> House Rules &mdash; see <a href="#profile">telling your agents who you are</a>.</p>
-          <p><strong>Separate memories.</strong> Profiles: separate note logs, each in its own folder, with one marked as the master. A way to keep unrelated bodies of work apart &mdash; not a way to change how agents behave.</p>
-          <p><strong>The folder your AI can read.</strong> The plain-Markdown folder and its drop box, covered in <a href="#mirror">pointing a tool at the folder</a>.</p>
-          <p><strong>What Runs on Its Own.</strong> Background work: bringing in documents and sessions from folders you have nominated, ingesting the drop box, and the janitor.</p>
-          <p><strong>Archived Notes.</strong> Everything hidden from the default listings, and where you bring one back.</p>
-          <p><strong>Notifications.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
-          <p><strong>Trust Center.</strong> Read-only checks: whether the log and its folder are writable, which MCP clients have checked in, whether a recovery point exists, and what the background worker is doing. Client check-ins record the client&rsquo;s name and version, timestamps, the tool name, and whether it succeeded &mdash; never tool arguments, and never note content.</p>
-          <p><strong>The Profile Builder</strong> sits inside Setup &amp; Tools rather than on its own row. Same place you connect a tool.</p>
-        </section>
-
-        <section class="g-section reveal" id="iphone">
-          <h2>8. The iPhone app</h2>
-          <p>Unli Rice Capture is a satellite, not a second copy of the app. It records audio and transcribes it, and it takes typed notes.</p>
-          <p>It handles notes you already have, too: you can add to an existing note instead of starting a new one, and archive a capture or bring it back, all from the phone.</p>
-          <p>It also mirrors your repositories and your to-do list. <strong>Derived items are read-only on the phone</strong> &mdash; you cannot tick one off, because they are computed on the Mac from the state of your repositories. What you can do is tap one and write a note against it: what you type is appended to that project&rsquo;s note, stamped with the project, the item, and the time. AI-flagged items behave the same as they do on the Mac: they are notes, so they have a <strong>Done</strong> button that archives them.</p>
-          <p>The Mac holds the log, and the phone syncs its own per-device shard into it, which is what lets both write without either one clobbering the other &mdash; <strong>but only once you have given it somewhere shared to sync to</strong>. The first time you capture something the phone asks where captures should go, and &ldquo;Keep on this device only&rdquo; is a real answer to that question. Choose it and nothing reaches your Mac until you change it in Settings. To sync, pick a folder in iCloud Drive on the phone and point the Mac at the same one.</p>
-        </section>
-
-        <section class="g-section reveal" id="data">
-          <h2>9. Your data</h2>
-          <p>The log is one append-only file with your raw sources beside it. You can point Unli Rice at a different folder for it, and the app tells you which one it currently has open.</p>
-          <h3>Recovery points</h3>
-          <p>A snapshot copies the event log byte for byte, together with your raw files and the small settings belonging to that log, and checksums all of it with SHA-256 so it can be verified later. <strong>Restoring never replaces your current log.</strong> It appends only the events that are missing and copies only the files that are absent, which keeps the append-only rule intact and means a restore cannot cost you anything you already had. The trade is that your settings do not come back either: House Rules, routine state and notices are copied <em>into</em> the snapshot, but a restore leaves them sitting there rather than writing over the ones you have now. If you want an old one back, take it out of the snapshot folder yourself.</p>
-          <h3>What the janitor may do</h3>
-          <p>The background janitor can add a tag or raise a flag. That is the whole list. It cannot archive, retitle, merge, or resolve anything. A tag it added is a suggestion &mdash; remove it if it is wrong, and it will not put it back. A flag it raised is a proposal waiting for you.</p>
-        </section>
-
-        <section class="g-section reveal" id="trouble">
-          <h2>10. When something looks wrong</h2>
-          <p><strong>A tool I connected does not appear.</strong> Restart that tool completely so it reloads its configuration, then confirm the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it, never two nested ones. See <a href="#setup">pasting into a JSON file</a> above. Configuration is read once, when the session starts.</p>
-          <p><strong>Notes I expected are missing.</strong> Confirm which log the app has open. It reports this, and it is the first thing to check rather than the last. A banner about a corpus that is unreachable or stranded means what it says, and it is specific: it names the path, and for a stranded log it tells you how many notes are in it that the log you are on does not have. A stranded log is intact and waiting. An unreachable one is a different matter: the app can tell you it cannot open that folder, but not why &mdash; an unmounted drive, a folder you renamed, and a folder that was deleted all look the same from here. Check the path it names before assuming which one you are in.</p>
-          <p><strong>The to-do list looks out of date.</strong> It is derived, so it is only as fresh as what it derived from. Publish a new repository snapshot &mdash; that is its own step, and pushing alone does not do it. For a declared next step, give the project a <code>memory.md</code> containing the exact marker <code>**Next step:**</code> with the step after it. The asterisks and the capital N are both load-bearing: <code>next step:</code> or <code>Next Step:</code> will not be found. The project folder also has to sit directly inside a folder you have granted for scanning &mdash; one level down, not nested deeper.</p>
-          <p><strong>Nothing is being brought in automatically.</strong> Check that background routines are switched on, and that the folders you want scanned have been granted. A folder has to be chosen through the file picker before the app may read it.</p>
-        </section>
-
-        <section class="g-section reveal" id="tools">
-          <h2>11. Tool reference</h2>
-          <p>What a connected agent can do over MCP. Every write takes a <code>source</code> &mdash; the name the calling tool gives for itself &mdash; so the log reads back attributably.</p>
-          <p class="verified">Verified against <code>unli-rice@1f49c0f</code> on 2026-09-05.</p>
-          <div class="tablewrap">
-            <table>
-              <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
-              <tbody>
-                <tr><td><code>search_notes</code></td><td>Keyword search over titles, bodies and tags. Substring matching, not semantic.</td></tr>
-                <tr><td><code>list_notes</code></td><td>Lists notes, most recently updated first.</td></tr>
-                <tr><td><code>get_note</code></td><td>Fetches a single note by id.</td></tr>
-                <tr><td><code>create_note</code></td><td>Creates a note. Always a new one &mdash; it never overwrites an existing note.</td></tr>
-                <tr><td><code>append_to_note</code></td><td>Adds content to the end of a note. Never replaces or removes what is already there.</td></tr>
-                <tr><td><code>tag_note</code></td><td>Adds a tag.</td></tr>
-                <tr><td><code>untag_note</code></td><td>Removes a tag. This is how you correct a tag the janitor got wrong.</td></tr>
-                <tr><td><code>archive_note</code></td><td>Hides a note from default listings, with a reason. Reversible, and the closest to deleting that any agent can get.</td></tr>
-                <tr><td><code>unarchive_note</code></td><td>Brings an archived note back.</td></tr>
-                <tr><td><code>flag_for_review</code></td><td>Queues a concern for you &mdash; a suspected duplicate, a conflict, a proposed merge. Never applies the change itself.</td></tr>
-                <tr><td><code>pending_reviews</code></td><td>Lists every unresolved flag across all notes, oldest first.</td></tr>
-                <tr><td><code>resolve_review</code></td><td>Marks a flag resolved. Meant for after you have decided &mdash; but that is a convention, not a lock. Any connected agent can call it.</td></tr>
-                <tr><td><code>note_history</code></td><td>The immutable event history for one note, oldest first, with attribution and timestamps.</td></tr>
-                <tr><td><code>transaction_log</code></td><td>Raw recent events across the whole log, most recent first &mdash; the audit trail.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <div class="applinks reveal">
-          <a class="applink" href="./">Unli Rice product page <span class="arrow">&rarr;</span></a>
-          <a class="applink" href="https://github.com/CalixOscar/unli-rice">Source on GitHub <span class="arrow">&rarr;</span></a>
-          <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">&rarr;</span></a>
-        </div>
-
-        <a class="back reveal" href="./">&larr; Back to Unli Rice</a>
-
-      </div>
-    </div>
+<div class="callout warn">
+<p><strong>The mistake to avoid:</strong> pasting the copied block <em>inside</em> an <code>mcpServers</code> object that already exists. That leaves you with one <code>mcpServers</code> nested inside another, which is not a shape any tool understands &mdash; and most fail quietly rather than say so. If the word <code>mcpServers</code> appears twice in the file, that is the bug.</p>
+</div>
+<div class="callout">
+<p><strong>Unli Rice never opens or edits that file.</strong> It hands you a block and you paste it. Whatever is already in there stays exactly as it is, and nothing on your machine is changed on your behalf.</p>
+</div>
+<h3 id="mirror">Or point a tool at the folder instead</h3>
+<p>Some tools read local files rather than speaking MCP, and ChatGPT in a browser cannot reach your Mac at all. For those, Unli Rice keeps a plain-Markdown folder that you point a tool at, upload, or copy from. If pasting config blocks is not something you want to do, start here.</p>
+<div class="callout warn">
+<p><strong>Do not go looking for that folder in your own Documents.</strong> The App Store build is sandboxed, so its idea of &ldquo;Documents&rdquo; is a private folder inside the app, with a path like <code>~/Library/Containers/com.calmdownoscar.unlirice/Data/Documents/Unli&nbsp;Rice</code>. The screen shows you the real path in full &mdash; copy it from there rather than typing one from memory. If you would rather have the folder somewhere you can actually find, use <strong>Choose Folder&hellip;</strong> on that screen and put it in your real Documents or iCloud Drive. That is also what you do if you want your iPhone to sync into it.</p>
+</div>
+<p>Inside it there are two things worth knowing apart, because they run in opposite directions:</p>
+<ul>
+<li><strong>What Unli Rice writes out</strong> &mdash; <code>Context/</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, and a file per note. These are <em>copies</em>, regenerated on a schedule. Editing one edits the copy: your real note is unchanged and your edit disappears the next time the folder is rebuilt. Deleting the whole folder costs you nothing, for the same reason.</li>
+<li><strong><code>Notes for Unli Rice/</code> &mdash; the drop box, and this one does come back the other way.</strong> Any Markdown file you put in there gets ingested into your real log by the background worker, and becomes an actual note. So a tool that cannot speak MCP can still <em>give</em> you something: have it write a <code>.md</code> file into that folder.</li>
+</ul>
+<div class="callout warn">
+<p><strong>So the folder is a hand-off, not a shared workspace.</strong> Reading is a copy and writing only happens through the drop box &mdash; an assistant cannot edit an existing note this way, only add a new one. Live two-way access to your notes, where a tool reads a note and appends to that same note, is what an MCP connection gives you and this route does not. It is worth knowing which of the two you are on.</p>
+</div>
+<div class="callout warn">
+<p><strong>The one thing that catches everyone:</strong> a tool reads its configuration when it starts up. One that was already running will not see Unli Rice until you quit it completely and open it again. If the status on the Connect screen does not change, restart the tool first. If it still does not connect, check that the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it for a JSON file, or its own <code>[mcp_servers.unlirice]</code> table in <code>config.toml</code>.</p>
+</div>
+</section>
+<section id="profile">
+<h2>3. Tell your agents who you are</h2>
+<p>An agent that knows nothing about you gives you generic answers and re-asks the same questions. This is where you fix that once instead of at the start of every session. Two separate features, with confusingly similar names.</p>
+<h3>House Rules &mdash; how agents should behave</h3>
+<p class="note-sm">In the app this is <strong>More &rarr; What your AI should always do</strong>. The guide uses &ldquo;House Rules&rdquo; because that is what the feature is called in the notes it writes and in the rest of this page.</p>
+<p>Your standing instructions for how agents should behave, saved as a note in your log. It is worth being exact about what that buys you: House Rules is <em>a note an assistant can find and read</em>, not text injected into every session. What Unli Rice tells a tool on connection is that a vault exists and is worth searching; the House Rules note is then one of the things it finds. An assistant that reads your notes at the start of a session &mdash; which is precisely what the built-in rules ask for &mdash; picks it up. One that never searches will not, and the fix for that is a line in that tool's own setup telling it to. Three presets are built in: <strong>Standard Memory</strong>, balanced conventions for a shared multi-agent memory; <strong>Codebase Memory</strong>, aimed at architecture decisions, migrations, verification and handoffs; and <strong>Minimalist</strong>. Edit one, or import your own.</p>
+<p>Choosing a preset <strong>never writes to your notes by itself</strong>. It is a draft until you apply it. The editor shows the character count and an approximate token count, labelled as an estimate because tokenizers differ between models &mdash; these are words every agent pays for in every session, so it is worth seeing the size.</p>
+<h3>The Profile Builder &mdash; who you are and what you are working on</h3>
+<p>A wizard that turns your situation into the context agents are handed: your name and role, your mission, the persona and tone you want them to use, formatting preferences, the principles you work by, your stack defaults, your dos and don&rsquo;ts, and a list of your projects with a one-line description and a status each. You can add per-platform overlays too &mdash; the built-in ones cover Apple and Web &mdash; so rules that only apply to one kind of work stay attached to that work.</p>
+<p>Four templates to start from: <strong>Studio Standard</strong> (the author&rsquo;s own setup, generalised, and the recommended starting point), <strong>Solo Developer</strong>, <strong>Writer / Researcher</strong>, and <strong>Minimalist</strong>. Take all of a template or the parts that fit.</p>
+<div class="callout">
+<p><strong>No real names, projects or history are baked into the templates.</strong> They carry placeholders you replace &mdash; a name field reading &ldquo;Founder&rdquo;, a project called &ldquo;Flagship App&rdquo; described as &ldquo;replace with your own&rdquo;. The Studio Standard template is the shape of the author&rsquo;s setup, not its contents. Nothing in Unli Rice knows who <em>you</em> are until you tell it, and what you tell it stays on your Mac. (The app does carry the author&rsquo;s name in its copyright line and links to a public GitHub account for support and the privacy policy, the way any app does.)</p>
+</div>
+<h3>Guardrails are the part worth the time</h3>
+<p>Inside the builder, guardrails are hard rules rather than preferences &mdash; the things you want refused rather than weighed. The built-in examples give the flavour: never add engagement-maximizing patterns; no ads and no trackers; stay inside the active project&rsquo;s folder; if a fix has not worked after two attempts, stop and write up what was tried instead of looping on variations.</p>
+<p>Write yours the same way. A guardrail phrased as a preference gets traded away against something else the moment an agent finds a reason.</p>
+<h3>Your first two notes</h3>
+<p>A brand-new, empty log is seeded once with two short notes tagged <code>guide</code>. They exist because an empty list teaches you nothing about what a note here is for, and because the janitor only proposes a tag once that tag is already in use on a few notes &mdash; so on a genuinely empty log it would have nothing to work with and would look broken. They are ordinary notes. Archive them once you have read them; they are seeded once and will not come back.</p>
+</section>
+<section id="notes">
+<h2>4. How to think about a note</h2>
+<p>A note has a title, a body, tags, and links. Link one note to another by writing its title in double brackets &mdash; <code>[[Wiki: index]]</code> &mdash; and Unli Rice keeps the connection in both directions. A link to a note that does not exist yet is fine; it marks something worth writing.</p>
+<p>Every write also carries a <strong>source</strong>: the name of whoever made it. <code>claude</code>, <code>codex</code>, <code>antigravity</code>, you. This is what makes a shared log readable later, because it separates a conclusion an agent reasoned its way to from a line a machine put there. Two sources belong to the app itself and no agent should borrow them: <code>janitor</code> and <code>ingest</code>.</p>
+<p>Be clear-eyed about what a source is, though. The calling tool supplies that name itself and Unli Rice records what it was handed. It is an honest label from an honest tool, not an identity check &mdash; anything you connect could put any word there, including one of those two. That is fine for the job it does, which is letting you read the log back later and see who was working. It is not a security boundary, and nothing important rests on it: what an agent can do is fixed by the tools it is given, not by the name it signs.</p>
+</section>
+<section id="append-only">
+<h2>5. What can and cannot delete</h2>
+<p>This is the part that surprises people, so it is better stated here than discovered later. The short version: <strong>no agent can delete anything. You can.</strong></p>
+<h3>What agents can do</h3>
+<ul>
+<li><strong>Appending never replaces.</strong> Adding to a note puts text at the end. Earlier content, including another agent&rsquo;s, stays where it was.</li>
+<li><strong>Archiving is as close to deleting as an agent gets, and it is reversible.</strong> It hides a note from the default listings and nothing more.</li>
+<li><strong>Every note carries its own history.</strong> Open the event timeline for any note and you get each change, who made it, and when.</li>
+<li><strong>Structural changes are proposed, not applied.</strong> An agent that suspects a duplicate or a contradiction raises a flag for you. Raising a flag changes nothing by itself.</li>
+</ul>
+<p>This is not a matter of agents being asked nicely. Deleting is not in the set of things they are able to express: the tools they are given are built from the safe layer, and the code that can remove history lives outside it.</p>
+<h3>What you can do</h3>
+<p>You can purge a note, from the app, by hand. It is deliberately yours alone &mdash; it never runs on a schedule and no agent and no background job can reach it.</p>
+<p>Even then it is gentler than it sounds. Every event belonging to that note is written out in full first, and the whole log is copied to a backup before anything is rewritten, so a purge can be restored and the result is identical to what you had. What a purge genuinely destroys is the log&rsquo;s <em>continuity</em> &mdash; those lines are no longer in the live file &mdash; rather than the content itself.</p>
+<p>The point of all of it is that you can trust what the log says happened. A record that anything in the system could quietly rewrite is a record you would have to verify some other way.</p>
+</section>
+<section id="layers">
+<h2>6. The three layers</h2>
+<p>Notes are not all the same kind of thing, and knowing which one you are holding is most of reading the log well.</p>
+<ul>
+<li><strong>Raw files.</strong> Verbatim copies of whatever was brought in &mdash; documents, session transcripts &mdash; kept in a folder beside the log. You do not read these day to day: the index entries below point at them, and a recovery snapshot preserves them along with the log.</li>
+<li><strong>Index entries.</strong> The <code>Session:</code> and <code>Doc:</code> notes, one per raw file, written automatically. These are machine-built descriptions, <em>not</em> conclusions. They tell you whether a file is the one you want. If it matters, open the file.</li>
+<li><strong>Wiki hubs.</strong> Notes titled <code>Wiki: &lt;topic&gt;</code>, written by a reasoning agent. Each says what exists for a topic and where the real authority is. This is the only layer with judgement in it, which is also the reason it is the layer that goes stale.</li>
+</ul>
+<p>Once you have one, start at the note titled <code>Wiki: index</code>. It exists so you do not have to read a corpus of hundreds to find the four notes that matter. <strong>It is not there on your first day.</strong> A new log is seeded with two notes and neither is a wiki hub; hubs get written when there is something worth hubbing, by an agent you ask to write one. Once you have a few dozen notes, asking for it is a reasonable thing to do.</p>
+</section>
+<section id="panes">
+<h2>7. The panes</h2>
+<p>The sidebar has eight rows, and most of the settings live behind the last one. Names below are the ones on the buttons.</p>
+<h3>In the sidebar</h3>
+<p><strong>Home.</strong> What your AI currently knows about you &mdash; your profile context as one readable page, with the note count.</p>
+<p><strong>Notes.</strong> Search, read, tag, and open any note&rsquo;s history. Search is keyword matching over titles, bodies and tags.</p>
+<p><strong>Repos and the branch graph.</strong> A view of the git repositories you have pointed Unli Rice at: which branches exist, and which branch tips are not on any remote this clone has fetched. That is worth reading precisely, because it is a narrower claim than it sounds: it compares the tip of each branch against the remote refs already fetched here. It does not walk individual commits, and it cannot speak for a remote it has never fetched from. Read it as &ldquo;nothing I know about has this&rdquo;, which is still the useful warning.</p>
+<p><strong>To-Do.</strong> Two kinds of item live here and they behave differently, which is the thing to learn about this pane. <em>Derived</em> items are computed from the state that makes them true, and they have no checkbox because there is nothing to check &mdash; the item goes away when the state does. A stored checklist drifts from reality the moment someone does the work without ticking the box; deriving is how this half stays honest. It reads each project&rsquo;s <code>memory.md</code> for a declared next step, and falls back to the last published repository snapshot when it cannot get a live read, which is why an item can be labelled &ldquo;as of the last snapshot&rdquo;. <em>AI-flagged</em> items are the other kind: an agent that spots something worth doing writes an ordinary note and tags it <code>todo</code>. Those are stored, like any note, and they carry a <strong>Done</strong> button that archives the note behind them.</p>
+<p><strong>Needs you.</strong> The flags waiting on a decision, with a count on the row. This is where an agent&rsquo;s proposed merge or suspected duplicate ends up.</p>
+<p><strong>Your year so far.</strong> A retrospective read back to you from notes you already have.</p>
+<p><strong>Map.</strong> The link graph &mdash; notes as nodes, double-bracket links as edges.</p>
+<h3>Under More</h3>
+<p><strong>Setup &amp; Tools.</strong> The Connect screen, plus everything below it in this list.</p>
+<p><strong>Why not just a text file?</strong> The argument for the whole thing, if you want it.</p>
+<p><strong>What your AI should always do.</strong> House Rules &mdash; see <a href="#profile">telling your agents who you are</a>.</p>
+<p><strong>Separate memories.</strong> Profiles: separate note logs, each in its own folder, with one marked as the master. A way to keep unrelated bodies of work apart &mdash; not a way to change how agents behave.</p>
+<p><strong>The folder your AI can read.</strong> The plain-Markdown folder and its drop box, covered in <a href="#mirror">pointing a tool at the folder</a>.</p>
+<p><strong>What Runs on Its Own.</strong> Background work: bringing in documents and sessions from folders you have nominated, ingesting the drop box, and the janitor.</p>
+<p><strong>Archived Notes.</strong> Everything hidden from the default listings, and where you bring one back.</p>
+<p><strong>Notifications.</strong> Problems the app found on its own, such as a chosen folder it can no longer reach.</p>
+<p><strong>Trust Center.</strong> Read-only checks: whether the log and its folder are writable, which MCP clients have checked in, whether a recovery point exists, and what the background worker is doing. Client check-ins record the client&rsquo;s name and version, timestamps, the tool name, and whether it succeeded &mdash; never tool arguments, and never note content.</p>
+<p><strong>The Profile Builder</strong> sits inside Setup &amp; Tools rather than on its own row. Same place you connect a tool.</p>
+</section>
+<section id="iphone">
+<h2>8. The iPhone app</h2>
+<p>Unli Rice Capture is a satellite, not a second copy of the app. It records audio and transcribes it, and it takes typed notes.</p>
+<p>It handles notes you already have, too: you can add to an existing note instead of starting a new one, and archive a capture or bring it back, all from the phone.</p>
+<p>It also mirrors your repositories and your to-do list. <strong>Derived items are read-only on the phone</strong> &mdash; you cannot tick one off, because they are computed on the Mac from the state of your repositories. What you can do is tap one and write a note against it: what you type is appended to that project&rsquo;s note, stamped with the project, the item, and the time. AI-flagged items behave the same as they do on the Mac: they are notes, so they have a <strong>Done</strong> button that archives them.</p>
+<p>The Mac holds the log, and the phone syncs its own per-device shard into it, which is what lets both write without either one clobbering the other &mdash; <strong>but only once you have given it somewhere shared to sync to</strong>. The first time you capture something the phone asks where captures should go, and &ldquo;Keep on this device only&rdquo; is a real answer to that question. Choose it and nothing reaches your Mac until you change it in Settings. To sync, pick a folder in iCloud Drive on the phone and point the Mac at the same one.</p>
+</section>
+<section id="data">
+<h2>9. Your data</h2>
+<p>The log is one append-only file with your raw sources beside it. You can point Unli Rice at a different folder for it, and the app tells you which one it currently has open.</p>
+<h3>Recovery points</h3>
+<p>A snapshot copies the event log byte for byte, together with your raw files and the small settings belonging to that log, and checksums all of it with SHA-256 so it can be verified later. <strong>Restoring never replaces your current log.</strong> It appends only the events that are missing and copies only the files that are absent, which keeps the append-only rule intact and means a restore cannot cost you anything you already had. The trade is that your settings do not come back either: House Rules, routine state and notices are copied <em>into</em> the snapshot, but a restore leaves them sitting there rather than writing over the ones you have now. If you want an old one back, take it out of the snapshot folder yourself.</p>
+<h3>What the janitor may do</h3>
+<p>The background janitor can add a tag or raise a flag. That is the whole list. It cannot archive, retitle, merge, or resolve anything. A tag it added is a suggestion &mdash; remove it if it is wrong, and it will not put it back. A flag it raised is a proposal waiting for you.</p>
+</section>
+<section id="trouble">
+<h2>10. When something looks wrong</h2>
+<p><strong>A tool I connected does not appear.</strong> Restart that tool completely so it reloads its configuration, then confirm the block landed in the right file and in the right shape &mdash; one <code>mcpServers</code> object with <code>unlirice</code> inside it, never two nested ones. See <a href="#setup">pasting into a JSON file</a> above. Configuration is read once, when the session starts.</p>
+<p><strong>Notes I expected are missing.</strong> Confirm which log the app has open. It reports this, and it is the first thing to check rather than the last. A banner about a corpus that is unreachable or stranded means what it says, and it is specific: it names the path, and for a stranded log it tells you how many notes are in it that the log you are on does not have. A stranded log is intact and waiting. An unreachable one is a different matter: the app can tell you it cannot open that folder, but not why &mdash; an unmounted drive, a folder you renamed, and a folder that was deleted all look the same from here. Check the path it names before assuming which one you are in.</p>
+<p><strong>The to-do list looks out of date.</strong> It is derived, so it is only as fresh as what it derived from. Publish a new repository snapshot &mdash; that is its own step, and pushing alone does not do it. For a declared next step, give the project a <code>memory.md</code> containing the exact marker <code>**Next step:**</code> with the step after it. The asterisks and the capital N are both load-bearing: <code>next step:</code> or <code>Next Step:</code> will not be found. The project folder also has to sit directly inside a folder you have granted for scanning &mdash; one level down, not nested deeper.</p>
+<p><strong>Nothing is being brought in automatically.</strong> Check that background routines are switched on, and that the folders you want scanned have been granted. A folder has to be chosen through the file picker before the app may read it.</p>
+</section>
+<section id="tools">
+<h2>11. Tool reference</h2>
+<p>What a connected agent can do over MCP. Every write takes a <code>source</code> &mdash; the name the calling tool gives for itself &mdash; so the log reads back attributably.</p>
+<p class="note-sm">Verified against <code>unli-rice@1f49c0f</code> on 2026-09-05.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>search_notes</code></td><td>Keyword search over titles, bodies and tags. Substring matching, not semantic.</td></tr>
+<tr><td><code>list_notes</code></td><td>Lists notes, most recently updated first.</td></tr>
+<tr><td><code>get_note</code></td><td>Fetches a single note by id.</td></tr>
+<tr><td><code>create_note</code></td><td>Creates a note. Always a new one &mdash; it never overwrites an existing note.</td></tr>
+<tr><td><code>append_to_note</code></td><td>Adds content to the end of a note. Never replaces or removes what is already there.</td></tr>
+<tr><td><code>tag_note</code></td><td>Adds a tag.</td></tr>
+<tr><td><code>untag_note</code></td><td>Removes a tag. This is how you correct a tag the janitor got wrong.</td></tr>
+<tr><td><code>archive_note</code></td><td>Hides a note from default listings, with a reason. Reversible, and the closest to deleting that any agent can get.</td></tr>
+<tr><td><code>unarchive_note</code></td><td>Brings an archived note back.</td></tr>
+<tr><td><code>flag_for_review</code></td><td>Queues a concern for you &mdash; a suspected duplicate, a conflict, a proposed merge. Never applies the change itself.</td></tr>
+<tr><td><code>pending_reviews</code></td><td>Lists every unresolved flag across all notes, oldest first.</td></tr>
+<tr><td><code>resolve_review</code></td><td>Marks a flag resolved. Meant for after you have decided &mdash; but that is a convention, not a lock. Any connected agent can call it.</td></tr>
+<tr><td><code>note_history</code></td><td>The immutable event history for one note, oldest first, with attribution and timestamps.</td></tr>
+<tr><td><code>transaction_log</code></td><td>Raw recent events across the whole log, most recent first &mdash; the audit trail.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+    </article>
   </div>
+
 </main>
-<footer>
-  <div class="wrap">&copy; 2026 calmdownoscar &middot; <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a> · <a href="../playground/">Playground</a> · <a href="../idea-clinic/">Idea clinic</a> · <a href="../hobbies/">Hobbies</a></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
 </footer>
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var revealEls = document.querySelectorAll('.reveal');
-  if (reduce.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(function(el){ io.observe(el); });
-  }
 
-  // --- Mobile nav disclosure ---
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-
-  function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
-})();
-</script>
 </body>
 </html>

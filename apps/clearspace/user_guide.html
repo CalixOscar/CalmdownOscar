@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#141B22">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16.png">
@@ -16,302 +16,154 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/apps/clearspace/user_guide.html">
 <link rel="canonical" href="https://www.calmdownoscar.com/apps/clearspace/user_guide.html">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --amber:   #B88233;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: 76px;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-  }
-  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
-  .mark span{ color:var(--accent); }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
-    margin-left:22px;
-    transition:color .2s ease;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  main{ padding:56px 0 96px; }
-  .heading{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
-  .app-icon{
-    width:44px; height:44px; border-radius:11px; flex-shrink:0;
-    box-shadow:0 4px 12px rgba(32,43,54,.18);
-  }
-  .kicker{
-    display:block;
-    color:var(--accent);
-    font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  h1{ font-size:clamp(26px, 5vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.15; }
-  .lede{ margin-top:14px; max-width:54ch; color:var(--muted); font-size:16px; }
-
-  .toc{
-    display:flex; flex-wrap:wrap; gap:8px 10px;
-    margin-top:24px; padding-top:24px;
-    border-top:1px solid var(--edge);
-  }
-  .toc a{
-    font-size:13px; color:var(--muted);
-    text-decoration:none;
-    border:1px solid var(--edge); border-radius:20px;
-    padding:5px 12px;
-    transition:color .2s ease, border-color .2s ease, background .2s ease;
-  }
-  .toc a:hover{ color:var(--accent); border-color:var(--edge-hi); background:transparent; }
-
-  .policy{ margin-top:6px; }
-  .policy h2{
-    font-size:19px; font-weight:800; letter-spacing:-.01em;
-    color:var(--ink);
-    margin:46px 0 12px;
-    scroll-margin-top:96px;
-  }
-  .policy p, .policy li{ color:var(--muted); font-size:16px; }
-  .policy p + p{ margin-top:12px; }
-  .policy ul{ margin:10px 0 0 20px; }
-  .policy li + li{ margin-top:8px; }
-  .policy strong{ color:var(--ink); font-weight:600; }
-  .policy a{ color:var(--accent); text-decoration:underline; text-decoration-color:var(--edge-hi); }
-  .policy a:hover{ text-decoration-color:var(--accent); }
-
-  .swatches{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
-  .swatch{ display:flex; gap:12px; align-items:baseline; }
-  .swatch .dot{ flex:none; width:10px; height:10px; border-radius:50%; margin-top:5px; }
+  .callout .label{ display:block; margin-bottom:6px; }
+  .swatches{ list-style:none; border-top:1px solid var(--line); }
+  .swatch{ display:grid; grid-template-columns:12px minmax(0,1fr); gap:14px; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--line); }
+  .swatch .dot{ width:10px; height:10px; border-radius:50%; }
   .swatch p{ margin:0; }
-  .swatch strong{ color:var(--ink); }
-
-  .note{
-    margin-top:16px;
-    background:var(--panel);
-    border-left:3px solid var(--amber);
-    border-radius:0 8px 8px 0;
-    padding:14px 18px;
-  }
-  .note p{ color:var(--ink); font-size:14px; }
-  .note .label{
-    display:block; margin-bottom:6px;
-    color:var(--amber); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-  }
-
-  .card{
-    margin-top:50px;
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:10px;
-    padding:22px 24px;
-    display:flex; flex-direction:column; gap:10px;
-    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  }
-  .card a.applink{
-    color:var(--ink); font-weight:600; font-size:14px; text-decoration:none;
-    transition:color .2s ease;
-  }
-  .card a.applink:hover{ color:var(--accent); }
-  .card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
-  .card a.applink:hover .arrow{ transform:translateX(5px); }
-  .back{
-    display:inline-block; margin-top:32px;
-    color:var(--ink); font-weight:500; text-decoration:none; font-size:14px;
-    transition:color .2s ease;
-  }
-  .back:hover{ color:var(--accent); }
-  footer{
-    border-top:1px solid var(--edge); padding:22px 0 40px;
-    color:var(--muted); font-size:13px;
-  }
-  footer a{ color:var(--muted); transition:color .2s ease; }
-  footer a:hover{ color:var(--accent); }
-  @media (max-width:640px){
-    .nav{ flex-direction:column; align-items:flex-start; /* Long-hand: the header is `<div class="wrap nav">`, so a `padding: 14px 0`
-       shorthand here also reset .wrap's side gutters, pushing the logo and links flush
-       against the edge of the screen on phones. */
-      padding-top:14px; padding-bottom:14px; height:auto; }
-    header{ position:static; }
-    body{ padding-top:0; }
-    nav a{ margin-left:0; margin-right:18px; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-  }
 </style>
+<script src="../../assets/site.js" defer></script>
+<script src="../../assets/motion.js" defer></script>
 </head>
 <body>
-<header>
-  <div class="wrap nav">
+
+<header class="top">
+  <div class="wrap">
     <a class="mark" href="../../">calmdown<span>oscar</span></a>
-    <nav>
-      <a href="../../#apps">Apps</a>
-      <a href="../../#about">About</a>
-      <!-- Founder's call, 2026-09-04: peter@ is the support address, not a stand-in.
-           support@calmdownoscar.com does not deliver, and every contact point stays on
-           peter@ until the apps have traction. Do not "restore" support@ anywhere. -->
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../../how_I_work/">How I work</a>
+      <a href="../../aboutme/">About</a>
+      <a href="../../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <div class="wrap">
-    <div class="heading">
-      <img class="app-icon" src="../assets/clearspace-icon.png" alt="" width="44" height="44">
-      <span class="kicker">ClearSpace</span>
-    </div>
-    <h1>User Guide</h1>
-    <p class="lede">Find the photos actually eating your storage. Decide fast. Put the phone down.</p>
 
-    <nav class="toc" aria-label="Sections">
-      <a href="#loop">The loop</a>
-      <a href="#keeping">Keeping &amp; Modes</a>
-      <a href="#filters">Filters &amp; Settings</a>
-      <a href="#moving">Getting around</a>
-      <a href="#sweep">Full screen &amp; Zoom</a>
-      <a href="#albums">Albums &amp; Quick-Add</a>
-      <a href="#batches">Batches</a>
-      <a href="#deleting">Deleting</a>
-      <a href="#pricing">Free vs. paid</a>
-      <a href="#sizes">Sizes</a>
-    </nav>
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../assets/clearspace-icon.png" alt="" width="44" height="44"><p class="label">ClearSpace · User guide</p></div>
+    <h1 class="lede">User guide</h1>
+    <p class="by">Find the photos actually eating your storage. Decide fast. Put the phone down.</p>
+  </section>
 
-    <div class="policy">
-      <h2 id="loop">The loop</h2>
-      <p>Most photo cleaners hand you your library in the order you took it, which means you run out of patience wading through years of small, forgettable photos long before you reach the videos actually worth gigabytes. ClearSpace opens the other way round.</p>
-      <ul>
-        <li><strong>Biggest first.</strong> The largest videos and photos lead the grid, each one labelled with roughly what it costs.</li>
-        <li><strong>Heart what you keep.</strong> Double-tap a photo, or tap its heart. Hearted photos leave the grid, so the pile only shrinks.</li>
-        <li><strong>Clear the rest.</strong> The bar at the bottom always shows what you haven't hearted, and what it's worth. Tap it when you're ready.</li>
-      </ul>
-
-      <h2 id="keeping">Keeping and Mode Switching</h2>
-      <ul>
-        <li><strong>[♥ Heart] Mode</strong>: Focused review mode. Double-tap any photo tile or tap its heart to mark it as Kept. Kept photos instantly filter out so your unreviewed queue shrinks with every decision.</li>
-        <li><strong>[✓ Select] Mode</strong>: Batch selection mode. Drag or tap across photos to select batches, file them into albums, or delete them together.</li>
-        <li><strong>Hide Hearted</strong> and <strong>Hide Albumed</strong>: Open the filter sheet (☰) to toggle these on or off. Hide Albumed lets you focus solely on photos that haven't been organized yet.</li>
-      </ul>
-      <div class="note">
-        <span class="label">Worth knowing</span>
-        <p>A heart here is the same Favourite you already see in Apple Photos — there's only one, and it's shared both ways.</p>
-      </div>
-
-      <h2 id="filters">Narrowing what you see</h2>
-      <p>The row along the top filters the grid, and each filter has its own colour — filled means it's the one currently active.</p>
-      <div class="swatches">
-        <div class="swatch"><span class="dot" style="background:#D7263D"></span><p><strong>Everything</strong> — the whole scope, unfiltered.</p></div>
-        <div class="swatch"><span class="dot" style="background:#B08600"></span><p><strong>Videos</strong> — every clip in the library.</p></div>
-        <div class="swatch"><span class="dot" style="background:#B15A00"></span><p><strong>Over 2 min</strong> — usually the fastest gigabytes going, long videos filmed once and never watched again.</p></div>
-        <div class="swatch"><span class="dot" style="background:#0E7490"></span><p><strong>Photos</strong> — stills only.</p></div>
-        <div class="swatch"><span class="dot" style="background:#4338CA"></span><p><strong>Screenshots</strong> — usually the easiest decision in the app.</p></div>
-        <div class="swatch"><span class="dot" style="background:#7E22CE"></span><p><strong>Live</strong> — Live Photos.</p></div>
-        <div class="swatch"><span class="dot" style="background:#0F766E"></span><p><strong>Slo-mo</strong> — high-frame-rate video.</p></div>
-        <div class="swatch"><span class="dot" style="background:#BE185D"></span><p><strong>Favourites</strong> — everything you've hearted, unaffected by Hide Hearted.</p></div>
-      </div>
-
-      <h2 id="moving">Getting around</h2>
-      <ul>
-        <li><strong>Calendar Scope Button</strong>: Tap the calendar button at the top (e.g. <code>[📅 Full timeline ▼]</code>) to jump into finishable monthly review cohorts or custom albums.</li>
-        <li><strong>Sort order</strong>: Four orders, chosen from the settings sheet — <strong>Biggest first</strong> (the default), <strong>Newest first</strong>, <strong>Oldest first</strong>, and <strong>Longest first</strong> for video. The sort applies inside a monthly cohort too, so a month still opens with its heaviest items.</li>
-        <li><strong>Start at</strong>: Alongside the sort, choose whether the grid opens at the top or the bottom of that order &mdash; useful when you want the smallest or oldest end first without reversing the sort itself.</li>
-        <li><strong>Narrow to a year or an album</strong>: The settings sheet also scopes the whole grid to a single year, or to one of your own Photos albums, so a review can be as small as you want it to be.</li>
-        <li><strong>Pinch the Grid</strong>: Adjust thumbnail density across five steps &mdash; seven columns, five, three, two, or one photo filling the width.</li>
-        <li><strong>Fast Scrubber</strong>: Drag along the right edge to scrub across years of memories instantly.</li>
-        <li><strong>Browse Direction</strong>: In the filter sheet, choose between horizontal sideways swiping and snapping vertical scrolling for single-photo inspection.</li>
-      </ul>
-
-      <h2 id="sweep">Full screen &amp; Zoom Inspection</h2>
-      <p>Tap any photo to open full screen: it appears sharp straight away from the copy Photos already keeps on the device, so there is no loading spinner. If the photo lives only in iCloud, the one you tapped downloads first, ahead of anything else. Zooming in loads the full original. Videos and Live Photos start playing on their own, with sound, and the sound stops as soon as you move on.</p>
-      <ul>
-        <li><strong>Pinch-to-Zoom</strong>: Pinch anywhere on a photo or video to zoom up to 5x with smooth bounded panning.</li>
-        <li><strong>Double-Tap Zoom</strong>: Double-tap to toggle between 1x and 2.5x magnification.</li>
-        <li><strong>Heart</strong> — keeps the photo and advances to the next.</li>
-        <li><strong>Bookmark</strong> — files the photo directly into your last-used album with one tap, or opens the album menu.</li>
-        <li><strong>Trash</strong> — moves the photo to Recently Deleted and advances.</li>
-      </ul>
-
-      <h2 id="widescreen">iPad and sideways iPhone</h2>
-      <p>On iPad, or an iPhone turned sideways, tapping a photo opens it <strong>beside the grid</strong> instead of over it. Your place in the grid stays exactly where you left it, so you can work down the grid and inspect as you go.</p>
-      <ul>
-        <li><strong>Swap sides</strong> — the swap button in the toolbar moves the photo to the other side.</li>
-        <li><strong>Hide the viewer</strong> — the panel button gives the whole screen back to the grid.</li>
-        <li><strong>Split View and Stage Manager</strong> — ClearSpace fits whatever size window you give it on iPad.</li>
-        <li><strong>Sideways iPhone</strong> — the controls move to the edge of the screen, so photos get the full height.</li>
-      </ul>
-
-      <h2 id="albums">Albums &amp; Quick-Add</h2>
-      <p>Clearing space isn't only about deleting. Tap the <strong>Bookmark icon</strong> in full screen or select photos in the grid to file items into your Apple Photos albums, or start a new album on the spot.</p>
-      <p>Photos already filed in custom albums display a clean album capsule badge at the bottom of the screen.</p>
-
-      <h2 id="batches">Working in batches</h2>
-      <p>Switch to <strong>[✓ Select] Mode</strong> when you already know what has to go — a burst of near-identical shots, or a run of screenshots.</p>
-      <ul>
-        <li><strong>Tap</strong> or drag across tiles to select them.</li>
-        <li><strong>Select All Shown</strong> selects everything in the current filter.</li>
-        <li><strong>Heart, Add to Album, or Delete</strong> applies to the whole selection in one action.</li>
-      </ul>
-
-      <h2 id="deleting">What happens when you delete</h2>
-      <p>Deleted photos go to <strong>Recently Deleted</strong> in Apple's Photos app, where they sit for 30 days. Nothing is destroyed, and you can get any of it back during that window.</p>
-      <div class="note">
-        <span class="label">The part people miss</span>
-        <p>Your storage doesn't go down until Recently Deleted is emptied. Until then, the photos still occupy the same space they always did. Open <strong>Photos → Albums → Recently Deleted → Select → Delete All</strong> to finish the job and get the space back.</p>
-      </div>
-
-      <h2 id="pricing">What's free, what's paid</h2>
-      <p>Finding, sorting, filtering, hearting, filing into albums, and deleting photos <strong>one at a time</strong> are all free, with no limit.</p>
-      <p>Clearing photos in bulk is unlocked by a one-time lifetime purchase. No subscription, ever. If you own <strong>Unli Disk for Mac</strong>, ClearSpace Pro is included: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for a one-time App Store code that unlocks it.</p>
-      <p>If the purchase screen can't reach the App Store, it tries again on its own and shows a <strong>Try again</strong> button rather than an empty screen.</p>
-
-      <h2 id="sizes">About the sizes</h2>
-      <p>The figure on each photo, shown with a <strong>~</strong>, is a close estimate worked out from the photo's own details — its dimensions, its length, and the format it was recorded in — rather than by opening the file. That's what makes sorting a huge library by size instant instead of a multi-minute wait.</p>
-
-      <h2>Privacy</h2>
-      <p>ClearSpace reads your library on your device and nowhere else. No account, no analytics, no trackers, nothing uploaded. Full detail in the <a href="privacy.html">Privacy Policy</a>.</p>
-    </div>
-
-    <div class="card">
-      <a class="applink" href="support.html">Get Support <span class="arrow">→</span></a>
-      <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">→</span></a>
-      <a class="applink" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">View on the App Store <span class="arrow">→</span></a>
-    </div>
-
-    <a class="back" href="./">← Back to ClearSpace</a>
+  <div class="wrap doc">
+    <aside class="doc-side" aria-label="On this page">
+      <p class="label">Contents</p>
+      <ol class="toc">
+        <li><a href="#loop">The loop</a></li>
+        <li><a href="#keeping">Keeping and Mode Switching</a></li>
+        <li><a href="#filters">Narrowing what you see</a></li>
+        <li><a href="#moving">Getting around</a></li>
+        <li><a href="#sweep">Full screen &amp; Zoom Inspection</a></li>
+        <li><a href="#widescreen">iPad and sideways iPhone</a></li>
+        <li><a href="#albums">Albums &amp; Quick-Add</a></li>
+        <li><a href="#batches">Working in batches</a></li>
+        <li><a href="#deleting">What happens when you delete</a></li>
+        <li><a href="#pricing">What's free, what's paid</a></li>
+        <li><a href="#sizes">About the sizes</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+      </ol>
+      <div class="links"><a class="link in" href="./">ClearSpace</a><a class="link in" href="support.html">Support</a><a class="link in" href="privacy.html">Privacy policy</a><a class="link" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">App Store</a></div>
+    </aside>
+    <article class="prose">
+<h2 id="loop">The loop</h2>
+<p>Most photo cleaners hand you your library in the order you took it, which means you run out of patience wading through years of small, forgettable photos long before you reach the videos actually worth gigabytes. ClearSpace opens the other way round.</p>
+<ul>
+<li><strong>Biggest first.</strong> The largest videos and photos lead the grid, each one labelled with roughly what it costs.</li>
+<li><strong>Heart what you keep.</strong> Double-tap a photo, or tap its heart. Hearted photos leave the grid, so the pile only shrinks.</li>
+<li><strong>Clear the rest.</strong> The bar at the bottom always shows what you haven't hearted, and what it's worth. Tap it when you're ready.</li>
+</ul>
+<h2 id="keeping">Keeping and Mode Switching</h2>
+<ul>
+<li><strong>[♥ Heart] Mode</strong>: Focused review mode. Double-tap any photo tile or tap its heart to mark it as Kept. Kept photos instantly filter out so your unreviewed queue shrinks with every decision.</li>
+<li><strong>[✓ Select] Mode</strong>: Batch selection mode. Drag or tap across photos to select batches, file them into albums, or delete them together.</li>
+<li><strong>Hide Hearted</strong> and <strong>Hide Albumed</strong>: Open the filter sheet (☰) to toggle these on or off. Hide Albumed lets you focus solely on photos that haven't been organized yet.</li>
+</ul>
+<div class="callout warn">
+<span class="label">Worth knowing</span>
+<p>A heart here is the same Favourite you already see in Apple Photos — there's only one, and it's shared both ways.</p>
+</div>
+<h2 id="filters">Narrowing what you see</h2>
+<p>The row along the top filters the grid, and each filter has its own colour — filled means it's the one currently active.</p>
+<div class="swatches">
+<div class="swatch"><span class="dot" style="background:#D7263D"></span><p><strong>Everything</strong> — the whole scope, unfiltered.</p></div>
+<div class="swatch"><span class="dot" style="background:#B08600"></span><p><strong>Videos</strong> — every clip in the library.</p></div>
+<div class="swatch"><span class="dot" style="background:#B15A00"></span><p><strong>Over 2 min</strong> — usually the fastest gigabytes going, long videos filmed once and never watched again.</p></div>
+<div class="swatch"><span class="dot" style="background:#0E7490"></span><p><strong>Photos</strong> — stills only.</p></div>
+<div class="swatch"><span class="dot" style="background:#4338CA"></span><p><strong>Screenshots</strong> — usually the easiest decision in the app.</p></div>
+<div class="swatch"><span class="dot" style="background:#7E22CE"></span><p><strong>Live</strong> — Live Photos.</p></div>
+<div class="swatch"><span class="dot" style="background:#0F766E"></span><p><strong>Slo-mo</strong> — high-frame-rate video.</p></div>
+<div class="swatch"><span class="dot" style="background:#BE185D"></span><p><strong>Favourites</strong> — everything you've hearted, unaffected by Hide Hearted.</p></div>
+</div>
+<h2 id="moving">Getting around</h2>
+<ul>
+<li><strong>Calendar Scope Button</strong>: Tap the calendar button at the top (e.g. <code>[📅 Full timeline ▼]</code>) to jump into finishable monthly review cohorts or custom albums.</li>
+<li><strong>Sort order</strong>: Four orders, chosen from the settings sheet — <strong>Biggest first</strong> (the default), <strong>Newest first</strong>, <strong>Oldest first</strong>, and <strong>Longest first</strong> for video. The sort applies inside a monthly cohort too, so a month still opens with its heaviest items.</li>
+<li><strong>Start at</strong>: Alongside the sort, choose whether the grid opens at the top or the bottom of that order &mdash; useful when you want the smallest or oldest end first without reversing the sort itself.</li>
+<li><strong>Narrow to a year or an album</strong>: The settings sheet also scopes the whole grid to a single year, or to one of your own Photos albums, so a review can be as small as you want it to be.</li>
+<li><strong>Pinch the Grid</strong>: Adjust thumbnail density across five steps &mdash; seven columns, five, three, two, or one photo filling the width.</li>
+<li><strong>Fast Scrubber</strong>: Drag along the right edge to scrub across years of memories instantly.</li>
+<li><strong>Browse Direction</strong>: In the filter sheet, choose between horizontal sideways swiping and snapping vertical scrolling for single-photo inspection.</li>
+</ul>
+<h2 id="sweep">Full screen &amp; Zoom Inspection</h2>
+<p>Tap any photo to open full screen: it appears sharp straight away from the copy Photos already keeps on the device, so there is no loading spinner. If the photo lives only in iCloud, the one you tapped downloads first, ahead of anything else. Zooming in loads the full original. Videos and Live Photos start playing on their own, with sound, and the sound stops as soon as you move on.</p>
+<ul>
+<li><strong>Pinch-to-Zoom</strong>: Pinch anywhere on a photo or video to zoom up to 5x with smooth bounded panning.</li>
+<li><strong>Double-Tap Zoom</strong>: Double-tap to toggle between 1x and 2.5x magnification.</li>
+<li><strong>Heart</strong> — keeps the photo and advances to the next.</li>
+<li><strong>Bookmark</strong> — files the photo directly into your last-used album with one tap, or opens the album menu.</li>
+<li><strong>Trash</strong> — moves the photo to Recently Deleted and advances.</li>
+</ul>
+<h2 id="widescreen">iPad and sideways iPhone</h2>
+<p>On iPad, or an iPhone turned sideways, tapping a photo opens it <strong>beside the grid</strong> instead of over it. Your place in the grid stays exactly where you left it, so you can work down the grid and inspect as you go.</p>
+<ul>
+<li><strong>Swap sides</strong> — the swap button in the toolbar moves the photo to the other side.</li>
+<li><strong>Hide the viewer</strong> — the panel button gives the whole screen back to the grid.</li>
+<li><strong>Split View and Stage Manager</strong> — ClearSpace fits whatever size window you give it on iPad.</li>
+<li><strong>Sideways iPhone</strong> — the controls move to the edge of the screen, so photos get the full height.</li>
+</ul>
+<h2 id="albums">Albums &amp; Quick-Add</h2>
+<p>Clearing space isn't only about deleting. Tap the <strong>Bookmark icon</strong> in full screen or select photos in the grid to file items into your Apple Photos albums, or start a new album on the spot.</p>
+<p>Photos already filed in custom albums display a clean album capsule badge at the bottom of the screen.</p>
+<h2 id="batches">Working in batches</h2>
+<p>Switch to <strong>[✓ Select] Mode</strong> when you already know what has to go — a burst of near-identical shots, or a run of screenshots.</p>
+<ul>
+<li><strong>Tap</strong> or drag across tiles to select them.</li>
+<li><strong>Select All Shown</strong> selects everything in the current filter.</li>
+<li><strong>Heart, Add to Album, or Delete</strong> applies to the whole selection in one action.</li>
+</ul>
+<h2 id="deleting">What happens when you delete</h2>
+<p>Deleted photos go to <strong>Recently Deleted</strong> in Apple's Photos app, where they sit for 30 days. Nothing is destroyed, and you can get any of it back during that window.</p>
+<div class="callout warn">
+<span class="label">The part people miss</span>
+<p>Your storage doesn't go down until Recently Deleted is emptied. Until then, the photos still occupy the same space they always did. Open <strong>Photos → Albums → Recently Deleted → Select → Delete All</strong> to finish the job and get the space back.</p>
+</div>
+<h2 id="pricing">What's free, what's paid</h2>
+<p>Finding, sorting, filtering, hearting, filing into albums, and deleting photos <strong>one at a time</strong> are all free, with no limit.</p>
+<p>Clearing photos in bulk is unlocked by a one-time lifetime purchase. No subscription, ever. If you own <strong>Unli Disk for Mac</strong>, ClearSpace Pro is included: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for a one-time App Store code that unlocks it.</p>
+<p>If the purchase screen can't reach the App Store, it tries again on its own and shows a <strong>Try again</strong> button rather than an empty screen.</p>
+<h2 id="sizes">About the sizes</h2>
+<p>The figure on each photo, shown with a <strong>~</strong>, is a close estimate worked out from the photo's own details — its dimensions, its length, and the format it was recorded in — rather than by opening the file. That's what makes sorting a huge library by size instant instead of a multi-minute wait.</p>
+<h2 id="privacy">Privacy</h2>
+<p>ClearSpace reads your library on your device and nowhere else. No account, no analytics, no trackers, nothing uploaded. Full detail in the <a href="privacy.html">Privacy Policy</a>.</p>
+    </article>
   </div>
+
 </main>
-<footer>
-  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../../playground/">Playground</a><a href="../../idea-clinic/">Idea clinic</a><a href="../../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
 </footer>
+
 </body>
 </html>

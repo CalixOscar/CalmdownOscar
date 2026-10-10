@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16.png">
@@ -16,588 +14,163 @@
 <meta property="og:description" content="ClearSpace sorts your iPhone photo library by what it's actually costing you — biggest videos and photos first. Native Swift and PhotoKit, 100% on-device, one-time purchase.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/apps/clearspace/">
-<meta property="og:image" content="https://www.calmdownoscar.com/apps/assets/clearspace-shot-grid.webp">
 <link rel="canonical" href="https://www.calmdownoscar.com/apps/clearspace/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: calc(64px + var(--sat));
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  .wrap{ max-width:920px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px; white-space:nowrap;
-    margin-left:22px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  .nav-toggle{ display:none; }
-
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
-      width:44px; height:44px; background:transparent;
-      border:1px solid var(--edge); border-radius:8px; cursor:pointer; padding:0;
-      color:var(--ink); flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{ outline:1px solid var(--accent); outline-offset:2px; }
-    .nav-toggle-bar{
-      display:block; width:18px; height:2px; background:currentColor; border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{ transform:translateY(3.5px) rotate(45deg); }
-    .topbar.nav-open .nav-toggle-bar:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
-    nav{
-      display:none; position:absolute; top:100%; left:0; right:0;
-      background:rgb(20,27,34);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column; gap:2px; align-items:stretch;
-      overflow-y:auto; max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{ display:flex; }
-    nav a{
-      font-size:15px; padding:10px 0; min-height:44px; color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05); width:100%; margin-left:0;
-    }
-    nav a:last-child{ border-bottom:none; }
-  }
-
-  main{ padding:56px 0 96px; }
-
-  /* ================= hero ================= */
-  .status-badge{
-    display:inline-flex; align-items:center; gap:8px;
-    font-size:12px; font-weight:600; color:var(--accent);
-    text-transform:uppercase; letter-spacing:.06em; margin-bottom:20px;
-  }
-  .status-badge .dot{
-    width:6px; height:6px; border-radius:50%; background:currentColor;
-    animation:dotPulse 2.2s ease-out infinite;
-  }
-  @keyframes dotPulse{
-    0%{ box-shadow:0 0 0 0 currentColor; }
-    70%{ box-shadow:0 0 0 8px transparent; }
-    100%{ box-shadow:0 0 0 0 transparent; }
-  }
-  .product-head{ display:flex; align-items:center; gap:18px; margin-bottom:14px; }
-  .hero-icon{
-    width:68px; height:68px; border-radius:17px;
-    box-shadow:0 8px 22px rgba(32,43,54,.20); flex-shrink:0;
-  }
-  h1{ font-weight:800; font-size:clamp(32px, 6vw, 48px); line-height:1.08; letter-spacing:-0.015em; }
-  h1 span{ color:var(--accent); }
-  .lede{ margin-top:16px; max-width:64ch; font-size:17px; color:var(--muted); line-height:1.65; margin-bottom:26px; }
-  .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:40px; }
-  .pill{
-    color:var(--muted); border:1px solid var(--edge); border-radius:20px;
-    padding:4px 12px; font-size:12px; font-weight:500; background:transparent;
-  }
-
-  .section-label{
-    font-size:14px; font-weight:600; letter-spacing:.02em; color:var(--ink);
-    padding-bottom:16px; margin-bottom:32px; border-bottom:1px solid var(--edge);
-  }
-  section{ margin-bottom:56px; }
-
-  /* ================= the premise ================= */
-  .premise{
-    background:var(--panel); border:1px solid var(--edge);
-    border-left:3px solid var(--accent); border-radius:10px;
-    padding:22px 24px; margin-bottom:56px; backdrop-filter:blur(6px);
-  }
-  .premise h2{ font-size:17px; font-weight:700; margin-bottom:10px; }
-  .premise p{ font-size:15px; color:var(--muted); line-height:1.65; max-width:70ch; }
-  .premise p + p{ margin-top:10px; }
-
-  /* ================= loop steps ================= */
-  .loop{ display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
-  @media (max-width:760px){ .loop{ grid-template-columns:1fr; gap:16px; } }
-  .loop-step{
-    background:var(--panel); border:1px solid var(--edge); border-radius:12px;
-    padding:20px; backdrop-filter:blur(6px);
-  }
-  .loop-num{
-    font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:8px;
-  }
-  .loop-step h3{ font-size:16px; font-weight:700; margin-bottom:6px; }
-  .loop-step p{ font-size:14px; color:var(--muted); line-height:1.55; }
-
-  /* ================= screenshot gallery ================= */
-  .shots{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
-  @media (max-width:860px){ .shots{ grid-template-columns:repeat(2, 1fr); } }
-  @media (max-width:560px){ .shots{ grid-template-columns:1fr; gap:28px; } }
-
-  .shot{
-    background:var(--panel); border:1px solid var(--edge); border-radius:14px;
-    overflow:hidden; display:flex; flex-direction:column; backdrop-filter:blur(6px);
-    transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .shot:hover{
-    transform:translateY(-4px); border-color:var(--edge-hi);
-    box-shadow:0 16px 34px rgba(32,43,54,.12);
-  }
-  .shot-frame{ background:#000; padding:0; line-height:0; }
-  .shot-frame img{ display:block; width:100%; height:auto; }
-  .shot.wide{ grid-column:1 / -1; }
-  .shot-info{ padding:18px 18px 20px; border-top:1px solid var(--edge); background:rgba(255,255,255,.05); }
-  .shot-info h3{ font-size:15px; font-weight:700; margin-bottom:6px; }
-  .shot-info h3 span{ color:var(--accent); }
-  .shot-info p{ font-size:13.5px; color:var(--muted); line-height:1.55; }
-
-  /* ================= feature list ================= */
-  .features{ display:grid; grid-template-columns:repeat(2, 1fr); gap:22px; }
-  @media (max-width:760px){ .features{ grid-template-columns:1fr; } }
-  .feature{
-    background:var(--panel); border:1px solid var(--edge); border-radius:12px;
-    padding:22px; backdrop-filter:blur(6px);
-  }
-  .feature h3{ font-size:16px; font-weight:700; margin-bottom:8px; }
-  .feature p{ font-size:14px; color:var(--muted); line-height:1.6; }
-  .feature p strong{ color:var(--ink); font-weight:600; }
-
-  /* ================= engine note ================= */
-  .engine-note{
-    background:var(--panel); border:1px solid var(--edge);
-    border-left:3px solid var(--accent); border-radius:10px;
-    padding:20px 22px; margin-bottom:56px; backdrop-filter:blur(6px);
-  }
-  .engine-note h4{
-    font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
-    color:var(--accent); margin-bottom:8px;
-  }
-  .engine-note p{ font-size:14.5px; color:var(--muted); line-height:1.6; }
-  .engine-note p + p{ margin-top:10px; }
-  code{
-    background:rgba(255,255,255,.05); padding:2px 6px; border-radius:4px;
-    font-size:.88em; font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-
-  /* ================= tech card ================= */
-  .tech-card{
-    background:var(--panel); border:1px solid var(--edge); border-radius:12px;
-    padding:28px 24px; backdrop-filter:blur(6px);
-  }
-  .tech-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:24px; }
-  .tech-item h4{
-    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
-    color:var(--accent); margin-bottom:8px;
-    border-bottom:1px dashed rgba(255,255,255,.09); padding-bottom:4px;
-  }
-  .tech-item p{ font-size:14px; color:var(--muted); line-height:1.55; }
-  .tech-item p strong{ color:var(--ink); }
-
-  /* ================= limits ================= */
-  .limits{ list-style:none; display:flex; flex-direction:column; gap:14px; }
-  .limits li{
-    background:var(--panel); border:1px solid var(--edge); border-radius:10px;
-    padding:16px 18px; font-size:14px; color:var(--muted); line-height:1.6;
-  }
-  .limits li strong{ color:var(--ink); font-weight:600; }
-  .limits li > strong:first-child{ display:block; margin-bottom:3px; font-size:15px; }
-
-  /* ================= faq ================= */
-  .faq details{
-    background:var(--panel); border:1px solid var(--edge); border-radius:10px;
-    padding:0; margin-bottom:12px; overflow:hidden;
-  }
-  .faq summary{
-    cursor:pointer; padding:16px 18px; font-size:15px; font-weight:600; color:var(--ink);
-    list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px;
-    min-height:44px;
-  }
-  .faq summary::-webkit-details-marker{ display:none; }
-  .faq summary::after{
-    content:"+"; color:var(--accent); font-weight:700; font-size:18px; flex-shrink:0;
-  }
-  .faq details[open] summary::after{ content:"–"; }
-  .faq summary:focus-visible{ outline:1px solid var(--accent); outline-offset:-2px; }
-  .faq .answer{ padding:0 18px 18px; font-size:14px; color:var(--muted); line-height:1.65; }
-  .faq .answer a{ color:var(--accent); }
-
-  /* ================= action links ================= */
-  .action-card{
-    background:var(--panel); border:1px solid var(--edge); border-radius:12px;
-    padding:24px; display:flex; flex-direction:column; gap:14px;
-    backdrop-filter:blur(6px); margin-bottom:36px;
-    transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
-  }
-  .action-card:hover{
-    transform:translateY(-3px); border-color:var(--edge-hi);
-    box-shadow:0 14px 34px rgba(32,43,54,.14);
-  }
-  .action-card a.applink{
-    color:var(--ink); font-weight:600; font-size:14px; text-decoration:none;
-    transition:color .2s ease; min-height:44px;
-    /* inline-flex collapses the whitespace before the arrow, so space it explicitly */
-    display:inline-flex; align-items:center; gap:7px; align-self:flex-start;
-  }
-  .action-card a.applink:hover{ color:var(--accent); }
-  .action-card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
-  .action-card a.applink:hover .arrow{ transform:translateX(5px); }
-
-  .back{
-    display:inline-block; margin-top:16px;
-    color:var(--ink); font-weight:500; text-decoration:none; font-size:14px;
-    transition:color .2s ease;
-  }
-  .back:hover{ color:var(--accent); }
-
-  footer{
-    border-top:1px solid var(--edge); padding:22px 0 calc(40px + var(--sab));
-    color:var(--muted); font-size:13px; margin-top:64px;
-  }
-  footer a{
-    color:var(--muted); transition:color .2s ease; text-decoration:none;
-    padding:4px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  footer a:hover{ color:var(--accent); }
-
-  .reveal{
-    opacity:0; transform:translateY(16px);
-    transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1);
-  }
-  .reveal.in{ opacity:1; transform:none; }
-
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .shot, .action-card{ transition:none; }
-    .reveal{ opacity:1; transform:none; transition:none; }
-    .status-badge .dot{ animation:none; }
-  }
+  .premise p{ color:var(--muted); max-width:62ch; }
+  .premise p + p{ margin-top:12px; }
+  .premise + .notes{ margin-top:32px; }
+  .split > .notes{ margin-top:0; }
+  .row p + p{ margin-top:10px; }
+  .shots{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(40px, 6vh, 72px) clamp(24px, 4vw, 64px); }
+  .shots figure{ display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:clamp(16px, 2vw, 28px); align-items:start; }
+  .shots img{ width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.12); }
+  .shots figcaption{ display:block; margin:0; font-size:14px; line-height:1.55; }
+  .shots figcaption b{ display:block; margin-bottom:8px; font-size:clamp(18px, 1rem + .3vw, 22px); font-weight:300; letter-spacing:-.01em; color:var(--ink); }
+  @media (max-width:960px){ .shots{ grid-template-columns:1fr; } .shots figure{ grid-template-columns:minmax(0,4fr) minmax(0,6fr); } }
 </style>
+<script src="../../assets/site.js" defer></script>
+<script src="../../assets/motion.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap nav">
+
+<header class="top">
+  <div class="wrap">
     <a class="mark" href="../../">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="../../aboutme/">About Me</a>
-      <a href="../../abouttheapps/">About the apps</a>
-      <a href="../../how_I_work/">How I Work</a>
-      <a href="../../the_studio/">The Studio</a>
-      <!-- Founder's call, 2026-09-04: peter@ is the support address, not a stand-in.
-           support@calmdownoscar.com does not deliver, and every contact point stays on
-           peter@ until the apps have traction. Do not "restore" support@ anywhere. -->
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../../how_I_work/">How I work</a>
+      <a href="../../aboutme/">About</a>
+      <a href="../../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <div class="wrap">
 
-    <div class="status-badge reveal">
-      <span class="dot"></span>
-      iOS &middot; Live on the App Store
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../assets/clearspace-icon.png" alt="" width="44" height="44"><p class="label">iPhone · iPad · Live on the App Store</p></div>
+    <h1 class="lede">ClearSpace</h1>
+    <p class="by">A photo cleaner for iPhone and iPad that opens your library in the order that actually matters: biggest first. The 2.9&nbsp;GB video you filmed once and never watched leads the grid &mdash; the 40&nbsp;KB screenshot does not. Heart what you keep, and one button clears the rest. Native Swift and SwiftUI on Apple&rsquo;s PhotoKit, running entirely on your device.</p>
+    <div class="links"><a class="link" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">App Store</a><a class="link in" href="user_guide.html">User guide</a><a class="link in" href="support.html">Support</a><a class="link in" href="privacy.html">Privacy policy</a></div>
+  </section>
+
+  <article class="wrap case" aria-labelledby="split-title">
+    <div class="case-text">
+      <p class="label">New in 1.3</p>
+      <h2 class="case-title" id="split-title">Grid and photo side by side</h2>
+      <p>On iPad, or an iPhone held sideways, tapping a photo opens it beside the grid instead of over it, so your place in the grid never moves. Swap the sides or hide the viewer from the toolbar. It works in Split View and Stage Manager, and on a sideways iPhone the controls move to the edge so photos get the full height.</p>
     </div>
-
-    <div class="product-head reveal">
-      <img class="hero-icon" src="../assets/clearspace-icon.png" alt="ClearSpace app icon" width="68" height="68">
-      <h1>Clear<span>Space</span></h1>
-    </div>
-
-    <p class="lede reveal">A photo cleaner for iPhone and iPad that opens your library in the order that actually matters: biggest first. The 2.9&nbsp;GB video you filmed once and never watched leads the grid — the 40&nbsp;KB screenshot does not. Heart what you keep, and one button clears the rest. Native Swift and SwiftUI on Apple's PhotoKit, running entirely on your device.</p>
-
-    <div class="meta reveal">
-      <span class="pill">iOS 17+</span>
-      <span class="pill">iPhone &amp; iPad</span>
-      <span class="pill">Swift / SwiftUI</span>
-      <span class="pill">PhotoKit</span>
-      <span class="pill">100% On-Device</span>
-      <span class="pill">No Subscriptions</span>
-      <span class="pill">Mac Companion</span>
-    </div>
-
-    <!-- ============ the premise ============ -->
-    <div class="premise reveal">
-      <h2>Why it opens biggest-first</h2>
-      <p>Most photo cleaners hand your library back in the order you shot it. That means you spend your patience on years of small, forgettable photos long before you reach the handful of videos actually worth gigabytes — and most people quit somewhere in 2019 with nothing freed.</p>
-      <p>ClearSpace inverts it. The largest items lead, each tagged with roughly what it costs, so the first ten decisions are the ten that matter. The bar at the bottom always shows what you have not kept and what it is worth, so you can stop the moment you have found enough.</p>
-    </div>
-
-    <!-- ============ the loop ============ -->
-    <section>
-      <div class="section-label reveal">The loop</div>
-      <div class="loop reveal">
-        <div class="loop-step">
-          <div class="loop-num">01</div>
-          <h3>Biggest first</h3>
-          <p>The largest videos and photos lead the grid, each labelled with roughly what it costs. Or tap the month header to split the library into finishable monthly cohorts instead.</p>
-        </div>
-        <div class="loop-step">
-          <div class="loop-num">02</div>
-          <h3>Heart what you keep</h3>
-          <p>Double-tap a photo, or tap its heart. Hearted photos leave the grid, so the pile you are working through only ever shrinks. That heart is the same Favourite you already have in Apple Photos — there is only one, and it syncs both ways.</p>
-        </div>
-        <div class="loop-step">
-          <div class="loop-num">03</div>
-          <h3>Clear the rest</h3>
-          <p>One button sweeps everything in the current view that has no heart and is not filed in an album. It goes to Apple's Recently Deleted, where you have 30 days to change your mind.</p>
-        </div>
+    <div class="case-media">
+      <div class="shot">
+        <img src="../assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad in landscape: the biggest-first grid on the left with a Delete rest button and ‘74 unkept, ~202.1 MB’ in the side rail, and the tapped waterfall photo shown large on the right with heart, bookmark and trash controls." width="1400" height="1050" fetchpriority="high" decoding="async">
       </div>
-    </section>
-
-    <!-- ============ screenshots ============ -->
-    <section>
-      <div class="section-label reveal">See it working</div>
-      <div class="shots reveal">
-
-        <div class="shot wide">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-ipad-split.webp"
-                 alt="ClearSpace on iPad in landscape: the biggest-first grid on the left with a Delete rest button and '74 unkept, ~202.1 MB' in the side rail, and the tapped waterfall photo shown large on the right with heart, bookmark and trash controls."
-                 width="1400" height="1050" loading="eager" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>New in 1.3: <span>grid and photo side by side</span></h3>
-            <p>On iPad, or an iPhone held sideways, tapping a photo opens it beside the grid instead of over it, so your place in the grid never moves. Swap the sides or hide the viewer from the toolbar. It works in Split View and Stage Manager, and on a sideways iPhone the controls move to the edge so photos get the full height.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-grid.webp"
-                 alt="ClearSpace's full timeline: a grid sorted biggest first, the top row tagged 2.92 GB, 2.39 GB and 2.04 GB with video durations, a filter row reading Everything 4535 / Videos 9 / Over 2 min 7 / Photos 4526, and a bottom bar reading '4,535 without a heart — ~22.22 GB in full timeline'."
-                 width="760" height="1651" loading="eager" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>The grid, <span>sorted by cost</span></h3>
-            <p>Every tile carries its estimated size and, for video, its length. The bottom bar keeps a running total of what is still unkept — here, 22 GB across 4,535 items.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-videos.webp"
-                 alt="ClearSpace with the Videos filter active: only nine clips remain in the grid, and the bottom bar reads '9 without a heart — ~12.77 GB in full timeline'."
-                 width="760" height="1651" loading="lazy" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>Filters that map <span>to decisions</span></h3>
-            <p>Videos, Over 2 min, Screenshots, Live, Slo-mo, Favourites. Nine clips here account for 12.77 GB — Over 2 min is usually the fastest gigabytes going, Screenshots the easiest decision.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-select.webp"
-                 alt="ClearSpace in Select mode: three tiles checked, a bar reading '3 selected · ~7.35 GB', and four batch actions along the bottom — All, Heart, Album and Delete."
-                 width="760" height="1651" loading="lazy" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>Select mode <span>for a known run</span></h3>
-            <p>When you already know what has to go — a burst of near-identical shots, a run of screenshots — drag across tiles and apply Heart, Add to Album or Delete to the whole selection at once.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-fullscreen.webp"
-                 alt="ClearSpace full-screen view of a waterfall photo labelled ~2.92 GB, with heart, bookmark and trash controls stacked down the right edge."
-                 width="760" height="1651" loading="lazy" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>Full screen, <span>no spinner</span></h3>
-            <p>Tap to inspect. Videos and Live Photos start playing on their own, with sound. Pinch to 5x, double-tap for 2.5x. Heart keeps and advances, bookmark files to your last-used album, trash moves on.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-settings.webp"
-                 alt="ClearSpace's Filters &amp; Settings sheet over the grid, showing a How to use row, an Upgrade to Pro row, a Single Photo Browsing section with a 'Scroll up for next photo' toggle, and a Display &amp; Filtering section beginning with 'Hide photos with a heart'."
-                 width="760" height="1651" loading="lazy" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>Settings that <span>stay out of the way</span></h3>
-            <p>Hide hearted, hide albumed, browse direction, grid density. Enough to shape the review, not enough to become another thing to configure.</p>
-          </div>
-        </div>
-
-        <div class="shot">
-          <div class="shot-frame">
-            <img src="../assets/clearspace-shot-coreloop.webp"
-                 alt="ClearSpace's onboarding guide: the core loop spelled out as sorted by size or month, heart to keep, clear the rest — followed by a Finding things fast section covering browse by month, coloured filters, sort and scope, and pinch, zoom and scrub."
-                 width="760" height="1651" loading="lazy" decoding="async">
-          </div>
-          <div class="shot-info">
-            <h3>The whole app, <span>explained on one screen</span></h3>
-            <p>Three steps and four shortcuts, shown once at first launch and available any time from Settings. There is no tour, no drip of tips, and nothing that has to be dismissed twice.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============ what makes it different ============ -->
-    <section>
-      <div class="section-label reveal">What makes it different</div>
-      <div class="features reveal">
-
-        <div class="feature">
-          <h3>Sizes without opening a single file</h3>
-          <p>Every figure is shown with a <strong>~</strong> because it is derived from the asset's own metadata — dimensions, duration, and the codec it was recorded in — rather than by reading the file. Codec is the part naive estimators miss: HEVC is roughly half the bitrate of H.264 at equal quality, and HEIC roughly half of JPEG, so a flat pixel coefficient over-counts stills and badly under-counts video. Getting that right is what makes sorting a 40,000-item library instant instead of a multi-minute wait.</p>
-        </div>
-
-        <div class="feature">
-          <h3>One heart, not two</h3>
-          <p>Hearting in ClearSpace sets the same Favourite flag Apple Photos uses. Anything you had already favourited arrives here hearted, and anything you heart here shows up favourited in Photos. <strong>No parallel list to maintain, and nothing to lose if you delete the app.</strong></p>
-        </div>
-
-        <div class="feature">
-          <h3>A grid built to be flung</h3>
-          <p>Thumbnails come from <strong>PHCachingImageManager</strong> with a moving, asymmetric prefetch window — 26 rows ahead, 8 behind — that releases its trailing edge on the same tick it extends. Requests use <code>.fastFormat</code>, which returns once instead of twice per cell. The grid also never reaches the network: an iCloud-only asset draws a placeholder, and opening it deliberately is what earns the download.</p>
-        </div>
-
-        <div class="feature">
-          <h3>Finishable, on purpose</h3>
-          <p>An infinite library is why people give up. Tap the month header and the library splits into monthly cohorts with exact gigabyte breakdowns, so a review has an end you can actually reach. <strong>Success is closing the app, not staying in it.</strong></p>
-        </div>
-
-        <div class="feature">
-          <h3>Deleting is not the only exit</h3>
-          <p>Plenty of photos are worth keeping but not worth leaving loose. The bookmark control files a photo into your last-used Apple Photos album in one tap, or opens the album picker; photos already filed carry an album badge, and Hide Albumed narrows the grid to what has genuinely not been dealt with.</p>
-        </div>
-
-        <div class="feature">
-          <h3>Nothing leaves the phone</h3>
-          <p>No account, no server, no analytics SDK of any kind — first- or third-party — and no ad framework. Everything happens through Apple's PhotoKit on your device, which is also what the app's privacy manifest declares to Apple on every build.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============ architecture ============ -->
-    <section>
-      <div class="section-label reveal">Architecture &amp; status</div>
-      <div class="tech-card reveal">
-        <div class="tech-grid">
-          <div class="tech-item">
-            <h4>Platform</h4>
-            <p>Native <strong>Swift 5.9</strong> and <strong>SwiftUI</strong>, iOS 17 and later. Photo access entirely through Apple's <strong>PhotoKit</strong>.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Shared engine</h4>
-            <p>The photo-auditing core lives in <strong>Packages/UnliDiskPhotos</strong>, a Swift package shared with the Mac app — one indexer, one size estimator, one album model.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Reversible safety</h4>
-            <p>Deletions route through iOS's own <strong>Recently Deleted</strong>, where items stay for up to 30 days. Nothing is hard-deleted, deliberately.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Local privacy</h4>
-            <p><strong>100% on-device.</strong> No account, no analytics, no trackers, nothing uploaded. Declared in the shipped privacy manifest.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Pricing</h4>
-            <p>Free to find, sort, filter, heart, file and delete one at a time. Bulk clearing is a <strong>one-time $9.99 purchase</strong> — no subscription, ever.</p>
-          </div>
-          <div class="tech-item">
-            <h4>Current version</h4>
-            <p><strong>1.3</strong> — grid and photo side by side on iPad and sideways iPhone, photos stored in iCloud that open sharp straight away, videos that start without the wait, and a purchase screen that retries instead of failing silently.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ mac companion ============ -->
-    <div class="engine-note reveal">
-      <h4>Own the Mac app? ClearSpace Pro is included</h4>
-      <p><a href="../unlidisk/" style="color:var(--accent);">Unli Disk</a> is the Mac companion: a disk-space analyzer and photo library cleaner whose Photos tab runs on the exact same engine, packaged as <code>Packages/UnliDiskPhotos</code>.</p>
-      <p>Buying Unli Disk ($14.99 one-time) includes ClearSpace Pro. For now it does not unlock by itself: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk" style="color:var(--accent);">email me</a> and you'll get a one-time App Store code that unlocks Pro on your iPhone or iPad. An automatic unlock through your Apple Account is being tested for a later update.</p>
     </div>
+  </article>
 
-    <!-- ============ honest limits ============ -->
-    <section>
-      <div class="section-label reveal">What it does not do</div>
-      <ul class="limits reveal">
-        <li>
-          <strong>It does not find duplicates on iPhone.</strong>
-          Duplicate and blur detection ships in the Mac app, not in ClearSpace. It is on the roadmap for iOS; until it is here, nothing in the app claims otherwise.
-        </li>
-        <li>
-          <strong>It cannot free your storage on its own.</strong>
-          Deleted photos sit in Recently Deleted for 30 days, and your storage does not drop until that folder is emptied — Photos → Albums → Recently Deleted → Select → Delete All. This is the single most common support question, and it is working as designed.
-        </li>
-        <li>
-          <strong>The sizes are estimates, not measurements.</strong>
-          Exact per-asset byte counts would need an undocumented PhotoKit value and a database round-trip per photo. Every figure is prefixed with <strong>~</strong> so the trade-off is visible rather than hidden.
-        </li>
-        <li>
-          <strong>There is no free trial of bulk clearing.</strong>
-          The free tier is a complete, unlimited app for one-at-a-time work. Bulk clearing is the paid line, and it is a single payment rather than a subscription.
-        </li>
+  <!-- ===================== The premise ===================== -->
+  <section class="wrap block" aria-labelledby="why-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="why-title">Why it opens biggest-first</h2>
+        <p class="lede-sm">The first ten decisions are the ten that matter.</p>
+      </div>
+      <div>
+        <div class="premise">
+          <p>Most photo cleaners hand your library back in the order you shot it. That means you spend your patience on years of small, forgettable photos long before you reach the handful of videos actually worth gigabytes &mdash; and most people quit somewhere in 2019 with nothing freed.</p>
+          <p>ClearSpace inverts it. The largest items lead, each tagged with roughly what it costs. The bar at the bottom always shows what you have not kept and what it is worth, so you can stop the moment you have found enough.</p>
+        </div>
+        <ol class="notes" aria-label="The loop">
+          <li><span class="n">01</span><div><b>Biggest first</b><p>The largest videos and photos lead the grid, each labelled with roughly what it costs. Or tap the month header to split the library into finishable monthly cohorts instead.</p></div></li>
+          <li><span class="n">02</span><div><b>Heart what you keep</b><p>Double-tap a photo, or tap its heart. Hearted photos leave the grid, so the pile you are working through only ever shrinks. That heart is the same Favourite you already have in Apple Photos &mdash; there is only one, and it syncs both ways.</p></div></li>
+          <li><span class="n">03</span><div><b>Clear the rest</b><p>One button sweeps everything in the current view that has no heart and is not filed in an album. It goes to Apple&rsquo;s Recently Deleted, where you have 30 days to change your mind.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Screens ===================== -->
+  <section class="block" aria-labelledby="shots-title">
+    <div class="wrap head">
+      <h2 class="label" id="shots-title">See it working</h2>
+    </div>
+    <div class="wrap shots">
+      <figure><img src="../assets/clearspace-shot-grid.webp" alt="ClearSpace’s full timeline: a grid sorted biggest first, the top row tagged 2.92 GB, 2.39 GB and 2.04 GB with video durations, a filter row reading Everything 4535 / Videos 9 / Over 2 min 7 / Photos 4526, and a bottom bar reading ‘4,535 without a heart — ~22.22 GB in full timeline’." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>The grid, sorted by cost</b>Every tile carries its estimated size and, for video, its length. The bottom bar keeps a running total of what is still unkept &mdash; here, 22 GB across 4,535 items.</figcaption></figure>
+      <figure><img src="../assets/clearspace-shot-videos.webp" alt="ClearSpace with the Videos filter active: only nine clips remain in the grid, and the bottom bar reads ‘9 without a heart — ~12.77 GB in full timeline’." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>Filters that map to decisions</b>Videos, Over 2 min, Screenshots, Live, Slo-mo, Favourites. Nine clips here account for 12.77 GB &mdash; Over 2 min is usually the fastest gigabytes going, Screenshots the easiest decision.</figcaption></figure>
+      <figure><img src="../assets/clearspace-shot-select.webp" alt="ClearSpace in Select mode: three tiles checked, a bar reading ‘3 selected · ~7.35 GB’, and four batch actions along the bottom — All, Heart, Album and Delete." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>Select mode for a known run</b>When you already know what has to go &mdash; a burst of near-identical shots, a run of screenshots &mdash; drag across tiles and apply Heart, Add to Album or Delete to the whole selection at once.</figcaption></figure>
+      <figure><img src="../assets/clearspace-shot-fullscreen.webp" alt="ClearSpace full-screen view of a waterfall photo labelled ~2.92 GB, with heart, bookmark and trash controls stacked down the right edge." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>Full screen, no spinner</b>Tap to inspect. Videos and Live Photos start playing on their own, with sound. Pinch to 5x, double-tap for 2.5x. Heart keeps and advances, bookmark files to your last-used album, trash moves on.</figcaption></figure>
+      <figure><img src="../assets/clearspace-shot-settings.webp" alt="ClearSpace’s Filters &amp; Settings sheet over the grid, showing a How to use row, an Upgrade to Pro row, a Single Photo Browsing section with a ‘Scroll up for next photo’ toggle, and a Display &amp; Filtering section beginning with ‘Hide photos with a heart’." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>Settings that stay out of the way</b>Hide hearted, hide albumed, browse direction, grid density. Enough to shape the review, not enough to become another thing to configure.</figcaption></figure>
+      <figure><img src="../assets/clearspace-shot-coreloop.webp" alt="ClearSpace’s onboarding guide: the core loop spelled out as sorted by size or month, heart to keep, clear the rest — followed by a Finding things fast section covering browse by month, coloured filters, sort and scope, and pinch, zoom and scrub." width="760" height="1651" loading="lazy" decoding="async"><figcaption><b>The whole app, explained on one screen</b>Three steps and four shortcuts, shown once at first launch and available any time from Settings. There is no tour, no drip of tips, and nothing that has to be dismissed twice.</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===================== What makes it different ===================== -->
+  <section class="wrap block" aria-labelledby="diff-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="diff-title">What makes it different</h2>
+      </div>
+      <ol class="notes">
+        <li><span class="n">01</span><div><b>Sizes without opening a single file</b><p>Every figure is shown with a <strong>~</strong> because it is derived from the asset&rsquo;s own metadata &mdash; dimensions, duration, and the codec it was recorded in &mdash; rather than by reading the file. Codec is the part naive estimators miss: HEVC is roughly half the bitrate of H.264 at equal quality, and HEIC roughly half of JPEG, so a flat pixel coefficient over-counts stills and badly under-counts video. Getting that right is what makes sorting a 40,000-item library instant instead of a multi-minute wait.</p></div></li>
+        <li><span class="n">02</span><div><b>One heart, not two</b><p>Hearting in ClearSpace sets the same Favourite flag Apple Photos uses. Anything you had already favourited arrives here hearted, and anything you heart here shows up favourited in Photos. <strong>No parallel list to maintain, and nothing to lose if you delete the app.</strong></p></div></li>
+        <li><span class="n">03</span><div><b>A grid built to be flung</b><p>Thumbnails come from <strong>PHCachingImageManager</strong> with a moving, asymmetric prefetch window &mdash; 26 rows ahead, 8 behind &mdash; that releases its trailing edge on the same tick it extends. Requests use <code>.fastFormat</code>, which returns once instead of twice per cell. The grid also never reaches the network: an iCloud-only asset draws a placeholder, and opening it deliberately is what earns the download.</p></div></li>
+        <li><span class="n">04</span><div><b>Finishable, on purpose</b><p>An infinite library is why people give up. Tap the month header and the library splits into monthly cohorts with exact gigabyte breakdowns, so a review has an end you can actually reach. <strong>Success is closing the app, not staying in it.</strong></p></div></li>
+        <li><span class="n">05</span><div><b>Deleting is not the only exit</b><p>Plenty of photos are worth keeping but not worth leaving loose. The bookmark control files a photo into your last-used Apple Photos album in one tap, or opens the album picker; photos already filed carry an album badge, and Hide Albumed narrows the grid to what has genuinely not been dealt with.</p></div></li>
+        <li><span class="n">06</span><div><b>Nothing leaves the phone</b><p>No account, no server, no analytics SDK of any kind &mdash; first- or third-party &mdash; and no ad framework. Everything happens through Apple&rsquo;s PhotoKit on your device, which is also what the app&rsquo;s privacy manifest declares to Apple on every build.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== Architecture ===================== -->
+  <section class="wrap block" aria-labelledby="arch-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="arch-title">Architecture &amp; status</h2>
+      </div>
+      <ul class="rows">
+        <li class="row"><span>Platform</span><p>Native <strong>Swift 5.9</strong> and <strong>SwiftUI</strong>, iOS 17 and later. Photo access entirely through Apple&rsquo;s <strong>PhotoKit</strong>. Deletions route through iOS&rsquo;s own <strong>Recently Deleted</strong>; nothing is hard-deleted, deliberately.</p></li>
+        <li class="row"><span>Shared engine</span><p>The photo-auditing core lives in <strong>Packages/UnliDiskPhotos</strong>, a Swift package shared with the Mac app &mdash; one indexer, one size estimator, one album model.</p></li>
+        <li class="row"><span>Pricing</span><p>Free to find, sort, filter, heart, file and delete one at a time. Bulk clearing is a <strong>one-time $9.99 purchase</strong> &mdash; no subscription, ever.</p></li>
+        <li class="row"><span>Current version</span><p><strong>1.3</strong> &mdash; grid and photo side by side on iPad and sideways iPhone, photos stored in iCloud that open sharp straight away, videos that start without the wait, and a purchase screen that retries instead of failing silently.</p></li>
+        <li class="row"><span>With Unli Disk</span><div><p><a href="../unlidisk/">Unli Disk</a> is the Mac companion: a disk-space analyzer and photo library cleaner whose Photos tab runs on the exact same engine. Buying Unli Disk ($14.99 one-time) includes ClearSpace Pro.</p><p>For now it does not unlock by itself: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> and you&rsquo;ll get a one-time App Store code that unlocks Pro on your iPhone or iPad. An automatic unlock through your Apple Account is being tested for a later update.</p></div></li>
       </ul>
-    </section>
+    </div>
+  </section>
 
-    <!-- ============ faq ============ -->
-    <section class="faq">
-      <div class="section-label reveal">Common questions</div>
-      <div class="reveal">
-        <details>
-          <summary>I deleted a lot, but my storage didn't change.</summary>
-          <div class="answer">Expected. ClearSpace deletes exactly the way Photos does — into Recently Deleted, for 30 days. Open Photos → Albums → Recently Deleted → Select → Delete All and the space comes back straight away.</div>
-        </details>
+  <!-- ===================== Limits ===================== -->
+  <section class="wrap block" aria-labelledby="limits-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="limits-title">What it does not do</h2>
+      </div>
+      <ul class="rows">
+        <li class="row"><span>It does not find duplicates on iPhone.</span><p>Duplicate and blur detection ships in the Mac app, not in ClearSpace. It is on the roadmap for iOS; until it is here, nothing in the app claims otherwise.</p></li>
+        <li class="row"><span>It cannot free your storage on its own.</span><p>Deleted photos sit in Recently Deleted for 30 days, and your storage does not drop until that folder is emptied &mdash; Photos &rarr; Albums &rarr; Recently Deleted &rarr; Select &rarr; Delete All. This is the single most common support question, and it is working as designed.</p></li>
+        <li class="row"><span>The sizes are estimates, not measurements.</span><p>Exact per-asset byte counts would need an undocumented PhotoKit value and a database round-trip per photo. Every figure is prefixed with <strong>~</strong> so the trade-off is visible rather than hidden.</p></li>
+        <li class="row"><span>There is no free trial of bulk clearing.</span><p>The free tier is a complete, unlimited app for one-at-a-time work. Bulk clearing is the paid line, and it is a single payment rather than a subscription.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== Questions ===================== -->
+  <section class="wrap block" aria-labelledby="faq-title">
+    <div class="split">
+      <div>
+        <h2 class="label" id="faq-title">Common questions</h2>
+      </div>
+      <div class="faq">
         <details>
           <summary>Will hearting a photo here change Apple Photos?</summary>
           <div class="answer">Yes, and that is the point. It is one Favourite flag, shared both ways. Nothing is stored in a private list that could drift out of sync or vanish with the app.</div>
         </details>
         <details>
           <summary>I already bought it. Why is a new phone asking again?</summary>
-          <div class="answer">Open the offer screen and tap Restore purchase — it re-checks your Apple Account rather than charging you again. If you own Unli Disk for Mac, <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for your ClearSpace Pro code.</div>
+          <div class="answer">Open the offer screen and tap Restore purchase &mdash; it re-checks your Apple Account rather than charging you again. If you own Unli Disk for Mac, <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for your ClearSpace Pro code.</div>
         </details>
         <details>
           <summary>What happens to my photos?</summary>
@@ -605,101 +178,20 @@
         </details>
         <details>
           <summary>Something else.</summary>
-          <div class="answer">The <a href="support.html">Support page</a> covers video playback, silent clips, iCloud downloads and the free-versus-paid line in full. If yours is not there, <a href="mailto:peter@calmdownoscar.com">email me</a> — describe what you were doing when it happened and you will get a faster answer.</div>
+          <div class="answer">The <a href="support.html">Support page</a> covers video playback, silent clips, iCloud downloads and the free-versus-paid line in full. If yours is not there, <a href="mailto:peter@calmdownoscar.com">email me</a> &mdash; describe what you were doing when it happened and you will get a faster answer.</div>
         </details>
       </div>
-    </section>
-
-    <!-- ============ actions ============ -->
-    <div class="action-card reveal">
-      <a class="applink" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">View on the App Store <span class="arrow">&rarr;</span></a>
-      <a class="applink" href="user_guide.html">Read the User Guide <span class="arrow">&rarr;</span></a>
-      <a class="applink" href="support.html">Get Support <span class="arrow">&rarr;</span></a>
-      <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">&rarr;</span></a>
-      <a class="applink" href="../unlidisk/">Unli Disk for Mac (includes ClearSpace Pro) <span class="arrow">&rarr;</span></a>
-      <a class="applink" href="mailto:peter@calmdownoscar.com">Email support <span class="arrow">&rarr;</span></a>
     </div>
+  </section>
 
-    <a class="back reveal" href="../../#apps">&larr; Back to Apps</a>
-  </div>
 </main>
-<footer>
-  <div class="wrap">&copy; 2026 calmdownoscar &middot; <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a> · <a href="../../playground/">Playground</a> · <a href="../../idea-clinic/">Idea clinic</a> · <a href="../../hobbies/">Hobbies</a></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../../playground/">Playground</a><a href="../../idea-clinic/">Idea clinic</a><a href="../../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
 </footer>
 
-<script>
-(function(){
-  // --- Scroll reveal ---
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var revealEls = document.querySelectorAll('.reveal');
-  if (reduce.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.08 });
-    revealEls.forEach(function(el){ io.observe(el); });
-  }
-
-  // --- Mobile nav disclosure ---
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-
-  function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
-})();
-</script>
 </body>
 </html>

@@ -1,24 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>Idea clinic — calmdownoscar</title>
-<link rel="stylesheet" href="style.css"><script src="app.js" defer></script><script src="../assets/webmcp.js" defer></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#0B0C0E"><title>Idea clinic — calmdownoscar</title>
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="style.css">
+<script src="../assets/site.js" defer></script><script src="app.js" defer></script><script src="../assets/webmcp.js" defer></script>
 </head>
 <body>
-<header><a href="/">calmdown<span>oscar</span></a><a href="/#apps">The apps →</a></header>
-<main>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="clinic">
 
 <section id="intro">
-<p class="eyebrow">THE IDEA CLINIC</p><h1>Before you build it,<br>let’s question it.</h1>
-<p class="lede">A few quick questions, most of them a tap. Then take your answers to the AI you already use. It checks what’s out there, pushes on your weak spots, and helps you decide.</p>
+<p class="eyebrow">Idea clinic</p><h1>Question an app idea before you build it.</h1>
+<p class="intro-copy">A few quick questions, then a prompt for the AI you already use.</p>
 <div id="resume" class="panel resume" hidden><p class="eyebrow">YOU WERE IN THE MIDDLE OF SOMETHING</p><p id="resume-idea" class="resume-idea"></p><div class="actions"><button id="resume-go">Continue where I left off →</button><button id="resume-new" class="secondary">Start a new idea</button></div></div>
 <div class="actions hero-actions" id="hero-actions"><button id="start">Start →</button></div>
-<p class="small privacy">No account, no AI on this site. Your draft stays in this browser until you copy it.</p>
+<p class="small privacy">No account, no AI on this site. Your draft stays in this browser.</p>
 <ol class="steps">
-<li><span>01</span><strong>Answer a few questions.</strong> About ten, fewer if it turns out to be a tool just for you.</li>
-<li><span>02</span><strong>Read it back.</strong> Change anything that isn’t quite what you meant.</li>
-<li><span>03</span><strong>Take it to your AI.</strong> It does the research and the hard follow-ups, then helps you decide: build it, shrink it, keep it for yourself, or walk away.</li>
+<li><span>01</span><strong>Answer about ten questions.</strong> Most are a tap.</li>
+<li><span>02</span><strong>Read it back.</strong> Fix anything that’s off.</li>
+<li><span>03</span><strong>Take it to your AI.</strong> It researches, pushes back, and helps you decide.</li>
 </ol>
 </section>
 
@@ -43,7 +57,7 @@
 
 <section id="handoff" hidden>
 <div class="step-row"><p class="eyebrow">YOUR PROMPT</p><button id="restart" class="text">Start a new idea</button></div>
-<h1>Now take it to your AI.</h1><p class="lede">Copy the prompt, paste it into a new chat, and answer its questions honestly. The real work happens there.</p>
+<h1>Now take it to your AI.</h1><p class="intro-copy">Copy the prompt into a new chat and answer its questions honestly.</p>
 <div class="handoff-grid">
 <div class="panel"><label for="prompt" class="field-title">The prompt</label><textarea id="prompt" readonly rows="18" spellcheck="false"></textarea><div class="actions"><button type="button" id="copy">Copy prompt</button><button type="button" id="download" class="secondary">Download .md</button><button type="button" id="edit" class="secondary">Change my answers</button></div><p class="open-in">Then open <a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT ↗</a><a href="https://claude.ai/new" target="_blank" rel="noopener">Claude ↗</a><a href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini ↗</a></p><small>The prompt goes to whichever company runs your assistant. Check it for anything confidential before you paste.</small></div>
 <aside class="panel expect"><p class="eyebrow">WHAT HAPPENS NEXT</p>
@@ -69,5 +83,11 @@
 </div></section>
 
 <p id="status" role="status" aria-live="polite"></p>
-</main><footer>calmdownoscar · Useful questions before useful software.</footer>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="./">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
+</footer>
 </body></html>

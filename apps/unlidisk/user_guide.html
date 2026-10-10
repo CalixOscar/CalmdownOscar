@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#141B22">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16.png">
@@ -16,163 +16,76 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/apps/unlidisk/user_guide.html">
 <link rel="canonical" href="https://www.calmdownoscar.com/apps/unlidisk/user_guide.html">
 <meta name="twitter:card" content="summary_large_image">
-<style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: 76px;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-  }
-  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
-  .mark span{ color:var(--accent); }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
-    margin-left:22px;
-    transition:color .2s ease;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  main{ padding:56px 0 96px; }
-  .heading{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
-  .app-icon{
-    width:44px; height:44px; border-radius:11px; flex-shrink:0;
-    box-shadow:0 4px 12px rgba(32,43,54,.18);
-  }
-  .kicker{
-    display:block;
-    color:var(--accent);
-    font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  h1{ font-size:clamp(26px, 5vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.15; }
-  .lede{ margin-top:14px; max-width:52ch; color:var(--muted); font-size:16px; }
-  .policy{ margin-top:38px; }
-  .policy h2{
-    font-size:16px; font-weight:700; letter-spacing:-.005em;
-    color:var(--ink);
-    margin:32px 0 10px;
-  }
-  .policy h2:first-child{ margin-top:0; }
-  .policy p, .policy li{ color:var(--muted); font-size:16px; }
-  .policy p + p{ margin-top:12px; }
-  .policy strong{ color:var(--ink); font-weight:600; }
-  .card{
-    margin-top:40px;
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:10px;
-    padding:22px 24px;
-    display:flex; flex-direction:column; gap:10px;
-    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  }
-  .card a.applink{
-    color:var(--ink); font-weight:600; font-size:14px; text-decoration:none;
-    transition:color .2s ease;
-  }
-  .card a.applink:hover{ color:var(--accent); }
-  .card a.applink .arrow{ display:inline-block; transition:transform .25s cubic-bezier(.2,.7,.3,1); }
-  .card a.applink:hover .arrow{ transform:translateX(5px); }
-  .back{
-    display:inline-block; margin-top:28px;
-    color:var(--ink); font-weight:500; text-decoration:none; font-size:14px;
-    transition:color .2s ease;
-  }
-  .back:hover{ color:var(--accent); }
-  footer{
-    border-top:1px solid var(--edge); padding:22px 0 40px;
-    color:var(--muted); font-size:13px;
-  }
-  footer a{ color:var(--muted); transition:color .2s ease; }
-  footer a:hover{ color:var(--accent); }
-</style>
+<link rel="preload" href="../../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
+<script src="../../assets/site.js" defer></script>
+<script src="../../assets/motion.js" defer></script>
 </head>
 <body>
-<header>
-  <div class="wrap nav">
+
+<header class="top">
+  <div class="wrap">
     <a class="mark" href="../../">calmdown<span>oscar</span></a>
-    <nav>
-      <a href="../../#apps">Apps</a>
-      <a href="../../#about">About</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../../how_I_work/">How I work</a>
+      <a href="../../aboutme/">About</a>
+      <a href="../../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <div class="wrap">
-    <span class="kicker">Documentation</span>
-    <div class="heading">
-      <img class="app-icon" src="../assets/unlidisk-icon.png" alt="Unli Disk app icon" width="44" height="44">
-      <h1>Unli Disk User Guide</h1>
-    </div>
-    <p class="lede">How to navigate the Visual Disk Map, clear Developer build artifacts, and sweep your Photo Library.</p>
 
-    <div class="policy">
-      <h2>1. Visual Disk Map</h2>
-      <p>Click <strong>Choose Disk…</strong> to grant access to your Macintosh HD volume or specific folders. Unli Disk presents an interactive disk-proportioned treemap showing exactly where your storage is allocated, with real disk measurements and zero inflated numbers.</p>
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../assets/unlidisk-icon.png" alt="" width="44" height="44"><p class="label">Unli Disk · User guide</p></div>
+    <h1 class="lede">User guide</h1>
+    <p class="by">How to navigate the Visual Disk Map, clear Developer build artifacts, and sweep your Photo Library.</p>
+  </section>
 
-      <h2>2. Developer &amp; System Reclaim</h2>
-      <p>Select category chips (Xcode Simulators, DerivedData, Swift Build Caches, Package Caches, Git Leftovers). Click <strong>Reclaim Space</strong> to clean up unnecessary build artifacts safely to Trash.</p>
-
-      <h2>3. Photo Library Sweep &amp; Instant Viewer</h2>
-      <p>Switch to the <strong>Photo Library</strong> tab to surface large videos and photos biggest-first. Features include:</p>
-      <ul>
-        <li><strong>Immediate Previews</strong>: Previews open immediately from the still Photos has already cached on this Mac &mdash; no loading spinner for photos, Live Photos, or iCloud videos.</li>
-        <li><strong>Trackpad Pinch-to-Zoom</strong>: Pinch up to 5x magnification or double-click to toggle 1x and 2.5x zoom.</li>
-        <li><strong>Heart &amp; Select Modes</strong>: Double-click to heart/keep in Heart mode, or switch to Select mode for multi-item deletions and album filing.</li>
-        <li><strong>Monthly Cohorts</strong>: Filter by calendar month to make sweeping large libraries manageable.</li>
-      </ul>
-
-      <h2>4. ClearSpace Pro for iPhone Included</h2>
-      <p>Your Unli Disk purchase includes Lifetime Pro in ClearSpace for iPhone and iPad. It doesn't unlock by itself yet: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for a one-time App Store code, open its link on your iPhone or iPad, and Pro unlocks.</p>
-
-      <h2>5. Safe Recovery</h2>
-      <p>All deletions move items safely: files go to macOS Finder Trash until emptied, and photos go to Apple Photos Recently Deleted where they remain for up to 30 days.</p>
-    </div>
-
-    <div class="card">
-      <a class="applink" href="support.html">Get Support <span class="arrow">→</span></a>
-      <a class="applink" href="privacy.html">Privacy Policy <span class="arrow">→</span></a>
-      <a class="applink" href="./">Unli Disk Overview <span class="arrow">→</span></a>
-    </div>
-
-    <a class="back" href="./">← Back to Unli Disk</a>
+  <div class="wrap doc">
+    <aside class="doc-side" aria-label="On this page">
+      <p class="label">Contents</p>
+      <ol class="toc">
+        <li><a href="#visual-disk-map">1. Visual Disk Map</a></li>
+        <li><a href="#developer-system-reclaim">2. Developer &amp; System Reclaim</a></li>
+        <li><a href="#photo-library-sweep-instant-viewer">3. Photo Library Sweep &amp; Instant Viewer</a></li>
+        <li><a href="#clearspace-pro-for-iphone-included">4. ClearSpace Pro for iPhone Included</a></li>
+        <li><a href="#safe-recovery">5. Safe Recovery</a></li>
+      </ol>
+      <div class="links"><a class="link in" href="./">Unli Disk</a><a class="link in" href="support.html">Support</a><a class="link in" href="privacy.html">Privacy policy</a><a class="link" href="https://apps.apple.com/app/unli-disk/id6797325817">Mac App Store</a></div>
+    </aside>
+    <article class="prose">
+<h2 id="visual-disk-map">1. Visual Disk Map</h2>
+<p>Click <strong>Choose Disk…</strong> to grant access to your Macintosh HD volume or specific folders. Unli Disk presents an interactive disk-proportioned treemap showing exactly where your storage is allocated, with real disk measurements and zero inflated numbers.</p>
+<h2 id="developer-system-reclaim">2. Developer &amp; System Reclaim</h2>
+<p>Select category chips (Xcode Simulators, DerivedData, Swift Build Caches, Package Caches, Git Leftovers). Click <strong>Reclaim Space</strong> to clean up unnecessary build artifacts safely to Trash.</p>
+<h2 id="photo-library-sweep-instant-viewer">3. Photo Library Sweep &amp; Instant Viewer</h2>
+<p>Switch to the <strong>Photo Library</strong> tab to surface large videos and photos biggest-first. Features include:</p>
+<ul>
+<li><strong>Immediate Previews</strong>: Previews open immediately from the still Photos has already cached on this Mac &mdash; no loading spinner for photos, Live Photos, or iCloud videos.</li>
+<li><strong>Trackpad Pinch-to-Zoom</strong>: Pinch up to 5x magnification or double-click to toggle 1x and 2.5x zoom.</li>
+<li><strong>Heart &amp; Select Modes</strong>: Double-click to heart/keep in Heart mode, or switch to Select mode for multi-item deletions and album filing.</li>
+<li><strong>Monthly Cohorts</strong>: Filter by calendar month to make sweeping large libraries manageable.</li>
+</ul>
+<h2 id="clearspace-pro-for-iphone-included">4. ClearSpace Pro for iPhone Included</h2>
+<p>Your Unli Disk purchase includes Lifetime Pro in ClearSpace for iPhone and iPad. It doesn't unlock by itself yet: <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for a one-time App Store code, open its link on your iPhone or iPad, and Pro unlocks.</p>
+<h2 id="safe-recovery">5. Safe Recovery</h2>
+<p>All deletions move items safely: files go to macOS Finder Trash until emptied, and photos go to Apple Photos Recently Deleted where they remain for up to 30 days.</p>
+    </article>
   </div>
+
 </main>
-<footer>
-  <div class="wrap">© 2026 calmdownoscar · <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../../playground/">Playground</a><a href="../../idea-clinic/">Idea clinic</a><a href="../../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
 </footer>
+
 </body>
 </html>

@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>Privacy Policy — Kitchen Vision: Pickleball Score</title>
 <meta name="description" content="Privacy policy for Kitchen Vision: Pickleball Score, the multi-camera pickleball scoring, 3-number callout, and tournament scoreboard app from calmdownoscar.">
 <meta property="og:title" content="Privacy Policy — Kitchen Vision: Pickleball Score">
@@ -12,168 +16,83 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/kitchen_vision/privacy.html">
 <link rel="canonical" href="https://www.calmdownoscar.com/kitchen_vision/privacy.html">
 <meta name="twitter:card" content="summary_large_image">
-<style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(255,107,0,.45);
-    --accent:  #FF6B00;
-    --accent-yellow: #FFB300;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: 76px;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  ::selection{ background:var(--accent); color:#000; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-  }
-  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    background:rgb(20,27,34);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--edge);
-  }
-  .nav{ height:100%; display:flex; justify-content:space-between; align-items:center; gap:18px; }
-  .mark{ font-weight:700; font-size:16px; text-decoration:none; color:var(--ink); }
-  .mark span{ color:var(--accent); }
-  nav a{
-    color:var(--muted); text-decoration:none; font-weight:500; font-size:14px;
-    margin-left:22px;
-    transition:color .2s ease;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-  main{ padding:56px 0 96px; }
-  .heading{ display:flex; align-items:center; gap:14px; margin-bottom:6px; }
-  .app-icon{
-    width:44px; height:44px; border-radius:11px; flex-shrink:0;
-    box-shadow:0 4px 12px rgba(255,107,0,.25);
-  }
-  .kicker{
-    display:block;
-    color:var(--accent);
-    font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  h1{ font-size:clamp(26px, 5vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.15; }
-  .updated{ margin-top:12px; color:var(--muted); font-size:14px; }
-  .policy{ margin-top:38px; }
-  .policy h2{
-    font-size:16px; font-weight:700; letter-spacing:-.005em;
-    color:var(--ink);
-    margin:32px 0 10px;
-  }
-  .policy h2:first-child{ margin-top:0; }
-  .policy p, .policy li{ color:var(--muted); font-size:16px; }
-  .policy p + p{ margin-top:12px; }
-  .policy ul{ margin:10px 0 0 20px; }
-  .policy li + li{ margin-top:6px; }
-  .policy strong{ color:var(--ink); font-weight:600; }
-  .policy a{ color:var(--accent); text-decoration:underline; text-decoration-color:var(--edge-hi); }
-  .policy a:hover{ text-decoration-color:var(--accent); }
-  .card{
-    margin-top:40px;
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:14px;
-    padding:20px 22px;
-  }
-  .card h3{ font-size:15px; font-weight:700; color:var(--ink); margin-bottom:6px; }
-  .card p{ font-size:14px; color:var(--muted); margin:0; }
-  footer{
-    border-top:1px solid var(--edge);
-    padding:32px 0;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .foot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-  .foot a{ color:var(--muted); text-decoration:none; }
-  .foot a:hover{ color:var(--accent); }
-</style>
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
 
-<header>
-  <div class="wrap nav">
-    <a class="mark" href="../">calmdownoscar<span>.</span></a>
-    <nav>
-      <a href="../">Home</a>
-      <a href="./">Kitchen Vision</a>
-      <a href="privacy.html" aria-current="page">Privacy</a>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/" aria-current="true">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="wrap">
-    <div class="heading">
-      <img class="app-icon" src="../assets/kitchen_vision/icon.png" alt="Kitchen Vision app icon">
-      <div>
-        <span class="kicker">Privacy Policy</span>
-        <h1>Kitchen Vision</h1>
-      </div>
-    </div>
-    <div class="updated">Last updated: September 16, 2026</div>
 
-    <div class="card">
-      <h3>The short version</h3>
-      <p><strong>Kitchen Vision does not collect, transmit, or store any personal data on external servers.</strong> All scoring calculations, ball tracking, rolling-buffer video replays, and multi-device communications operate 100% locally and offline on your devices via peer-to-peer Apple Multipeer Connectivity.</p>
-    </div>
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="app-id"><img src="../assets/kitchen_vision/icon.png" alt="" width="44" height="44"><p class="label">Kitchen Vision · Privacy</p></div>
+    <h1 class="lede">Privacy policy</h1>
+    <p class="by">Last updated: September 16, 2026</p>
+  </section>
 
-    <div class="policy">
-      <h2>1. Local Processing &amp; No Cloud Servers</h2>
-      <p>Kitchen Vision is designed from the ground up as a private, self-contained sports officiating system. The app does not operate any backend servers, analytics tracking services, advertising frameworks, or remote telemetry. What happens on your court stays on your court.</p>
-
-      <h2>2. Camera Access &amp; Video Review</h2>
-      <p>Kitchen Vision requests camera permissions solely for:</p>
-      <ul>
-        <li>Tracking the pickleball and detecting net crossings in real time.</li>
-        <li>Maintaining a short, rolling local memory buffer to generate instant VAR slow-motion video replays of disputed rallies.</li>
-      </ul>
-      <p>Video frames in the rolling buffer are stored temporarily in volatile memory or local device cache. They are never uploaded to any remote server or third-party service. When you choose to export or save a highlight replay clip, it is saved directly to your device's Photo Library.</p>
-
-      <h2>3. Photo Library Access</h2>
-      <p>If you choose to export a rally replay clip or highlight video, Kitchen Vision requests permission to add items to your Photo Library (<code>NSPhotoLibraryAddUsageDescription</code>). The app only saves video clips you explicitly export and does not read or scan your existing photo library.</p>
-
-      <h2>4. Local Network &amp; P2P Connectivity</h2>
-      <p>Kitchen Vision uses Apple's MultipeerConnectivity framework (Wi-Fi and Bluetooth P2P) to synchronize scores and cameras between paired iPhones and iPads (e.g. Master Desk, Solo Umpire, and Multi-Camera Mesh). No internet connection or external Wi-Fi router is required or used. This traffic is not separately encrypted, the same way a scoreboard shouted across a net isn't — it's readable only to devices in range during your match, never sent anywhere beyond it.</p>
-
-      <h2>5. Apple Watch</h2>
-      <p>The Kitchen Vision Apple Watch app is a remote scoreboard for a match running on your paired iPhone. It exchanges only the current score, the team names and your scoring taps with that iPhone, using Apple's WatchConnectivity framework. It collects nothing, and nothing it handles is sent anywhere beyond your own watch and phone.</p>
-
-      <h2>6. In-App Purchases</h2>
-      <p>The Kitchen Vision Pro lifetime unlock is a one-time purchase processed securely by Apple via the standard iOS StoreKit framework — not a subscription. CalmdownOscar never receives or stores your credit card, billing address, or financial information.</p>
-
-      <h2>7. Contact</h2>
-      <p>If you have any questions or feedback regarding this Privacy Policy, please contact us at <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>.</p>
-    </div>
+  <div class="wrap doc">
+    <aside class="doc-side" aria-label="On this page">
+      <p class="label">Contents</p>
+      <ol class="toc">
+        <li><a href="#the-short-version">The short version</a></li>
+        <li><a href="#local-processing-no-cloud-servers">1. Local Processing &amp; No Cloud Servers</a></li>
+        <li><a href="#camera-access-video-review">2. Camera Access &amp; Video Review</a></li>
+        <li><a href="#photo-library-access">3. Photo Library Access</a></li>
+        <li><a href="#local-network-p2p-connectivity">4. Local Network &amp; P2P Connectivity</a></li>
+        <li><a href="#apple-watch">5. Apple Watch</a></li>
+        <li><a href="#in-app-purchases">6. In-App Purchases</a></li>
+        <li><a href="#contact">7. Contact</a></li>
+      </ol>
+      <div class="links"><a class="link in" href="./">Kitchen Vision</a><a class="link" href="https://apps.apple.com/app/kitchen-vision/id6804914154">App Store</a><a class="link" href="mailto:peter@calmdownoscar.com">Email support</a></div>
+    </aside>
+    <article class="prose">
+<h2 id="the-short-version">The short version</h2>
+<p><strong>Kitchen Vision does not collect, transmit, or store any personal data on external servers.</strong> All scoring calculations, ball tracking, rolling-buffer video replays, and multi-device communications operate 100% locally and offline on your devices via peer-to-peer Apple Multipeer Connectivity.</p>
+<h2 id="local-processing-no-cloud-servers">1. Local Processing &amp; No Cloud Servers</h2>
+<p>Kitchen Vision is designed from the ground up as a private, self-contained sports officiating system. The app does not operate any backend servers, analytics tracking services, advertising frameworks, or remote telemetry. What happens on your court stays on your court.</p>
+<h2 id="camera-access-video-review">2. Camera Access &amp; Video Review</h2>
+<p>Kitchen Vision requests camera permissions solely for:</p>
+<ul>
+<li>Tracking the pickleball and detecting net crossings in real time.</li>
+<li>Maintaining a short, rolling local memory buffer to generate instant VAR slow-motion video replays of disputed rallies.</li>
+</ul>
+<p>Video frames in the rolling buffer are stored temporarily in volatile memory or local device cache. They are never uploaded to any remote server or third-party service. When you choose to export or save a highlight replay clip, it is saved directly to your device's Photo Library.</p>
+<h2 id="photo-library-access">3. Photo Library Access</h2>
+<p>If you choose to export a rally replay clip or highlight video, Kitchen Vision requests permission to add items to your Photo Library (<code>NSPhotoLibraryAddUsageDescription</code>). The app only saves video clips you explicitly export and does not read or scan your existing photo library.</p>
+<h2 id="local-network-p2p-connectivity">4. Local Network &amp; P2P Connectivity</h2>
+<p>Kitchen Vision uses Apple's MultipeerConnectivity framework (Wi-Fi and Bluetooth P2P) to synchronize scores and cameras between paired iPhones and iPads (e.g. Master Desk, Solo Umpire, and Multi-Camera Mesh). No internet connection or external Wi-Fi router is required or used. This traffic is not separately encrypted, the same way a scoreboard shouted across a net isn't — it's readable only to devices in range during your match, never sent anywhere beyond it.</p>
+<h2 id="apple-watch">5. Apple Watch</h2>
+<p>The Kitchen Vision Apple Watch app is a remote scoreboard for a match running on your paired iPhone. It exchanges only the current score, the team names and your scoring taps with that iPhone, using Apple's WatchConnectivity framework. It collects nothing, and nothing it handles is sent anywhere beyond your own watch and phone.</p>
+<h2 id="in-app-purchases">6. In-App Purchases</h2>
+<p>The Kitchen Vision Pro lifetime unlock is a one-time purchase processed securely by Apple via the standard iOS StoreKit framework — not a subscription. CalmdownOscar never receives or stores your credit card, billing address, or financial information.</p>
+<h2 id="contact">7. Contact</h2>
+<p>If you have any questions or feedback regarding this Privacy Policy, please contact us at <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>.</p>
+</div>
+    </article>
   </div>
+
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <div>&copy; 2026 calmdownoscar. All rights reserved.</div>
-    <div><a href="./">Back to Kitchen Vision</a></div>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
 
