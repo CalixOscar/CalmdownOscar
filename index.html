@@ -33,9 +33,26 @@
   .s-court .a3{ right:12%; top:16%; width:21%; }
   .s-atlas img{ object-position:50% 45%; }
   .hero-line{ font-size:clamp(44px, 1.2rem + 6vw, 112px); line-height:1.02; letter-spacing:-.035em; max-width:14ch; }
+  /* the toddler who steals the full stop (assets/toddler.js) */
+  .intro{ position:relative; }
+  .hero-line, .intro .by{ position:relative; z-index:1; }  /* the text sits in front of the toddler */
+  .toddler-lane{ position:absolute; top:0; bottom:0; left:calc(50% - 50vw); width:100vw; overflow:hidden; pointer-events:none; z-index:0; }
+  .toddler{ position:absolute; left:0; top:0; will-change:transform; }
+  .toddler.crawl{ background:url('assets/toddler/toddler-crawl.webp') 0 0 no-repeat; }
+  .toddler.crawl.go{ animation:crawl .58s steps(8) infinite; }
+  @keyframes crawl{ to{ background-position:var(--strip) 0; } }
+  .toddler.runner{ opacity:0; transform-origin:50% 100%; }
+  .toddler.runner .kid{ position:absolute; inset:0; background:url('assets/toddler/toddler-run.webp') 0 0 no-repeat; }
+  .toddler.runner.go{ opacity:1; }
+  .toddler.runner.go .kid{ animation:run .44s steps(7) infinite; }
+  @keyframes run{ to{ background-position:var(--strip) 0; } }
+  .toddler .loot{ position:absolute; border-radius:50%; background:var(--ink); box-shadow:0 0 0 1px rgba(0,0,0,.25); }
+  .stop.taken{ opacity:0; }
+  .baseline-probe{ display:inline-block; width:0; height:0; vertical-align:baseline; }
 </style>
 <script src="assets/site.js" defer></script>
 <script src="assets/motion.js" defer></script>
+<script src="assets/toddler.js" defer></script>
 <script src="assets/webmcp.js" defer></script>
 </head>
 <body>
