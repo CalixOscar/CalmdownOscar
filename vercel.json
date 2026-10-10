@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/lastminute",
+      "destination": "/lastminute/",
+      "permanent": false
+    },
+    {
       "source": "/opengrail",
       "destination": "https://opengrail.calmdownoscar.com/",
       "permanent": true

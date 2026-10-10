@@ -1,0 +1,18 @@
+import assert from'node:assert/strict';
+import{TrialWallet,gate}from'../lastminute/engine.mjs';
+import{createRequire}from'node:module';const require=createRequire(import.meta.url);const{normalize,load}=require('../api/lastminute-feed.js');
+const f=(now=10000)=>({id:'fixture',name:'A vs B',status:'live',period:'2H',minute:89,score:{home:2,away:1},observedAt:now,incidentClear:true,version:'2-1'});
+const input={home:2,away:1,minute:88,odds:1.3,stake:5,p:.85,commission:.05,minEV:.02};
+let checks=0;function test(name,fn){fn();checks++;console.log('PASS',name);}
+test('confirmation reserves only after approval',()=>{const w=new TrialWallet();w.propose(f(),input,10000);assert.equal(w.summary().reserved,0);w.confirm(f(),10001);assert.equal(w.summary().reserved,5);assert.equal(w.state.bets.length,1);assert.throws(()=>w.confirm(f(),10002));});
+test('delay needs a later observation',()=>{const w=new TrialWallet();w.propose(f(),input,10000);w.confirm(f(),10000);w.advance(f(10000),18000);assert.equal(w.state.bets[0].status,'PENDING');w.advance(f(18000),18000);assert.equal(w.state.bets[0].status,'OPEN');});
+test('score change cancels pending entry',()=>{const w=new TrialWallet();w.propose(f(),input,10000);w.confirm(f(),10000);w.advance({...f(15000),version:'2-2',score:{home:2,away:2}},15000);assert.equal(w.state.bets[0].status,'CANCELLED');assert.equal(w.summary().reserved,0);});
+test('score change invalidates proposal',()=>{const w=new TrialWallet();w.propose(f(),input,10000);assert.throws(()=>w.confirm({...f(),version:'2-2'},10001));w.advance({...f(),version:'2-2'},10001);assert.equal(w.state.proposal,null);});
+test('stale, uncertain, extra-time and negative EV fail closed',()=>{assert.ok(gate(f(),input,26000));assert.ok(gate({...f(),incidentClear:null},input,10000));assert.ok(gate({...f(),period:'ET'},input,10000));assert.ok(gate(f(),{...input,odds:1.01},10000));});
+test('fresh manual review is bound to match version',()=>{assert.equal(gate({...f(),incidentClear:null},{...input,reviewedVersion:'2-1'},10000),null);assert.ok(gate({...f(),incidentClear:null,version:'new'},{...input,reviewedVersion:'2-1'},10000));});
+test('settlement is idempotent and corrections reconcile',()=>{const w=new TrialWallet();w.propose(f(),input,10000);w.confirm(f(),10000);w.advance(f(18000),18000);const final={...f(19000),status:'final',regulation:{home:2,away:1}};w.advance(final,19000);w.advance(final,19001);assert.equal(w.summary().pnl,1.42);w.advance({...final,regulation:{home:2,away:2}},19002);assert.equal(w.summary().pnl,-5);});
+test('missing result stays reserved, restart persists',()=>{const w=new TrialWallet();w.propose(f(),input,10000);w.confirm(f(),10000);w.advance(f(18000),18000);w.advance({...f(19000),status:'final'},19000);const restored=new TrialWallet(JSON.parse(JSON.stringify(w.state)));assert.equal(restored.summary().reserved,5);});
+test('risk caps and stop reject new entries',()=>{const w=new TrialWallet();assert.throws(()=>w.propose(f(),{...input,stake:26},10000));w.stop();assert.throws(()=>w.propose(f(),input,10000));w.resume();w.propose(f(),input,10000);});
+test('source uses regulation score not penalties',()=>{const e=normalize({fixture:{id:1,status:{short:'PEN',elapsed:120}},teams:{home:{name:'A'},away:{name:'B'}},goals:{home:3,away:3},score:{fulltime:{home:2,away:2},penalty:{home:5,away:4}}},10000);assert.deepEqual(e.regulation,{home:2,away:2});assert.equal(e.incidentClear,null);});
+const oldKey=process.env.API_FOOTBALL_KEY;delete process.env.API_FOOTBALL_KEY;assert.equal((await load()).configured,false);if(oldKey)process.env.API_FOOTBALL_KEY=oldKey;checks++;
+console.log(checks+' trial checks passed.');

@@ -11,3 +11,4 @@ AGENTS.md
 CLAUDE.md
 scripts/lint-project-notes.sh
 docs/decisions-log-archive.md
+.vercel

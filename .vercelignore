@@ -18,3 +18,7 @@ scripts/
 # No runtime dependencies: package.json declares none and api/search.js
 # uses bare fetch. A local `npm install` must not reach a deployment.
 node_modules/
+
+# Deployment credentials and local environment must never be served
+.env*
+.vercel/
