@@ -9,9 +9,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
 <title>How I Work — calmdownoscar</title>
-<meta name="description" content="How Peter builds apps: questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes, the rules every app is built under, and how AI-assisted work is kept accountable.">
+<meta name="description" content="How Peter builds apps: questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes.">
 <meta property="og:title" content="How I Work — calmdownoscar">
-<meta property="og:description" content="Questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes and how AI-assisted work is kept accountable.">
+<meta property="og:description" content="Questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/how_I_work/">
 <link rel="canonical" href="https://www.calmdownoscar.com/how_I_work/">
@@ -42,27 +42,6 @@
   .key i{ display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--accent); margin-right:8px; vertical-align:-1px; }
   .key i.opt{ background:var(--bg); border:2px solid var(--accent); }
 
-  /* intent document */
-  .intent{ margin-top:32px; padding:20px 22px; border:1px solid var(--line-hi); border-radius:6px; font-size:14px; }
-  .intent .doc{ font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; color:var(--ink); }
-  .intent ol{ list-style:none; margin-top:12px; color:var(--muted); }
-  .intent li{ padding:6px 0; border-top:1px solid var(--line); }
-  .intent li.hi{ color:var(--ink); }
-  .intent p{ margin-top:12px; font-size:12px; color:var(--muted); }
-
-  /* the pipeline */
-  .pipe{ list-style:none; border-top:1px solid var(--line); }
-  .pipe > li{ display:grid; grid-template-columns:minmax(0,3fr) minmax(0,9fr); gap:8px clamp(16px, 2.4vw, 40px); padding:20px 0; border-bottom:1px solid var(--line); }
-  .pipe > li > span{ color:var(--muted); font-size:14px; }
-  .pipe b{ font-weight:500; display:block; }
-  .pipe p{ color:var(--muted); font-size:14px; margin-top:2px; }
-  .chips{ list-style:none; display:grid; grid-template-columns:repeat(var(--cols, 4), minmax(0,1fr)); gap:8px; margin-top:12px; }
-  .chips li{ padding:12px 14px; border:1px solid var(--line); border-radius:6px; font-size:14px; }
-  .chips small{ display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
-  .chips span{ display:block; color:var(--muted); font-size:13px; }
-  .pipe-icon{ display:flex; align-items:center; gap:12px; }
-  .pipe-icon img{ width:32px; height:32px; border-radius:8px; }
-
   /* ClearSpace history */
   .history-shots{ display:flex; gap:16px; margin-top:16px; }
   .history-shots img{ width:min(160px, 30%); }
@@ -77,10 +56,8 @@
     .lane-head .lane-app, .lane-head .lane-note{ display:none; }
     .lane-head{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
     .lane-head .zones{ grid-column:2; }
-    .chips{ --cols:2 !important; }
   }
   @media (max-width:640px){
-    .pipe > li{ grid-template-columns:1fr; }
     .lane, .lane-head{ grid-template-columns:1fr; }
     .lane-head .zones{ grid-column:1; }
   }
@@ -111,8 +88,6 @@
     <nav class="jump" aria-label="On this page">
       <a href="#questions">Four questions</a>
       <a href="#data">Where data goes</a>
-      <a href="#rules">The rules</a>
-      <a href="#craft">Building with AI</a>
       <a href="#clearspace-history">Version by version</a>
     </nav>
   </section>
@@ -254,99 +229,6 @@
     <p class="key"><span><i aria-hidden="true"></i>Always</span><span><i class="opt" aria-hidden="true"></i>Only if you choose</span></p>
   </section>
 
-  <!-- ===================== The rules ===================== -->
-  <section class="wrap block" id="rules" aria-labelledby="rules-title">
-    <div class="split">
-      <div>
-        <h2 class="label" id="rules-title">The rules</h2>
-        <p>Read by every person and AI tool that works on the code.</p>
-      </div>
-      <ul class="rows">
-        <li class="row"><span>Put the phone down</span><p>No streaks, infinite feeds or notification spam.</p></li>
-        <li class="row"><span>Pay once, share with family</span><p>One-time purchases with Family Sharing. No ads or trackers. <span class="sub">Except Wedding Concierge, whose AI answers cost money to run.</span></p></li>
-        <li class="row"><span>Ask for a rating only after a real success</span><p>Apple’s own prompt, never in the first session.</p></li>
-        <li class="row"><span>The server checks every request</span><p>A request has to prove it owns the record. Anything uncertain is refused.</p></li>
-        <li class="row"><span>Trust Apple’s receipt, not the app</span><p>A purchase counts when Apple’s signed transaction says so.</p></li>
-        <li class="row"><span>No secrets in the app</span><p>API keys live on a server. A script scans every commit.</p></li>
-        <li class="row"><span>Plan risky work before code</span><p>Servers, payments, stored data and AI features get a plan and a pre-mortem first.</p></li>
-        <li class="row"><span>“Success” isn’t evidence</span><p>Nothing counts until the diff and a real build agree.</p></li>
-        <li class="row"><span>Use the smallest tool</span><p>If a hash does the job, no model is called.</p></li>
-        <li class="row"><span>Open where others can teach me</span><p>Unli Rice and OpenGrail are open source.</p></li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ===================== Building with AI ===================== -->
-  <section class="wrap case" id="craft" aria-labelledby="craft-title">
-    <div class="case-text">
-      <h2 class="label" id="craft-title">Building with AI</h2>
-      <p>AI makes a first version cheap. That’s when it’s easiest to stop too early.</p>
-      <figure class="intent">
-        <p class="doc">INTENT-005 — The AI to-do list, on screen, in plain words</p>
-        <ol aria-label="Sections of the intent document">
-          <li class="hi">The problem</li>
-          <li>Who hits it, and when</li>
-          <li class="hi">What “solved” looks like</li>
-          <li class="hi">Explicitly out of scope</li>
-          <li>Fixed constraints</li>
-          <li>Questions discovery could not settle</li>
-        </ol>
-        <p>Headings from a real intent document.</p>
-      </figure>
-    </div>
-    <div class="case-media">
-      <ol class="notes" aria-label="Four habits">
-        <li><span class="n">01</span><div><b>Intent before generation</b><p>The problem, who has it, what “solved” looks like, what’s out of scope.</p></div></li>
-        <li><span class="n">02</span><div><b>Standards in the machine</b><p>The same guardrails reach every AI tool, and a pre-commit hook checks every commit.</p></div></li>
-        <li><span class="n">03</span><div><b>Edit after building</b><p>A second model tries to break the plan before any code exists.</p></div></li>
-        <li><span class="n">04</span><div><b>Spend the saved time on the unusual</b><p>Three-phone replay, per-codec photo sizes, an atlas. What only slows things down gets cut.</p></div></li>
-      </ol>
-
-      <ul class="rows" aria-label="Three traps">
-        <li class="row"><span>The probable</span><p>Does it look like every other app?</p></li>
-        <li class="row"><span>The microwave burrito</span><p>Did I accept it because it looked finished fast?</p></li>
-        <li class="row"><span>The disposable</span><p>Can someone maintain this next year?</p></li>
-      </ul>
-      <p class="muted" style="font-size:13px">The three traps are from Katie Dill’s talk at Stripe, “How to scale intent, quality, and artistry with AI.”</p>
-    </div>
-  </section>
-
-  <!-- ===================== The pipeline ===================== -->
-  <section class="wrap block" id="pipeline" aria-labelledby="pipe-title">
-    <div class="head">
-      <h2 class="label" id="pipe-title">The pipeline</h2>
-    </div>
-    <ol class="pipe">
-      <li><span>Capture</span><div><b>A thought worth building</b><p>Spoken into Capture or written as a note.</p></div></li>
-      <li><span>Shared context over MCP</span>
-        <div>
-          <div class="pipe-icon"><img src="../assets/icons/unli-rice.png" alt="" width="32" height="32"><b>Unli Rice carries the context with the work</b></div>
-          <ul class="chips" style="--cols:4">
-            <li><small>Identity</small>Creator and user</li>
-            <li><small>Intent</small>Problem and outcome</li>
-            <li><small>Guardrails</small>Boundaries and standards</li>
-            <li><small>Repositories</small>Branches and worktrees</li>
-          </ul>
-        </div>
-      </li>
-      <li><span>Review path</span>
-        <div>
-          <ol class="chips" style="--cols:6" aria-label="The review path for higher-risk changes">
-            <li><small>Claude</small>Frame<span>Feasibility</span></li>
-            <li><small>Astra</small>Challenge<span>The intent</span></li>
-            <li><small>Claude</small>Plan<span>Architecture</span></li>
-            <li><small>Codex</small>Pre-mortem<span>The plan</span></li>
-            <li><small>Claude</small>Revise<span>The trade-offs</span></li>
-            <li><small>Codex</small>Implement<span>The settled plan</span></li>
-          </ol>
-          <p style="margin-top:12px">For risky changes only. Copy and layout go direct.</p>
-        </div>
-      </li>
-      <li><span>Verify against the work</span><div><b>Diff · build and tests · the user journey</b><p>Plus a security review where it applies.</p></div></li>
-      <li><span>Ship</span><div><b>Release and maintain</b><p>Handoff notes and follow-ups land back in Unli Rice.</p></div></li>
-    </ol>
-  </section>
-
   <!-- ===================== ClearSpace, version by version ===================== -->
   <section class="wrap case" id="clearspace-history" aria-labelledby="hist-title">
     <div class="case-text">
@@ -364,7 +246,6 @@
           </div></div></li>
         <li class="row"><span>September 2026 · 1.3</span><div><p><strong>Split view on iPad</strong>, sharper iCloud photos, sturdier purchases.</p>
           <div class="history-shots"><img class="tablet" src="../apps/assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad: the photo grid on the left and the selected waterfall photo open beside it" width="1400" height="1050" loading="lazy"></div></div></li>
-        <li class="row"><span>Next · In testing</span><div><p><strong>Unli Disk unlocks ClearSpace Pro automatically.</strong></p></div></li>
       </ol>
     </div>
   </section>
