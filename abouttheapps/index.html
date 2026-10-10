@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
@@ -18,579 +16,306 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/abouttheapps/">
 <link rel="canonical" href="https://www.calmdownoscar.com/abouttheapps/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-
-    /* Contrast for these values is recorded in docs/calmdownoscar_spec.md §1.1. */
-    --paper:      #141B22;
-    --paper-sunk: #1E2933;
-    --stage:      #0F151B;   /* behind screenshots: one step darker than the page */
-    --ink:        #E8EEF4;   /* 14.9:1 */
-    --muted:      #8FA0AE;   /*  6.5:1 */
-    --accent:     #85B6FF;   /* graphics, rules, large display: the site-wide blue */
-    --accent-ink: #85B6FF;   /* small text on the page, 8.9:1 */
-    --edge:       rgba(255,255,255,.09);
-    --edge-hi:    rgba(255,255,255,.18);
-    --live-green: #34C759;
-
-    --radius: 6px;
-    --ease: cubic-bezier(.2,.7,.3,1);
-    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    --topbar-h: calc(64px + var(--sat));
-    --app-index-h: 61px;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:var(--stage); }
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  img{ display:block; max-width:100%; }
-  a{ color:inherit; }
-  a:focus-visible, summary:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
-  .wrap{ max-width:1160px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-ink); }
-
-  /* ================= topbar ================= */
-  .topbar{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h); padding-top:var(--sat);
-    background:rgb(20,27,34);
-    border-bottom:1px solid var(--edge);
-    display:flex; align-items:center;
-  }
-  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; width:100%; }
-  .mark{ font-weight:800; font-size:19px; color:var(--ink); text-decoration:none; letter-spacing:-.02em; flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent-ink); }
-  .nav-toggle{ display:none; }
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
-      width:44px; height:44px; background:transparent; border:1px solid var(--edge); border-radius:var(--radius);
-      cursor:pointer; padding:0; color:var(--ink); flex-shrink:0;
-    }
-    .nav-toggle-bar{ display:block; width:18px; height:2px; background:var(--ink); border-radius:1px; transition:transform 140ms var(--ease); }
-    .topbar.nav-open .nav-toggle-bar:first-child{ transform:translateY(3.5px) rotate(45deg); }
-    .topbar.nav-open .nav-toggle-bar:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
-    nav{
-      display:none; position:absolute; top:100%; left:0; right:0;
-      background:rgb(20,27,34); border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column; gap:2px; align-items:stretch;
-      overflow-y:auto; max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{ display:flex; }
-    nav a{ font-size:15px; padding:10px 0; color:var(--ink); border-bottom:1px solid rgba(255,255,255,.05); width:100%; }
-    nav a:last-child{ border-bottom:none; }
-  }
-
-  /* ================= families ================= */
-  .family{ --family-gap:96px; padding:var(--family-gap) 0 0; scroll-margin-top:calc(var(--topbar-h) + var(--app-index-h) + 8px - var(--family-gap)); }
-  .app-index + .family{ --family-gap:48px; }
-  .family-head{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:12px 48px; align-items:end; padding-bottom:22px; margin-bottom:30px; border-bottom:1px solid var(--edge); }
-  .family-head h2{ font-size:clamp(28px, 1rem + 2.2vw, 42px); font-weight:800; letter-spacing:-.03em; line-height:1.08; margin-top:10px; }
-  .family-link{ display:flex; gap:12px; align-items:flex-start; color:var(--muted); font-size:15px; line-height:1.5; }
-  .family-link::before{ content:''; flex:0 0 28px; height:1px; margin-top:11px; background:var(--accent); }
-  .family-link strong{ color:var(--ink); font-weight:600; }
-
-  .pair{ display:grid; grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr); align-items:start; }
-  .bridge{ position:relative; height:400px; }
-  .bridge::before{ content:''; position:absolute; left:0; right:0; top:50%; height:1px; background:linear-gradient(90deg, var(--edge-hi), var(--accent), var(--edge-hi)); }
-  .bridge::after{ content:''; position:absolute; left:50%; top:50%; width:9px; height:9px; margin:-4px 0 0 -4px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 5px rgba(133,182,255,.16); }
-  .solo{ display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:44px; align-items:start; }
-
-  .app{ min-width:0; scroll-margin-top:calc(var(--topbar-h) + var(--app-index-h) + 8px); }
-  .shot{ position:relative; height:400px; overflow:hidden; margin:0; border-radius:14px; border:1px solid var(--edge);
-    background:radial-gradient(120% 90% at 50% 100%, #1d2a37 0%, var(--stage) 72%); }
-  .shot img{ position:absolute; height:auto; }
-  .solo .shot{ height:440px; }
-  .phone{ border-radius:16px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.55); }
-  .mac{ border-radius:8px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.5); }
-  .tablet{ border-radius:12px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.5); }
-
-  .s-clearspace .a1{ left:4%; top:30px; width:80%; }
-  .s-clearspace .a2{ right:4%; top:84px; width:27%; }
-  .s-unlidisk .a1{ left:5%; top:30px; width:90%; }
-  .s-wedding .a1{ left:4%; top:30px; width:74%; }
-  .s-wedding .a2{ right:5%; top:70px; width:28%; }
-  .s-shuttle .a1{ left:6%; top:30px; width:56%; }
-  .s-shuttle .a2{ right:6%; top:70px; width:32%; }
-  .s-kitchen .a1{ left:10%; top:30px; width:36%; }
-  .s-kitchen .a2{ right:10%; top:70px; width:36%; }
-  .s-unlirice .a1{ left:5%; top:30px; width:90%; }
-  .s-capture .a1{ left:12%; top:30px; width:34%; }
-  .s-capture .a2{ right:12%; top:70px; width:34%; }
-  .s-atlas img{ position:static; width:100%; height:100%; object-fit:cover; }
-
-  .app-body{ padding:22px 2px 0; }
-  .solo .app-body{ padding-top:6px; }
-  .app-head{ display:flex; align-items:center; gap:14px; }
-  .app-head img, .app-head .og-icon{ width:44px; height:44px; border-radius:10px; flex-shrink:0; }
-  .og-icon{ border:1px solid var(--edge); display:flex; align-items:center; justify-content:center; }
-  .app-head h3{ font-size:22px; font-weight:700; letter-spacing:-.02em; line-height:1.2; }
-  .platforms{ font-family:var(--font-mono); font-size:12px; color:var(--muted); letter-spacing:.02em; }
-  .app-use{ margin-top:14px; font-size:16px; line-height:1.55; max-width:52ch; }
-  .app-facts{ list-style:none; display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
-  .app-facts li{ font-family:var(--font-mono); font-size:12px; color:var(--muted); border:1px solid var(--edge); border-radius:var(--radius); padding:3px 8px; }
-  .app-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin-top:18px; }
-  .store-badge{ display:inline-block; line-height:0; }
-  .store-badge img{ height:40px; width:auto; }
-  .text-link{ font-weight:600; font-size:14px; text-decoration:none; min-height:44px; display:inline-flex; align-items:center; }
-  .text-link:hover{ color:var(--accent-ink); }
-  .quiet-link{ color:var(--muted); font-size:13px; text-decoration:none; min-height:44px; display:inline-flex; align-items:center; }
-  .quiet-link:hover{ color:var(--accent-ink); }
-
-  /* The engineering detail is one click away, not in the buyer's path. */
-  .build{ margin-top:14px; border-top:1px solid var(--edge); }
-  .build summary{ cursor:pointer; list-style:none; min-height:44px; display:flex; align-items:center; gap:10px; font-size:14px; font-weight:600; color:var(--muted); }
-  .build summary::-webkit-details-marker{ display:none; }
-  .build summary::before{ content:'+'; font-family:var(--font-mono); width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--edge-hi); border-radius:4px; font-size:13px; color:var(--accent-ink); }
-  .build[open] summary::before{ content:'−'; }
-  .build summary:hover{ color:var(--ink); }
-  .build-body{ display:grid; gap:18px; padding:6px 0 8px; }
-  .step{ border-left:2px solid var(--edge-hi); padding-left:16px; }
-  .step-num{ font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-ink); }
-  .step h4{ font-size:15px; font-weight:650; margin:3px 0 4px; }
-  .step p{ font-size:14px; color:var(--muted); line-height:1.6; }
-  .step p + p{ margin-top:8px; }
-  .step code{ font-family:var(--font-mono); font-size:12px; background:rgba(255,255,255,.08); padding:1px 5px; border-radius:4px; }
-  .step a{ color:var(--ink); }
-  .quote{ margin-top:14px; font-size:15px; color:var(--muted); line-height:1.6; border-left:2px solid var(--accent); padding-left:14px; max-width:52ch; }
-
-  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
-  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
-  .foot-row a{ color:var(--muted); padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
-  .foot-row a:hover{ color:var(--accent-ink); }
-
-
-  .intro{ padding:44px 0 0; }
-  .intro h1{ font-size:clamp(36px, 1.2rem + 3.6vw, 66px); font-weight:800; line-height:1.03; letter-spacing:-.04em; margin-top:14px; }
-  .intro h1 span{ color:var(--accent); }
-  .intro .lede{ color:var(--muted); font-size:18px; line-height:1.5; margin-top:22px; max-width:52ch; }
-  .app-index{ position:sticky; top:var(--topbar-h); z-index:9; margin-top:18px; background:var(--paper); border-bottom:1px solid var(--edge); }
-  .app-index .wrap{ display:flex; gap:22px; padding-top:8px; padding-bottom:8px; overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--edge-hi) transparent; }
-  .app-index a{ flex-shrink:0; white-space:nowrap; font-size:14px; font-weight:600; text-decoration:none; min-height:44px; display:inline-flex; align-items:center; }
-  .app-index a:hover{ color:var(--accent-ink); }
-  main{ padding-bottom:64px; }
-  @media (max-width:960px){
-    .bridge, .shot{ height:340px; }
-    .solo .shot{ height:380px; }
-    .solo{ gap:32px; }
-  }
-  @media (max-width:760px){
-    .intro{ padding-top:28px; }
-    .family-head, .solo, .pair{ grid-template-columns:1fr; }
-    .family{ --family-gap:72px; }
-    .app-index + .family{ --family-gap:32px; }
-    .bridge{ height:56px; }
-    .bridge::before{ left:50%; right:auto; top:0; bottom:0; width:1px; height:auto; background:linear-gradient(180deg, var(--edge-hi), var(--accent), var(--edge-hi)); }
-    .shot, .solo .shot{ height:300px; }
-  }
-  @media (max-width:420px){ .shot, .solo .shot{ height:270px; } }
-  @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+  .s-capture .a1{ left:20%; top:9%; width:24%; }
+  .s-capture .a2{ right:20%; top:16%; width:24%; }
+  .s-clearspace .a1{ left:6%; top:10%; width:62%; }
+  .s-clearspace .a2{ right:8%; top:14%; width:20%; }
+  .s-unlidisk .a1{ left:8%; top:10%; width:84%; }
+  .s-wedding .a1{ left:6%; top:11%; width:60%; }
+  .s-wedding .a2{ right:8%; top:15%; width:20%; }
+  .s-shuttle .a1{ left:10%; top:9%; width:44%; }
+  .s-shuttle .a2{ right:12%; top:16%; width:23%; }
+  .s-kitchen .a1{ left:20%; top:9%; width:24%; }
+  .s-kitchen .a2{ right:20%; top:16%; width:24%; }
+  .s-atlas img{ object-position:50% 45%; }
+  .pin-key{ list-style:none; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px 28px; font-size:14px; color:var(--muted); }
+  .pin-key li{ display:grid; grid-template-columns:24px minmax(0,1fr); gap:10px; }
+  .pin-key b{ width:20px; height:20px; border-radius:50%; background:var(--accent); color:var(--bg); font-size:11px; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+  .family{ scroll-margin-top:var(--top-h); }
+  @media (max-width:640px){ .pin-key{ grid-template-columns:1fr; } }
 </style>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
-<header class="topbar">
+
+<header class="top">
   <div class="wrap">
-    <a class="mark" href=".././">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="../aboutme/">About Me</a>
-      <a href="./" aria-current="page">About the apps</a>
-      <a href="../how_I_work/">How I Work</a>
-      <a href="../the_studio/">The Studio</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="./" aria-current="page">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
+
 <main>
-  <section class="intro" aria-labelledby="intro-title">
-    <div class="wrap">
-      <p class="kicker">calmdownoscar · independent app studio</p>
-      <h1 id="intro-title">About the apps<span>.</span></h1>
-      <p class="lede">What each app does, where your data goes, and how it’s built.</p>
-    </div>
-  </section>
-  <div class="app-index" role="navigation" aria-label="App categories">
-    <div class="wrap">
-      <a href="#ai-work">Working with AI →</a>
-      <a href="#photos">Photos &amp; storage →</a>
-      <a href="#wedding">Wedding planning →</a>
-      <a href="#court">On court →</a>
-      <a href="#curiosity">Curiosity →</a>
-    </div>
-  </div>
 
-  <!-- ===================== AI work ===================== -->
+  <section class="wrap intro" aria-label="Introduction">
+    <p class="label">Apps</p>
+    <h1 class="lede">Seven apps and an open atlas.</h1>
+    <nav class="jump" aria-label="App families">
+      <a href="#ai-work">Working with AI</a>
+      <a href="#photos">Photos &amp; storage</a>
+      <a href="#wedding">Wedding planning</a>
+      <a href="#court">At the court</a>
+      <a href="#curiosity">Curiosity</a>
+    </nav>
+  </section>
+
+  <!-- ===================== Working with AI ===================== -->
   <section class="family" id="ai-work" aria-labelledby="ai-title">
-    <div class="wrap">
-      <header class="family-head">
-        <div>
-          <p class="kicker">Working with AI</p>
-          <h2 id="ai-title">Every AI session starts with the context it needs.</h2>
-        </div>
-        <p class="family-link"><span><strong>Phone to Mac to your AI tools.</strong> Speak an idea into Capture; it becomes a note in Unli Rice that Claude, ChatGPT, Cursor and other connected tools can read.</span></p>
-      </header>
-      <div class="pair">
-        <article class="app" id="unli-rice" aria-labelledby="ur-title">
-          <figure class="shot s-unlirice">
-            <img class="mac a1" src="../assets/screens/unlirice-todo.jpg" alt="Unli Rice on Mac, shown with demo projects: a To Do list with work saved only on this Mac, a written next step, four follow-ups suggested by Claude, Codex and ChatGPT, and finished work not yet merged" width="1600" height="1000" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/unli-rice.png" alt="" width="44" height="44">
-              <div><h3 id="ur-title">Unli Rice</h3><p class="platforms">Mac</p></div>
-            </div>
-            <p class="app-use">Gives your AI tools the same starting point every session — who you are, what you’re building and for whom, and the rules to follow — and a To Do list that shows where the work actually stands.</p>
-            <ul class="app-facts"><li>Free</li><li>Open source</li><li>Connects over MCP</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/unli-rice/id6792837485"><img src="../assets/mac-app-store-badge.svg" alt="Download Unli Rice on the Mac App Store" width="156" height="40"></a>
-              <a class="text-link" href="../unlirice/">Product page →</a>
-              <a class="quiet-link" href="https://github.com/CalixOscar/unli-rice">Source on GitHub</a>
-            </div>
-            <details class="build">
-              <summary>How it’s built</summary>
-              <div class="build-body">
-                <div class="step"><p class="step-num">01 · What carries over</p><h4>Identity, intent and guardrails</h4><p>A profile records who is building, what for and for whom; house rules set the conventions a connected assistant reads at the start of a session. Claude, ChatGPT/Codex, Cursor and others reach the same notes over the Model Context Protocol (MCP), so a new session doesn’t start cold.</p></div>
-                <div class="step"><p class="step-num">02 · Where the work stands</p><h4>A To Do list worked out from the work itself</h4><p>The list is built from the project folders you grant — work saved only on this Mac, branches not yet merged — plus each project’s written next step and the follow-ups an AI assistant filed. Repository status comes from the refs a repository already knows about; it doesn’t fetch or count commits. A widget keeps the AI-filed follow-ups in view.</p></div>
-                <div class="step"><p class="step-num">03 · What it won’t do</p><h4>Propose, never apply</h4><p>Notes are append-only and suspected conflicts are flagged for a person to review. Unli Rice never edits another tool’s configuration: it hands you a block to paste. Shared instructions guide agents; they can’t force them to follow.</p></div>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <div class="bridge" aria-hidden="true"></div>
-
-        <article class="app" id="unli-rice-capture" aria-labelledby="urc-title">
-          <figure class="shot s-capture">
-            <img class="phone a1" src="../assets/screens/unlicapture-welcome.webp" alt="Unli Rice Capture welcome screen: tap to record, saved as a note, and private by default with transcription on the device" width="350" height="760" loading="lazy" decoding="async">
-            <img class="phone a2" src="../assets/screens/unlicapture-notes.webp" alt="Unli Rice Capture: a large record button above two transcribed thoughts" width="350" height="760" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/unli-rice-capture.png" alt="" width="44" height="44">
-              <div><h3 id="urc-title">Unli Rice Capture</h3><p class="platforms">iPhone</p></div>
-            </div>
-            <p class="app-use">One tap, say the thought, and it’s transcribed on the phone — then waiting on your Mac for whichever AI you want to think it through with.</p>
-            <ul class="app-facts"><li>Free</li><li>Open source</li><li>Audio stays on the phone</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/unli-rice-capture/id6800863948"><img src="../assets/app-store-badge.svg" alt="Download Unli Rice Capture on the App Store" width="120" height="40"></a>
-              <a class="text-link" href="../unlirice/">Product page →</a>
-            </div>
-            <p class="quote">Built because I rarely have two free hands — my son follows me around like a shadow, and typing an idea one-handed usually means losing it.</p>
-          </div>
-        </article>
-      </div>
+    <div class="wrap head">
+      <h2 class="label" id="ai-title">Working with AI</h2>
     </div>
-  </section>
 
+    <article class="wrap case" id="unli-rice" aria-labelledby="ur-title">
+      <div class="case-text">
+        <p class="label">Mac</p>
+        <h3 class="case-title" id="ur-title">Unli Rice</h3>
+        <p>Shared memory for Claude, ChatGPT, Cursor and other AI tools, and a To Do list of what’s still open.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free, open source</dd></div>
+          <div><dt>Connects</dt><dd>Over the Model Context Protocol (MCP)</dd></div>
+          <div><dt>Data</dt><dd>Notes live on your Mac</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/unli-rice/id6792837485">Mac App Store</a><a class="link in" href="../unlirice/">Product page</a><a class="link" href="https://github.com/CalixOscar/unli-rice">Source</a></div>
+      </div>
+      <div class="case-media">
+        <figure>
+          <div class="shot">
+            <img src="../assets/screens/unlirice-todo.jpg" alt="Unli Rice To Do screen with demo projects Recipe Box and Garden Planner: one piece of work saved only on this Mac, a next step written in the project’s notes, four follow-ups suggested by Claude, Codex and ChatGPT with Done and Fix with AI buttons, and finished work not yet merged" width="1600" height="1000" fetchpriority="high">
+            <span class="pin" style="left:13%; top:13.5%;" aria-hidden="true">1</span>
+            <span class="pin" style="left:13%; top:28.8%;" aria-hidden="true">2</span>
+            <span class="pin" style="left:13%; top:44.7%;" aria-hidden="true">3</span>
+            <span class="pin" style="left:13%; top:90.5%;" aria-hidden="true">4</span>
+          </div>
+          <figcaption><span>Unli Rice 1.3 with a demo vault, no real projects</span><span>Product screenshot</span></figcaption>
+        </figure>
+        <ol class="pin-key">
+          <li><b aria-hidden="true">1</b><span><strong>Not backed up.</strong> Work in a granted project folder that exists only on this Mac.</span></li>
+          <li><b aria-hidden="true">2</b><span><strong>Next step.</strong> What the project’s own notes say should happen next.</span></li>
+          <li><b aria-hidden="true">3</b><span><strong>Suggested by AI.</strong> Follow-ups an assistant filed, with who suggested them and when.</span></li>
+          <li><b aria-hidden="true">4</b><span><strong>Not merged yet.</strong> Finished work that isn’t part of the main version.</span></li>
+        </ol>
+        <ol class="notes" aria-label="How Unli Rice is built">
+          <li><span class="n">01</span><div><b>Identity, intent and guardrails</b><p>A profile and house rules every connected assistant reads at the start of a session.</p></div></li>
+          <li><span class="n">02</span><div><b>Status from the work itself</b><p>Read from the folders you grant and the branches each repository already knows. It doesn’t fetch or count commits.</p></div></li>
+          <li><span class="n">03</span><div><b>Propose, never apply</b><p>Notes are append-only and conflicts are flagged for a person. It never edits another tool’s configuration; you paste a block yourself.</p></div></li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="wrap case" id="unli-rice-capture" aria-labelledby="urc-title">
+      <div class="case-text">
+        <p class="label">iPhone</p>
+        <h3 class="case-title" id="urc-title">Unli Rice Capture</h3>
+        <p>Tap, speak, and the note is waiting on your Mac.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free, open source</dd></div>
+          <div><dt>Data</dt><dd>Audio stays on the phone</dd></div>
+        </dl>
+        <p class="aside">Built because I rarely have two free hands — my son follows me around like a shadow, and typing an idea one-handed usually means losing it.</p>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/unli-rice-capture/id6800863948">App Store</a><a class="link in" href="../unlirice/">Product page</a></div>
+      </div>
+      <div class="case-media">
+        <div class="stage tall s-capture">
+          <img class="phone a1" src="../assets/screens/unlicapture-welcome.webp" alt="Unli Rice Capture welcome screen: tap to record, saved as a note, and private by default with transcription on the device" width="350" height="760" loading="lazy">
+          <img class="phone a2" src="../assets/screens/unlicapture-notes.webp" alt="Unli Rice Capture: a large record button above two transcribed thoughts" width="350" height="760" loading="lazy">
+        </div>
+      </div>
+    </article>
+  </section>
 
   <!-- ===================== Photos & storage ===================== -->
   <section class="family" id="photos" aria-labelledby="photos-title">
-    <div class="wrap">
-      <header class="family-head">
-        <div>
-          <p class="kicker">Photos &amp; storage</p>
-          <h2 id="photos-title">Make room without losing what matters.</h2>
-        </div>
-        <p class="family-link"><span><strong>One photo engine, two apps.</strong> ClearSpace and Unli Disk share the same photo code, and buying Unli Disk includes ClearSpace Pro.</span></p>
-      </header>
-      <div class="pair">
-        <article class="app" id="clearspace" aria-labelledby="clearspace-title">
-          <figure class="shot s-clearspace">
-            <img class="tablet a1" src="../apps/assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad: a photo grid with each file’s size, and the selected waterfall photo open beside it" width="1400" height="1050" loading="lazy" decoding="async">
-            <img class="phone a2" src="../assets/screens/clearspace-timeline.webp" alt="ClearSpace on iPhone: the full timeline sorted biggest first, with 4,535 unhearted items totalling about 22 GB" width="350" height="760" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/clearspace.png" alt="" width="44" height="44">
-              <div><h3 id="clearspace-title">ClearSpace</h3><p class="platforms">iPhone · iPad</p></div>
-            </div>
-            <p class="app-use">See your biggest photos and videos first, heart the ones to keep, and clear the rest into Recently Deleted.</p>
-            <ul class="app-facts"><li>On-device</li><li>No account</li><li>Bulk clearing $9.99, once</li><li>Family Sharing</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807"><img src="../assets/app-store-badge.svg" alt="Download ClearSpace on the App Store" width="120" height="40"></a>
-              <a class="text-link" href="../apps/clearspace/">Product page →</a>
-              <a class="quiet-link" href="../apps/clearspace/privacy.html">Privacy</a>
-            </div>
-            <details class="build">
-              <summary>How it’s built</summary>
-              <div class="build-body">
-                <div class="step"><p class="step-num">01 · Ordering</p><h4>Codec-aware size, not pixel count</h4><p>Biggest-first is only useful if the sizes are right, and a flat pixels-to-bytes coefficient is wrong in opposite directions: it over-counts a HEIC still by about 2.7× and under-counts a slo-mo clip by about 5.5×. The estimator reads dimensions, duration and codec from each asset’s metadata, so a 40,000-item library sorts without opening a single file. Every figure carries a <code>~</code> because it is an estimate.</p></div>
-                <div class="step"><p class="step-num">02 · Safety</p><h4>Non-destructive by design</h4><p>Pick a period, heart the keepers, and one button clears everything else in that period. Without a period filter that button can queue 30,000+ photos, so every deletion goes through iOS’s own Recently Deleted instead of a hard delete — up to 30 days to undo a mistake.</p></div>
-                <div class="step"><p class="step-num">03 · Version 1.3</p><h4>Grid and photo side by side</h4><p>On iPad, or an iPhone held sideways, a tapped photo opens beside the grid so your place never moves, and photos stored in iCloud open sharp straight away. Own <a href="#unlidisk">Unli Disk</a>? ClearSpace Pro is included; <a href="mailto:peter@calmdownoscar.com?subject=ClearSpace%20Pro%20for%20Unli%20Disk">email me</a> for your code.</p></div>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <div class="bridge" aria-hidden="true"></div>
-
-        <article class="app" id="unlidisk" aria-labelledby="unlidisk-title">
-          <figure class="shot s-unlidisk">
-            <img class="mac a1" src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk on Mac: a disk map of 456 GB used, a note that 4.24 GB is safe to remove now, and a directory breakdown with reclaimable space" width="1400" height="880" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/unli-disk.png" alt="" width="44" height="44">
-              <div><h3 id="unlidisk-title">Unli Disk</h3><p class="platforms">Mac</p></div>
-            </div>
-            <p class="app-use">Map what fills your Mac, including developer caches and photo libraries, and clear it safely to the Trash.</p>
-            <ul class="app-facts"><li>On-device</li><li>$14.99, once</li><li>Includes ClearSpace Pro</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/unli-disk/id6797325817"><img src="../assets/mac-app-store-badge.svg" alt="Download Unli Disk on the Mac App Store" width="156" height="40"></a>
-              <a class="text-link" href="../apps/unlidisk/">Product page →</a>
-              <a class="quiet-link" href="../apps/unlidisk/privacy.html">Privacy</a>
-            </div>
-            <details class="build">
-              <summary>How it’s built</summary>
-              <div class="build-body">
-                <div class="step"><p class="step-num">01 · What it finds</p><h4>Not just folder sizes</h4><p>A tool that only shows what’s big can’t tell a build cache from an uncommitted repository. Unli Disk looks specifically for orphaned Git repositories and developer caches that generic visualisers show as “large folders”.</p></div>
-                <div class="step"><p class="step-num">02 · Safety rule</p><h4>Trash only, never unlink</h4><p>Automated cleaners are a real data-loss risk on a machine full of unfinished work, so every deletion goes through the macOS Trash — recoverable, never a direct delete. That constraint was chosen on purpose.</p></div>
-                <div class="step"><p class="step-num">03 · Detection method</p><h4>Signal, not a model</h4><p>The duplicate and blur pass isn’t a model call: a 64-bit perceptual hash finds candidate pairs, Apple’s Vision feature-print distance confirms the match, and a Laplacian score catches soft shots. An earlier version added an on-device vision-language model on top; it made scans slower for little gain, so it was cut. This pass is Mac-only — ClearSpace on iPhone does not claim it.</p></div>
-                <div class="step"><p class="step-num">04 · Shared engine</p><h4>One package, two platforms</h4><p>The photo code lives in <code>Packages/UnliDiskPhotos</code>, the same engine ClearSpace uses. Unli Disk ($14.99 once) includes ClearSpace Pro for iPhone and iPad, sent as a one-time App Store code on request while the automatic unlock is tested.</p></div>
-              </div>
-            </details>
-          </div>
-        </article>
-      </div>
+    <div class="wrap head">
+      <h2 class="label" id="photos-title">Photos &amp; storage</h2>
+      <p>One photo engine, two apps.</p>
     </div>
+
+    <article class="wrap case" id="clearspace" aria-labelledby="clearspace-title">
+      <div class="case-text">
+        <p class="label">iPhone · iPad</p>
+        <h3 class="case-title" id="clearspace-title">ClearSpace</h3>
+        <p>Biggest photos and videos first. Heart the keepers, clear the rest.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free to review; bulk clearing $9.99, once. Family Sharing.</dd></div>
+          <div><dt>Data</dt><dd>On-device, no account</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">App Store</a><a class="link in" href="../apps/clearspace/">Product page</a><a class="link in" href="../apps/clearspace/privacy.html">Privacy</a></div>
+      </div>
+      <div class="case-media">
+        <div class="stage s-clearspace">
+          <img class="tablet a1" src="../apps/assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad: a photo grid with each file’s size, and the selected waterfall photo open beside it" width="1400" height="1050" loading="lazy">
+          <img class="phone a2" src="../assets/screens/clearspace-timeline.webp" alt="ClearSpace on iPhone: the full timeline sorted biggest first, with 4,535 unhearted items totalling about 22 GB" width="350" height="760" loading="lazy">
+        </div>
+        <ol class="notes" aria-label="How ClearSpace is built">
+          <li><span class="n">01</span><div><b>Codec-aware size, not pixel count</b><p>Size is estimated from each file’s codec, dimensions and duration, so a 40,000-item library sorts without opening a file.</p></div></li>
+          <li><span class="n">02</span><div><b>Non-destructive by design</b><p>Every deletion goes to Recently Deleted, with 30 days to undo.</p></div></li>
+          <li><span class="n">03</span><div><b>Grid and photo side by side</b><p>On iPad, a tapped photo opens beside the grid.</p></div></li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="wrap case" id="unlidisk" aria-labelledby="unlidisk-title">
+      <div class="case-text">
+        <p class="label">Mac</p>
+        <h3 class="case-title" id="unlidisk-title">Unli Disk</h3>
+        <p>Map what fills your Mac, including developer caches and photo libraries.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>$14.99, once. Includes ClearSpace Pro, sent as a one-time App Store code on request.</dd></div>
+          <div><dt>Data</dt><dd>On-device</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/unli-disk/id6797325817">Mac App Store</a><a class="link in" href="../apps/unlidisk/">Product page</a><a class="link in" href="../apps/unlidisk/privacy.html">Privacy</a></div>
+      </div>
+      <div class="case-media">
+        <div class="stage s-unlidisk">
+          <img class="mac a1" src="../assets/screens/unlidisk-diskmap.webp" alt="Unli Disk on Mac: a disk map of 456 GB used, a note that 4.24 GB is safe to remove now, and a directory breakdown with reclaimable space" width="1400" height="880" loading="lazy">
+        </div>
+        <ol class="notes" aria-label="How Unli Disk is built">
+          <li><span class="n">01</span><div><b>Not just folder sizes</b><p>Finds orphaned Git repositories and developer caches, not just large folders.</p></div></li>
+          <li><span class="n">02</span><div><b>Trash only, never unlink</b><p>Every deletion goes through the macOS Trash.</p></div></li>
+          <li><span class="n">03</span><div><b>Signal, not a model</b><p>Duplicates and blur are found with a perceptual hash, Apple Vision feature prints and a blur score. An on-device vision model was tried and cut.</p></div></li>
+        </ol>
+      </div>
+    </article>
   </section>
 
-  <!-- ===================== Wedding ===================== -->
+  <!-- ===================== Wedding planning ===================== -->
   <section class="family" id="wedding" aria-labelledby="wedding-title">
-    <div class="wrap">
-      <header class="family-head">
-        <div>
-          <p class="kicker">Wedding planning</p>
-          <h2 id="wedding-title">Plan a wedding without losing the thread.</h2>
-        </div>
-        <p class="family-link"><span><strong>A board and a concierge that share one plan.</strong> Ask for a bus or a venue and the answer comes from real local listings, then lands on the same board you check every day.</span></p>
-      </header>
-      <article class="app solo" id="wedding-concierge" aria-labelledby="wc-title">
-        <figure class="shot s-wedding">
-          <img class="tablet a1" src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge on iPad: the concierge adds a guest, then suggests bus rental operators in Taguig with capacities and a starting price" width="1400" height="1049" loading="lazy" decoding="async">
-          <img class="phone a2" src="../assets/screens/nuptia-board.webp" alt="Wedding Concierge on iPhone: the planning board with 487 days left, the venue and photographer booked, and the guest list, seating and budget still open" width="350" height="760" loading="lazy" decoding="async">
-        </figure>
-        <div class="app-body">
-          <div class="app-head">
-            <img src="../assets/icons/wedding-concierge.png" alt="" width="44" height="44">
-            <div><h3 id="wc-title">Wedding Concierge</h3><p class="platforms">iPhone · iPad · Mac</p></div>
-          </div>
-          <p class="app-use">Guests, seating, budget, vendors and RSVPs on one board, with a concierge that can look things up and update the plan for you.</p>
-          <ul class="app-facts"><li>Syncs with iCloud</li><li>Answers from real listings</li><li>No tracking</li></ul>
-          <div class="app-actions">
-            <a class="store-badge" href="https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019"><img src="../assets/app-store-badge.svg" alt="Download Wedding Concierge on the App Store" width="120" height="40"></a>
-            <a class="store-badge" href="https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019?mt=12"><img src="../assets/mac-app-store-badge.svg" alt="Download Wedding Concierge on the Mac App Store" width="156" height="40"></a>
-            <a class="text-link" href="https://nuptia.wedding">nuptia.wedding →</a>
-          </div>
-          <details class="build">
-            <summary>How it’s built</summary>
-            <div class="build-body">
-              <div class="step"><p class="step-num">01 · Grounding &amp; state</p><h4>Grounded, not generative</h4><p>Venue and vendor picks come from Apple MapKit and Google Places, so the assistant reasons over real search results instead of inventing addresses. The model and the interface share one state model by design, so the assistant’s understanding can’t drift from what’s on screen.</p></div>
-              <div class="step"><p class="step-num">02 · Relay architecture</p><h4>No key in the app</h4><p>Cloud calls go through a stateless relay on Vercel that holds the API key and enforces rate limits on the server, so nothing in the app can leak a credential. An earlier build ran models on the device (Llama 3.2 3B, then Qwen 2.5 3B); that path was pulled, and the app now runs a single cloud preset (Gemini Flash) with no on-device fallback.</p></div>
-              <div class="step"><p class="step-num">03 · Data</p><h4>Local-first, minimal data</h4><p>SwiftData and CloudKit keep plans in sync across iPhone, iPad and Mac without a separate backend database. No user tracking; sensitive profile data stays on the device. Live since August 7, 2026.</p></div>
-            </div>
-          </details>
-        </div>
-      </article>
+    <div class="wrap head">
+      <h2 class="label" id="wedding-title">Wedding planning</h2>
     </div>
-  </section>
 
-  <!-- ===================== Court ===================== -->
-  <section class="family" id="court" aria-labelledby="court-title">
-    <div class="wrap">
-      <header class="family-head">
-        <div>
-          <p class="kicker">At the court</p>
-          <h2 id="court-title">The phone keeps the rules. You keep playing.</h2>
-        </div>
-        <p class="family-link"><span><strong>Two sports, one codebase.</strong> Both apps work offline, link up to three phones directly for replay angles, and run a club tournament from one iPad.</span></p>
-      </header>
-      <div class="pair">
-        <article class="app" id="shuttlevision" aria-labelledby="sv-title">
-          <figure class="shot s-shuttle">
-            <img class="tablet a1" src="../assets/screens/shuttlevision-tournament.webp" alt="Shuttle Vision on iPad: the tournament desk with two live courts and a standings leaderboard" width="1140" height="1520" loading="lazy" decoding="async">
-            <img class="phone a2" src="../assets/screens/shuttlevision-scoreboard.webp" alt="Shuttle Vision on iPhone: the scoreboard showing the next server, with Let, Replay and VAR Review buttons" width="700" height="1520" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/shuttle-vision.png" alt="" width="44" height="44">
-              <div><h3 id="sv-title">Shuttle Vision</h3><p class="platforms">iPhone · iPad · Apple Watch</p></div>
-            </div>
-            <p class="app-use">Badminton score, server and service box, kept for you — with slow-motion replay for the rally nobody agrees on.</p>
-            <ul class="app-facts"><li>Offline</li><li>Free to score</li><li>Pro: $9.99, once</li><li>Family Sharing</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/shuttle-vision/id6804413172"><img src="../assets/app-store-badge.svg" alt="Download Shuttle Vision on the App Store" width="120" height="40"></a>
-              <a class="text-link" href="../shuttle_vision/">Product page →</a>
-              <a class="quiet-link" href="../shuttle_vision/privacy.html">Privacy</a>
-            </div>
-            <details class="build">
-              <summary>How it’s built</summary>
-              <div class="build-body">
-                <div class="step"><p class="step-num">01 · The problem</p><h4>Nobody agrees on the score</h4><p>Serve passes on every rally won, the server’s box flips with their own score, and doubles adds a rotation on top. A few rallies in, nobody is sure who serves, from which box, or when to change ends — so play stops while four people rebuild the score from memory.</p></div>
-                <div class="step"><p class="step-num">02 · Keeping the rules</p><h4>Serve, box, ends and score</h4><p>Tracks server, receiver and diagonal box across singles and doubles, prompts the 11-point interval and change of ends, and handles BWF Law 14 lets. VAR Review opens the last rally from rolling memory at ¼× speed with frame stepping, so the players make the call themselves.</p></div>
-                <div class="step"><p class="step-num">03 · Rig &amp; desk</p><h4>1 to 3 phones, a whole club event</h4><p>Two net-post cameras and an optional umpire-chair camera give up to three synchronised replay angles, peer to peer with no Wi-Fi router. Court umpires scan a QR code to stream live scores to a central iPad that computes BWF tie-break standings, across up to 7 devices.</p></div>
-              </div>
-            </details>
-          </div>
-        </article>
-
-        <div class="bridge" aria-hidden="true"></div>
-
-        <article class="app" id="kitchenvision" aria-labelledby="kv-title">
-          <figure class="shot s-kitchen">
-            <img class="phone a1" src="../assets/screens/kitchenvision-hub.webp" alt="Kitchen Vision on iPhone: casual match setup for doubles, with right and left box players, points to win and first server" width="700" height="1520" loading="lazy" decoding="async">
-            <img class="phone a2" src="../assets/screens/kitchenvision-scoreboard.webp" alt="Kitchen Vision on iPhone: the pickleball scoreboard at the opening serve, showing the call 0-0-2 and Server 2" width="700" height="1520" loading="lazy" decoding="async">
-          </figure>
-          <div class="app-body">
-            <div class="app-head">
-              <img src="../assets/icons/kitchen-vision.png" alt="" width="44" height="44">
-              <div><h3 id="kv-title">Kitchen Vision</h3><p class="platforms">iPhone · iPad · Apple Watch</p></div>
-            </div>
-            <p class="app-use">Pickleball’s three-number call, server rotation and court sides, worked out on every point — with replay for disputed dinks.</p>
-            <ul class="app-facts"><li>Offline</li><li>Free to score</li><li>Pro: $9.99, once</li><li>Family Sharing</li></ul>
-            <div class="app-actions">
-              <a class="store-badge" href="https://apps.apple.com/app/kitchen-vision/id6804914154"><img src="../assets/app-store-badge.svg" alt="Download Kitchen Vision on the App Store" width="120" height="40"></a>
-              <a class="text-link" href="../kitchen_vision/">Product page →</a>
-              <a class="quiet-link" href="../kitchen_vision/privacy.html">Privacy</a>
-            </div>
-            <details class="build">
-              <summary>How it’s built</summary>
-              <div class="build-body">
-                <div class="step"><p class="step-num">01 · The 0-0-2 puzzle</p><h4>Resolving the three-number call</h4><p>Only one partner serves at the start of a doubles match (0-0-2). After each side-out both players serve in turn, swapping boxes when they win points. Kitchen Vision tracks the serve number and positions and shows the call on screen for every point.</p></div>
-                <div class="step"><p class="step-num">02 · One-thumb scoring &amp; VAR</p><h4>¼× replay on disputed calls</h4><p>Built for one-thumb scoring during play. When a kitchen-line fault or close sideline call is disputed, VAR Review replays the rally at ¼× speed from rolling memory, frame by frame.</p></div>
-                <div class="step"><p class="step-num">03 · Rig &amp; master desk</p><h4>Multi-camera sync and live standings</h4><p>Two or three iPhones along the net posts sync over an offline peer-to-peer mesh for multi-angle review. Organisers can run multi-court round robins and brackets with QR-connected court scoring.</p></div>
-              </div>
-            </details>
-          </div>
-        </article>
+    <article class="wrap case" id="wedding-concierge" aria-labelledby="wc-title">
+      <div class="case-text">
+        <p class="label">iPhone · iPad · Mac</p>
+        <h3 class="case-title" id="wc-title">Wedding Concierge</h3>
+        <p>Guests, seating, budget, vendors and RSVPs on one board, with an AI concierge.</p>
+        <dl class="facts">
+          <div><dt>Data</dt><dd>Syncs with your iCloud. No tracking.</dd></div>
+          <div><dt>Answers</dt><dd>From real map and place listings</dd></div>
+          <div><dt>Live</dt><dd>Since August 7, 2026</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019">App Store</a><a class="link" href="https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019?mt=12">Mac App Store</a><a class="link" href="https://nuptia.wedding">nuptia.wedding</a></div>
       </div>
-    </div>
+      <div class="case-media">
+        <div class="stage s-wedding">
+          <img class="tablet a1" src="../assets/screens/nuptia-concierge.webp" alt="Wedding Concierge on iPad: the concierge adds a guest, then suggests bus rental operators in Taguig with capacities and a starting price" width="1400" height="1049" loading="lazy">
+          <img class="phone a2" src="../assets/screens/nuptia-board.webp" alt="Wedding Concierge on iPhone: the planning board with 487 days left, the venue and photographer booked, and the guest list, seating and budget still open" width="350" height="760" loading="lazy">
+        </div>
+        <ol class="notes" aria-label="How Wedding Concierge is built">
+          <li><span class="n">01</span><div><b>Grounded, not generative</b><p>Venue and vendor picks come from Apple MapKit and Google Places, not the model’s memory.</p></div></li>
+          <li><span class="n">02</span><div><b>No key in the app</b><p>Cloud calls go through a relay that holds the API key. On-device models were tried and pulled; it runs Gemini Flash.</p></div></li>
+          <li><span class="n">03</span><div><b>Local-first, minimal data</b><p>SwiftData and CloudKit sync plans across devices. No backend database.</p></div></li>
+        </ol>
+      </div>
+    </article>
   </section>
 
+  <!-- ===================== At the court ===================== -->
+  <section class="family" id="court" aria-labelledby="court-title">
+    <div class="wrap head">
+      <h2 class="label" id="court-title">At the court</h2>
+      <p>Two sports, one codebase.</p>
+    </div>
 
-  <!-- ===================== OpenGrail ===================== -->
+    <article class="wrap case" id="shuttlevision" aria-labelledby="sv-title">
+      <div class="case-text">
+        <p class="label">iPhone · iPad · Apple Watch</p>
+        <h3 class="case-title" id="sv-title">Shuttle Vision</h3>
+        <p>Badminton score, server and service box, with slow-motion replay.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free to score; Pro $9.99, once. Family Sharing.</dd></div>
+          <div><dt>Data</dt><dd>Offline. Phones link directly, no server.</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/shuttle-vision/id6804413172">App Store</a><a class="link in" href="../shuttle_vision/">Product page</a><a class="link in" href="../shuttle_vision/privacy.html">Privacy</a></div>
+      </div>
+      <div class="case-media">
+        <div class="stage tall s-shuttle">
+          <img class="tablet a1" src="../assets/screens/shuttlevision-tournament.webp" alt="Shuttle Vision on iPad: the tournament desk with two live courts and a standings leaderboard" width="1140" height="1520" loading="lazy">
+          <img class="phone a2" src="../assets/screens/shuttlevision-scoreboard.webp" alt="Shuttle Vision on iPhone: the scoreboard showing the next server, with Let, Replay and VAR Review buttons" width="700" height="1520" loading="lazy">
+        </div>
+        <ol class="notes" aria-label="How Shuttle Vision is built">
+          <li><span class="n">01</span><div><b>Nobody agrees on the score</b><p>A few rallies into doubles, nobody is sure who serves or from which box.</p></div></li>
+          <li><span class="n">02</span><div><b>Serve, box, ends and score</b><p>Tracks server, receiver and box, prompts change of ends, and replays the last rally at ¼×.</p></div></li>
+          <li><span class="n">03</span><div><b>1 to 3 phones, a whole club event</b><p>Up to three replay angles with no router. Umpires stream scores to one iPad that runs the standings.</p></div></li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="wrap case" id="kitchenvision" aria-labelledby="kv-title">
+      <div class="case-text">
+        <p class="label">iPhone · iPad · Apple Watch</p>
+        <h3 class="case-title" id="kv-title">Kitchen Vision</h3>
+        <p>Pickleball’s three-number call, server rotation and court sides, with replay.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free to score; Pro $9.99, once. Family Sharing.</dd></div>
+          <div><dt>Data</dt><dd>Offline. Phones link directly, no server.</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://apps.apple.com/app/kitchen-vision/id6804914154">App Store</a><a class="link in" href="../kitchen_vision/">Product page</a><a class="link in" href="../kitchen_vision/privacy.html">Privacy</a></div>
+      </div>
+      <div class="case-media">
+        <div class="stage tall s-kitchen">
+          <img class="phone a1" src="../assets/screens/kitchenvision-hub.webp" alt="Kitchen Vision on iPhone: casual match setup for doubles, with right and left box players, points to win and first server" width="700" height="1520" loading="lazy">
+          <img class="phone a2" src="../assets/screens/kitchenvision-scoreboard.webp" alt="Kitchen Vision on iPhone: the pickleball scoreboard at the opening serve, showing the call 0-0-2 and Server 2" width="700" height="1520" loading="lazy">
+        </div>
+        <ol class="notes" aria-label="How Kitchen Vision is built">
+          <li><span class="n">01</span><div><b>Resolving the 0-0-2 call</b><p>Shows the serve number and positions for every point.</p></div></li>
+          <li><span class="n">02</span><div><b>¼× replay on disputed calls</b><p>One-thumb scoring. Disputed calls replay at ¼×, frame by frame.</p></div></li>
+          <li><span class="n">03</span><div><b>Multi-camera sync and live standings</b><p>Two or three iPhones sync offline for review. Organisers run round robins and brackets.</p></div></li>
+        </ol>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== Curiosity ===================== -->
   <section class="family" id="curiosity" aria-labelledby="og-title">
-    <div class="wrap">
-      <header class="family-head">
-        <div>
-          <p class="kicker">Curiosity</p>
-          <h2 id="og-title">695 traditions you can move through.</h2>
-        </div>
-        <p class="family-link"><span><strong>An open atlas, not 695 separate pages.</strong> Comparative religion, theology and myth, with 1,088 relationships drawn between them and a source behind every claim.</span></p>
-      </header>
-      <article class="app solo" id="opengrail" aria-labelledby="og-app-title">
-        <figure class="shot s-atlas">
-          <img src="../assets/screens/opengrail-atlas.webp" alt="OpenGrail: a force-directed atlas with eleven labelled clusters, from Abrahamic and Dharmic to East Asian and Ancient European" width="1400" height="840" loading="lazy" decoding="async">
-        </figure>
-        <div class="app-body">
-          <div class="app-head">
-            <span class="og-icon" aria-hidden="true">
-              <svg viewBox="0 0 44 44" width="30" height="30" focusable="false"><g fill="none" stroke="var(--accent)" stroke-width="1.6"><circle cx="22" cy="22" r="15"/><circle cx="22" cy="22" r="7"/><path d="M22 7 V37 M7 22 H37"/></g><g fill="var(--accent)"><circle cx="22" cy="7" r="2.8"/><circle cx="37" cy="22" r="2.8"/><circle cx="22" cy="37" r="2.8"/><circle cx="7" cy="22" r="2.8"/></g></svg>
-            </span>
-            <div><h3 id="og-app-title">OpenGrail</h3><p class="platforms">Web</p></div>
-          </div>
-          <p class="app-use">Pick a tradition and see where it came from, what it grew out of and what it influenced.</p>
-          <ul class="app-facts"><li>Free</li><li>MIT licensed</li><li>No accounts or analytics</li></ul>
-          <div class="app-actions">
-            <a class="text-link" href="https://opengrail.calmdownoscar.com/">Open the atlas →</a>
-            <a class="quiet-link" href="https://github.com/CalixOscar/OpenGrail">Source on GitHub</a>
-          </div>
-          <details class="build">
-            <summary>How it’s built</summary>
-            <div class="build-body">
-              <div class="step"><p class="step-num">01 · Source of truth</p><h4>Markdown in, graph out</h4><p>Every tradition is a Markdown file with validated frontmatter. A build script resolves the links, computes backlinks and deterministically regenerates one <code>graph.json</code>, so a correction is a pull request against a text file rather than a write to a database nobody else can see.</p></div>
-              <div class="step"><p class="step-num">02 · Sourcing rule</p><h4>A claim is derived from a source, or removed</h4><p>Origin pins are two separate steps: an editorial decision about where a tradition came from, then a lookup of that place against Wikidata that records the entity ID. The corpus needed that rule because it didn’t start with it — a generated first pass had pinned 127 traditions to one point near Jerusalem, including the Quakers, who began in 1650s Lancashire. Remediation resolved 619 distinct places.</p><p>Images failed the same way: captions had been written alongside an image search rather than from the file it returned, so an A∴A∴ journal was illustrated with a cruise ship. Every caption is now read off the Wikimedia Commons record for the file used, and 248 images that couldn’t be tied to their tradition were deleted rather than re-captioned.</p></div>
-              <div class="step"><p class="step-num">03 · Running it</p><h4>Nothing to trust</h4><p>A static bundle: no backend, no analytics, no accounts, and no AI service involved when you read it. Filters mark how well attested a claim is instead of flattening scholarship and folklore into one confident voice.</p></div>
-            </div>
-          </details>
-        </div>
-      </article>
+    <div class="wrap head">
+      <h2 class="label" id="og-title">Curiosity</h2>
     </div>
+
+    <article class="wrap case" id="opengrail" aria-labelledby="og-app-title">
+      <div class="case-text">
+        <p class="label">Web</p>
+        <h3 class="case-title" id="og-app-title">OpenGrail</h3>
+        <p>695 traditions and 1,088 links between them.</p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Free, MIT licensed</dd></div>
+          <div><dt>Data</dt><dd>No accounts or analytics</dd></div>
+        </dl>
+        <div class="links"><a class="link" href="https://opengrail.calmdownoscar.com/">Open the atlas</a><a class="link" href="https://github.com/CalixOscar/OpenGrail">Source</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage fill s-atlas" href="https://opengrail.calmdownoscar.com/" tabindex="-1">
+          <img src="../assets/screens/opengrail-atlas.webp" alt="OpenGrail: a force-directed atlas with eleven labelled clusters, from Abrahamic and Dharmic to East Asian and Ancient European" width="1400" height="840" loading="lazy">
+        </a>
+        <ol class="notes" aria-label="How OpenGrail is built">
+          <li><span class="n">01</span><div><b>Markdown in, graph out</b><p>Every tradition is a Markdown file; a build script generates the graph.</p></div></li>
+          <li><span class="n">02</span><div><b>A claim is derived from a source, or removed</b><p>A generated first pass pinned 127 traditions near Jerusalem, Quakers included. Origins now come from Wikidata, and 248 unsourced images were deleted.</p></div></li>
+          <li><span class="n">03</span><div><b>Static</b><p>No backend, analytics, accounts or AI service.</p></div></li>
+        </ol>
+      </div>
+    </article>
   </section>
+
 </main>
 
-<footer>
-  <div class="wrap foot-row">
+<footer class="foot">
+  <div class="wrap">
     <span>© 2026 calmdownoscar · est. 2025</span>
-    <span class="foot-links" style="display:inline-flex;gap:18px;flex-wrap:wrap"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a></span>
-    <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
-
-<script>
-(function(){
-  // Mobile nav disclosure
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-  if (!navToggle || !topbar) return;
-
-  function closeNav(){
-    if (!topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  }
-  navToggle.addEventListener('click', function(e){
-    e.stopPropagation();
-    if (topbar.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
-    else { topbar.classList.add('nav-open'); navToggle.setAttribute('aria-expanded', 'true'); }
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && topbar.classList.contains('nav-open')){ closeNav(); navToggle.focus(); }
-  });
-  document.addEventListener('click', function(e){
-    if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)) closeNav();
-  });
-  if (mainNav) mainNav.querySelectorAll('a').forEach(function(link){ link.addEventListener('click', closeNav); });
-  window.addEventListener('resize', function(){ if (window.innerWidth >= 768) closeNav(); });
-})();
-</script>
-
-<script>
-// Match anchor offsets to the category bar's actual height, including text zoom.
-(function(){
-  var index = document.querySelector('.app-index');
-  if (!index) return;
-  function measureIndex(){
-    document.documentElement.style.setProperty('--app-index-h', index.getBoundingClientRect().height + 'px');
-  }
-  measureIndex();
-  if (window.ResizeObserver) new ResizeObserver(measureIndex).observe(index);
-  else window.addEventListener('resize', measureIndex);
-})();
-</script>
 
 </body>
 </html>

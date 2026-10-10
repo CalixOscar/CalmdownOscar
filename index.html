@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png">
@@ -18,336 +16,195 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/">
 <link rel="canonical" href="https://www.calmdownoscar.com/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-
-    /* Contrast for these values is recorded in docs/calmdownoscar_spec.md §1.1. */
-    --paper:      #141B22;
-    --paper-sunk: #1E2933;
-    --stage:      #0F151B;   /* behind screenshots: one step darker than the page */
-    --ink:        #E8EEF4;   /* 14.9:1 */
-    --muted:      #8FA0AE;   /*  6.5:1 */
-    --accent:     #85B6FF;   /* graphics, rules, large display: the site-wide blue */
-    --accent-ink: #85B6FF;   /* small text on the page, 8.9:1 */
-    --edge:       rgba(255,255,255,.09);
-    --edge-hi:    rgba(255,255,255,.18);
-    --live-green: #34C759;
-
-    --radius: 6px;
-    --ease: cubic-bezier(.2,.7,.3,1);
-    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    --topbar-h: calc(64px + var(--sat));
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:var(--stage); }
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  img{ display:block; max-width:100%; }
-  a{ color:inherit; }
-  a:focus-visible, summary:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
-  .wrap{ max-width:1160px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-  .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-ink); }
-
-  /* ================= topbar ================= */
-  .topbar{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h); padding-top:var(--sat);
-    background:rgb(20,27,34);
-    border-bottom:1px solid var(--edge);
-    display:flex; align-items:center;
-  }
-  .topbar .wrap{ display:flex; justify-content:space-between; align-items:center; width:100%; }
-  .mark{ font-weight:800; font-size:19px; color:var(--ink); text-decoration:none; letter-spacing:-.02em; flex-shrink:0; }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; gap:20px; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent-ink); }
-  .nav-toggle{ display:none; }
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
-      width:44px; height:44px; background:transparent; border:1px solid var(--edge); border-radius:var(--radius);
-      cursor:pointer; padding:0; color:var(--ink); flex-shrink:0;
-    }
-    .nav-toggle-bar{ display:block; width:18px; height:2px; background:var(--ink); border-radius:1px; transition:transform 140ms var(--ease); }
-    .topbar.nav-open .nav-toggle-bar:first-child{ transform:translateY(3.5px) rotate(45deg); }
-    .topbar.nav-open .nav-toggle-bar:last-child{ transform:translateY(-3.5px) rotate(-45deg); }
-    nav{
-      display:none; position:absolute; top:100%; left:0; right:0;
-      background:rgb(20,27,34); border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column; gap:2px; align-items:stretch;
-      overflow-y:auto; max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{ display:flex; }
-    nav a{ font-size:15px; padding:10px 0; color:var(--ink); border-bottom:1px solid rgba(255,255,255,.05); width:100%; }
-    nav a:last-child{ border-bottom:none; }
-  }
-
-  /* ================= hero: the apps first =================
-     The shelf is the page's index. Each tile is a real screenshot composition
-     with a short use line, so the products read even if the text is skipped. */
-  .hero{ padding:44px 0 56px; }
-  .hero-head{ display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:20px 48px; align-items:end; margin-bottom:32px; }
-  .hero h1{ font-size:clamp(36px, 1.2rem + 3.6vw, 66px); font-weight:800; line-height:1.03; letter-spacing:-.04em; margin-top:14px; }
-  .hero h1 .stop{ color:var(--accent); }
-  .hero-side p{ color:var(--muted); font-size:17px; line-height:1.5; max-width:40ch; }
-
-  .shelf{ list-style:none; display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:16px; }
-  .shelf li{ min-width:0; }
-  .t-photos{ grid-column:span 7; } .t-wedding{ grid-column:span 5; }
-  .t-court{ grid-column:span 5; }
-  .t-ai{ grid-column:1 / -1; }
-  .t-atlas{ grid-column:span 7; }
-  .tile{
-    position:relative; display:flex; flex-direction:column; height:360px; overflow:hidden; text-decoration:none;
-    background:radial-gradient(120% 90% at 50% 100%, #1d2a37 0%, var(--stage) 70%);
-    border:1px solid var(--edge); border-radius:14px;
-    transition:border-color .25s var(--ease), transform .25s var(--ease);
-  }
-  .tile:hover{ border-color:var(--accent); transform:translateY(-3px); }
-  .tile-text{ position:relative; z-index:2; display:block; flex:0 0 auto; padding:20px 22px 0; }
-  .tile-kicker{ display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
-  .tile-title{ display:block; font-size:21px; font-weight:700; letter-spacing:-.02em; line-height:1.2; margin-top:6px; max-width:24ch; }
-  .tile-apps{ display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:10px; font-size:13px; color:var(--muted); }
-  .tile-apps span{ display:inline-flex; align-items:center; gap:7px; }
-  .tile-apps img{ width:20px; height:20px; border-radius:5px; }
-  .tile-art{ position:relative; display:block; flex:1 1 auto; margin-top:22px; min-height:120px; }
-  .tile-art img{ position:absolute; height:auto; }
-  .tile:hover .tile-art img{ transform:translateY(-4px); }
-  .tile-art img{ transition:transform .4s var(--ease); }
-
-  /* device treatments */
-  .phone{ border-radius:16px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.55); }
-  .mac{ border-radius:8px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.5); }
-  .tablet{ border-radius:12px; border:1px solid rgba(255,255,255,.16); box-shadow:0 18px 40px rgba(0,0,0,.5); }
-
-  .t-photos .a1{ left:5%; top:0; width:70%; }
-  .t-photos .a2{ right:6%; top:-28px; width:23%; }
-  .t-wedding .a1{ left:6%; top:12px; width:66%; }
-  .t-wedding .a2{ right:7%; top:-20px; width:33%; }
-  .t-court .a1{ left:15%; top:0; width:32%; }
-  .t-court .a2{ right:15%; top:26px; width:32%; }
-  /* Unli Rice leads, full width: text left, Mac and iPhone screens right */
-  .t-ai .tile-text{ max-width:42%; padding-top:26px; }
-  .t-ai .tile-art{ position:absolute; top:34px; right:0; bottom:0; left:40%; margin:0; }
-  .t-ai .a1{ left:0; top:18px; width:76%; }
-  .t-ai .a2{ right:7%; top:0; width:19%; }
-  .t-atlas .tile-text{ max-width:52%; padding-top:26px; }
-  .t-atlas .tile-art{ position:absolute; top:0; right:0; bottom:0; left:44%; margin:0; }
-  .t-atlas .tile-art img{ position:static; width:100%; height:100%; object-fit:cover; object-position:50% 45%;
-    -webkit-mask-image:linear-gradient(to right, transparent 0, #000 22%); mask-image:linear-gradient(to right, transparent 0, #000 22%); }
-  .t-atlas .tile:hover .tile-art img{ transform:none; }
-  .og-mark{ width:20px; height:20px; border-radius:5px; border:1px solid var(--edge); display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:9px; font-weight:700; color:var(--accent-ink); }
-
-  .screens-note{ margin-top:14px; font-size:12px; color:var(--muted); }
-
-  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); }
-  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
-  .foot-row a{ color:var(--muted); padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
-  .foot-row a:hover{ color:var(--accent-ink); }
-
-  /* ================= responsive ================= */
-  @media (max-width:960px){
-    .shelf{ grid-template-columns:repeat(2, minmax(0,1fr)); }
-    .t-photos, .t-wedding, .t-court, .t-atlas{ grid-column:span 1; }
-    .t-atlas .tile-text{ max-width:none; padding-top:20px; }
-    .t-atlas .tile-art{ position:relative; left:auto; margin-top:16px; }
-    .t-atlas .tile-art img{ -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 30%); mask-image:linear-gradient(to bottom, transparent 0, #000 30%); }
-    .tile{ height:340px; }
-  }
-  @media (max-width:760px){
-    .hero{ padding-top:28px; }
-    .hero-head{ grid-template-columns:1fr; }
-    .hero-head{ gap:14px; margin-bottom:24px; }
-    .shelf{ grid-template-columns:1fr; gap:12px; }
-    .tile{ height:300px; }
-    .t-atlas .tile{ height:300px; }
-    .t-ai .tile-text{ max-width:none; padding-top:20px; }
-    .t-ai .tile-art{ position:relative; top:auto; left:auto; margin-top:22px; }
-    .t-ai .a1{ left:5%; top:0; width:72%; }
-    .t-ai .a2{ right:6%; top:-28px; width:21%; }
-    .t-atlas .tile-text{ max-width:none; padding-top:20px; }
-    .t-atlas .tile-art{ position:relative; left:auto; margin-top:16px; }
-    .t-atlas .tile-art img{ -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 30%); mask-image:linear-gradient(to bottom, transparent 0, #000 30%); }
-  }
-  @media (max-width:420px){
-    .tile-title{ font-size:19px; }
-    .tile{ height:290px; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .tile, .tile-art img{ transition:none; }
-    .tile:hover, .tile:hover .tile-art img{ transform:none; }
-  }
+  /* screenshot compositions for the home page stages */
+  .s-ai .a1{ left:5%; top:13%; width:70%; }
+  .s-ai .a2{ right:7%; top:9%; width:19%; }
+  .s-photos .a1{ left:5%; top:13%; width:68%; }
+  .s-photos .a2{ right:7%; top:8%; width:20%; }
+  .s-wedding .a1{ left:6%; top:11%; width:60%; }
+  .s-wedding .a2{ right:8%; top:15%; width:20%; }
+  .s-court .a1{ left:12%; top:16%; width:21%; }
+  .s-court .a2{ left:39.5%; top:9%; width:21%; }
+  .s-court .a3{ right:12%; top:16%; width:21%; }
+  .s-atlas img{ object-position:50% 45%; }
 </style>
+<script src="assets/site.js" defer></script>
+<script src="assets/motion.js" defer></script>
+<script src="assets/webmcp.js" defer></script>
 </head>
 <body>
-<header class="topbar">
+
+<header class="top">
   <div class="wrap">
     <a class="mark" href="./">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="aboutme/">About Me</a>
-      <a href="abouttheapps/">About the apps</a>
-      <a href="how_I_work/">How I Work</a>
-      <a href="the_studio/">The Studio</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="abouttheapps/">Apps</a>
+      <a href="how_I_work/">How I work</a>
+      <a href="aboutme/">About</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
 
-  <section class="hero" id="apps" aria-labelledby="hero-title">
-    <div class="wrap hero-head">
-      <div>
-        <p class="kicker">calmdownoscar · independent app studio</p>
-        <h1 id="hero-title">Everyday problems, made into apps<span class="stop">.</span></h1>
-      </div>
-      <div class="hero-side">
-        <p>Native apps for iPhone, iPad and Mac, and an open atlas for the web. Each does one job and keeps your data as close to you as the job allows.</p>
-      </div>
+  <section class="wrap intro" aria-label="Introduction">
+    <p class="label">calmdownoscar · est. 2025</p>
+    <h1 class="lede">Apps for iPhone, iPad and Mac.</h1>
+    <p class="by">Made by Peter. <a href="aboutme/">About me</a></p>
+  </section>
+
+  <section id="apps" aria-label="The apps">
+    <div class="wrap head">
+      <p class="label">Apps</p>
+      <a class="link in" href="abouttheapps/">How each one is built</a>
     </div>
-    <div class="wrap">
-      <ul class="shelf" aria-label="The apps, grouped by what they help with">
-        <li class="t-ai">
-          <a class="tile" href="abouttheapps/#ai-work">
-            <span class="tile-text">
-              <span class="tile-kicker">Working with AI</span>
-              <span class="tile-title">Keep AI work on track, and catch ideas by voice</span>
-              <span class="tile-apps"><span><img src="assets/icons/unli-rice.png" alt="" width="20" height="20">Unli Rice</span><span><img src="assets/icons/unli-rice-capture.png" alt="" width="20" height="20">Unli Rice Capture</span></span>
-            </span>
-            <span class="tile-art" aria-hidden="true">
-              <img class="mac a1" src="assets/screens/unlirice-todo.jpg" alt="" width="1600" height="1000">
-              <img class="phone a2" src="assets/screens/unlicapture-notes.webp" alt="" width="350" height="760">
-            </span>
-          </a>
-        </li>
-        <li class="t-photos">
-          <a class="tile" href="abouttheapps/#photos">
-            <span class="tile-text">
-              <span class="tile-kicker">Photos &amp; storage</span>
-              <span class="tile-title">Find what’s filling your iPhone and Mac</span>
-              <span class="tile-apps"><span><img src="assets/icons/clearspace.png" alt="" width="20" height="20">ClearSpace</span><span><img src="assets/icons/unli-disk.png" alt="" width="20" height="20">Unli Disk</span></span>
-            </span>
-            <span class="tile-art" aria-hidden="true">
-              <img class="mac a1" src="assets/screens/unlidisk-diskmap.webp" alt="" width="1400" height="880" fetchpriority="high">
-              <img class="phone a2" src="assets/screens/clearspace-timeline.webp" alt="" width="350" height="760">
-            </span>
-          </a>
-        </li>
-        <li class="t-wedding">
-          <a class="tile" href="abouttheapps/#wedding">
-            <span class="tile-text">
-              <span class="tile-kicker">Wedding planning</span>
-              <span class="tile-title">Plan the day with every detail in one place</span>
-              <span class="tile-apps"><span><img src="assets/icons/wedding-concierge.png" alt="" width="20" height="20">Wedding Concierge</span></span>
-            </span>
-            <span class="tile-art" aria-hidden="true">
-              <img class="tablet a1" src="assets/screens/nuptia-concierge.webp" alt="" width="1400" height="1049">
-              <img class="phone a2" src="assets/screens/nuptia-board.webp" alt="" width="350" height="760">
-            </span>
-          </a>
-        </li>
-        <li class="t-court">
-          <a class="tile" href="abouttheapps/#court">
-            <span class="tile-text">
-              <span class="tile-kicker">At the court</span>
-              <span class="tile-title">Keep score and settle the close calls</span>
-              <span class="tile-apps"><span><img src="assets/icons/shuttle-vision.png" alt="" width="20" height="20">Shuttle Vision</span><span><img src="assets/icons/kitchen-vision.png" alt="" width="20" height="20">Kitchen Vision</span></span>
-            </span>
-            <span class="tile-art" aria-hidden="true">
-              <img class="phone a1" src="assets/screens/shuttlevision-scoreboard.webp" alt="" width="700" height="1520" loading="lazy">
-              <img class="phone a2" src="assets/screens/kitchenvision-scoreboard.webp" alt="" width="700" height="1520" loading="lazy">
-            </span>
-          </a>
-        </li>
-        <li class="t-atlas">
-          <a class="tile" href="abouttheapps/#opengrail">
-            <span class="tile-text">
-              <span class="tile-kicker">Curiosity</span>
-              <span class="tile-title">Explore how the world’s religions and myths connect</span>
-              <span class="tile-apps"><span><span class="og-mark" aria-hidden="true">OG</span>OpenGrail</span></span>
-            </span>
-            <span class="tile-art" aria-hidden="true">
-              <img src="assets/screens/opengrail-atlas.webp" alt="" width="1400" height="840" loading="lazy">
-            </span>
-          </a>
-        </li>
-      </ul>
-      <p class="screens-note">Every app image on this page is a screenshot from the shipped app.</p>
+
+    <article class="wrap case">
+      <div class="case-text">
+        <p class="label">Working with AI</p>
+        <h2 class="case-title">Unli Rice</h2>
+        <p>Shared memory for your AI tools, and a To Do list of what’s still open.</p>
+        <ul class="apps-list">
+          <li><img src="assets/icons/unli-rice.png" alt="" width="32" height="32"><span><b>Unli Rice</b><span>Mac · Free · Open source</span></span><a class="link" href="https://apps.apple.com/app/unli-rice/id6792837485">Mac App Store</a></li>
+          <li><img src="assets/icons/unli-rice-capture.png" alt="" width="32" height="32"><span><b>Unli Rice Capture</b><span>iPhone · Free</span></span><a class="link" href="https://apps.apple.com/app/unli-rice-capture/id6800863948">App Store</a></li>
+        </ul>
+        <div class="links"><a class="link in" href="abouttheapps/#ai-work">How it’s built</a><a class="link" href="https://github.com/CalixOscar/unli-rice">Source</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage s-ai" href="abouttheapps/#ai-work" tabindex="-1" aria-hidden="true">
+          <img class="mac a1" src="assets/screens/unlirice-todo.jpg" alt="" width="1600" height="1000" fetchpriority="high">
+          <img class="phone a2" src="assets/screens/unlicapture-notes.webp" alt="" width="350" height="760">
+        </a>
+      </div>
+    </article>
+
+    <article class="wrap case">
+      <div class="case-text">
+        <p class="label">Photos &amp; storage</p>
+        <h2 class="case-title">ClearSpace <small>and Unli Disk</small></h2>
+        <p>Find what’s filling your iPhone and Mac, biggest first.</p>
+        <ul class="apps-list">
+          <li><img src="assets/icons/clearspace.png" alt="" width="32" height="32"><span><b>ClearSpace</b><span>iPhone · iPad · Bulk clearing $9.99, once</span></span><a class="link" href="https://apps.apple.com/app/clearspace-organize-photos/id6749827807">App Store</a></li>
+          <li><img src="assets/icons/unli-disk.png" alt="" width="32" height="32"><span><b>Unli Disk</b><span>Mac · $14.99, once · Includes ClearSpace Pro</span></span><a class="link" href="https://apps.apple.com/app/unli-disk/id6797325817">Mac App Store</a></li>
+        </ul>
+        <div class="links"><a class="link in" href="abouttheapps/#photos">How it’s built</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage s-photos" href="abouttheapps/#photos" tabindex="-1" aria-hidden="true">
+          <img class="mac a1" src="assets/screens/unlidisk-diskmap.webp" alt="" width="1400" height="880" loading="lazy">
+          <img class="phone a2" src="assets/screens/clearspace-timeline.webp" alt="" width="350" height="760" loading="lazy">
+        </a>
+      </div>
+    </article>
+
+    <article class="wrap case">
+      <div class="case-text">
+        <p class="label">Wedding planning</p>
+        <h2 class="case-title">Wedding Concierge</h2>
+        <p>Guests, seating, budget and vendors on one board, with an AI concierge.</p>
+        <ul class="apps-list">
+          <li><img src="assets/icons/wedding-concierge.png" alt="" width="32" height="32"><span><b>Wedding Concierge</b><span>iPhone · iPad · Mac</span></span><a class="link" href="https://apps.apple.com/app/nuptia-ai-wedding-planner/id6786553019">App Store</a></li>
+        </ul>
+        <div class="links"><a class="link in" href="abouttheapps/#wedding">How it’s built</a><a class="link" href="https://nuptia.wedding">nuptia.wedding</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage s-wedding" href="abouttheapps/#wedding" tabindex="-1" aria-hidden="true">
+          <img class="tablet a1" src="assets/screens/nuptia-concierge.webp" alt="" width="1400" height="1049" loading="lazy">
+          <img class="phone a2" src="assets/screens/nuptia-board.webp" alt="" width="350" height="760" loading="lazy">
+        </a>
+      </div>
+    </article>
+
+    <article class="wrap case">
+      <div class="case-text">
+        <p class="label">At the court</p>
+        <h2 class="case-title">Shuttle Vision <small>and Kitchen Vision</small></h2>
+        <p>Score, server and service box for badminton and pickleball, with slow-motion replay.</p>
+        <ul class="apps-list">
+          <li><img src="assets/icons/shuttle-vision.png" alt="" width="32" height="32"><span><b>Shuttle Vision</b><span>Badminton · Free to score · Pro $9.99, once</span></span><a class="link" href="https://apps.apple.com/app/shuttle-vision/id6804413172">App Store</a></li>
+          <li><img src="assets/icons/kitchen-vision.png" alt="" width="32" height="32"><span><b>Kitchen Vision</b><span>Pickleball · Free to score · Pro $9.99, once</span></span><a class="link" href="https://apps.apple.com/app/kitchen-vision/id6804914154">App Store</a></li>
+        </ul>
+        <div class="links"><a class="link in" href="abouttheapps/#court">How it’s built</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage s-court" href="abouttheapps/#court" tabindex="-1" aria-hidden="true">
+          <img class="phone a1" src="assets/screens/kitchenvision-hub.webp" alt="" width="700" height="1520" loading="lazy">
+          <img class="phone a2" src="assets/screens/shuttlevision-scoreboard.webp" alt="" width="700" height="1520" loading="lazy">
+          <img class="phone a3" src="assets/screens/kitchenvision-scoreboard.webp" alt="" width="700" height="1520" loading="lazy">
+        </a>
+      </div>
+    </article>
+
+    <article class="wrap case">
+      <div class="case-text">
+        <p class="label">Curiosity</p>
+        <h2 class="case-title">OpenGrail</h2>
+        <p>An open atlas of 695 religious and mythic traditions.</p>
+        <ul class="apps-list">
+          <li><span class="og" aria-hidden="true">OG</span><span><b>OpenGrail</b><span>Web · Free · MIT licensed</span></span><a class="link" href="https://opengrail.calmdownoscar.com/">Open the atlas</a></li>
+        </ul>
+        <div class="links"><a class="link in" href="abouttheapps/#curiosity">How it’s built</a><a class="link" href="https://github.com/CalixOscar/OpenGrail">Source</a></div>
+      </div>
+      <div class="case-media">
+        <a class="stage fill s-atlas" href="https://opengrail.calmdownoscar.com/" tabindex="-1" aria-hidden="true">
+          <img src="assets/screens/opengrail-atlas.webp" alt="" width="1400" height="840" loading="lazy">
+        </a>
+      </div>
+    </article>
+  </section>
+
+  <section class="wrap block" aria-label="How I work">
+    <div class="split">
+      <div>
+        <p class="label">How I work</p>
+        <p class="lede-sm">Four questions from my day job in HR.</p>
+      </div>
+      <ol class="rows">
+        <li><a class="row" href="how_I_work/#purpose"><span class="n">01 · Purpose</span><span>Which data does the task actually need?</span></a></li>
+        <li><a class="row" href="how_I_work/#access"><span class="n">02 · Access</span><span>What crosses a boundary, and who allows it?</span></a></li>
+        <li><a class="row" href="how_I_work/#oversight"><span class="n">03 · Oversight</span><span>Who checks the answer before it counts?</span></a></li>
+        <li><a class="row" href="how_I_work/#recovery"><span class="n">04 · Recovery</span><span>If something goes wrong, how is it undone?</span></a></li>
+      </ol>
     </div>
   </section>
 
-
+  <section class="wrap block" id="contact" aria-label="Contact">
+    <div class="split">
+      <div>
+        <p class="label">Contact</p>
+        <p class="lede-sm"><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></p>
+      </div>
+      <ul class="rows">
+        <li class="row"><span>Idea clinic</span>
+          <form class="idea" id="idea-start" action="/idea-clinic/" toolname="question_my_idea" tooldescription="Start the calmdownoscar Idea Clinic with a one-sentence app idea. It opens a short interview in this browser that ends in a prompt for the visitor’s own AI. Nothing is sent to the studio.">
+            <label class="sr-only" for="idea-start-input">What’s the idea, in one sentence?</label>
+            <div class="idea-row">
+              <input id="idea-start-input" type="text" maxlength="800" placeholder="An app that…" autocomplete="off" toolparamdescription="The app idea in one or two sentences, up to 800 characters.">
+              <button type="submit">Question it →</button>
+            </div>
+            <p class="idea-note" id="idea-start-note">Nothing is sent anywhere.</p>
+          </form>
+        </li>
+        <li class="row"><span>Source</span><div class="links"><a class="link" href="https://github.com/CalixOscar/unli-rice">Unli Rice</a><a class="link" href="https://github.com/CalixOscar/OpenGrail">OpenGrail</a></div></li>
+      </ul>
+    </div>
+  </section>
 
 </main>
 
-<footer>
-  <div class="wrap foot-row">
+<footer class="foot">
+  <div class="wrap">
     <span>© 2026 calmdownoscar · est. 2025</span>
-    <span class="foot-links" style="display:inline-flex;gap:18px;flex-wrap:wrap"><a href="playground/">Playground</a><a href="idea-clinic/">Idea clinic</a><a href="hobbies/">Hobbies</a></span>
-    <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
+    <nav aria-label="Footer"><a href="playground/">Playground</a><a href="idea-clinic/">Idea clinic</a><a href="hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
-
-<script>
-(function(){
-  // Mobile nav disclosure
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-  if (!navToggle || !topbar) return;
-
-  function closeNav(){
-    if (!topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  }
-  navToggle.addEventListener('click', function(e){
-    e.stopPropagation();
-    if (topbar.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
-    else { topbar.classList.add('nav-open'); navToggle.setAttribute('aria-expanded', 'true'); }
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && topbar.classList.contains('nav-open')){ closeNav(); navToggle.focus(); }
-  });
-  document.addEventListener('click', function(e){
-    if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)) closeNav();
-  });
-  if (mainNav) mainNav.querySelectorAll('a').forEach(function(link){ link.addEventListener('click', closeNav); });
-  window.addEventListener('resize', function(){ if (window.innerWidth >= 768) closeNav(); });
-})();
-</script>
 
 <script>
 // Keep existing bookmarks to the app details working after their move.

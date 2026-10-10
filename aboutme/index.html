@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#141B22">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
@@ -18,244 +16,42 @@
 <meta property="og:url" content="https://www.calmdownoscar.com/aboutme/">
 <link rel="canonical" href="https://www.calmdownoscar.com/aboutme/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  @font-face{
-    font-family:'Inter';
-    src:url('../assets/fonts/Inter-Variable.woff2') format('woff2-variations'),
-        url('../assets/fonts/Inter-Variable.woff2') format('woff2');
-    font-weight:100 900;
-    font-style:normal;
-    font-display:swap;
-  }
-  :root{
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-    --sal: env(safe-area-inset-left, 0px);
-    --sar: env(safe-area-inset-right, 0px);
+  .about{ padding-top:clamp(56px, 10vh, 120px); }
+  .about .case-text{ grid-column:1 / 8; position:static; }
+  .about .lede{ max-width:22ch; margin-top:28px; }
 
-    --night:    #14181C;
-    --tank:     #F2581C;
-    --pacifier: #BCD9E8;
-
-    --bg:      #141B22;
-    --panel:   rgba(255,255,255,.05);
-    --edge:    rgba(255,255,255,.09);
-    --edge-hi: rgba(133,182,255,.4);
-    --accent:  #85B6FF;
-    --ink:     #E8EEF4;
-    --muted:   #8FA0AE;
-    --topbar-h: calc(64px + var(--sat));
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-  ::selection{ background:var(--accent); color:#fff; }
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', system-ui, sans-serif;
-    font-size:16px;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-    padding-top:var(--topbar-h);
-    overflow-x:hidden;
-  }
-  .wrap{ max-width:880px; margin:0 auto; padding-left:max(24px, var(--sal)); padding-right:max(24px, var(--sar)); }
-
-  /* ================= video background ================= */
-  .bg-stage{
-    position:fixed; inset:-3vh -3vw;
-    z-index:-2; overflow:hidden;
-    pointer-events:none;
-    will-change:transform;
-  }
-  @media (min-width: 768px){
+  /* Oscar's clip sits behind the page, offset right on wider screens, and plays as you scroll. */
+  .bg-stage{ position:fixed; inset:-3vh -3vw; z-index:-2; overflow:hidden; pointer-events:none; will-change:transform; }
+  @media (min-width:768px){
     .bg-stage{
-      transform: translate(42vw, 15vh);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 15%, #000 30%);
+      transform:translate(42vw, 15vh);
+      -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.85) 15%, #000 30%);
+      mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.85) 15%, #000 30%);
     }
   }
-  .bg-video{
-    width:100%; height:100%;
-    object-fit:cover; display:block;
-    transform-origin:50% 30%;
-    will-change:transform;
-    transform:translate3d(0,0,0);
+  .bg-video{ width:100%; height:100%; object-fit:cover; display:block; transform-origin:50% 30%; will-change:transform; transform:translate3d(0,0,0); }
+  .bg-scrim{ position:fixed; inset:0; z-index:-1; pointer-events:none; will-change:transform;
+    background:linear-gradient(180deg, rgba(11,12,14,.55) 0%, rgba(11,12,14,.78) 40%, rgba(11,12,14,.92) 100%); }
+  @media (prefers-reduced-motion: reduce){ .bg-video, .bg-scrim{ transform:none; } }
+  .about-rows{ margin-top:clamp(64px, 10vh, 112px); }
+  .about-rows .row{ grid-template-columns:minmax(0,2fr) minmax(0,5fr); }
+  .learn{ list-style:none; }
+  .learn li{ padding:10px 0; border-top:1px solid var(--line); }
+  .learn li:first-child{ border-top:0; padding-top:0; }
+  .learn b{ font-weight:500; display:block; }
+  .learn span{ display:block; color:var(--muted); font-size:14px; }
+  @media (max-width:960px){
+    .about .case-text{ grid-column:1 / -1; }
   }
-  .bg-scrim{
-    position:fixed; inset:0;
-    z-index:-1; pointer-events:none;
-    background:linear-gradient(180deg, rgba(20,27,34,0.55) 0%, rgba(20,27,34,0.78) 40%, rgba(20,27,34,0.92) 100%);
-    will-change:transform;
-  }
-
-  /* ================= top bar ================= */
-  .topbar{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    height:var(--topbar-h);
-    padding-top:var(--sat);
-    background:rgb(20,27,34);
-    border-bottom:1px solid var(--edge);
-    display:flex; align-items:center;
-  }
-  .topbar .wrap{
-    display:flex; justify-content:space-between; align-items:center; width:100%;
-  }
-  .mark{
-    font-weight:700; font-size:16px; letter-spacing:-.01em; color:var(--ink);
-    text-decoration:none; flex-shrink:0;
-  }
-  .mark span{ color:var(--accent); }
-  nav{ display:flex; align-items:center; flex-wrap:nowrap; }
-  nav a{
-    color:var(--muted); font-weight:500; font-size:14px; text-decoration:none; white-space:nowrap;
-    margin-left:24px;
-    transition:color .2s ease; padding:8px 0; min-height:44px; display:inline-flex; align-items:center;
-  }
-  nav a:hover, nav a:focus-visible, nav a[aria-current="page"]{ color:var(--accent); }
-  a:focus-visible{ outline:1px solid var(--accent); outline-offset:3px; }
-
-  .nav-toggle{ display:none; }
-
-  @media (max-width:767px){
-    .nav-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      width:44px;
-      height:44px;
-      background:transparent;
-      border:1px solid var(--edge);
-      border-radius:8px;
-      cursor:pointer;
-      padding:0;
-      color:var(--ink);
-      flex-shrink:0;
-    }
-    .nav-toggle:focus-visible{
-      outline:1px solid var(--accent);
-      outline-offset:2px;
-    }
-    .nav-toggle-bar{
-      display:block;
-      width:18px;
-      height:2px;
-      background:var(--ink);
-      border-radius:1px;
-      transition:transform 140ms ease, opacity 140ms ease;
-    }
-    .topbar.nav-open .nav-toggle-bar:first-child{
-      transform:translateY(3.5px) rotate(45deg);
-    }
-    .topbar.nav-open .nav-toggle-bar:last-child{
-      transform:translateY(-3.5px) rotate(-45deg);
-    }
-    nav{
-      display:none;
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:rgb(20,27,34);
-      border-bottom:1px solid var(--edge);
-      padding:12px 24px calc(16px + var(--sab));
-      flex-direction:column;
-      gap:2px;
-      align-items:stretch;
-      overflow-y:auto;
-      max-height:calc(100vh - var(--topbar-h));
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-    }
-    .topbar.nav-open nav{
-      display:flex;
-    }
-    nav a{
-      font-size:15px;
-      padding:10px 0;
-      min-height:44px;
-      color:var(--ink);
-      border-bottom:1px solid rgba(255,255,255,.05);
-      width:100%;
-      margin-left:0;
-    }
-    nav a:last-child{
-      border-bottom:none;
-    }
-  }
-
-  /* ================= hero ================= */
-  .hero{ padding:48px 0 32px; }
-  h1.rise{ font-size:clamp(28px, 4vw, 44px); font-weight:800; letter-spacing:-.02em; color:var(--ink); }
-  h1.rise span{ color:var(--accent); }
-  .rise.d1{ font-size:16px; color:var(--ink); margin-top:20px; max-width:65ch; line-height:1.65; font-weight:400; text-shadow:0 1px 4px rgba(0,0,0,.5); }
-  .rise.d1.lead{ font-size:clamp(18px, 1rem + .5vw, 21px); line-height:1.5; max-width:52ch; }
-  .about-h{ margin:40px 0 0; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-weight:600; text-shadow:0 1px 4px rgba(0,0,0,.5); }
-  .about-h + .rise.d1{ margin-top:8px; }
-  .inline-link{ color:var(--accent); font-weight:600; text-decoration:none; white-space:nowrap; }
-  .learning{ list-style:none; max-width:68ch; margin-top:12px !important; padding:6px 0 0; border-top:1px solid var(--edge); }
-  .learning li{ display:grid; grid-template-columns:minmax(0,1fr); padding:10px 0; border-bottom:1px solid var(--edge); }
-  .learning b{ font-weight:600; font-size:15px; color:var(--ink); }
-  .learning span{ font-size:14px; color:var(--muted); line-height:1.5; margin-top:2px; }
-  .inline-link:hover{ color:var(--ink); }
-
-  /* ================= section labels & cards ================= */
-  .section-label{
-    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
-    color:var(--accent); margin-bottom:12px;
-  }
-  .about-card{
-    background:var(--panel);
-    border:1px solid var(--edge);
-    border-radius:14px;
-    padding:32px 28px;
-    margin-bottom:48px;
-  }
-  .about-card p{ font-size:16px; color:var(--muted); line-height:1.65; max-width:65ch; }
-  .about-card p + p{ margin-top:18px; }
-  .about-card strong{ color:var(--ink); font-weight:600; }
-  .oscar-tag{
-    background:var(--pacifier);
-    border-radius:6px;
-    padding:1px 6px;
-    color:var(--night);
-    font-weight:600;
-  }
-
-  .more-link{
-    display:inline-block;
-    margin-top:22px;
-    font-size:15px; font-weight:600;
-    color:var(--accent);
-    text-decoration:none;
-    transition:color .2s ease;
-  }
-  .more-link:hover{ color:var(--ink); }
-  .more-link .arrow{
-    display:inline-block;
-    transition:transform .25s cubic-bezier(.2,.7,.3,1);
-  }
-  .more-link:hover .arrow{ transform:translateX(5px); }
-
-  footer{ border-top:1px solid var(--edge); padding:24px 0 calc(40px + var(--sab)); margin-top:60px; }
-  .foot-row{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:10px;
-    font-size:13px; color:var(--muted);
-  }
-  .foot-row a{ color:var(--muted); transition:color .2s ease; text-decoration:none; padding:4px 0; min-height:44px; display:inline-flex; align-items:center; }
-  .foot-row a:hover{ color:var(--accent); }
-
-  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
-  .reveal.in{ opacity:1; transform:none; }
-
-  @media (prefers-reduced-motion: reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
-    html{ scroll-behavior:auto; }
-    .bg-video, .bg-scrim{ transform:none; }
-  }
+  @media (max-width:640px){ .about-rows .row{ grid-template-columns:1fr; } }
 </style>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
 </head>
 <body>
 
@@ -264,221 +60,94 @@
 </div>
 <div class="bg-scrim" aria-hidden="true"></div>
 
-<header class="topbar">
+<header class="top">
   <div class="wrap">
     <a class="mark" href="../">calmdown<span>oscar</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
-    <nav id="main-nav">
-      <a href="./" aria-current="page">About Me</a>
-      <a href="../abouttheapps/">About the apps</a>
-      <a href="../how_I_work/">How I Work</a>
-      <a href="../the_studio/">The Studio</a>
-      <a href="mailto:peter@calmdownoscar.com">Contact</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="./" aria-current="page">About</a>
+      <a href="../#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="wrap">
-      <h1 class="rise">calm down, <span>oscar.</span></h1>
-      <p class="rise d1 lead">I’m Peter. I work full time in enterprise HR, and after my son Oscar falls asleep I build apps — turning everyday problems into software and exploring how AI can do useful, accountable work.</p>
+  <section class="wrap case about" aria-label="About Peter">
+    <div class="case-text">
+      <p class="label">About · calm down, oscar</p>
+      <h1 class="lede">I’m Peter. I work full time in enterprise HR, and after my son Oscar falls asleep I build apps.</h1>
 
-      <h2 class="section-label about-h">The name</h2>
-      <p class="rise d1">Motorcycles are my hobby. In the Philippine riding community, “Oscar, calm down” is the joke when a rider does something a little unusual. At home, Oscar is my toddler, who seems to be everywhere at once. The studio name belongs to both worlds.</p>
-
-      <h2 class="section-label about-h">Why I build</h2>
-      <p class="rise d1">Coming back to building software after years away is deliberate: development is the work I want to make my career. My mind runs on a hundred ideas a week, though only a few reach the App Store. The ones that survive solve a real problem — my own development friction, or the logistics of a full-time job and a young family.</p>
-
-      <h2 class="section-label about-h">What HR brings</h2>
-      <p class="rise d1">My background is in enterprise systems like SAP. HR work keeps me close to personal data, permissions and the people affected when a system gets something wrong. I enjoy piecing fragmented systems together and finding where they fail before someone else does. <a class="inline-link" href="../how_I_work/">How that shapes the apps →</a></p>
-
-      <h2 class="section-label about-h">For the technically curious</h2>
-      <p class="rise d1">I write Swift and SwiftUI across iOS, iPadOS, macOS and watchOS. Wedding Concierge is local-first with SwiftData and CloudKit sync, and its cloud calls go through a small serverless relay so no API key ships inside the app. Shuttle Vision and Kitchen Vision are built on AVFoundation and Apple’s Vision framework, with WatchConnectivity linking the Apple Watch. Part of the work is knowing when a task doesn’t need a large model at all: Unli Disk finds duplicate and blurry photos on the Mac with a perceptual hash, Apple Vision feature prints and a blur score, without sending a single photo to a vision-language model. Unli Rice is a Model Context Protocol (MCP) server that gives Claude, Codex, Gemini and other tools the same context — who is building, what for, and the rules to follow — plus a To Do list of what’s still open, and it has a small Python eval harness that tests failure modes I predicted before they happened. I build with AI coding tools, and the Unli Rice code is open on GitHub.</p>
-
-      <h2 class="section-label about-h" id="learning">Recent learning</h2>
-      <p class="rise d1">A certification, and the courses I’ve completed this year that shape how I build:</p>
-      <ul class="learning rise d1">
-        <li><b>ITIL v3 Foundation, certified</b><span>IT service management certification</span></li>
-        <li><b>Microsoft Foundry for Enterprise AI Apps and Agents</b><span>20-hour course with hands-on labs · Aug 2026</span></li>
-        <li><b>AI regulation, governance and risk</b><span>AI Regulation and Compliance: Strategy for Leaders; AI Governance, Risk Identification and Mapping; Regulatory Compliance and AI · Jan 2026</span></li>
-        <li><b>An Introduction to AI-Enabled Managed Services</b><span>Running IT services with AI in the loop · Aug 2026</span></li>
-        <li><b>AI coding and enterprise assistants</b><span>ChatGPT Codex, custom GPTs and actions, and Gemini Enterprise · Mar–Sep 2026</span></li>
-        <li><b>ITIL 4 Foundation path, completed</b><span>All eight modules, from the guiding principles to service management practices, plus ITIL 4 Essentials · Mar–Apr 2026</span></li>
-        <li><b>Git and GitHub</b><span>Workflows, branching, Git Flow, teamwork and contributing to open source · Feb–Apr 2026</span></li>
-        <li><b>Design thinking and customer journeys</b><span>Mapping and Analyzing Customer Journeys; Design Thinking: Starting Your Journey · Mar 2026</span></li>
-        <li><b>In progress</b><span>Google Cloud: Associate Cloud Engineer path · started Sep 2026</span></li>
+      <ul class="rows about-rows">
+        <li class="row"><span>The name</span><p>In the Philippine riding community, “Oscar, calm down” is the joke when a rider does something a little unusual. At home, Oscar is my toddler.</p></li>
+        <li class="row"><span>Why I build</span><p>Development is the work I want to make my career. The ideas that reach the App Store solve a problem I have myself.</p></li>
+        <li class="row"><span>What HR brings</span><div><p>Enterprise systems like SAP, personal data and permissions.</p><div class="links"><a class="link in" href="../how_I_work/">How that shapes the apps</a></div></div></li>
+        <li class="row"><span>Stack</span><div><p>Swift and SwiftUI on iOS, iPadOS, macOS and watchOS. SwiftData, CloudKit, AVFoundation, Apple Vision, MCP. Built with AI coding tools.</p><div class="links"><a class="link" href="https://github.com/CalixOscar/unli-rice">Unli Rice on GitHub</a></div></div></li>
+        <li class="row"><span>Recent learning</span>
+          <ul class="learn">
+            <li><b>ITIL v3 Foundation, certified</b><span>IT service management certification</span></li>
+            <li><b>Microsoft Foundry for Enterprise AI Apps and Agents</b><span>20-hour course with hands-on labs · Aug 2026</span></li>
+            <li><b>AI regulation, governance and risk</b><span>AI Regulation and Compliance: Strategy for Leaders; AI Governance, Risk Identification and Mapping; Regulatory Compliance and AI · Jan 2026</span></li>
+            <li><b>An Introduction to AI-Enabled Managed Services</b><span>Running IT services with AI in the loop · Aug 2026</span></li>
+            <li><b>AI coding and enterprise assistants</b><span>ChatGPT Codex, custom GPTs and actions, and Gemini Enterprise · Mar–Sep 2026</span></li>
+            <li><b>ITIL 4 Foundation path, completed</b><span>All eight modules, plus ITIL 4 Essentials · Mar–Apr 2026</span></li>
+            <li><b>Git and GitHub</b><span>Workflows, branching, Git Flow, teamwork and contributing to open source · Feb–Apr 2026</span></li>
+            <li><b>Design thinking and customer journeys</b><span>Mapping and Analyzing Customer Journeys; Design Thinking: Starting Your Journey · Mar 2026</span></li>
+            <li><b>In progress</b><span>Google Cloud: Associate Cloud Engineer path · started Sep 2026</span></li>
+          </ul>
+        </li>
+        <li class="row"><span>Exploring now</span><p>Synthetic, impatient test users that tap through Wedding Concierge in the simulator, eight personas at a time.</p></li>
+        <li class="row"><span>Elsewhere</span><div><div class="links"><a class="link in" href="../hobbies/">Hobbies</a><a class="link in" href="../abouttheapps/">The apps</a></div></div></li>
       </ul>
-
-      <h2 class="section-label about-h">Exploring now</h2>
-      <p class="rise d1">Digital twins for my apps: synthetic users that behave like real, often impatient people, tapping and scrolling through everything and giving up when something takes too long. The point is to find where an app confuses or loses someone before a real user does. The first one runs Wedding Concierge in the simulator with eight different personas, and hard-coded guardrails make sure a test user can never buy, send or publish anything for real.</p>
-
-      <p class="rise d1" style="margin-top:28px;">Away from the keyboard, I’m usually dreaming of quiet roads on a motorcycle.</p>
-
-      <a class="more-link rise" href="../#apps" style="margin-top:32px;">See the apps <span class="arrow">→</span></a>
-      <a class="more-link rise" href="../hobbies/" style="margin-top:32px; margin-left:24px;">View hobbies <span class="arrow">→</span></a>
-      <a class="more-link rise" href="https://github.com/CalixOscar/unli-rice" style="margin-top:32px; margin-left:24px;">Unli Rice on GitHub <span class="arrow">→</span></a>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="wrap foot-row">
+<footer class="foot">
+  <div class="wrap">
     <span>© 2026 calmdownoscar · est. 2025</span>
-    <span class="foot-links" style="display:inline-flex;gap:18px;flex-wrap:wrap"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a></span>
-    <a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
 
 <script>
+// Scroll-scrubbed background clip of Oscar, eased toward the scroll position (as before the redesign).
 (function(){
-  /* ----- scroll reveal ----- */
-  var revealEls = document.querySelectorAll('.reveal');
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduceMotion.matches || !('IntersectionObserver' in window)){
-    revealEls.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(function(el){ io.observe(el); });
-  }
-
-  /* ----- scroll-scrubbed video background ----- */
   var video = document.querySelector('.bg-video');
   var scrim = document.querySelector('.bg-scrim');
-  if (video && !reduceMotion.matches){
-    var ready = false;
-    var ticking = false;
-    var current = 0;
-    var target = 0;
-    var running = false;
-    var maxScroll = 0;
-    var startOffset = 0;
-    var seekPending = false;
+  if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ready = false, ticking = false, running = false, seekPending = false;
+  var current = 0, target = 0, maxScroll = 0, startOffset = 0;
 
-    video.addEventListener('loadedmetadata', function(){ ready = true; measure(); scrubToScroll(); });
-    video.addEventListener('seeked', function(){ seekPending = false; });
-    if (video.readyState >= 1){ ready = true; measure(); scrubToScroll(); }
-
-    function applyVisuals(easedProgress){
-      var scale = 1.06 - easedProgress * 0.06;
-      video.style.transform = 'scale(' + scale.toFixed(4) + ')';
-      if (scrim) scrim.style.transform = 'translateY(' + (easedProgress * -8).toFixed(2) + 'px)';
-    }
-
-    function seekTo(time){
-      if (seekPending) return;
-      seekPending = true;
-      video.currentTime = time;
-    }
-
-    function clipFrame(){
-      current += (target - current) * 0.15;
-      var easedProgress = video.duration ? Math.min(1, Math.max(0, current / video.duration)) : 0;
-      if (Math.abs(target - current) < 0.005){
-        current = target;
-        seekTo(current);
-        applyVisuals(easedProgress);
-        running = false;
-        return;
-      }
-      seekTo(current);
-      applyVisuals(easedProgress);
-      requestAnimationFrame(clipFrame);
-    }
-
-    function measure(){
-      maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      startOffset = maxScroll * 0.05;
-    }
-
-    function scrubToScroll(){
-      ticking = false;
-      if (!ready || !video.duration) return;
-      var progress = maxScroll > startOffset ? Math.min(1, Math.max(0, (window.scrollY - startOffset) / (maxScroll - startOffset))) : 0;
-      target = progress * video.duration;
-
-      if (!running){
-        running = true;
-        clipFrame();
-      }
-    }
-
-    function onScroll(){
-      if (!ticking){
-        ticking = true;
-        requestAnimationFrame(scrubToScroll);
-      }
-    }
-
-    window.addEventListener('resize', measure);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    measure();
+  function applyVisuals(p){
+    video.style.transform = 'scale(' + (1.06 - p * 0.06).toFixed(4) + ')';
+    if (scrim) scrim.style.transform = 'translateY(' + (p * -8).toFixed(2) + 'px)';
   }
-
-  // --- Mobile nav disclosure ---
-  var navToggle = document.querySelector('.nav-toggle');
-  var topbar = document.querySelector('.topbar');
-  var mainNav = document.getElementById('main-nav');
-
-  function closeNav(){
-    if (!topbar || !topbar.classList.contains('nav-open')) return;
-    topbar.classList.remove('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  function seekTo(t){ if (seekPending) return; seekPending = true; video.currentTime = t; }
+  function clipFrame(){
+    current += (target - current) * 0.15;
+    var p = video.duration ? Math.min(1, Math.max(0, current / video.duration)) : 0;
+    if (Math.abs(target - current) < 0.005){ current = target; seekTo(current); applyVisuals(p); running = false; return; }
+    seekTo(current); applyVisuals(p);
+    requestAnimationFrame(clipFrame);
   }
-
-  function toggleNav(){
-    if (!topbar || !navToggle) return;
-    var isOpen = topbar.classList.contains('nav-open');
-    if (isOpen) {
-      closeNav();
-      navToggle.focus();
-    } else {
-      topbar.classList.add('nav-open');
-      navToggle.setAttribute('aria-expanded', 'true');
-    }
+  function measure(){ maxScroll = document.documentElement.scrollHeight - window.innerHeight; startOffset = maxScroll * 0.05; }
+  function scrubToScroll(){
+    ticking = false;
+    if (!ready || !video.duration) return;
+    var p = maxScroll > startOffset ? Math.min(1, Math.max(0, (window.scrollY - startOffset) / (maxScroll - startOffset))) : 0;
+    target = p * video.duration;
+    if (!running){ running = true; clipFrame(); }
   }
-
-  if (navToggle && topbar){
-    navToggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      toggleNav();
-    });
-
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && topbar.classList.contains('nav-open')){
-        closeNav();
-        navToggle.focus();
-      }
-    });
-
-    document.addEventListener('click', function(e){
-      if (topbar.classList.contains('nav-open') && !topbar.contains(e.target)){
-        closeNav();
-      }
-    });
-
-    if (mainNav){
-      mainNav.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          closeNav();
-        });
-      });
-    }
-
-    window.addEventListener('resize', function(){
-      if (window.innerWidth >= 768 && topbar.classList.contains('nav-open')){
-        closeNav();
-      }
-    });
-  }
+  video.addEventListener('loadedmetadata', function(){ ready = true; measure(); scrubToScroll(); });
+  video.addEventListener('seeked', function(){ seekPending = false; });
+  if (video.readyState >= 1){ ready = true; measure(); scrubToScroll(); }
+  window.addEventListener('resize', measure);
+  window.addEventListener('scroll', function(){ if (!ticking){ ticking = true; requestAnimationFrame(scrubToScroll); } }, { passive:true });
+  measure();
 })();
 </script>
+
 </body>
 </html>
