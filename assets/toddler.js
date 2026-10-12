@@ -1,4 +1,5 @@
-// Home headline: a toddler crawls in, steals the full stop after "Mac", stands up and runs off with it.
+// Home headline: a toddler crawls in along the bottom of the aurora, stands, jumps up to snatch the
+// full stop after "Mac", lands and runs off with it.
 // Artwork: assets/toddler/ (generated illustration and clips, cut into looping strips: crawl 8 frames, run 7).
 // The stop stays in the text for screen readers; only its glyph is hidden once taken.
 // Skipped for reduced motion, and the sentence keeps its full stop.
@@ -57,49 +58,72 @@
 
     var L = lane.getBoundingClientRect();
     var s = stop.getBoundingClientRect(), base = stop.querySelector('.baseline-probe').getBoundingClientRect();
-    var ground = base.bottom - L.top + fs * 0.02;            // knees and feet just on the baseline
     var dotX = (s.left + s.width / 2) - L.left;
+    var dotY = base.bottom - L.top - fs * 0.07;               // centre of the full stop, just above the baseline
+    var ground = L.height - Math.max(14, fs * 0.2);           // the bottom of the aurora
     var cy = ground - cH, ry = ground - rH;
-    var atDot = dotX - cW * CRAWL.hand;                       // leading hand over the full stop
+    var hop = Math.max(rW * 0.7, fs * 0.5);                   // sideways travel up to the dot, and again down
+    var peakX = dotX - rW * RUN.fistX, peakY = dotY - rH * RUN.fistY;   // fist on the dot
+    var upX = peakX - hop;                                    // where he stands and jumps from
+    var stopAt = upX - cW * 0.35;                              // crawls just past the dot (he crawls leftward)
     var from = L.width + 8;
     var speed = Math.max(110, fs * 2.6);                      // px per second
+    var rise = Math.max(0, ry - peakY);
+    var up = Math.min(620, 300 + rise * 0.6);                 // a higher jump takes a little longer
 
+    function at(x, y, extra){ return 'translate(' + x + 'px,' + y + 'px)' + (extra || ''); }
     function slide(el, a, b, y, pxPerSec, easing){
       return el.animate(
-        [{ transform: 'translate(' + a + 'px,' + y + 'px)' }, { transform: 'translate(' + b + 'px,' + y + 'px)' }],
+        [{ transform: at(a, y) }, { transform: at(b, y) }],
         { duration: Math.abs(b - a) / pxPerSec * 1000, easing: easing || 'linear', fill: 'forwards' }
       ).finished;
     }
 
-    // crawl in
-    crawl.style.transform = 'translate(' + from + 'px,' + cy + 'px)';
+    // crawl in along the bottom of the header
+    crawl.style.transform = at(from, cy);
     crawl.classList.add('go');
-    await slide(crawl, from, atDot, cy, speed * 0.64, 'cubic-bezier(.3,0,.6,1)');   // an unhurried crawl
-
-    // reach: hold the frame with the hand on the dot
+    await slide(crawl, from, stopAt, cy, speed * 0.64, 'cubic-bezier(.3,0,.6,1)');   // an unhurried crawl
     crawl.classList.remove('go');
-    crawl.style.backgroundPosition = -(cW * CRAWL.grab) + 'px 0';
-    await wait(260);
+    await wait(380);                                          // spots the dot
 
-    // grab: the stop lifts away
-    await stop.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-.12em)', opacity: 0 }], { duration: 180, fill: 'forwards' }).finished;
-    stop.classList.add('taken');
-    await wait(220);
-
-    // stand up, holding it
-    var rx = dotX - rW * 0.2;               // just past the "c", fist forward
-    runner.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+    // stand up, facing it
+    runner.style.transform = at(upX, ry);
     crawl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' });
     await runner.animate([
-      { opacity: 0, transform: 'translate(' + rx + 'px,' + (ry + rH * 0.12) + 'px) scaleY(.86)' },
-      { opacity: 1, transform: 'translate(' + rx + 'px,' + (ry - rH * 0.06) + 'px)', offset: 0.6 },
-      { opacity: 1, transform: 'translate(' + rx + 'px,' + ry + 'px)' }
+      { opacity: 0, transform: at(upX, ry + rH * 0.12, ' scaleY(.86)') },
+      { opacity: 1, transform: at(upX, ry - rH * 0.06), offset: 0.6 },
+      { opacity: 1, transform: at(upX, ry) }
     ], { duration: 340, easing: 'ease-out', fill: 'forwards' }).finished;
-    await wait(140);
+    await wait(260);
 
-    // and run
+    // crouch, then jump up to the dot
+    await runner.animate([{ transform: at(upX, ry) }, { transform: at(upX, ry, ' scale(1.06,.84)') }],
+      { duration: 160, easing: 'ease-in', fill: 'forwards' }).finished;
+    await runner.animate([
+      { transform: at(upX, ry, ' scale(1.06,.84)') },
+      { transform: at(upX + hop * 0.3, ry - rise * 0.4, ' rotate(-6deg) scale(.94,1.1)'), offset: 0.3, easing: 'cubic-bezier(.2,.6,.4,1)' },
+      { transform: at(peakX, peakY) }
+    ], { duration: up, easing: 'cubic-bezier(.25,.8,.4,1)', fill: 'forwards' }).finished;
+
+    // grab: the stop leaves the sentence and is in his fist
+    stop.classList.add('taken');
+    loot.style.opacity = 1;
+    loot.animate([{ transform: 'scale(1.5)' }, { transform: 'none' }], { duration: 160, easing: 'ease-out' });
+    await wait(90);
+
+    // drop back down, land, and run
+    var landX = peakX + hop;
+    await runner.animate([
+      { transform: at(peakX, peakY) },
+      { transform: at(landX, ry, ' rotate(4deg)') }
+    ], { duration: up * 0.85, easing: 'cubic-bezier(.55,0,.9,.6)', fill: 'forwards' }).finished;
+    await runner.animate([
+      { transform: at(landX, ry, ' scale(1.08,.82)') },
+      { transform: at(landX, ry) }
+    ], { duration: 200, easing: 'ease-out', fill: 'forwards' }).finished;
+
     runner.classList.add('go');
-    await slide(runner, rx, L.width + 12, ry, speed * 2.1, 'cubic-bezier(.4,0,1,1)');
+    await slide(runner, landX, L.width + 12, ry, speed * 2.1, 'cubic-bezier(.4,0,1,1)');
     lane.remove();
   }
 
