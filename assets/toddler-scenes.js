@@ -41,7 +41,7 @@
   // ---- Apps: peek, laugh, hide ----
   async function peek(img){
     var l = lane(), L = l.getBoundingClientRect();
-    var h = Math.max(64, kidSize() * 0.95);
+    var h = Math.max(51, kidSize() * 0.76);
     var el = art(img, 'peek', h), w = parseFloat(el.style.width);
     var x = Math.min(L.width - w - 16, L.width * (L.width < 700 ? 0.7 : 0.76) - w / 2);
     var hidden = L.height + 2, up = L.height - h;          // the bottom edge of the aurora is his ledge
