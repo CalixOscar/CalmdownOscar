@@ -138,6 +138,14 @@ main{ padding-top:var(--top-h); }
 .case-text > p:not(.label){ margin-top:22px; color:var(--muted); max-width:40ch; }
 .case-text > p strong{ color:var(--ink); }
 .case-text .links{ margin-top:14px; }
+/* .hold flips it: the text scrolls on while the media pins and holds, then lets go (motion.js lifts it out) */
+@media (min-width:961px) and (min-height:560px){
+  .case.hold{ --hold:clamp(220px, 50svh, 560px); padding-bottom:clamp(48px, 8vh, 96px); }
+  .case.hold .case-text{ position:static; }
+  .case.hold .case-media{ align-self:stretch; }
+  .case.hold .case-media > .stage{ position:sticky; top:calc(var(--top-h) + 32px); }
+  .case.hold .case-media::after{ content:''; flex:none; height:var(--hold); }
+}
 .aside{ margin-top:22px; padding-left:14px; border-left:1px solid var(--line-hi); color:var(--muted); font-size:14px; max-width:40ch; }
 
 /* the apps an entry covers: icon · name · meta · store link */
