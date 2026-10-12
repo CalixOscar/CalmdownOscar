@@ -50,6 +50,11 @@
   .sky.live .sky-far, .sky.live .sky-near{ opacity:1; }  /* fade the layers, not the scene: opacity on it would flatten the 3D */
   .sky-far{ background-image:url('assets/aurora-sky.jpg'); transform:translateZ(-500px) scale(1.5556); }
   .sky-near{ background-image:url('assets/aurora-trees.webp'); }
+  /* iPhone: asks for motion access so the gyro can steer the sky (assets/sky3d.js) */
+  .sky-gyro{ position:absolute; z-index:2; right:max(var(--gutter), var(--sar)); bottom:20px; height:36px; padding:0 14px;
+    border:1px solid var(--line-hi); border-radius:999px; background:rgba(11,12,14,.35); color:var(--ink); cursor:pointer;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    font:500 11px/1 'Inter', system-ui, sans-serif; letter-spacing:.1em; text-transform:uppercase; }
   /* the toddler who steals the full stop (assets/toddler.js) */
   .intro{ position:relative; }
   .hero-line, .intro .by{ position:relative; z-index:1; }  /* the text sits in front of the toddler */
