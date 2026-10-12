@@ -99,6 +99,31 @@ main{ padding-top:var(--top-h); }
 .jump a{ display:inline-flex; align-items:center; min-height:44px; font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
 .jump a:hover{ color:var(--ink); }
 
+
+/* ================= aurora header =================
+   Pages with <body class="has-sky"> put <div class="sky"> first in their .intro: a full-bleed photo
+   that runs up under the top bar and fades into the page. assets/sky3d.js then rebuilds it as two
+   layers set apart in depth (sky 500px behind the trees), turned with the mouse or the phone's gyro
+   around a point between them. The far layer is scaled up by the perspective ratio so both line up
+   exactly at rest. */
+.has-sky .top{ background:rgba(11,12,14,.38); }  /* let the sky show through the bar */
+.has-sky .intro{ position:relative; isolation:isolate; }
+.has-sky .intro .label, .has-sky .intro .jump a{ color:rgba(236,236,232,.85); text-shadow:0 1px 12px rgba(0,0,0,.55); }  /* muted grey is too faint over the aurora */
+.has-sky .intro .jump a:hover{ color:var(--ink); }
+.sky{ position:absolute; z-index:-1; left:calc(50% - 50vw); width:100vw; top:calc(-1 * var(--top-h)); bottom:0; pointer-events:none; overflow:hidden;
+  background:url('aurora.jpg') 50% 46% / cover no-repeat; perspective:900px; perspective-origin:50% 50%; }
+.sky::after{ content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(11,12,14,.1) 0%, rgba(11,12,14,.15) 35%, rgba(11,12,14,.55) 75%, var(--bg) 100%); }
+.sky-scene{ position:absolute; inset:0; transform-style:preserve-3d; transform-origin:50% 50% -250px; }
+.sky-far, .sky-near{ position:absolute; inset:-7%; background:50% 46% / cover no-repeat; backface-visibility:hidden; opacity:0; transition:opacity 1s ease; }
+.sky.live .sky-far, .sky.live .sky-near{ opacity:1; }  /* fade the layers, not the scene: opacity on it would flatten the 3D */
+.sky-far{ background-image:url('aurora-sky.jpg'); transform:translateZ(-500px) scale(1.5556); }
+.sky-near{ background-image:url('aurora-trees.webp'); }
+/* iPhone: asks for motion access so the gyro can steer the sky */
+.sky-gyro{ position:absolute; z-index:2; right:max(var(--gutter), var(--sar)); bottom:20px; height:36px; padding:0 14px;
+  border:1px solid var(--line-hi); border-radius:999px; background:rgba(11,12,14,.35); color:var(--ink); cursor:pointer;
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  font:500 11px/1 'Inter', system-ui, sans-serif; letter-spacing:.1em; text-transform:uppercase; }
 /* ================= section head: label left, aside right ================= */
 .head{ display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding-top:20px; padding-bottom:56px; border-top:1px solid var(--line); }
 .head p:not(.label){ color:var(--muted); max-width:52ch; font-size:15px; }

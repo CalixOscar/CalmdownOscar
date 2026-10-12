@@ -1,4 +1,4 @@
-// Home header: the aurora photo as a 3D scene. The photo is split into two layers (assets/aurora-sky.jpg,
+// Aurora header (home, Apps, How I work): the photo as a 3D scene. The photo is split into two layers (assets/aurora-sky.jpg,
 // the sky with the trees painted out, and assets/aurora-trees.webp, the trees cut out) set apart in CSS 3D.
 // The view turns with the mouse, or on phones with the gyro and a sideways drag (drifting on its own
 // until then), and scrolling moves in, so the branches slide across the aurora.
@@ -7,6 +7,9 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var sky = document.querySelector('.sky');
   if (!sky || !window.CSS || !CSS.supports('transform-style', 'preserve-3d')) return;
+
+  var here = document.currentScript && document.currentScript.src;   // images sit beside this script
+  function asset(name){ return here ? new URL(name, here).href : 'assets/' + name; }
 
   var TURN = 8;      // degrees the view turns at the edge of the window
   var DOLLY = 140;   // px the camera moves in over the header's height
@@ -98,7 +101,7 @@
   }
   function start(){ if (!running && visible && !document.hidden){ running = true; prev = 0; requestAnimationFrame(frame); } }
 
-  Promise.all([load('assets/aurora-sky.jpg'), load('assets/aurora-trees.webp')]).then(function(){
+  Promise.all([load(asset('aurora-sky.jpg')), load(asset('aurora-trees.webp'))]).then(function(){
     sky.appendChild(scene);
     if ('IntersectionObserver' in window){
       new IntersectionObserver(function(es){ visible = es[0].isIntersecting; start(); }).observe(sky);
