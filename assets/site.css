@@ -162,13 +162,19 @@ main{ padding-top:var(--top-h); }
 .case-text > p:not(.label){ margin-top:22px; color:var(--muted); max-width:40ch; }
 .case-text > p strong{ color:var(--ink); }
 .case-text .links{ margin-top:14px; }
-/* .hold flips it: the text scrolls on while the media pins and holds, then lets go (motion.js lifts it out) */
+/* notes that go with a case's media but read with its text: under the media on phones, under the text in .hold */
+.case-more{ grid-column:5 / 13; display:flex; flex-direction:column; gap:clamp(16px, 2vw, 24px); margin-top:clamp(16px, 2vw, 24px); min-width:0; }
+/* .hold flips it: the text (and .case-more) scrolls on while the media's first child pins and holds,
+   then lets go (motion.js lifts it out). The media column spans both rows and the 1fr row takes up the
+   slack, so the text and its notes stay together on the left. */
 @media (min-width:961px) and (min-height:560px){
-  .case.hold{ --hold:clamp(220px, 50svh, 560px); padding-bottom:clamp(48px, 8vh, 96px); }
-  .case.hold .case-text{ position:static; }
-  .case.hold .case-media{ align-self:stretch; }
-  .case.hold .case-media > .stage{ position:sticky; top:calc(var(--top-h) + 32px); }
+  .case.hold{ --hold:clamp(220px, 50svh, 560px); grid-template-rows:auto 1fr; padding-bottom:clamp(48px, 8vh, 96px); }
+  .case.hold .case-text{ position:static; grid-row:1; }
+  .case.hold .case-media{ grid-row:1 / 3; align-self:stretch; }
+  .case.hold .case-media > :first-child{ position:sticky; top:calc(var(--top-h) + 32px); }
   .case.hold .case-media::after{ content:''; flex:none; height:var(--hold); }
+  .case.hold .case-more{ grid-column:1 / 5; grid-row:2; align-self:start; margin-top:36px; }
+  .case.hold .case-more .pin-key{ grid-template-columns:1fr; }
 }
 .aside{ margin-top:22px; padding-left:14px; border-left:1px solid var(--line-hi); color:var(--muted); font-size:14px; max-width:40ch; }
 
@@ -328,7 +334,7 @@ a.row:hover{ color:var(--accent); }
 /* ================= responsive ================= */
 @media (max-width:960px){
   .case-text{ grid-column:1 / -1; position:static; margin-bottom:28px; }
-  .case-media{ grid-column:1 / -1; }
+  .case-media, .case-more{ grid-column:1 / -1; }
   .case-text > p:not(.label), .aside{ max-width:60ch; }
   .split{ grid-template-columns:1fr; row-gap:24px; }
   .split > :first-child p:not(.label){ max-width:52ch; }
