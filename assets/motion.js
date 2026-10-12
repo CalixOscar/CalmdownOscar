@@ -1,6 +1,7 @@
 // calmdownoscar — media motion, after koto.com: intro words rise, media opens as it enters,
-// devices drift at different depths, the case in view takes focus, and cues point at the detail
-// that matters. Does nothing for reduced motion or without IntersectionObserver.
+// devices drift at different depths, the case in view takes focus, cues point at the detail
+// that matters, and pinned home-page media lifts out as its hold runs out. Does nothing for
+// reduced motion or without IntersectionObserver.
 (function(){
   if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var root = document.documentElement;
@@ -57,12 +58,37 @@
     tick();
   });
   document.querySelectorAll('.stage:not(.fill)').forEach(function(s){ if (s.querySelectorAll('img').length > 1) watch.observe(s); });
+
+  // 6. Hold and lift: a pinned stage (.case.hold) bursts up and fades as its hold runs out,
+  // clearing the way for the next one.
+  var held = new Set();
+  var holdWatch = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ e.isIntersecting ? held.add(e.target) : held.delete(e.target); });
+    tick();
+  });
+  document.querySelectorAll('.case.hold .case-media').forEach(function(m){ if (m.querySelector(':scope > .stage')) holdWatch.observe(m); });
+  function lift(vh){
+    held.forEach(function(media){
+      var stage = media.querySelector(':scope > .stage');
+      if (getComputedStyle(stage).position !== 'sticky'){ stage.style.translate = stage.style.scale = media.style.opacity = ''; return; }
+      // distance left before the stage unpins: > 0 while holding, < 0 once it scrolls away
+      var left = media.getBoundingClientRect().bottom - (parseFloat(getComputedStyle(stage).top) + stage.offsetHeight);
+      var before = vh * 0.14, after = vh * 0.3;
+      var p = Math.max(0, Math.min(1, (before - left) / (before + after)));
+      if (!p){ stage.style.translate = stage.style.scale = media.style.opacity = ''; return; }
+      stage.style.translate = '0 ' + (-p * p * vh * 0.45).toFixed(1) + 'px';
+      stage.style.scale = (1 + p * 0.04).toFixed(4);
+      media.style.opacity = (1 - p * p).toFixed(3);
+    });
+  }
+
   var queued = false;
   function tick(){
     if (queued) return; queued = true;
     requestAnimationFrame(function(){
       queued = false;
       var vh = window.innerHeight;
+      lift(vh);
       live.forEach(function(stage){
         var r = stage.getBoundingClientRect();
         var p = Math.max(-1, Math.min(1, ((r.top + r.height / 2) - vh / 2) / vh)); // -1 above … 1 below
