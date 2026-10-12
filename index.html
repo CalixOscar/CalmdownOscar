@@ -33,6 +33,28 @@
   .s-court .a3{ right:12%; top:16%; width:21%; }
   .s-atlas img{ object-position:50% 45%; }
   .hero-line{ font-size:clamp(44px, 1.2rem + 6vw, 112px); line-height:1.02; letter-spacing:-.035em; max-width:14ch; }
+  /* aurora behind the header and headline: full-bleed, runs up under the
+     translucent top bar and fades into the page */
+  .top{ background:rgba(11,12,14,.38); }  /* let the sky show through the bar */
+  .intro{ isolation:isolate; }
+  .sky{ position:absolute; z-index:-1; left:calc(50% - 50vw); width:100vw; top:calc(-1 * var(--top-h)); bottom:0; pointer-events:none; overflow:hidden;
+    background:url('assets/aurora.jpg') 50% 46% / cover no-repeat; }
+  .sky::after{ content:''; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(11,12,14,.1) 0%, rgba(11,12,14,.15) 35%, rgba(11,12,14,.55) 75%, var(--bg) 100%); }
+  /* assets/sky3d.js: the same photo as two layers set apart in depth (sky 500px behind the trees),
+     turned with the mouse around a point between them. The far layer is scaled up by the perspective
+     ratio so both line up exactly at rest. */
+  .sky{ perspective:900px; perspective-origin:50% 50%; }
+  .sky-scene{ position:absolute; inset:0; transform-style:preserve-3d; transform-origin:50% 50% -250px; }
+  .sky-far, .sky-near{ position:absolute; inset:-7%; background:50% 46% / cover no-repeat; backface-visibility:hidden; opacity:0; transition:opacity 1s ease; }
+  .sky.live .sky-far, .sky.live .sky-near{ opacity:1; }  /* fade the layers, not the scene: opacity on it would flatten the 3D */
+  .sky-far{ background-image:url('assets/aurora-sky.jpg'); transform:translateZ(-500px) scale(1.5556); }
+  .sky-near{ background-image:url('assets/aurora-trees.webp'); }
+  /* iPhone: asks for motion access so the gyro can steer the sky (assets/sky3d.js) */
+  .sky-gyro{ position:absolute; z-index:2; right:max(var(--gutter), var(--sar)); bottom:20px; height:36px; padding:0 14px;
+    border:1px solid var(--line-hi); border-radius:999px; background:rgba(11,12,14,.35); color:var(--ink); cursor:pointer;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    font:500 11px/1 'Inter', system-ui, sans-serif; letter-spacing:.1em; text-transform:uppercase; }
   /* the toddler who steals the full stop (assets/toddler.js) */
   .intro{ position:relative; }
   .hero-line, .intro .by{ position:relative; z-index:1; }  /* the text sits in front of the toddler */
@@ -53,6 +75,7 @@
 <script src="assets/site.js" defer></script>
 <script src="assets/motion.js" defer></script>
 <script src="assets/toddler.js" defer></script>
+<script src="assets/sky3d.js" defer></script>
 <script src="assets/webmcp.js" defer></script>
 </head>
 <body>
@@ -73,6 +96,7 @@
 <main>
 
   <section class="wrap intro" aria-label="Introduction">
+    <div class="sky" aria-hidden="true"></div>
     <h1 class="lede hero-line">Apps for iPhone, iPad and Mac.</h1>
     <p class="by"><a href="aboutme/">Made by Peter</a></p>
   </section>
