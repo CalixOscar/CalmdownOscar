@@ -59,17 +59,17 @@
   });
   document.querySelectorAll('.stage:not(.fill)').forEach(function(s){ if (s.querySelectorAll('img').length > 1) watch.observe(s); });
 
-  // 6. Hold and lift: a pinned stage (.case.hold) bursts up and fades as its hold runs out,
+  // 6. Hold and lift: pinned media (.case.hold) bursts up and fades as its hold runs out,
   // clearing the way for the next one.
   var held = new Set();
   var holdWatch = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ e.isIntersecting ? held.add(e.target) : held.delete(e.target); });
     tick();
   });
-  document.querySelectorAll('.case.hold .case-media').forEach(function(m){ if (m.querySelector(':scope > .stage')) holdWatch.observe(m); });
+  document.querySelectorAll('.case.hold .case-media').forEach(function(m){ if (m.firstElementChild) holdWatch.observe(m); });
   function lift(vh){
     held.forEach(function(media){
-      var stage = media.querySelector(':scope > .stage');
+      var stage = media.firstElementChild;
       if (getComputedStyle(stage).position !== 'sticky'){ stage.style.translate = stage.style.scale = media.style.opacity = ''; return; }
       // distance left before the stage unpins: > 0 while holding, < 0 once it scrolls away
       var left = media.getBoundingClientRect().bottom - (parseFloat(getComputedStyle(stage).top) + stage.offsetHeight);

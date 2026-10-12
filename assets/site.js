@@ -1,5 +1,23 @@
-// calmdownoscar — shared page behaviour: the mobile menu, and the home page idea field.
+// calmdownoscar — shared page behaviour: the mobile menu, pinned media that's taller than the screen,
+// and the home page idea field.
 (function(){
+  // Pinned media (.case.hold) sticks just under the top bar. One taller than the screen would never
+  // show its bottom, so it pins by its bottom edge instead: it scrolls until it's all in view, then holds.
+  var pins = document.querySelectorAll('.case.hold .case-media > :first-child');
+  if (pins.length){
+    var fit = function(){
+      pins.forEach(function(el){
+        el.style.top = '';
+        if (getComputedStyle(el).position !== 'sticky') return;
+        var top = parseFloat(getComputedStyle(el).top), room = window.innerHeight - 24;
+        if (top + el.offsetHeight > room) el.style.top = (room - el.offsetHeight) + 'px';
+      });
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);   // once the screenshots have their real heights
+  }
+
   // Mobile menu disclosure
   var top = document.querySelector('.top');
   var toggle = top && top.querySelector('.nav-toggle');
