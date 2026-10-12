@@ -14,8 +14,11 @@
 
   var RUN = { frames: 7, w: 120, h: 180, fistX: 0.84, fistY: 0.44, stand: 3 };   // frame 3: both feet down
   var PEEK = { src: 'toddler-peek.webp' };
-  var NAP = { src: 'toddler-nap.webp', headX: 0.16, headY: 0.3 };    // where the Zzz rise from
-  var TEDDY = { src: 'teddy.webp', pawX: 0.5, pawY: 0.06 };          // the paw he holds it by
+  var NAP = { src: 'toddler-nap.webp', headX: 0.24, headY: 0.05 };   // where the Zzz rise from
+  var TEDDY = { src: 'teddy.webp', pawX: 0.22, pawY: 0.04 };         // the paw he holds it by
+
+  // He's drawn at the size he runs on the home page, whose headline is clamp(44px, 1.2rem + 6vw, 112px).
+  function kidSize(){ return Math.max(44, Math.min(112, 19.2 + window.innerWidth * 0.06)) * 1.05; }
 
   function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
   function load(src){ return new Promise(function(ok, fail){ var i = new Image(); i.onload = function(){ ok(i); }; i.onerror = fail; i.src = ART + src; }); }
@@ -37,9 +40,8 @@
 
   // ---- Apps: peek, laugh, hide ----
   async function peek(img){
-    var fs = parseFloat(getComputedStyle(h1).fontSize);
     var l = lane(), L = l.getBoundingClientRect();
-    var h = Math.max(70, Math.min(150, fs * 1.45));
+    var h = Math.max(64, kidSize() * 0.95);
     var el = art(img, 'peek', h), w = parseFloat(el.style.width);
     var x = Math.min(L.width - w - 16, L.width * (L.width < 700 ? 0.7 : 0.76) - w / 2);
     var hidden = L.height + 2, up = L.height - h;          // the bottom edge of the aurora is his ledge
@@ -61,8 +63,8 @@
       { transform: at(x, up, ' rotate(5deg)') },
       { transform: at(x, up - h * 0.04, ' rotate(-3deg)') },
       { transform: at(x, up) }
-    ], { duration: 1100, easing: 'ease-in-out', fill: 'forwards' }).finished;
-    await wait(500);
+    ], { duration: 1500, easing: 'ease-in-out', iterations: 1, fill: 'forwards' }).finished;
+    await wait(700);
     await el.animate([{ transform: at(x, up) }, { transform: at(x, hidden) }],
       { duration: 380, easing: 'cubic-bezier(.5,0,.9,.5)', fill: 'forwards' }).finished;
     l.remove();
@@ -70,10 +72,9 @@
 
   // ---- How I work: run in with the teddy, lie down, sleep ----
   async function nap(sleeper, teddy){
-    var fs = parseFloat(getComputedStyle(h1).fontSize);
     var l = lane(), L = l.getBoundingClientRect();
-    var ground = L.height - Math.max(14, fs * 0.2);
-    var rH = Math.max(70, Math.min(150, fs * 1.35)), rW = rH * RUN.w / RUN.h;
+    var rH = kidSize(), rW = rH * RUN.w / RUN.h;
+    var ground = L.height - Math.max(14, rH * 0.18);
     // asleep: a slow breath, and Zzz drifting up from his head (in the wrapper, so the breath doesn't squash them)
     var nH = rH * 0.62, body = art(sleeper, '', nH), nW = parseFloat(body.style.width);
     body.className = 'body';
@@ -90,8 +91,8 @@
       for (var i = 0; i < 3; i++){
         var z = document.createElement('span');
         z.className = 'zz'; z.textContent = 'z'; z.style.setProperty('--i', i);
-        z.style.fontSize = Math.max(12, fs * 0.22) + 'px';
-        z.style.left = (nW * NAP.headX) + 'px'; z.style.top = (nH * NAP.headY - fs * 0.3) + 'px';
+        z.style.fontSize = Math.max(12, rH * 0.2) + 'px';
+        z.style.left = (nW * NAP.headX) + 'px'; z.style.top = (nH * NAP.headY - rH * 0.25) + 'px';
         holder.appendChild(z);
       }
     }
@@ -106,7 +107,7 @@
     var kid = runner.firstChild;
     kid.style.backgroundSize = (rW * RUN.frames) + 'px ' + rH + 'px';
     kid.style.setProperty('--strip', -(rW * RUN.frames) + 'px');
-    var tH = rH * 0.42, tW = tH * teddy.naturalWidth / teddy.naturalHeight;
+    var tH = rH * 0.38, tW = tH * teddy.naturalWidth / teddy.naturalHeight;
     var bear = document.createElement('img');
     bear.src = teddy.src; bear.alt = ''; bear.className = 'teddy';
     bear.style.cssText = 'width:' + tW + 'px;height:' + tH + 'px;left:' + (rW * RUN.fistX - tW * TEDDY.pawX) + 'px;top:' + (rH * RUN.fistY - tH * TEDDY.pawY) + 'px';
@@ -114,7 +115,7 @@
     l.appendChild(runner);
 
     var ry = ground - rH, from = -rW - tW, stop = spot + nW * 0.3 - rW / 2;
-    var speed = Math.max(280, fs * 5.5);                      // px per second, as fast as he runs on the home page
+    var speed = Math.max(280, rH * 5.2);                      // px per second, as fast as he runs on the home page
     runner.classList.add('go');
     await runner.animate([{ transform: at(from, ry) }, { transform: at(stop, ry) }],
       { duration: (stop - from) / speed * 1000, easing: 'cubic-bezier(.2,.6,.5,1)', fill: 'forwards' }).finished;
