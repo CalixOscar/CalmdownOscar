@@ -1,7 +1,8 @@
 // Home header: the aurora photo as a 3D scene. The photo is split into two layers (assets/aurora-sky.jpg,
 // the sky with the trees painted out, and assets/aurora-trees.webp, the trees cut out) set apart in CSS 3D.
-// The view turns with the mouse (or drifts on its own on touch screens) and scrolling moves in, so the
-// branches slide across the aurora. Skipped for reduced motion; the flat photo in the CSS stays.
+// The view turns with the mouse, or on phones with tilt and a sideways drag (drifting on its own until
+// then), and scrolling moves in, so the branches slide across the aurora.
+// Skipped for reduced motion; the flat photo in the CSS stays.
 (function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var sky = document.querySelector('.sky');
@@ -16,20 +17,56 @@
 
   function load(src){ return new Promise(function(ok, fail){ var i = new Image(); i.onload = ok; i.onerror = fail; i.src = src; }); }
 
-  // Where the viewer is looking: the mouse when there is one, a slow drift otherwise.
+  // Where the viewer is looking: the mouse when there is one, a slow drift otherwise. On phones,
+  // tilting turns the view (measured from how the phone was being held, so any grip is "straight
+  // ahead"), and a sideways drag across the header looks around; up and down still scroll.
   var target = [0, 0], look = [0, 0], lastInput = -1e9;
+  function clamp(v){ return Math.max(-1, Math.min(1, v)); }
   window.addEventListener('pointermove', function(e){
     if (e.pointerType !== 'mouse') return;
     target[0] = e.clientX / window.innerWidth * 2 - 1;
     target[1] = e.clientY / window.innerHeight * 2 - 1;
     lastInput = performance.now();
   }, { passive: true });
+
+  var rest = null, dragging = false;
   window.addEventListener('deviceorientation', function(e){
-    if (e.gamma == null || e.beta == null) return;
-    target[0] = Math.max(-1, Math.min(1, e.gamma / 20));
-    target[1] = Math.max(-1, Math.min(1, (e.beta - 50) / 20));
+    if (e.gamma == null || e.beta == null || dragging) return;
+    var angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+    var x = e.gamma, y = e.beta;                       // portrait: left-right, front-back
+    if (angle === 90){ x = e.beta; y = -e.gamma; }     // landscape, either way round
+    else if (angle === -90 || angle === 270){ x = -e.beta; y = e.gamma; }
+    if (!rest) rest = [x, y];
+    rest[0] += (x - rest[0]) * 0.004; rest[1] += (y - rest[1]) * 0.004;   // let a new grip become the centre
+    target[0] = clamp((x - rest[0]) / 12);
+    target[1] = clamp((y - rest[1]) / 12);
     lastInput = performance.now();
   }, { passive: true });
+
+  var intro = sky.parentElement, from = null;
+  intro.style.touchAction = 'pan-y';
+  intro.addEventListener('pointerdown', function(e){
+    if (e.pointerType === 'mouse') return;
+    from = { x: e.clientX, look: look[0] }; dragging = true;
+  });
+  intro.addEventListener('pointermove', function(e){
+    if (!from || e.pointerType === 'mouse') return;
+    target[0] = clamp(from.look - (e.clientX - from.x) / (window.innerWidth * 0.5));
+    lastInput = performance.now();
+  }, { passive: true });
+  function release(){ from = null; dragging = false; rest = null; }
+  intro.addEventListener('pointerup', release);
+  intro.addEventListener('pointercancel', release);
+
+  // iPhone only reports tilt once the visitor allows it, and Safari only asks in answer to a tap,
+  // so the first touch on the header asks (once).
+  var DOE = window.DeviceOrientationEvent;
+  if (DOE && typeof DOE.requestPermission === 'function'){
+    intro.addEventListener('touchend', function(e){
+      if (e.target.closest('a')) return;
+      DOE.requestPermission().catch(function(){});
+    }, { once: true });
+  }
 
   var visible = true, running = false, prev = 0;
   function frame(t){
