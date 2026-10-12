@@ -119,6 +119,30 @@ main{ padding-top:var(--top-h); }
 .sky.live .sky-far, .sky.live .sky-near{ opacity:1; }  /* fade the layers, not the scene: opacity on it would flatten the 3D */
 .sky-far{ background-image:url('aurora-sky.jpg'); transform:translateZ(-500px) scale(1.5556); }
 .sky-near{ background-image:url('aurora-trees.webp'); }
+/* the toddler who lives in the aurora: steals the full stop on the home page (toddler.js), peeks on Apps
+   and naps on How I work (toddler-scenes.js). He runs in a full-bleed lane behind the intro's text. */
+.intro{ position:relative; }
+.intro > :not(.sky):not(.toddler-lane){ position:relative; z-index:1; }
+.toddler-lane{ position:absolute; top:0; bottom:0; left:calc(50% - 50vw); width:100vw; overflow:hidden; pointer-events:none; z-index:0; }
+.toddler{ position:absolute; left:0; top:0; will-change:transform; }
+.toddler.crawl{ background:url('toddler/toddler-crawl.webp') 0 0 no-repeat; }
+.toddler.crawl.go{ animation:crawl .39s steps(8) infinite; }
+@keyframes crawl{ to{ background-position:var(--strip) 0; } }
+.toddler.runner{ opacity:0; transform-origin:50% 100%; }
+.toddler.runner .kid{ position:absolute; inset:0; background:url('toddler/toddler-run.webp') 0 0 no-repeat; }
+.toddler.runner.go{ opacity:1; }
+.toddler.runner.go .kid{ animation:run .44s steps(7) infinite; }
+@keyframes run{ to{ background-position:var(--strip) 0; } }
+.toddler .loot{ position:absolute; opacity:0; border-radius:50%; background:var(--ink); box-shadow:0 0 0 1px rgba(0,0,0,.25); }
+.toddler .teddy{ position:absolute; transform-origin:50% 0; animation:dangle .44s ease-in-out infinite alternate; }
+@keyframes dangle{ from{ rotate:-9deg; } to{ rotate:7deg; } }
+.toddler.peek{ transform-origin:50% 100%; }
+.toddler.nap .body{ position:absolute; left:0; bottom:0; transform-origin:50% 100%; }
+.toddler.nap .zz{ position:absolute; font:500 1em/1 'Inter', system-ui, sans-serif; color:rgba(236,236,232,.85); opacity:0;
+  animation:zz 3.6s ease-out infinite; animation-delay:calc(var(--i) * 1.2s); }
+@keyframes zz{ 0%{ opacity:0; transform:translate(0,0) scale(.6); } 20%{ opacity:1; } 100%{ opacity:0; transform:translate(.9em,-2.6em) scale(1.25); } }
+.stop.taken{ opacity:0; }
+.baseline-probe{ display:inline-block; width:0; height:0; vertical-align:baseline; }
 /* iPhone: asks for motion access so the gyro can steer the sky */
 .sky-gyro{ position:absolute; z-index:2; right:max(var(--gutter), var(--sar)); bottom:20px; height:36px; padding:0 14px;
   border:1px solid var(--line-hi); border-radius:999px; background:rgba(11,12,14,.35); color:var(--ink); cursor:pointer;
