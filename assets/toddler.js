@@ -1,5 +1,5 @@
 // Home headline: a toddler crawls in along the bottom of the aurora, stands, jumps up to snatch the
-// full stop after "Mac", lands and runs off with it.
+// full stop at the end of the headline, lands and runs off with it.
 // Artwork: assets/toddler/ (generated illustration and clips, cut into looping strips: crawl 8 frames, run 7).
 // The stop stays in the text for screen readers; only its glyph is hidden once taken.
 // Skipped for reduced motion, and the sentence keeps its full stop.
