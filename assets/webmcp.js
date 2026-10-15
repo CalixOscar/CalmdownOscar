@@ -116,7 +116,8 @@
   };
   // The clinic's interview questions, in its order. The calling agent asks them of the user.
   var CLINIC_QUESTIONS = [
-    'Do similar apps already exist?',
+    'Do similar apps already exist? If an incumbent already owns the space, what is the unique angle?',
+    'The “So What?” test: what specific human pain does this fix that existing tools handle poorly?',
     'Would people tell their friends about it?',
     'Would lots of people use it? (If not, is this really a tool just for you?)',
     'Would people use it every week?',
@@ -124,7 +125,10 @@
     'Would someone pay for it?',
     'What is the one thing it must do?',
     'Could people find it by searching the App Store (or the web) and would they know what to type?',
-    'Can you give it a few months?'
+    'Emotional resonance: how does the app reward the user (micro-interactions, a lack of clutter, satisfying feedback like smooth toggles or clean transitions)?',
+    'The security baseline: will user data be encrypted at rest and in transit, with local state and cloud sync protected against unauthorized token reads?',
+    'Can you give it a few months?',
+    'Kill switch: what would make you abandon this idea entirely before writing code?'
   ];
 
   function quote(text) { return text.split('\n').map(function (l) { return ('> ' + l).replace(/\s+$/, ''); }).join('\n'); }
@@ -162,6 +166,7 @@
       '- Reflect the idea back in two or three sentences, so the user can correct you.',
       '- Then write a short look-back from one year after launch, as if it already happened. Two short stories, specific to this idea: “It worked, because…” first, then “It stalled, because…”. Every reason it stalled comes with what would have prevented it. Warm, candid, no doom and no hype.',
       '- End that first reply with one question about whatever decides which of the two stories comes true.',
+      '- Hold the user to their kill switch once they have named it. If your research already meets one of their conditions for dropping the idea, say so.',
       '- After that, ask the clinic questions below, one per message, and wait for the user’s reply. Skip any the idea already answers. “I don’t know” is a valid answer; note it as a weak spot.',
       '- A confident answer isn’t evidence. Keep apart what the user has seen, what people told them, what people actually do or pay for, and what is a guess.',
       '- If the case is weak, say so plainly. Pausing, or making it a small tool just for the user, are good outcomes. If you agree with everything, ask: “What’s the strongest reason not to build this?”',
@@ -175,10 +180,14 @@
       '1. **The idea and who it’s for**, in one paragraph.',
       '2. **What is known and what is a guess**, as two separate lists.',
       '3. **Similar apps**: the closest ones and whether this one is different enough to matter.',
-      '4. **One year later**: the look-back, updated with what you learned. What made it work, three things that made it stall (each with its early warning sign and what would have prevented it), and a cheap test that shows which story we’re in.',
-      '5. **Your recommendation**: build it, make it smaller, make it a personal tool, test first, or pause. Give reasons and say what’s still uncertain. The user makes the final call.',
-      '6. **One small test to run next**: what to do, with whom, and which result means continue, change or stop.',
-      '7. **A draft intent**, only if the evidence supports building: the problem, who it’s for, the one core task, what’s in and out of the first version, and what “solved” looks like from outside the app. Mark it as a draft.', '',
+      '4. **The “So What?” test**: the specific human pain point this addresses that existing tools handle poorly. If an incumbent already owns the space, the unique angle, or say plainly that there isn’t one.',
+      '5. **One year later**: the look-back, updated with what you learned. What made it work, three things that made it stall (each with its early warning sign and what would have prevented it), and a cheap test that shows which story we’re in.',
+      '6. **The security baseline**: whether user data is encrypted at rest and in transit, and whether local state and cloud sync are protected against unauthorized token reads (for example, tokens in the Keychain, never in plain files, logs or backups). Name the data it holds and flag anything not yet planned.',
+      '7. **Emotional resonance**: how the app rewards the user: micro-interactions, a lack of clutter, satisfying feedback loops such as smooth toggles or clean transitions. Name the two or three moments to get right first.',
+      '8. **Kill switch criteria**: what would make the user abandon this idea entirely before writing code, for example “if market saturation is too high and feature parity takes six months of solo work, kill the project”. Start from theirs, sharpen them with what you found, and say for each whether it’s met, not met, or still unknown.',
+      '9. **Your recommendation**: build it, make it smaller, make it a personal tool, test first, or pause. Give reasons and say what’s still uncertain. The user makes the final call.',
+      '10. **One small test to run next**: what to do, with whom, and which result means continue, change or stop.',
+      '11. **A draft intent**, only if the evidence supports building: the problem, who it’s for, the one core task, what’s in and out of the first version, and what “solved” looks like from outside the app. Mark it as a draft.', '',
       'Begin now: research similar apps, reflect the idea back, write the one-year look-back, then ask your first question.'
     );
     return ok(lines.join('\n'));

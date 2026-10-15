@@ -9,9 +9,11 @@ const nodes = {
   quote:'Every good work of software starts by scratching a developer’s personal itch.',author:'Eric S. Raymond',next:'similar'},
  similar:{type:'choice',label:'Do similar apps exist',kicker:'WHAT’S OUT THERE',title:'Do similar apps already exist?',hint:'Almost every idea has a neighbour.',
   quote:'Competition is for losers.',author:'Peter Thiel',
-  options:[{value:'yes',label:'Yes, probably',next:'similarWhich'},{value:'no',label:'No'},{value:'unknown',label:'I don’t know'}],next:'talk'},
- similarWhich:{type:'text',label:'Similar apps that come to mind, and what mine would do better',kicker:'WHAT’S OUT THERE',title:'Which come to mind, and what would yours do better?',hint:'Name any you know. “Not sure yet” is fine too.',
-  quote:'Underdo your competition.',author:'Jason Fried & David Heinemeier Hansson',next:'talk'},
+  options:[{value:'yes',label:'Yes, probably',next:'similarWhich'},{value:'no',label:'No'},{value:'unknown',label:'I don’t know'}],next:'soWhat'},
+ similarWhich:{type:'text',label:'Similar apps that come to mind, and my unique angle against them',kicker:'WHAT’S OUT THERE',title:'Which come to mind, and what’s your angle?',hint:'If one already owns this space, what would yours do that it can’t or won’t?',
+  quote:'Underdo your competition.',author:'Jason Fried & David Heinemeier Hansson',next:'soWhat'},
+ soWhat:{type:'text',label:'The pain point existing tools handle poorly',kicker:'THE “SO WHAT?” TEST',title:'What pain does it fix that today’s tools handle poorly?',hint:'A specific moment of frustration, not a category.',
+  quote:'People don’t want to buy a quarter-inch drill. They want a quarter-inch hole!',author:'Theodore Levitt',next:'talk'},
  talk:{type:'choice',label:'Would people tell their friends about it',kicker:'WORD OF MOUTH',title:'Would people tell their friends about it?',hint:'Would someone mention it without being asked?',
   quote:'Make something people want.',author:'Paul Graham',options:yesNo({no:'personalJob'}),next:'who'},
  who:{type:'choice',label:'Would lots of people use it',kicker:'THE PEOPLE',title:'Would lots of people use it?',hint:'Not who could. Who would?',
@@ -29,9 +31,15 @@ const nodes = {
  core:{type:'text',label:'The one thing it must do',kicker:'THE SMALL VERSION',title:'What’s the one thing it must do?',hint:'If it did only this, it would still be worth opening.',
   quote:'Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.',author:'Antoine de Saint-Exupéry',next:'find'},
  find:{type:'choice',label:'Could people find it by searching the App Store',kicker:'THE FIRST PEOPLE',title:'Could people find it by searching the App Store?',hint:'Would they know what to type?',
-  quote:'Do things that don’t scale.',author:'Paul Graham',options:yesNo(),next:'time'},
+  quote:'Do things that don’t scale.',author:'Paul Graham',options:yesNo(),next:'delight'},
+ delight:{type:'text',label:'How it rewards the user',kicker:'EMOTIONAL RESONANCE',title:'How does it reward the person using it?',hint:'A satisfying toggle, a clean transition, a screen with nothing extra on it.',
+  quote:'The details are not the details. They make the design.',author:'Charles Eames',next:'security'},
+ security:{type:'choice',label:'User data encrypted at rest and in transit, with sync tokens protected',kicker:'THE SECURITY BASELINE',title:'Will user data be encrypted on the device and in transit?',hint:'Sync too: tokens kept somewhere safe, like the Keychain, not in plain files. Your AI will check the plan either way.',
+  quote:'Security is a process, not a product.',author:'Bruce Schneier',options:yesNo(),next:'time'},
  time:{type:'choice',label:'Can I give it a few months',kicker:'THE COST',title:'Can you give it a few months?',hint:'Count what you’d set aside for it.',
-  quote:'Focusing is about saying no.',author:'Steve Jobs',options:yesNo(),next:'review'},
+  quote:'Focusing is about saying no.',author:'Steve Jobs',options:yesNo(),next:'killSwitch'},
+ killSwitch:{type:'text',label:'My kill switch: what would make me drop it before writing code',kicker:'THE KILL SWITCH',title:'What would make you drop it before writing any code?',hint:'“If five apps already do this well and catching up would take six months on my own, stop.”',
+  quote:'The first principle is that you must not fool yourself — and you are the easiest person to fool.',author:'Richard Feynman',next:'review'},
  bigWhyNow:{type:'choice',label:'Is there a technical reason nobody has built it',kicker:'WHY NOW',title:'Is there a technical reason nobody has built it?',hint:'Too hard, not possible yet, or something Apple or Android won’t allow. Your AI will check either way.',
   quote:'The future is already here — it’s just not very evenly distributed.',author:'William Gibson',options:yesNo({yes:'bigHard'}),next:'bigMagic'},
  bigHard:{type:'text',label:'The hard part, as I see it',kicker:'WHY NOW',title:'What’s the hard part?',hint:'Your best guess is enough.',
@@ -39,7 +47,7 @@ const nodes = {
  bigMagic:{type:'text',label:'What will make people tell their friends',kicker:'THE MOMENT',title:'What will make people tell their friends?',hint:'The moment someone says “you have to try this”. That’s what to build first.',
   quote:'You’ve got to start with the customer experience and work backwards to the technology.',author:'Steve Jobs',next:'bigNeed'},
  bigNeed:{type:'choice',label:'Could I build it on my own',kicker:'GOING BIG',title:'Could you build it on your own?',hint:'Skills, time and money. Be honest.',
-  quote:'The best way to predict the future is to invent it.',author:'Alan Kay',options:yesNo(),next:'time'},
+  quote:'The best way to predict the future is to invent it.',author:'Alan Kay',options:yesNo(),next:'delight'},
  personalJob:{type:'text',label:'The one thing it must do for me',kicker:'JUST FOR YOU',title:'What’s the one thing it must do for you?',hint:'The job you’d open it for.',
   quote:'Less, but better.',author:'Dieter Rams',next:'personalToday'},
  personalToday:{type:'choice',label:'Do I use something for this today',kicker:'JUST FOR YOU',title:'Do you use something for this today?',hint:'An app, a note, a spreadsheet. Sometimes the answer is already on your phone.',
@@ -194,12 +202,18 @@ function weakSpots(){
   seen:{no:'I haven’t seen anyone struggle with this.',unknown:'I’m not sure I’ve seen anyone struggle with this.'},
   pay:{no:'I don’t think anyone would pay for it. How would it sustain itself?',unknown:'I don’t know whether anyone would pay for it.',yes:'I think people would pay, but nobody has actually paid yet.'},
   find:{no:'I don’t think people would find it by searching the App Store.',unknown:'I don’t know how people would find it.'},
+  security:{no:'I haven’t planned to encrypt user data or protect sync tokens.',unknown:'I don’t know yet how user data and sync tokens will be protected.'},
   time:{no:'I can’t give it months, so the first version must be small.',unknown:'I don’t know how much time I can give it.'}
  };
  path.forEach(id=>{const text=flag[id]?.[answers[id]];if(text)spots.push(text);if(unsure[id])spots.push(`Not sure yet: ${nodes[id].label.toLowerCase()}.`);});
  return spots;
 }
 
+// The four checks every product and big-idea brief must answer.
+const SO_WHAT='the specific human pain point this addresses that existing tools handle poorly. If an incumbent already owns the space, what our unique angle is, or say plainly that there isn’t one.';
+const SECURITY='whether user data is encrypted at rest and in transit, and whether local state and cloud sync are protected against unauthorized token reads (for example, tokens in the Keychain, never in plain files, logs or backups). Name the data it holds and flag anything I haven’t planned.';
+const RESONANCE='how the app rewards the user: micro-interactions, a lack of clutter, satisfying feedback loops such as smooth toggles or clean transitions. Name the two or three moments to get right first.';
+const KILL_SWITCH='what would make us abandon this idea entirely before writing code, for example “if market saturation is too high and feature parity takes six months of solo work, kill the project”. Start from mine, sharpen them with what you found, and say for each whether it’s met, not met, or still unknown.';
 function productPrompt(){
  const spots=weakSpots();
  return [
@@ -210,6 +224,7 @@ function productPrompt(){
   '- Reflect the idea back in two or three sentences, so I can correct you.',
   '- Then write a short look-back from one year after launch, as if it already happened. Two short stories, specific to this idea: “It worked, because…” first, then “It stalled, because…”. Every reason it stalled comes with what would have prevented it. This is a look-back, not a verdict: warm, candid, no doom and no hype.',
   '- End that first reply with one question about whatever decides which of the two stories comes true.',
+  '- Hold me to my kill switch. If your research already meets one of my conditions for dropping the idea, say so in that first reply.',
   '- After that, question me about my weakest answers, one question per message, and wait for my reply. Don’t re-ask what I’ve answered clearly.',
   '- A confident answer isn’t evidence. Keep apart what I’ve seen, what people told me, what they actually do or pay for, and what I’m guessing.',
   '- Many ideas feel urgent on the day they arrive. If the case is weak, say so plainly. Pausing, or making it a tool just for me, are good outcomes.',
@@ -221,10 +236,14 @@ function productPrompt(){
   '1. **The idea and who it’s for**, in one paragraph.',
   '2. **What I know and what I’m guessing**, as two separate lists.',
   '3. **Similar apps**: the closest ones and whether mine is different enough to matter.',
-  '4. **One year later**: the look-back, updated with what you learned from my answers. What made it work, three things that made it stall (each with its early warning sign and what would have prevented it), and a cheap test that shows which story we’re in.',
-  '5. **Your recommendation**: build it, make it smaller, make it a personal tool, test first, or pause. Give reasons and say what’s still uncertain. I make the final call.',
-  '6. **One small test to run next**: what to do, with whom, and which result means continue, change or stop.',
-  '7. **A draft intent**, only if the evidence supports building: the problem, who it’s for, the one core task, what’s in and out of the first version, what “solved” looks like from outside the app, and how it should feel to use. Mark it as a draft.','',
+  `4. **The “So What?” test**: ${SO_WHAT}`,
+  '5. **One year later**: the look-back, updated with what you learned from my answers. What made it work, three things that made it stall (each with its early warning sign and what would have prevented it), and a cheap test that shows which story we’re in.',
+  `6. **The security baseline**: ${SECURITY}`,
+  `7. **Emotional resonance**: ${RESONANCE}`,
+  `8. **Kill switch criteria**: ${KILL_SWITCH}`,
+  '9. **Your recommendation**: build it, make it smaller, make it a personal tool, test first, or pause. Give reasons and say what’s still uncertain. I make the final call.',
+  '10. **One small test to run next**: what to do, with whom, and which result means continue, change or stop.',
+  '11. **A draft intent**, only if the evidence supports building: the problem, who it’s for, the one core task, what’s in and out of the first version, what “solved” looks like from outside the app, and how it should feel to use. Mark it as a draft.','',
   'Begin now: research similar apps, reflect my idea back, write the one-year look-back, then ask your first question.'
  ].join('\n');
 }
@@ -263,18 +282,23 @@ function bigPrompt(){
   '- Then write a short look-back from two years after launch, as if it already happened. Lead with the story where people are talking about it: what made it spread, step by step. Then, briefly, the version where it never took off, and what would have prevented it. Keep the spirit of the first story.',
   '- If the opening is real and it can be built, ask me up to three short questions, one at a time, about what would make this spread.',
   '- Be ambitious and honest. Name the one or two things that could stop it and how to get ahead of them, without talking the idea down.',
+  '- Hold me to my kill switch. If your research already meets one of my conditions for dropping the idea, say so straight away.',
   '- Don’t write the code until I ask.','',
   '## My answers','',...answerLines(path),
   '## The plan I want','',
   '1. **The idea in one paragraph**, and why people would talk about it.',
   '2. **Is the opening real?** The closest alternatives you found, or what to search.',
-  '3. **Can it be built, and why now**: the hardest technical part, any Apple or Android limit that could block it, and what has changed that makes it possible today.',
-  '4. **The first version**: the one moment that makes someone tell a friend, and what to leave out until later.',
-  '5. **How it spreads**: from the first 100 people to the first 10,000.',
-  '6. **What it would take**: time, money and people.',
-  '7. **Two years later**: the look-back, updated. The story of how it spread, the two things most likely to have stalled it, the early sign of each, and how to get ahead of them.',
-  '8. **This week**: three concrete steps to start.',
-  '9. **A draft intent**: the problem, who it’s for, the one core task, what’s in and out of the first version, what “solved” looks like from outside the app, and how it should feel to use.','',
+  `3. **The “So What?” test**: ${SO_WHAT}`,
+  '4. **Can it be built, and why now**: the hardest technical part, any Apple or Android limit that could block it, and what has changed that makes it possible today.',
+  '5. **The first version**: the one moment that makes someone tell a friend, and what to leave out until later.',
+  `6. **Emotional resonance**: ${RESONANCE}`,
+  '7. **How it spreads**: from the first 100 people to the first 10,000.',
+  '8. **What it would take**: time, money and people.',
+  `9. **The security baseline**: ${SECURITY}`,
+  '10. **Two years later**: the look-back, updated. The story of how it spread, the two things most likely to have stalled it, the early sign of each, and how to get ahead of them.',
+  `11. **Kill switch criteria**: ${KILL_SWITCH}`,
+  '12. **This week**: three concrete steps to start.',
+  '13. **A draft intent**: the problem, who it’s for, the one core task, what’s in and out of the first version, what “solved” looks like from outside the app, and how it should feel to use.','',
   'Begin now: check that the opening is real and that it can be built, reflect my idea back, write the two-year look-back, then ask your first question.'
  ].join('\n');
 }
@@ -311,7 +335,9 @@ $('resume-new').onclick=()=>confirmInline($('resume-new').parentElement,'Discard
 $('resume-go').onclick=()=>{
  const draft=store.get(DRAFT_KEY)||{};answers=draft.answers||{};unsure=draft.unsure||{};
  path=Array.isArray(draft.path)&&draft.path.length&&draft.path.every(id=>nodes[id])?draft.path:[START];
- if(draft.view==='review')review();else if(draft.view==='handoff')handoff();else question();
+ // A draft saved before the questions changed may stop short of the end: pick up at the first unanswered one.
+ const done=complete();
+ if(done&&draft.view==='review')review();else if(done&&draft.view==='handoff')handoff();else{if(draft.view!=='interview')path=walk();question();}
 };
 $('restart').onclick=()=>{
  if(copied){startNew();return;}
