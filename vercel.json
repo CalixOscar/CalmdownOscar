@@ -69,6 +69,10 @@
   ],
   "rewrites": [
     {
+      "source": "/playground/norskkurs/",
+      "destination": "https://norsksti-a1-course.chalky-rhino-7996.chatgpt.site/"
+    },
+    {
       "source": "/playground/norskkurs/:path*",
       "destination": "https://norsksti-a1-course.chalky-rhino-7996.chatgpt.site/:path*"
     }

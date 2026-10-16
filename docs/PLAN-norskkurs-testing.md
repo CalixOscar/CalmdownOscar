@@ -17,3 +17,7 @@ The course deployment owns the matching URL-prefix changes for browser requests,
 ## Deployment verification
 
 The parent task publishes the updated course, commits only the intended integration files, pushes the verified studio commit to production, and verifies the public URL. Check that the course opens at the requested path, assets and APIs stay under it, the new password signs in, unauthenticated writes fail, shared answers persist, and PWA registration/offline navigation are scoped correctly. Confirm the existing studio homepage and Playground still load. Record anything not exercised as unverified.
+
+The first live pass confirmed that descendant paths, including `/api/answers`, proxy
+correctly, but Vercel did not match the empty course root with the wildcard rule.
+An explicit trailing-slash root rewrite is therefore required before the wildcard.
