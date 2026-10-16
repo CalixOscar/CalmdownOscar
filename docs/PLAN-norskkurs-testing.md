@@ -21,3 +21,15 @@ The parent task publishes the updated course, commits only the intended integrat
 The first live pass confirmed that descendant paths, including `/api/answers`, proxy
 correctly, but Vercel did not match the empty course root with the wildcard rule.
 An explicit trailing-slash root rewrite is therefore required before the wildcard.
+
+## Classroom dashboard and Norwegian guide
+
+The founder authorized publishing the classroom dashboard and an administrator guide at `/playground/norsksti/user_guide`. The course owns the guide source and manual approval model. The studio integration adds only the guide alias and the Google browser authorization policy for the course route.
+
+- [x] `vercel.json`: rewrite both guide URL slash forms to the existing course host's `/user_guide`; retain the course's asset prefix for shared styles.
+- [x] `vercel.json`: give only `/playground/norskkurs/` Google Identity Services script/style/frame access and Google APIs connection access; keep the existing Playground policy for other tools. Set `Cross-Origin-Opener-Policy: same-origin-allow-popups` for Google's account chooser. No Google tokens or client secret enter this repository.
+- [x] Verify configuration parsing, route destinations, scoped policies, `git diff --check`, and existing static site checks. Publish the course first, then push the studio integration and confirm the requested guide URL returns its Norwegian content.
+
+Verified locally: route/policy assertions preserve every prior redirect and other Playground security headers; 12 WebMCP checks and 11 existing trial checks pass. Course build and 127 course tests pass. Browser flow confirmed courses 1–3 open together, course 4 stays locked until all six approvals, then course 4 opens while course 5 waits. Guide desktop/mobile layouts fit without horizontal overflow. Course version 5 (source `47dad56d62466a961451b1ff09f5c6c7490bf78f`) published successfully before this studio integration push. Public alias confirmation is performed after Vercel deployment.
+
+Google web OAuth client setup remains a separate owner action. The guide explains the setup and shared Drive file permissions. Publication alone cannot verify a Google consent or Drive save flow without that client configuration.
