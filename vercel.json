@@ -227,7 +227,7 @@
       ]
     },
     {
-      "source": "/playground/forslag/:path*",
+      "source": "/playground/forslag(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
