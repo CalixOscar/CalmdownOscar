@@ -13,8 +13,8 @@
   const shareButton = document.getElementById('share-trip');
 
   const businessEmail = 'skaugvollcamping@gmail.com';
-  const validStays = new Set(['cabin', 'motel', 'caravan']);
-  const validInterests = new Set(['kayak', 'sauna', 'hiking', 'aurora', 'food']);
+  const validStays = new Set(['cabin', 'motel', 'caravan', 'tent']);
+  const validInterests = new Set(['kayak', 'bike', 'sauna', 'hiking', 'aurora', 'food']);
   const words = {
     en: {
       invalidDate: 'Choose an arrival date today or later.',
@@ -25,14 +25,15 @@
       intro: 'Suggested itinerary',
       arrival: 'Arrival', nights: 'Nights', guests: 'Guests', stay: 'Stay', interests: 'Interests',
       noInterests: 'No specific interests selected',
-      stayNames: { cabin: 'Panoramic cabin', motel: 'Motel room', caravan: 'Caravan space' },
-      interestNames: { kayak: 'Kayaking', sauna: 'Seaside sauna', hiking: 'Hiking and nature', aurora: 'Northern lights', food: 'Restaurant' },
+      stayNames: { cabin: 'Panoramic cabin', motel: 'Motel room', caravan: 'Caravan space', tent: 'Tent pitch' },
+      interestNames: { kayak: 'Kayaking', bike: 'Bike rental', sauna: 'Seaside sauna', hiking: 'Hiking and nature', aurora: 'Northern lights', food: 'Restaurant' },
       day: 'Day',
       dayOne: 'Arrive, settle in, and take time to get to know the coast at your own pace.',
       departure: 'A relaxed final morning, then depart when it suits your plans.',
       middle: 'Leave room to slow down and enjoy the sea, mountains, or a quiet moment at camp.',
       activity: {
         kayak: 'Make time for a kayak outing along the coast. Rental and conditions require confirmation.',
+        bike: 'Rent a bike for a few hours and roll along the coastal road. Rental requires confirmation.',
         sauna: 'Set aside time for the seaside sauna. Arrangement and availability require confirmation.',
         hiking: 'Explore a nearby mountain or coastal trail at your own pace; check local conditions before setting out.',
         aurora: 'If the season, darkness, and sky conditions cooperate, look for the northern lights. Sightings are never guaranteed.',
@@ -60,14 +61,15 @@
       intro: 'Forslag til reiseplan',
       arrival: 'Ankomst', nights: 'Netter', guests: 'Gjester', stay: 'Overnatting', interests: 'Interesser',
       noInterests: 'Ingen spesielle interesser valgt',
-      stayNames: { cabin: 'Panoramahytte', motel: 'Motellrom', caravan: 'Bobilplass' },
-      interestNames: { kayak: 'Kajakk', sauna: 'Badstue ved sjøen', hiking: 'Fottur og natur', aurora: 'Nordlys', food: 'Restaurant' },
+      stayNames: { cabin: 'Panoramahytte', motel: 'Motellrom', caravan: 'Bobilplass', tent: 'Teltplass' },
+      interestNames: { kayak: 'Kajakk', bike: 'Sykkelleie', sauna: 'Badstue ved sjøen', hiking: 'Fottur og natur', aurora: 'Nordlys', food: 'Restaurant' },
       day: 'Dag',
       dayOne: 'Ankom, finn deg til rette, og bli kjent med kysten i ditt eget tempo.',
       departure: 'En rolig siste morgen før avreise når det passer planene dine.',
       middle: 'Sett av tid til å senke tempoet og nyte sjøen, fjellene eller en stille stund på stedet.',
       activity: {
         kayak: 'Sett av tid til en kajakktur langs kysten. Leie og forhold må bekreftes.',
+        bike: 'Lei sykkel noen timer og rull langs kystveien. Leie må bekreftes.',
         sauna: 'Sett av tid til badstuen ved sjøen. Avtale og tilgjengelighet må bekreftes.',
         hiking: 'Utforsk en nærliggende fjell- eller kyststi i ditt eget tempo; sjekk lokale forhold før turen.',
         aurora: 'Hvis sesongen, mørket og værforholdene ligger til rette, kan du se etter nordlys. Observasjoner kan ikke garanteres.',
