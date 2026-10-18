@@ -2,6 +2,21 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/playgrounds/arctic_adventures",
+      "destination": "/playground/arctic_adventures/",
+      "permanent": false
+    },
+    {
+      "source": "/playgrounds/arctic_adventures/",
+      "destination": "/playground/arctic_adventures/",
+      "permanent": false
+    },
+    {
+      "source": "/playground/arctic_adventures",
+      "destination": "/playground/arctic_adventures/",
+      "permanent": false
+    },
+    {
       "source": "/playground/norskkurs",
       "destination": "/playground/norskkurs/",
       "permanent": false
@@ -68,6 +83,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/playground/arctic_adventures/",
+      "destination": "/playground/arctic_adventures/index.html"
+    },
     {
       "source": "/playground/norsksti/user_guide",
       "destination": "https://norsksti-a1-course.chalky-rhino-7996.chatgpt.site/user_guide"

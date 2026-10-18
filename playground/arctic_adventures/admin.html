@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#09191d">
+  <title>Eierdemo · Arctic Adventure Skaugvoll</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Hopp til innhold</a>
+  <div class="demo-ribbon" role="note">DEMO — kun eksempelbookinger · Ingen kontoer er tilkoblet</div>
+  <header class="topbar">
+    <a class="brand" href="/playground/arctic_adventures/" aria-label="Til besøksforslaget">
+      <span class="brand-mark" aria-hidden="true">⌁</span>
+      <span>ARCTIC ADVENTURE <i>SKAUGVOLL</i></span>
+    </a>
+    <a class="back-link" href="/playground/arctic_adventures/"><span aria-hidden="true">←</span> Til besøksforslaget</a>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> EIEROMRÅDE · FORSLAG</p>
+        <h1 id="page-title">En roligere oversikt.</h1>
+        <p class="lede">Et eksempel på hvordan bookingoversikt og innholdsarbeid kan samles for Skaugvoll Camping.</p>
+      </div>
+      <aside class="demo-note"><span class="note-icon" aria-hidden="true">✳</span><p><strong>Demovisning</strong><br>Alle navn og bookinger nedenfor er fiktive. Eksempeldatoene er satt rundt <strong>18. oktober 2026</strong>; dette er ikke live-status.</p></aside>
+    </section>
+
+    <section class="stats" aria-label="Oversikt over eksempelbookinger">
+      <article class="stat-card"><span>Eksempelbookinger</span><strong id="count-total">—</strong><small>Alle rader i demoen</small></article>
+      <article class="stat-card"><span>Bekreftet</span><strong id="count-confirmed">—</strong><small>Eksempelstatus</small></article>
+      <article class="stat-card"><span>Til oppfølging</span><strong id="count-followup">—</strong><small>Forespurt eller avventer</small></article>
+    </section>
+
+    <section class="panel bookings" aria-labelledby="bookings-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / BOOKINGOVERSIKT</p><h2 id="bookings-title">Eksempelbookinger</h2></div>
+        <a class="external-link" href="https://fareharbor.com/embeds/book/skaugvollcamping/?flow=1189221&amp;full-items=yes" target="_blank" rel="noopener noreferrer">Åpne offentlig booking <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="section-note">FareHarbor har allerede et administrasjonspanel. Denne statiske demoen leser ingen bookingdata.</p>
+      <div class="filters">
+        <label class="search-field"><span class="sr-only">Søk i eksempelbookinger</span><span aria-hidden="true">⌕</span><input id="booking-search" type="search" placeholder="Søk på gjest, referanse eller opphold…" autocomplete="off"></label>
+        <label class="select-field"><span class="sr-only">Filtrer etter status</span><select id="status-filter"><option value="all">Alle statuser</option><option value="confirmed">Bekreftet</option><option value="requested">Forespurt</option><option value="pending">Avventer</option><option value="cancelled">Avbestilt</option></select></label>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Gjest / referanse</th><th scope="col">Opphold</th><th scope="col">Enhet</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Detaljer</span></th></tr></thead>
+          <tbody id="booking-rows"></tbody>
+        </table>
+      </div>
+      <p id="empty-state" class="empty-state" hidden>Ingen eksempelbookinger passer med søket og statusen.</p>
+      <p class="table-footnote"><span class="status-dot"></span> Eksempeldata · ingen e-post, telefon eller betalingsopplysninger</p>
+    </section>
+
+    <section class="integration-grid" aria-label="Tilkoblingsstatus">
+      <article class="integration-card">
+        <div class="integration-top"><span class="integration-icon">↗</span><span class="connection-state"><i></i> Ikke tilkoblet</span></div>
+        <p class="eyebrow">BOOKINGDATA</p><h3>FareHarbor</h3>
+        <p>Bookinger administreres i FareHarbors administrasjonspanel. Egendefinert API eller webhook krever eierens godkjenning og FareHarbors godkjenning.</p>
+        <a href="https://developer.fareharbor.com/api/external/v1/home" target="_blank" rel="noopener noreferrer">Les FareHarbor API-informasjon <span aria-hidden="true">↗</span></a>
+      </article>
+      <article class="integration-card">
+        <div class="integration-top"><span class="integration-icon">✳</span><span class="connection-state"><i></i> Ikke tilkoblet</span></div>
+        <p class="eyebrow">SOSIALE MEDIER</p><h3>Meta</h3>
+        <p>Publisering krever en profesjonell konto og riktige tillatelser. Samme bilder og tekster kan brukes på nettsiden og i sosiale medier. Automatisk publisering må kobles til eierens kontoer.</p>
+        <a href="https://business.facebook.com/" target="_blank" rel="noopener noreferrer">Åpne Meta Business Suite <span aria-hidden="true">↗</span></a>
+      </article>
+    </section>
+    <p class="next-step"><strong>Neste steg:</strong> Bekreft bookingflyt og kontoeierskap med campingplassen, avklar eventuell FareHarbor-tilgang, og bestem hvem som skal godkjenne og publisere innhold.</p>
+
+    <section class="panel composer" aria-labelledby="composer-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / INNHOLD</p><h2 id="composer-title">Lag et innlegg</h2></div>
+        <span class="draft-label"><i></i> Bare lokalt utkast</span>
+      </div>
+      <div class="composer-grid">
+        <div class="editor">
+          <label for="template-select">Start med en mal</label>
+          <select id="template-select">
+            <option value="norway">Norsk · Kystpause</option>
+            <option value="winter">Norsk · Vinterlys</option>
+            <option value="english">English · A coastal pause</option>
+            <option value="english-winter">English · Winter light</option>
+          </select>
+          <label for="caption">Bildetekst <span class="edit-hint">Rediger teksten fritt</span></label>
+          <textarea id="caption" rows="7" maxlength="2200" spellcheck="true"></textarea>
+          <div class="editor-actions">
+            <button id="copy-caption" class="button button-dark" type="button">Kopier bildetekst <span aria-hidden="true">▢</span></button>
+            <a id="download-card" class="button button-outline" href="/playground/arctic_adventures/assets/social-card.png" download="skaugvoll-social-card.png">Last ned bilde <span aria-hidden="true">↓</span></a>
+          </div>
+          <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+          <p class="privacy-note">Utkastet finnes bare i denne nettleserfanen og nullstilles når siden lastes på nytt. Ingenting publiseres automatisk.</p>
+        </div>
+        <div class="preview-wrap">
+          <p class="preview-label">FORHÅNDSVISNING</p>
+          <article class="social-preview" aria-label="Forhåndsvisning av innlegg">
+            <div class="preview-account"><span class="avatar" aria-hidden="true">A</span><span><strong>Arctic Adventure Skaugvoll</strong><small>Forslag · ikke publisert</small></span><span class="preview-menu" aria-hidden="true">•••</span></div>
+            <img src="/playground/arctic_adventures/assets/social-card.png" alt="Delingsbilde med kystlandskap og teksten Der fjellet møter havet" width="1200" height="630">
+            <p id="caption-preview" class="caption-preview"></p>
+            <div class="preview-actions" aria-hidden="true"><span>♡　◯　➤</span><span>⌑</span></div>
+          </article>
+          <p class="preview-caption">Et lokalt eksempel med foreslått bilde og tekst. Ingen konto er tilkoblet.</p>
+        </div>
+      </div>
+    </section>
+    <footer class="footer"><a href="/playground/arctic_adventures/">← Til besøksforslaget</a><span>ARCTIC ADVENTURE SKAUGVOLL · DEMO</span></footer>
+  </main>
+
+  <dialog id="booking-dialog" aria-labelledby="dialog-title">
+    <form method="dialog"><button class="dialog-close" aria-label="Lukk detaljer">×</button></form>
+    <p class="eyebrow">EKSEMPELBOOKING</p>
+    <h2 id="dialog-title">Bookingdetaljer</h2>
+    <dl id="dialog-details" class="detail-list"></dl>
+    <p class="dialog-note">Fiktive data for demonstrasjon. Ingen handlinger utføres.</p>
+    <form method="dialog"><button class="button button-dark dialog-done">Lukk <span aria-hidden="true">×</span></button></form>
+  </dialog>
+</body>
+</html>
