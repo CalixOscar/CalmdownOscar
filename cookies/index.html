@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
+<title>Cookie settings — calmdownoscar</title>
+<meta name="description" content="calmdownoscar.com sets no cookies. Switch cookieless visitor statistics and embeds from other companies on or off for this browser.">
+<meta property="og:title" content="Cookie settings — calmdownoscar">
+<meta property="og:description" content="calmdownoscar.com sets no cookies. Switch cookieless visitor statistics and embeds from other companies on or off for this browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.calmdownoscar.com/cookies/">
+<link rel="canonical" href="https://www.calmdownoscar.com/cookies/">
+<link rel="preload" href="../assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
+<style>
+  .choices{ list-style:none; max-width:68ch; }
+  .choice{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 32px; align-items:start; padding:24px 0; border-bottom:1px solid var(--line); }
+  .choice:first-child{ padding-top:0; }
+  .choice h2{ font-size:18px; font-weight:500; letter-spacing:-.01em; }
+  .choice p{ color:var(--muted); margin-top:8px; max-width:56ch; }
+  .choice p a{ color:var(--ink); border-bottom:1px solid var(--line-hi); }
+  .choice p a:hover{ color:var(--accent); border-color:var(--accent); }
+  .choice .fixed{ font:12px/44px ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--muted); white-space:nowrap; }
+  .choice .hint{ font-size:14px; }
+
+  /* a real checkbox, drawn as a switch */
+  .switch{ position:relative; display:inline-flex; align-items:center; min-height:44px; cursor:pointer; }
+  .switch input{ position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+  .switch .track{ width:48px; height:28px; border:1px solid var(--line-hi); border-radius:999px; position:relative; pointer-events:none; transition:background-color .2s ease, border-color .2s ease; }
+  .switch .track::after{ content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:999px; background:var(--muted); transition:transform .2s var(--ease), background-color .2s ease; }
+  .switch input:checked + .track{ background:var(--accent); border-color:var(--accent); }
+  .switch input:checked + .track::after{ transform:translateX(20px); background:var(--bg); }
+  .switch input:focus-visible + .track{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  .saved{ min-height:24px; margin-top:24px; font:13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--muted); }
+  .nojs{ max-width:62ch; margin-top:24px; padding-left:14px; border-left:1px solid var(--accent); color:var(--ink); }
+  .settings{ padding-bottom:clamp(96px, 16vh, 180px); }
+  .settings .links{ margin-top:24px; }
+  @media (prefers-reduced-motion: reduce){ .switch .track, .switch .track::after{ transition:none; } }
+</style>
+<script src="../assets/site.js" defer></script>
+<script src="../assets/motion.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="../">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="../abouttheapps/">Apps</a>
+      <a href="../how_I_work/">How I work</a>
+      <a href="../aboutme/">About</a>
+      <a href="../#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap intro" aria-label="Introduction">
+    <p class="label">Cookie settings</p>
+    <h1 class="lede">This site sets no cookies. These are the two switches it does have.</h1>
+    <p class="by">Your choice is kept in this browser and nowhere else. Change it here any time; the link is in every page’s footer.</p>
+  </section>
+
+  <section class="wrap settings" aria-label="Your choices">
+    <form id="choices" class="split">
+      <div>
+        <p class="label">For this browser</p>
+        <p>Applies from the next page you open.</p>
+      </div>
+      <div>
+        <ul class="choices">
+          <li class="choice">
+            <div>
+              <h2 id="c-local">Remembered on this device</h2>
+              <p>The choices on this page, and an unfinished Idea Clinic draft if you start one. Kept in your browser’s local storage and never sent anywhere. Clearing your browser’s site data removes them.</p>
+            </div>
+            <span class="fixed">Always on</span>
+          </li>
+          <li class="choice">
+            <div>
+              <h2 id="c-stats">Visitor statistics</h2>
+              <p>Counts page views with Vercel Web Analytics, served from this domain: the page, the site that sent you, your country, browser, operating system and device type. No cookie and no identifier is stored on your device. Vercel tells visits apart with a hash of the request that it discards after 24 hours, and I only ever see totals. <a href="../privacy/#statistics">How it works</a></p>
+              <p class="hint" id="signal-note" hidden>Your browser sends a Global Privacy Control or Do Not Track signal, so this starts off. Switch it on only if you want to be counted.</p>
+            </div>
+            <label class="switch"><input type="checkbox" name="stats" aria-labelledby="c-stats" checked><span class="track" aria-hidden="true"></span></label>
+          </li>
+          <li class="choice">
+            <div>
+              <h2 id="c-embeds">Embeds from other companies</h2>
+              <p>Load the TikTok feed on <a href="../hobbies/">Hobbies</a> and the Chatty chat on <a href="../playground/">Playground</a> without asking first. They come from TikTok and Veritio Digital, which may set their own cookies under their own policies. Off means each one waits until you press its Load button.</p>
+            </div>
+            <label class="switch"><input type="checkbox" name="embeds" aria-labelledby="c-embeds"><span class="track" aria-hidden="true"></span></label>
+          </li>
+        </ul>
+        <p class="saved" id="saved" role="status" aria-live="polite"></p>
+        <noscript><p class="nojs">JavaScript is off, so none of this runs: no visitor statistics are counted and no embeds load.</p></noscript>
+        <div class="links"><a class="link in" href="../privacy/">Privacy guidelines</a><a class="link in" href="../faq/">FAQ</a></div>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 calmdownoscar · est. 2025</span>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="../faq/">FAQ</a><a href="../privacy/">Privacy</a><a href="./" aria-current="page">Cookie settings</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+  </div>
+</footer>
+
+<script>
+// The switches read and write the choices kept by site.js (deferred, so wait for it). Each change saves at once.
+document.addEventListener('DOMContentLoaded', function(){
+  var api = window.cdoChoices, form = document.getElementById('choices');
+  if (!api || !form) return;
+  var saved = document.getElementById('saved');
+  var now = api.get();
+  form.stats.checked = now.stats;
+  form.embeds.checked = now.embeds;
+  document.getElementById('signal-note').hidden = !(api.signal && !now.savedOn);
+  if (now.savedOn) saved.textContent = 'Last saved ' + now.savedOn + '.';
+  form.addEventListener('submit', function(e){ e.preventDefault(); });
+  form.addEventListener('change', function(){
+    var ok = api.set({ stats: form.stats.checked, embeds: form.embeds.checked });
+    saved.textContent = ok
+      ? 'Saved. Statistics ' + (form.stats.checked ? 'on' : 'off') + ', embeds ' + (form.embeds.checked ? 'load without asking' : 'wait for a click') + '.'
+      : 'This browser is blocking local storage, so the choice can’t be kept. Statistics stay ' + (api.get().stats ? 'on' : 'off') + ' and embeds wait for a click.';
+  });
+});
+</script>
+
+</body>
+</html>

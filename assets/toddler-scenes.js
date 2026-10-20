@@ -1,6 +1,7 @@
 // The home page's toddler drops by the other aurora headers. Set by data-toddler on the .intro:
 //   peek — he pops up from behind the bottom of the aurora, has a good laugh, and ducks back down.
 //   nap  — he runs in dangling his teddy, lies down with it and stays asleep for as long as the page is open.
+//   hide — (404) he crawls across the aurora and out of sight, then peeks back up: the page is hiding with him.
 // Artwork: assets/toddler/ (generated to match the home page sprites). Purely decorative, so the lane is
 // aria-hidden. Reduced motion skips the peek and shows the nap already asleep, without the Zzz.
 (function(){
@@ -13,6 +14,7 @@
   var ART = document.currentScript.src.replace(/[^\/]*$/, '') + 'toddler/';
 
   var RUN = { frames: 7, w: 120, h: 180, fistX: 0.84, fistY: 0.44, stand: 3 };   // frame 3: both feet down
+  var CRAWL = { src: 'toddler-crawl.webp', frames: 8, w: 227, h: 160 };   // the home page's crawl strip
   var PEEK = { src: 'toddler-peek.webp' };
   var NAP = { src: 'toddler-nap.webp', headX: 0.24, headY: 0.05 };   // where the Zzz rise from
   var TEDDY = { src: 'teddy.webp', pawX: 0.22, pawY: 0.04 };         // the paw he holds it by
@@ -68,6 +70,33 @@
     await el.animate([{ transform: at(x, up) }, { transform: at(x, hidden) }],
       { duration: 380, easing: 'cubic-bezier(.5,0,.9,.5)', fill: 'forwards' }).finished;
     l.remove();
+  }
+
+  // ---- 404: crawl across and out of sight, then peek back up ----
+  async function hide(peekImg){
+    var l = lane(), L = l.getBoundingClientRect();
+    var fs = kidSize() / 1.05;                                 // the home headline's font size
+    var cH = fs * 0.78, cW = cH * CRAWL.w / CRAWL.h;           // crawling, at the size he crawls on the home page
+    var cy = L.height - Math.max(14, fs * 0.2) - cH;
+    var crawl = document.createElement('div');
+    crawl.className = 'toddler crawl';
+    crawl.style.cssText = 'width:' + cW + 'px;height:' + cH + 'px;background-size:' + (cW * CRAWL.frames) + 'px ' + cH + 'px';
+    crawl.style.setProperty('--strip', -(cW * CRAWL.frames) + 'px');
+    l.appendChild(crawl);
+
+    var from = L.width + 8, mid = L.width * 0.42, out = -cW - 8;
+    var speed = Math.max(180, fs * 4.4);                       // px per second, brisker than the home crawl
+    crawl.classList.add('go');
+    await crawl.animate([{ transform: at(from, cy) }, { transform: at(mid, cy) }],
+      { duration: (from - mid) / speed * 1000, easing: 'cubic-bezier(.3,0,.6,1)', fill: 'forwards' }).finished;
+    crawl.classList.remove('go');
+    await wait(700);                                           // has a look round for the page
+    crawl.classList.add('go');
+    await crawl.animate([{ transform: at(mid, cy) }, { transform: at(out, cy) }],
+      { duration: (mid - out) / speed * 1000, easing: 'cubic-bezier(.4,0,.8,1)', fill: 'forwards' }).finished;
+    l.remove();
+    await wait(800);
+    await peek(peekImg);
   }
 
   // ---- How I work: run in with the teddy, lie down, sleep ----
@@ -150,7 +179,9 @@
   function whenReady(){
     var risen = h1.getAnimations ? h1.getAnimations({ subtree: true }).map(function(a){ return a.finished; }) : [];
     var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-    var art = scene === 'peek' ? [load(PEEK.src)] : [load(NAP.src), load(TEDDY.src), load('toddler-run.webp')];
+    var art = scene === 'peek' ? [load(PEEK.src)]
+      : scene === 'hide' ? [load(PEEK.src), load(CRAWL.src)]
+      : [load(NAP.src), load(TEDDY.src), load('toddler-run.webp')];
     return Promise.all(art.concat(risen, fonts));
   }
 
@@ -158,7 +189,7 @@
     if (!entries[0].isIntersecting) return;
     io.disconnect();
     whenReady().then(function(r){
-      return wait(still ? 0 : 600).then(function(){ return scene === 'peek' ? peek(r[0]) : nap(r[0], r[1]); });
+      return wait(still ? 0 : 600).then(function(){ return scene === 'peek' ? peek(r[0]) : scene === 'hide' ? hide(r[0]) : nap(r[0], r[1]); });
     }, function(){ /* artwork failed: no visit today */ });
   }, { threshold: 0.6 });
   io.observe(h1);

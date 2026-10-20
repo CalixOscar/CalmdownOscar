@@ -119,6 +119,9 @@
     color: var(--muted); font-size: 15px; line-height: 1.6;
   }
   .chat-embed-status a { color: var(--accent); text-decoration: none; }
+  .chat-load { min-height: 44px; margin-top: 16px; padding: 0 20px; border: 1px solid var(--line-hi); border-radius: 999px; background: transparent; color: var(--ink); font: 500 11px/1 'Inter', system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: border-color .2s ease, color .2s ease; }
+  .chat-load:hover { color: var(--accent); border-color: var(--accent); }
+  .chat-load-note { margin-top: 12px; font-size: 13px; }
   .veritio-tile {
     display: block;
     text-decoration: none;
@@ -301,13 +304,13 @@
     <div class="split">
       <div>
         <h2 class="label" id="hosted-chat">The hosted version: Chatty by Veritio Digital</h2>
-        <p>The chat window on this page is Chatty: live chat with an AI chatbot trained on your own docs, FAQs and site content, so people get an answer at 2am instead of a contact form. Installing it is one script tag — that's the whole integration, which is exactly how this kind of thing should feel. You'll also find it as a small chat bubble in the bottom-right corner of this page.</p>
+        <p>The chat window on this page is Chatty: live chat with an AI chatbot trained on your own docs, FAQs and site content, so people get an answer at 2am instead of a contact form. Installing it is one script tag — that's the whole integration, which is exactly how this kind of thing should feel. Once loaded, it also adds a small chat bubble in the bottom-right corner of this page.</p>
         <p>Veritio Digital runs it as a hosted product: bot and human in the same inbox, a hand-off to a real person when the bot reaches its limit, and a 30-day free trial to see whether it earns its place. Worth a look if you'd rather answer a question once than a hundred times.</p>
         <div class="links"><a class="link" href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a></div>
       </div>
       <div class="embed-col">
         <div class="chat-embed" id="chatty-embed">
-          <div class="chat-embed-status" id="chatty-status">Loading the chat window…</div>
+          <div class="chat-embed-status" id="chatty-status"><div><p>The chat loads from chatty.veritiodigital.com, which may set its own cookies.</p><button type="button" class="chat-load" id="chatty-load" data-consent-load>Load the chat</button><p class="chat-load-note"><a href="../cookies/">Cookie settings</a> can load it without asking.</p></div></div>
         </div>
         <!-- Prompt templates: the chat is a cross-origin iframe, so we can't type
              into it for the visitor — clicking a chip copies the prompt so they
@@ -329,7 +332,7 @@
 <footer class="foot">
   <div class="wrap">
     <span>© 2026 calmdownoscar · est. 2025</span>
-    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
+    <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="../faq/">FAQ</a><a href="../privacy/">Privacy</a><a href="../cookies/">Cookie settings</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
 <!-- WebLLM Module -->
@@ -585,42 +588,55 @@
   }
 </script>
 
-<!-- Chatty widget (Veritio Digital) — this page only, not site-wide.
+<!-- Chatty widget (Veritio Digital) — this page only, not site-wide, and only once the
+     visitor presses Load the chat (or allowed embeds in Cookie settings).
      The vendor script gives the small launcher bubble in the corner, left
      completely untouched. The inline window below is a second, independent
      iframe we build ourselves, pointed at the same chat URL their own script
      computes (origin + /w/<key>?u=<page>&r=<referrer> — read straight out of
      their widget.js). Two separate iframes, so the bubble's own open/close
      toggle can't affect the inline one. -->
-<script async src="https://chatty.veritiodigital.com/widget.js" data-key="fbea77b17b1fb40363cf0cc1daec79e5"></script>
 <script>
 (function(){
   var ORIGIN = 'https://chatty.veritiodigital.com';
   var KEY = 'fbea77b17b1fb40363cf0cc1daec79e5';
   var host = document.getElementById('chatty-embed');
   var status = document.getElementById('chatty-status');
-  if (!host) return;
+  var load = document.getElementById('chatty-load');
+  if (!host || !load) return;
 
-  var frame = document.createElement('iframe');
-  frame.title = 'Chat with Chatty by Veritio Digital';
-  frame.src = ORIGIN + '/w/' + encodeURIComponent(KEY) +
-    '?u=' + encodeURIComponent(window.location.href) +
-    '&r=' + encodeURIComponent(document.referrer || '');
+  // Nothing reaches Veritio Digital until the visitor asks for the chat (or allowed embeds in Cookie settings).
+  load.addEventListener('click', function(){
+    if (load.disabled) return;
+    load.disabled = true;
+    status.textContent = 'Loading the chat window…';
+    var widget = document.createElement('script');
+    widget.async = true;
+    widget.src = ORIGIN + '/widget.js';
+    widget.setAttribute('data-key', KEY);
+    document.body.appendChild(widget);
 
-  frame.addEventListener('load', function(){
-    if (status && status.parentNode) status.parentNode.removeChild(status);
+    var frame = document.createElement('iframe');
+    frame.title = 'Chat with Chatty by Veritio Digital';
+    frame.src = ORIGIN + '/w/' + encodeURIComponent(KEY) +
+      '?u=' + encodeURIComponent(window.location.href) +
+      '&r=' + encodeURIComponent(document.referrer || '');
+
+    frame.addEventListener('load', function(){
+      if (status && status.parentNode) status.parentNode.removeChild(status);
+    });
+    frame.addEventListener('error', function(){
+      if (status) status.innerHTML = 'The chat window didn\'t load. You can reach it at <a href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a>.';
+    });
+
+    host.appendChild(frame);
+
+    setTimeout(function(){
+      if (status && status.parentNode && status.textContent.indexOf('Loading') === 0){
+        status.innerHTML = 'Still loading — or reach the chat at <a href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a>.';
+      }
+    }, 12000);
   });
-  frame.addEventListener('error', function(){
-    if (status) status.innerHTML = 'The chat window didn\'t load. You can reach it at <a href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a>.';
-  });
-
-  host.appendChild(frame);
-
-  setTimeout(function(){
-    if (status && status.parentNode && status.textContent.indexOf('Loading') === 0){
-      status.innerHTML = 'Still loading — or reach the chat at <a href="https://veritiodigital.com" target="_blank" rel="noopener noreferrer">veritiodigital.com</a>.';
-    }
-  }, 12000);
 })();
 </script>
 

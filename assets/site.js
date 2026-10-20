@@ -1,6 +1,37 @@
-// calmdownoscar — shared page behaviour: the mobile menu, pinned media that's taller than the screen,
-// and the home page idea field.
+// calmdownoscar — shared page behaviour: the visitor's cookie settings, the mobile menu, pinned media
+// that's taller than the screen, and the home page idea field.
 (function(){
+  // Cookie settings (/cookies/), kept in this browser only. Visitor statistics are Vercel Web Analytics,
+  // served from this domain and cookieless; they count unless the visitor switched them off or the browser
+  // sends Global Privacy Control or Do Not Track. Embeds from other companies wait for a click unless the
+  // visitor allowed them: any button marked data-consent-load is pressed for them.
+  var CHOICES = 'cdo-choices-v1';
+  var signal = navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1';
+  function choices(){
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(CHOICES)); } catch (e) {}
+    saved = saved || {};
+    return { stats: typeof saved.stats === 'boolean' ? saved.stats : !signal, embeds: saved.embeds === true, savedOn: saved.on || null };
+  }
+  window.cdoChoices = {
+    get: choices,
+    signal: signal,
+    set: function(c){
+      try { localStorage.setItem(CHOICES, JSON.stringify({ stats: !!c.stats, embeds: !!c.embeds, on: new Date().toISOString().slice(0, 10) })); return true; }
+      catch (e) { return false; }
+    }
+  };
+  var chosen = choices();
+  if (chosen.stats && location.protocol === 'https:'){
+    window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
+    var va = document.createElement('script');
+    va.defer = true;
+    va.src = '/_vercel/insights/script.js';
+    document.head.appendChild(va);
+  }
+  if (chosen.embeds) document.querySelectorAll('[data-consent-load]').forEach(function(b){ b.click(); });
+
+
   // Pinned media (.case.hold) sticks just under the top bar. One taller than the screen would never
   // show its bottom, so it pins by its bottom edge instead: it scrolls until it's all in view, then holds.
   var pins = document.querySelectorAll('.case.hold .case-media > :first-child');

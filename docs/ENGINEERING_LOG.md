@@ -72,6 +72,11 @@ this repository deliberately.
 - Standardized aspect ratios: 2:1 for macOS apps (Wedding Concierge, Unli Rice, Unli Disk) and 9:16 for iOS/iPadOS apps (Unli Rice Capture, ClearSpace, Shuttle Vision, Kitchen Vision, Architecturally).
 - Mobile screenshots sit centered in a subtle dark inset stage (`rgba(0,0,0,0.22)`) with `max-height: 380px` on desktop and `290px` on mobile (375px), preventing vertical layout stretching while maintaining UI legibility.
 
+### 2026-10-20 — Cookie settings, visitor statistics, privacy guidelines, FAQ and a 404 page
+- Added cookieless visitor statistics (Vercel Web Analytics, first-party `/_vercel/insights/script.js`), loaded from `assets/site.js` unless the visitor opts out or the browser sends Global Privacy Control or Do Not Track.
+- Added `/cookies/` with switches for statistics and for embeds from other companies; the TikTok feed (Hobbies) and Chatty (Playground) now wait for a click unless embeds are allowed.
+- Added `/privacy/` (site privacy guidelines), `/faq/`, and `404.html`, where the aurora toddler crawls off and peeks back. Footer links to all three on every page.
+
 ## OpenGrail is no longer deployed from here
 
 `/opengrail/` used to be a vendored copy of the OpenGrail production build, rsynced into
