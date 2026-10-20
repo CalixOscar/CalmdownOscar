@@ -76,6 +76,7 @@ this repository deliberately.
 - Added cookieless visitor statistics (Vercel Web Analytics, first-party `/_vercel/insights/script.js`), loaded from `assets/site.js` unless the visitor opts out or the browser sends Global Privacy Control or Do Not Track.
 - Added `/cookies/` with switches for statistics and for embeds from other companies; the TikTok feed (Hobbies) and Chatty (Playground) now wait for a click unless embeds are allowed.
 - Added `/privacy/` (site privacy guidelines), `/faq/`, and `404.html`, where the aurora toddler crawls off and peeks back. Footer links to all three on every page.
+- Added a 1200×630 share image (`assets/og/calmdownoscar.jpg`) with `og:image` on every public page, `/.well-known/security.txt`, sitemap `lastmod` dates, and Philippine Data Privacy Act details on `/privacy/`.
 
 ## OpenGrail is no longer deployed from here
 

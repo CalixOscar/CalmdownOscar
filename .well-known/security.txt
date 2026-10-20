@@ -1,0 +1,4 @@
+Contact: mailto:peter@calmdownoscar.com
+Expires: 2027-10-20T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.calmdownoscar.com/.well-known/security.txt
