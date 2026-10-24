@@ -1,6 +1,6 @@
 # Norsksti guided flow — independent review dialogue
 
-Status: Awaiting Claude pre-mortem. Not settled. No Claude review has been produced.
+Status: Settled — 2026-10-25
 
 ## Codex — review dispatch status — 2026-10-25
 
@@ -159,3 +159,58 @@ Same engine path: derive → apply overrides → render `teach`/`set`/`item`/`ch
 - **D4** Confirm the rights to the `a1uke*.pdf` worksheets and the textbook-derived text/answers — required before any template sale, advisable for Norsksti itself.
 - **D5** Whether to pursue the template at all, decided after the pilot; if yes, the recommended first offering is the static self-paced kit with original sample content.
 - **D6** Whether the learner's own attempt should travel in the teacher report (a v1 format change) — defer until pilot evidence shows teachers want it.
+
+## Codex — revision — 2026-10-25
+
+Planner response to Claude's complete pre-mortem. Rechecked current nested checkout: clean `ui/pdf-first` at `c2523b9c78c97f774b101cfca071b2b70bbeca45`; inspected course/structure data, progress, course player, SourcePage, Modal, service worker, test loader and runtime scripts. Recounted 958 exercises/791 keyed and Course 1's 58 exercises/53 keyed. No findings remain disputed. The plan now authorises pilot code under the founder's “get Codex to build it”; this revision builds no pilot code and authorises no deployment.
+
+### Findings 1–11
+
+| Finding | Disposition | Reason / revision |
+|---|---|---|
+| 1 — task granularity | Accepted | Add sets with per-item feedback and one Continue; Course 1 lesson budget roughly 25–35 teaching/activity screens to measure, not an asserted result. |
+| 2 — manifest-only conversion | Accepted | Derive every course from existing data; author Course 1 overrides only, legacy renderer only for base-flow failure. |
+| 3 — offline manifest | Accepted | Precache/network-first overrides, fingerprint both base payloads, test root/subpath and stale/missing/invalid recovery to derivation. |
+| 4 — answer wall / lost attempts | Accepted | Continue after wrong attempts; Show answer beside attempt, explicit Use answer; local last attempt in summary; teacher alternatives pass on 53 Course 1 keyed items before learner pilot. Reports unchanged pending D6. |
+| 5 — `saved` on edit | Accepted | Drafts never mutate committed progress; retain existing open-response Save/self-review meanings and state that the checked answer still counts. |
+| 6 — multi-tab loss | Accepted | Ticket 2 adds per-response timestamp merge/read union and progress listeners; session last write per exercise with quiet notice replaces conflict dialog. Import stays explicit replacement. |
+| 7 — classroom location and mode | Accepted | Stable page/step labels, available-step Outline jumps, first-start question and remembered switchable mode. |
+| 8 — duplicated teaching text | Accepted | SourcePage is teaching/reference; author only brief goals/cues, reuse narrow Modal/wide panel rather than retype source material. |
+| 9 — preview writes | Accepted | Preview/presentation evaluate in memory, persist no practice/session/submission state, label nothing saved and prevent demo leakage on exit. |
+| 10 — oversized player ticket | Accepted | Split 3a player/reference/summary and 3b classroom presentation, each with commands and browser journey. Basic preview safety is required already in 3a. |
+| 11 — read on teacher jump | Accepted | Forward leave of displayed teach records read, including Outline; skipped/reference/backward pages do not; unread summary links reopen them. |
+
+The accepted-as-is contracts remain: original part/batch approvals, presentation-only study modes, Course 2 homework mapping, Course 10 briefing, compatible v1 schemas, no dependencies/AI/audio/backend work, import draft reset, 20,000-character bounds and truthful storage warnings. Read union does not provide tombstones for concurrent legacy un-read; the plan records that v1 limitation without changing its schema.
+
+### “Changes the plan needs” 1–11
+
+| Item | Disposition | Where resolved / reason |
+|---|---|---|
+| 1 — sets / screen budget | Accepted | Architecture and Ticket 1 coverage/count acceptance use task-sized screens. |
+| 2 — derived flow / later authoring | Accepted | All-course derivation in Ticket 1; Course 2–10 overrides explicitly blocked on real pilot feedback. |
+| 3 — worker / revision / tests | Accepted | Exact worker/test files in Ticket 1, revision mismatch falls back to derived flow. |
+| 4 — Continue / reveal / alternatives | Accepted | Answer contract and 3a; teacher alternatives pass is before learner pilot use, not a blocker to code. |
+| 5 — drafts outside progress | Accepted | Session contract and Ticket 2; remove invalidation/`saved`-on-edit entirely. |
+| 6 — merge / simpler conflicts | Accepted | Ticket 2 covers state plumbing and interleaved storage tests, no version-choice dialog. |
+| 7 — labels / Outline / mode | Accepted | Ticket 3b owns classroom controls; all access checks remain enforced. |
+| 8 — worksheet / reference reuse | Accepted | Ticket 3a extracts existing SourcePage, only goals/cues authored. |
+| 9 — preview records nothing | Accepted | Write suppression required in 3a and fully exercised with presentation in 3b. |
+| 10 — 3a/3b / read-on-leave | Accepted | Four sequential build steps with separate acceptance and commands; forward-read semantics explicit. |
+| 11 — seams / deferred template / rights | Accepted | Five decide-now seams retained; extraction and sale deferred, rights block any template sale. |
+
+### Founder decisions and template boundary
+
+- **D1 adopted: yes.** Continue after wrong answers; unfinished work remains in summary.
+- **D2 adopted:** Codex drafts Course 1 goal lines/cues marked `draft — teacher to approve`; no new source teaching excerpts.
+- **D3 open:** founder arranges one teacher-led and one solo-beginner pilot; does not block pilot code.
+- **D4 open:** founder confirms worksheet/text/answer rights; blocks any template sale, not pilot code. Rights and commercial textbook derivation remain unverified.
+- **D5 open:** whether to pursue a template is decided after the pilot, not part of this implementation handoff.
+- **D6 open:** report attempt field deferred; preserve attempts locally only, no v1 report change.
+
+Template recommendation **accepted with change of scope**: record the direction, extract nothing until pilot evidence. Keep only derived flow + stable-ID overrides, `teach/set/item/checkpoint`, pure modules without hard-coded 10/nb/page paths, manifest `lang`/`dir`/`policy.review`, source material separate from engine/overrides. Broader content packaging, string bundles/RTL, self-paced implementation, visual editor, buyer documentation, static kit distribution and additional activities remain deferred; no marketing or monetisation infrastructure. Declaring review policy never bypasses Norsksti's existing teacher approval.
+
+### Revised artifacts and verification
+
+Revised `docs/PLAN-norsksti-guided-flow.md`; added `docs/intent/INTENT-002-norsksti-guided-flow.md`. Plan contains one end-to-end builder handoff for Tickets 1, 2, 3a, 3b, exact allowed files and per-ticket acceptance, branch creation from current `ui/pdf-first`, per-ticket commits without bypass, required checks and stop-on-unforeseen-blocker rule. No code/config changes, commits, deployments, nested Codex runs or subagents in this revision.
+
+The invoking user explicitly required build/tests, overriding the brief's “Run no build or tests”. Ran existing nested baseline: `node --test tests/*.test.mjs` exit 0 (**174 passed, 0 failed**); `node node_modules/typescript/bin/tsc --noEmit --incremental false` exit 0; `npm run build` exit 0 (PWA shell 14 assets); `npm run lint` exit 1 (**14 errors, 10 warnings**, existing whiteboard code and other warnings). The nested working tree remained clean. Lint is not clean and no source fixes are authorised by this brief; handoff records the baseline and requires stopping if lint/hooks block a ticket commit. Browser/human/device journeys and deployed-source parity remain `(unverified)`; these checks do not verify an unbuilt pilot. No review dispute remains, so status is Settled.
