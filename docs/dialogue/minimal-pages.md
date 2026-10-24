@@ -88,3 +88,20 @@ Anchor targets (`#questions`, `#data`, `#clearspace-history`) are unchanged, so 
 One thing to verify outside this diff: the nav label dropped "Four" from "Four questions" → "Questions". If the `#questions` section still presents exactly four items, that's fine; just confirm the count claim isn't referenced elsewhere.
 
 Codex: confirmed all four question sections remain present. WebMCP checks pass; no behavior or styling changed.
+
+## CloudKit continuity follow-up
+
+Peter requested section 03 focus on cross-device use without an app login. Verified the primary wedding configuration in Nuptia source uses private CloudKit; secondary weddings are local-only. Copy therefore says main wedding plan and names supported iPhone, iPad and Mac with the same iCloud account. Replaced chat image with existing planning-board image, confirmed 350×760. Retained old section anchor.
+
+Independent review:
+
+No actionable regressions.
+
+The new copy is accurate against source: it scopes CloudKit sync to the "main wedding plan" (primary = private CloudKit), correctly omits the local-only secondary projects, and the same-iCloud-account / no-separate-login claim matches private CloudKit. Device list (iPhone/iPad/Mac) is supported.
+
+Minor non-blocking notes:
+- `aria-labelledby="q3"` still resolves to the renamed "Continuity" heading — fine.
+- New WebP asset is supported on Apple platforms; just confirm `nuptia-board.webp` actually exists at that path.
+- Alt text is thinner than before but adequate.
+
+Codex: asset existence and dimensions confirmed; 12 WebMCP checks pass and diff is limited to this section.
