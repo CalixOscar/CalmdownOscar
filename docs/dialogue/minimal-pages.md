@@ -76,3 +76,15 @@ No other actionable problems found in the supplied diffs (mobile column stacking
 Lesson: moving controls into disclosures must preserve a concise, accessible state summary outside them. Review assumptions about access against existing resource paths before introducing new restrictions. No authentication, roster, data, answer-key or approval code was changed.
 
 Validation: 174 course tests, TypeScript and production build; 23 parent-site checks. Desktop/mobile browser checks covered PDF links, practice gating, language toggle, progress controls and disclosures. Real Google Drive/Pencil flows were not re-tested.
+
+## Intro copy follow-up
+
+Peter requested less text in the introduction. Reduced the heading, introduction and navigation labels; all targets and features remain unchanged. Independent Claude review of this copy-only diff:
+
+**No actionable findings.**
+
+Anchor targets (`#questions`, `#data`, `#clearspace-history`) are unchanged, so no broken links. Changes are purely stylistic (terser copy, fragment-style phrasing).
+
+One thing to verify outside this diff: the nav label dropped "Four" from "Four questions" → "Questions". If the `#questions` section still presents exactly four items, that's fine; just confirm the count claim isn't referenced elsewhere.
+
+Codex: confirmed all four question sections remain present. WebMCP checks pass; no behavior or styling changed.
