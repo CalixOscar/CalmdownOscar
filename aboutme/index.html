@@ -49,6 +49,13 @@
   .learn li:first-child{ border-top:0; padding-top:0; }
   .learn b{ font-weight:500; display:block; }
   .learn span{ display:block; color:var(--muted); font-size:14px; }
+  .earlier{ margin-top:18px; border-top:1px solid var(--line); }
+  .earlier summary{ display:flex; justify-content:space-between; gap:20px; align-items:center; min-height:44px; padding:12px 0; cursor:pointer; list-style:none; }
+  .earlier summary::-webkit-details-marker{ display:none; }
+  .earlier summary::after{ content:'+'; color:var(--muted); font-weight:300; font-size:20px; line-height:1; transition:transform .2s var(--ease); }
+  .earlier[open] summary::after{ transform:rotate(45deg); }
+  .earlier summary:hover{ color:var(--accent); }
+  .earlier .learn{ padding-bottom:4px; }
   @media (max-width:960px){
     .about .case-text{ grid-column:1 / -1; }
   }
@@ -89,6 +96,7 @@
         <li class="row"><span>What HR brings</span><div><p>Enterprise systems like SAP, personal data and permissions.</p><div class="links"><a class="link in" href="../how_I_work/">How that shapes the apps</a></div></div></li>
         <li class="row"><span>Stack</span><div><p>Swift and SwiftUI on iOS, iPadOS, macOS and watchOS. SwiftData, CloudKit, AVFoundation, Apple Vision, MCP. Built with AI coding tools.</p><div class="links"><a class="link" href="https://github.com/CalixOscar/unli-rice">Unli Rice on GitHub</a></div></div></li>
         <li class="row"><span>Recent learning</span>
+          <div>
           <ul class="learn">
             <li><b>ITIL v3 Foundation, certified</b><span>IT service management certification</span></li>
             <li><b>Microsoft Foundry for Enterprise AI Apps and Agents</b><span>20-hour course with hands-on labs · Aug 2026</span></li>
@@ -100,6 +108,25 @@
             <li><b>Design thinking and customer journeys</b><span>Mapping and Analyzing Customer Journeys; Design Thinking: Starting Your Journey · Mar 2026</span></li>
             <li><b>In progress</b><span>Google Cloud: Associate Cloud Engineer path · started Sep 2026</span></li>
           </ul>
+          <details class="earlier">
+            <summary>Earlier learning, 2021–2025</summary>
+            <ul class="learn">
+              <li><b>AI fundamentals</b><span>Fundamentals of AI and ML; Types of Artificial Intelligence; An Introduction to Generative AI; AI in the Workplace · Jun–Jul 2025</span></li>
+              <li><b>Agile and project management</b><span>Agile Principles and Methodologies; New Project Manager Essentials; Defining a Project Scope and Team; Managing a Project to Minimize Risk · May 2025</span></li>
+              <li><b>Digital transformation</b><span>Introduction to Digital Transformation; Mastering Digital Transformation · May 2025</span></li>
+              <li><b>Data visualization</b><span>Live instructor-led course · Oct 2024</span></li>
+              <li><b>AI, machine learning and process automation</b><span>Transforming the Workplace Using Artificial Intelligence; Getting Started with Machine Learning; Exploring Business Process Automation; Implementing a Process Automation Strategy; Using Robots and RPA in the Workplace; Applying Virtual Assistant Technology · May 2024</span></li>
+              <li><b>Customer service and the digital customer</b><span>Customer service series, plus Understanding the Digital Customer and Serving Digital Customers with Omnichannel · Apr–May 2024</span></li>
+              <li><b>Generative AI in business</b><span>Generative AI and Its Impact to Everyday Business; Establishing AI Guardrails and Governance · Jan 2024</span></li>
+              <li><b>Python</b><span>Live instructor-led course · Oct 2023</span></li>
+              <li><b>ServiceNow administration</b><span>Live instructor-led course · Sep 2023</span></li>
+              <li><b>RPA with UiPath</b><span>Live instructor-led course · Aug 2023</span></li>
+              <li><b>ChatGPT and prompt engineering</b><span>ChatGPT and Its Practical Use Cases; ChatGPT Prompt Engineering Examples and Use Cases; Finetuning Your ChatGPT Prompts; ChatGPT’s Impact on Various Industries · May–Jun 2023</span></li>
+              <li><b>Microsoft Azure cloud infrastructure</b><span>Live instructor-led course · Nov 2022</span></li>
+              <li><b>Power BI</b><span>Getting Started with Data Analytics · Jan 2021</span></li>
+            </ul>
+          </details>
+          </div>
         </li>
         <li class="row"><span>Elsewhere</span><div><div class="links"><a class="link in" href="../hobbies/">Hobbies</a><a class="link in" href="../abouttheapps/">The apps</a></div></div></li>
       </ul>
