@@ -25,7 +25,45 @@
 <link rel="stylesheet" href="../assets/motion.css">
 <script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
 <style>
-  .case-text > p.q-question{ margin-top:10px; font-size:17px; color:var(--ink); }
+  body.method-page main > .wrap,
+  body.method-page #questions > .wrap{ max-width:920px; }
+  body.method-page .intro{ padding-top:48px; padding-bottom:48px; }
+  body.method-page .intro .label{ margin-bottom:18px; }
+  body.method-page .lede{ max-width:24ch; font-size:clamp(28px, 4vw, 32px); line-height:1.12; }
+  body.method-page .method-intro{ max-width:66ch; margin-top:18px; color:var(--muted); }
+  body.method-page .jump{ margin-top:20px; }
+  body.method-page #questions .case{ display:block; padding:20px max(var(--gutter), var(--sar)); border-top:1px solid var(--line); }
+  body.method-page #questions .case-text{ position:static; margin:0; padding:0; }
+  html.motion.has-focus body.method-page #questions .case:not(.is-active) .case-text{ opacity:1; }
+  body.method-page #questions .case-title{ font-size:24px; line-height:1.25; margin-top:8px; }
+  body.method-page .case-text > p.q-question{ margin-top:8px; font-size:16px; color:var(--ink); }
+  body.method-page .case-text > p:not(.label){ margin-top:8px; max-width:66ch; }
+  body.method-page .case-text .links{ margin-top:6px; }
+  body.method-page .example{ margin-top:12px; }
+  body.method-page .example > summary,
+  body.method-page .data-disclosure > summary,
+  body.method-page .history-disclosure > summary{ width:fit-content; min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--muted); font-size:13px; }
+  body.method-page details > summary::before{ content:'+'; display:inline-block; width:1.25em; flex:none; color:var(--accent); }
+  body.method-page details[open] > summary::before{ content:'−'; }
+  body.method-page details > summary:hover{ color:var(--ink); }
+  body.method-page .example .case-media{ display:block; margin-top:8px; }
+  body.method-page .example figure{ max-width:720px; }
+  body.method-page .question-source{ padding-top:12px; padding-bottom:32px; }
+  body.method-page .block{ padding-bottom:32px; }
+  body.method-page .data-disclosure,
+  body.method-page .history-disclosure{ border-top:1px solid var(--line); padding-top:8px; }
+  body.method-page .data-disclosure .head{ padding-top:8px; padding-bottom:12px; border:0; }
+  body.method-page .data-disclosure .head .label{ margin:0; }
+  body.method-page .data-disclosure .lanes{ margin-top:0; }
+  body.method-page .data-disclosure .lane{ padding:12px 0; }
+  body.method-page .data-disclosure[open] > summary,
+  body.method-page .history-disclosure[open] > summary{ margin-bottom:10px; }
+  body.method-page .history-disclosure .case{ display:block; padding-bottom:24px; }
+  body.method-page .history-disclosure .case-text,
+  body.method-page .history-disclosure .case-media{ position:static; display:block; }
+  body.method-page .history-disclosure .case-text{ padding:0 0 12px; }
+  body.method-page .history-disclosure .case-text > p{ margin-top:6px; }
+  body.method-page .history-disclosure .rows{ margin-top:0; }
 
   /* where the data goes */
   .lanes{ list-style:none; border-top:1px solid var(--line); }
@@ -68,10 +106,8 @@
 </style>
 <script src="../assets/site.js" defer></script>
 <script src="../assets/motion.js" defer></script>
-<script src="../assets/sky3d.js" defer></script>
-<script src="../assets/toddler-scenes.js" defer></script>
 </head>
-<body class="has-sky">
+<body class="method-page">
 
 <header class="top">
   <div class="wrap">
@@ -88,10 +124,10 @@
 
 <main>
 
-  <section class="wrap intro" aria-label="Introduction" data-toddler="nap">
-    <div class="sky" aria-hidden="true"></div>
+  <section class="wrap intro" aria-label="Introduction">
     <p class="label">How I work</p>
-    <h1 class="lede">Four questions from my day job in enterprise HR.</h1>
+    <h1 class="lede">Build around a real need. Check the result.</h1>
+    <p class="method-intro">I bring questions from enterprise HR into the apps I build: what is needed, who has access, who checks it, and how to undo a mistake.</p>
     <nav class="jump" aria-label="On this page">
       <a href="#questions">Four questions</a>
       <a href="#data">Where data goes</a>
@@ -110,7 +146,9 @@
         <p><strong>Unli Rice Capture</strong> transcribes on the phone. Audio never leaves it.</p>
         <div class="links"><a class="link in" href="../abouttheapps/#unli-rice-capture">See the app</a></div>
       </div>
-      <div class="case-media">
+      <details class="example">
+        <summary aria-label="See the Unli Rice Capture example">See the example</summary>
+        <div class="case-media">
         <figure>
           <div class="shot">
             <img src="../assets/screens/capture-private.jpg" alt="Unli Rice Capture welcome screen, cropped: Tap to record; It’s saved as a note; Private by default — transcription happens entirely on this device, audio never leaves your phone, and nothing leaves the phone until you choose an iCloud folder" width="900" height="552" loading="lazy">
@@ -118,7 +156,8 @@
           </div>
           <figcaption><span>Unli Rice Capture · iPhone</span><span>Product screenshot, cropped</span></figcaption>
         </figure>
-      </div>
+        </div>
+      </details>
     </article>
 
     <article class="wrap case hold" id="access" aria-labelledby="q2">
@@ -129,7 +168,9 @@
         <p><strong>Unli Rice</strong> never edits another tool’s settings; you paste the block yourself.</p>
         <div class="links"><a class="link in" href="../abouttheapps/#unli-rice">See the app</a></div>
       </div>
-      <div class="case-media">
+      <details class="example">
+        <summary aria-label="See the Unli Rice example">See the example</summary>
+        <div class="case-media">
         <figure>
           <div class="shot">
             <img src="../assets/screens/unlirice-connect.jpg" alt="Unli Rice Connect screen, cropped: copy a configuration block and paste it into your tool yourself; under each tool, Unli Rice never opens or edits this file" width="1367" height="480" loading="lazy">
@@ -138,7 +179,8 @@
           </div>
           <figcaption><span>Unli Rice · Mac</span><span>Product screenshot, cropped</span></figcaption>
         </figure>
-      </div>
+        </div>
+      </details>
     </article>
 
     <article class="wrap case hold" id="oversight" aria-labelledby="q3">
@@ -149,7 +191,9 @@
         <p><strong>Wedding Concierge</strong> answers from real map searches and says it can make mistakes.</p>
         <div class="links"><a class="link in" href="../abouttheapps/#wedding-concierge">See the app</a></div>
       </div>
-      <div class="case-media">
+      <details class="example">
+        <summary aria-label="See the Wedding Concierge example">See the example</summary>
+        <div class="case-media">
         <figure>
           <div class="shot">
             <img src="../assets/screens/nuptia-concierge-chat.jpg" alt="Wedding Concierge chat, cropped: the header reads AI can make mistakes — always double-check details; below, the concierge adds a guest and lists a local bus operator with capacity and a starting price" width="950" height="675" loading="lazy">
@@ -157,7 +201,8 @@
           </div>
           <figcaption><span>Wedding Concierge · iPad</span><span>Product screenshot, cropped</span></figcaption>
         </figure>
-      </div>
+        </div>
+      </details>
     </article>
 
     <article class="wrap case hold" id="recovery" aria-labelledby="q4">
@@ -168,7 +213,9 @@
         <p><strong>ClearSpace</strong> clears to Recently Deleted, with 30 days to undo.</p>
         <div class="links"><a class="link in" href="../abouttheapps/#clearspace">See the app</a></div>
       </div>
-      <div class="case-media">
+      <details class="example">
+        <summary aria-label="See the ClearSpace example">See the example</summary>
+        <div class="case-media">
         <figure>
           <div class="shot">
             <img src="../assets/screens/clearspace-coreloop-detail.jpg" alt="ClearSpace core loop, cropped: sorted by size or month; heart to keep, so sweeps never delete it; clear the rest into Apple Photos’ Recently Deleted" width="760" height="505" loading="lazy">
@@ -176,10 +223,11 @@
           </div>
           <figcaption><span>ClearSpace · iPhone</span><span>Product screenshot, cropped</span></figcaption>
         </figure>
-      </div>
+        </div>
+      </details>
     </article>
 
-    <div class="wrap block">
+    <div class="wrap block question-source">
       <ul class="rows">
         <li class="row"><span>Where the questions come from</span>
           <div>
@@ -191,9 +239,11 @@
   </section>
 
   <!-- ===================== Data lanes ===================== -->
-  <section class="wrap block" id="data" aria-labelledby="data-title">
+  <section class="wrap block" aria-label="Data by app">
+    <details class="data-disclosure" id="data">
+    <summary>Where each app’s data goes</summary>
     <div class="head">
-      <h2 class="label" id="data-title">Where each app’s data goes</h2>
+      <h2 class="label" id="data-title">Data by app</h2>
     </div>
     <ul class="lanes" aria-label="Where each app’s data goes: on your device, your own iCloud, or a server">
       <li class="lane lane-head" aria-hidden="true">
@@ -238,12 +288,16 @@
       </li>
     </ul>
     <p class="key"><span><i aria-hidden="true"></i>Always</span><span><i class="opt" aria-hidden="true"></i>Only if you choose</span></p>
+    </details>
   </section>
 
   <!-- ===================== ClearSpace, version by version ===================== -->
-  <section class="wrap case" id="clearspace-history" aria-labelledby="hist-title">
+  <section class="wrap block">
+    <details class="history-disclosure" id="clearspace-history">
+    <summary>ClearSpace, version by version</summary>
+    <article class="case" aria-labelledby="hist-title">
     <div class="case-text">
-      <h2 class="label" id="hist-title">Version by version · ClearSpace</h2>
+      <h2 class="label" id="hist-title">Version history</h2>
       <p>From React Native to Swift.</p>
     </div>
     <div class="case-media">
@@ -259,6 +313,8 @@
           <div class="history-shots"><img class="tablet" src="../apps/assets/clearspace-shot-ipad-split.webp" alt="ClearSpace on iPad: the photo grid on the left and the selected waterfall photo open beside it" width="1400" height="1050" loading="lazy"></div></div></li>
       </ol>
     </div>
+    </article>
+    </details>
   </section>
 
 </main>
@@ -269,6 +325,24 @@
     <nav aria-label="Footer"><a href="../playground/">Playground</a><a href="../idea-clinic/">Idea clinic</a><a href="../hobbies/">Hobbies</a><a href="../faq/">FAQ</a><a href="../privacy/">Privacy</a><a href="../cookies/">Cookie settings</a><a href="mailto:peter@calmdownoscar.com">peter@calmdownoscar.com</a></nav>
   </div>
 </footer>
+
+<script>
+  (function(){
+    function openHashDetails(){
+      if(!location.hash) return;
+      var target=document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      var details=target&&target.closest('details');
+      if(details) details.open=true;
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(function(link){
+      link.addEventListener('click',function(){
+        if(link.hash===location.hash) openHashDetails();
+      });
+    });
+    window.addEventListener('hashchange',openHashDetails);
+    openHashDetails();
+  })();
+</script>
 
 </body>
 </html>
