@@ -214,3 +214,43 @@ Template recommendation **accepted with change of scope**: record the direction,
 Revised `docs/PLAN-norsksti-guided-flow.md`; added `docs/intent/INTENT-002-norsksti-guided-flow.md`. Plan contains one end-to-end builder handoff for Tickets 1, 2, 3a, 3b, exact allowed files and per-ticket acceptance, branch creation from current `ui/pdf-first`, per-ticket commits without bypass, required checks and stop-on-unforeseen-blocker rule. No code/config changes, commits, deployments, nested Codex runs or subagents in this revision.
 
 The invoking user explicitly required build/tests, overriding the brief's “Run no build or tests”. Ran existing nested baseline: `node --test tests/*.test.mjs` exit 0 (**174 passed, 0 failed**); `node node_modules/typescript/bin/tsc --noEmit --incremental false` exit 0; `npm run build` exit 0 (PWA shell 14 assets); `npm run lint` exit 1 (**14 errors, 10 warnings**, existing whiteboard code and other warnings). The nested working tree remained clean. Lint is not clean and no source fixes are authorised by this brief; handoff records the baseline and requires stopping if lint/hooks block a ticket commit. Browser/human/device journeys and deployed-source parity remain `(unverified)`; these checks do not verify an unbuilt pilot. No review dispute remains, so status is Settled.
+
+## Claude — post-mortem — 2026-10-25
+
+Reviewer: Claude (Opus 5.5). Scope: the pilot build on `.sites-norsksti` branch `codex/norsksti-guided-flow`, `c2523b9..3759d78` (14 files, +844/−17), against the settled plan. Built by Codex (`build` profile, gpt-reserve/medium) in seven bridge runs; Codex's sandbox cannot write `.git`, so each ticket stopped uncommitted and Claude reviewed, browser-tested and committed it. Process note: builds went through the codex-bridge at the founder's explicit request ("use the bridge … get Codex to build it"); the guardrail normally keeps build steps off the bridge. Building stayed in Codex's house (Codex planned and Codex built).
+
+### Checks actually run by Claude at `3759d78`
+- `node --test tests/*.test.mjs`: exit 0, **195 passed / 0 failed** (baseline 174).
+- `tsc --noEmit --incremental false`: exit 0. `npm run build`: exit 0, PWA shell 14 assets.
+- `npm run lint`: exit 1, **14 errors / 10 warnings — identical to baseline**, all in untouched files (whiteboard, classroom-dashboard, modal, scripts, older tests). No lint problem in any changed file.
+- `git diff --check c2523b9 HEAD`: clean.
+- Browser (dev server, Course 1, no admin), 375×812 and 1280×900: first-start question; In class ↔ On my own switch persists across reload and hides cues when solo; reads recorded on Continue and Outline-forward; open item Save → self-review; wrong keyed answer (`Pablo`) recorded `incorrect` with incorrect styling and Continue still available; Show answer writes nothing; Use this answer commits `correct, filled` and keeps the attempt `Pablo` in the session; answers and reads survive reload; resume returns to the saved step; worksheet reference opens as a side column (wide) and a modal with focus return (narrow); summary only at the end, grouped per step with `page · n/m` labels and Open links; one review action, disabled until complete; My progress still offers approval code, export report, backup and restore; Course 2 stays locked for an unapproved learner; no horizontal overflow at 375px; step heading ≈30 % down the phone viewport; no console errors in a fresh tab.
+
+### What diverged or broke during the build (all fixed before the final commit)
+1. **Ticket 2 silently disconnected approval codes**: `ProgressPanel` lost its `setClassroom` prop and got a no-op default — "Apply approval code" showed success and saved nothing. Tests, types and build were green. Fixed `84fb414`.
+2. **Ticket 2 import resurrected pre-import work** (persistence effect merged the restored backup with the old stored progress) and **single-tab "mark as unread" was undone** by the read union. Fixed `84fb414`.
+3. **Progress was never saved at all after Ticket 2** (found only in the browser): `parseProgress` re-stamped `updatedAt` with "now", so the stored copy always looked newer, the merge effect looped ("Maximum update depth exceeded" ×345) and never wrote. 188 unit tests passed throughout. Fixed `c3ccf94` with fixed-point regression tests.
+4. **Ticket 3a missed contract items**: no worksheet reference on exercise steps (the Anne/Pablo questions had no dialogue), a part ending on a teaching step could never be completed, two review buttons, wrong answers styled as success, English text in `nb` slots, and the stage started below the fold (y≈1043 on an 812px phone). Fixed `c3ccf94`.
+5. **Ticket 3a rendered the full ≈50-row summary under every step** (6,292px page for one teaching step) — the original "too much text" problem reintroduced. Fixed in `897976e`.
+6. **Ticket 3b**: no way to switch mode after the first choice despite the copy promising it; the Tools disclosure regressed to always-open; demo text typed in presentation could survive into practice. Fixed `3759d78`.
+7. Ticket 1 needed five review fixes (override validation against one course only, silent revision mismatch, hard-coded course 10, group reordering, learner-visible "draft" prefix in cues) — fixed in `e941fd5`.
+
+### Lessons for the plan / pipeline
+- **Green unit tests were not evidence for UI-state wiring.** Defects 1 and 3 were invisible to 188–192 passing tests and a clean build; both were found by reading the diff and by a browser walk. Future builder handoffs for stateful UI should require a scripted browser journey (or a component test) for persistence and approval wiring, not just `node --test`.
+- Parse functions used for persistence must be idempotent: a `parse → merge → stringify` round trip has to be a fixed point. Now covered by tests.
+- The dev server's service worker can serve stale modules to a long-lived tab; verify UI in a fresh tab after module-graph errors (observed, root cause not investigated).
+- The bridge sandbox cannot commit; per-ticket runs with reviewer commits worked and gave natural review checkpoints.
+
+### Not verified `(unverified)`
+- **Admin/teacher paths**: presentation mode (enlarged stage, fullscreen, Esc restores focus) and admin preview write-suppression were checked by code reading only — the local dev server has no `ADMIN_PASSWORD`, so no admin sign-in was possible. Same for applying a real approval code (wiring checked in code; server path untested).
+- Offline: installed-PWA open of `lesson-flow.json` offline, stale/missing override fallback in the browser (unit-tested only); offline course download.
+- Cross-tab merge with two real tabs; import of a real backup file; blocked storage/quota.
+- Screen-reader announcements, large text, mobile keyboard, reduced motion, 320px width, real iPhone/iPad.
+- Course 2 homework and Course 10 briefing in the browser (derivation unit-tested; both locked for a new learner).
+- Deployed-Site parity with `c2523b9`; nothing was deployed or published.
+
+### Status and what remains (founder)
+- Pilot code is complete on `codex/norsksti-guided-flow` (nested repo), **not merged, not deployed**.
+- Before learners use it: teacher reviews the Course 1 goal lines/cues (marked "Utkast — læreren godkjenner"), and adds accepted alternatives for Course 1's 53 keyed items in Shared answers.
+- Open founder decisions unchanged: D3 arrange one teacher-led and one solo pilot; D4 rights to the worksheets/textbook-derived text (blocks any template sale); D5 template after the pilot; D6 learner attempts in reports.
+- Course 2–10 override authoring stays blocked on pilot evidence; those courses already run on the derived flow.
