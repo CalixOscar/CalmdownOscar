@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0C0E">
+<meta name="robots" content="noindex">
+<base href="../../">  <!-- the shared scripts (toddler.js) load assets/ relative to the page -->
+<link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
+<title>Moving aurora — playground — calmdownoscar</title>
+<link rel="preload" href="assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/motion.css">
+<script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: no-preference)').matches&&'IntersectionObserver'in window)document.documentElement.classList.add('motion')</script>
+<style>
+  .hero-line{ font-size:clamp(44px, 1.2rem + 6vw, 112px); line-height:1.02; letter-spacing:-.035em; max-width:14ch; }  /* Moving / Still switch, added by aurora-gl.js once WebGL is running */
+  .aurora-toggle{ position:fixed; z-index:50; right:max(var(--gutter), var(--sar)); bottom:max(20px, env(safe-area-inset-bottom, 0px)); height:36px; padding:0 14px;
+    border:1px solid var(--line-hi); border-radius:999px; background:rgba(11,12,14,.55); color:var(--ink); cursor:pointer;
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    font:500 11px/1 'Inter', system-ui, sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+</style>
+<script src="assets/site.js" defer></script>
+<script src="assets/motion.js" defer></script>
+<script src="assets/toddler.js" defer></script>
+<script src="playground/aurora/aurora-gl.js" defer></script>
+</head>
+<body class="has-sky">
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="./">calmdown<span>oscar</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="abouttheapps/">Apps</a>
+      <a href="how_I_work/">How I work</a>
+      <a href="aboutme/">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap intro" aria-label="Introduction">
+    <div class="sky" aria-hidden="true"></div>
+    <h1 class="lede hero-line">Random thoughts made into real apps.</h1>  </section>
+
+  <section class="wrap" aria-label="About this prototype">
+    <p>Prototype: the aurora in the photo moves; the trees stay still.</p>
+  </section>
+
+</main>
+
+</body>
+</html>
