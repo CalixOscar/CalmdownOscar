@@ -1,4 +1,4 @@
-// Aurora header (home, Apps, How I work): the photo as a 3D scene. The photo is split into two layers (assets/aurora-sky.jpg,
+// Aurora header (Apps, How I work; on home only when assets/aurora-gl.js cannot run): the photo as a 3D scene. The photo is split into two layers (assets/aurora-sky.jpg,
 // the sky with the trees painted out, and assets/aurora-trees.webp, the trees cut out) set apart in CSS 3D.
 // The view turns with the mouse, or on phones with the gyro and a sideways drag (drifting on its own
 // until then), and scrolling moves in, so the branches slide across the aurora.

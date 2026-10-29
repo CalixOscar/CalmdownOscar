@@ -40,4 +40,6 @@ off-screen, off under reduced motion) into the Decisions Log.
 - [x] `planner` — review the diff; browser check at desktop and 375: renders, no console errors, no
       sideways scroll, Still is pixel-identical over time. Reduced motion checked by reading the code
       only; frame cost on a real phone (unverified)
-- [ ] `planner` — founder decides: keep tuning, move to the live header (tier 2), or drop
+- [x] `planner` — founder decided (2026-10-29): move it to the home header. Plain WebGL2, no new
+      dependency, so tier 1. `assets/aurora-gl.js` replaces `sky3d.js` on home and loads `sky3d.js`
+      itself if WebGL2 fails; Apps and How I work keep `sky3d.js`. Spec §1.3 records the loop exception.

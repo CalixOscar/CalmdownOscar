@@ -100,6 +100,9 @@ Revised 2026-08-09 (second pass): the original -.045em tracking was too aggressi
 
 - Animate `transform` and `opacity` only. Never `top`, `height`, `box-shadow`, or `filter`.
 - Nothing animates longer than 520ms. Nothing loops. Nothing autoplays with sound.
+  One exception, decided 2026-10-29: the home aurora header (`assets/aurora-gl.js`) moves
+  continuously. It is the founder's own photo moving the way an aurora does, not a decorative
+  loop; it stops off-screen and in hidden tabs, and is off under reduced motion.
 - Everything in §7 is disabled under `prefers-reduced-motion: reduce`.
 
 ### 1.4 Layout
