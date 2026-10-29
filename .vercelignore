@@ -22,3 +22,4 @@ node_modules/
 # Deployment credentials and local environment must never be served
 .env*
 .vercel/
+.sites-norsksti/
