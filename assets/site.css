@@ -122,7 +122,7 @@ main{ padding-top:var(--top-h); }
 /* the toddler who lives in the aurora: steals the full stop on the home page (toddler.js), peeks on Apps
    and naps on How I work (toddler-scenes.js). He runs in a full-bleed lane behind the intro's text. */
 .intro{ position:relative; }
-.intro > :not(.sky):not(.toddler-lane){ position:relative; z-index:1; }
+.intro > :not(.sky):not(.toddler-lane):not(.sky-gyro){ position:relative; z-index:1; }  /* the gyro button places itself */
 .toddler-lane{ position:absolute; top:0; bottom:0; left:calc(50% - 50vw); width:100vw; overflow:hidden; pointer-events:none; z-index:0; }
 .toddler{ position:absolute; left:0; top:0; will-change:transform; }
 .toddler.crawl{ background:url('toddler/toddler-crawl.webp') 0 0 no-repeat; }
