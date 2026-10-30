@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16.png">
 <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
-<title>How I Work — calmdownoscar</title>
-<meta name="description" content="How Peter builds apps: questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes.">
-<meta property="og:title" content="How I Work — calmdownoscar">
-<meta property="og:description" content="Questions from enterprise HR about purpose, access, oversight and recovery, answered in real products — plus where each app’s data goes.">
+<title>How I work — calmdownoscar</title>
+<meta name="description" content="How I turn ideas into working software: a spec, bounded AI builds, browser checks and retained context.">
+<meta property="og:title" content="How I work — calmdownoscar">
+<meta property="og:description" content="How I turn ideas into working software: a spec, bounded AI builds, browser checks and retained context.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.calmdownoscar.com/how_I_work/">
 <meta property="og:image" content="https://www.calmdownoscar.com/assets/og/calmdownoscar.jpg">
@@ -27,7 +27,6 @@
 <style>
   body.method-page main > .wrap,
   body.method-page #questions > .wrap{ max-width:920px; }
-  body.method-page .intro{ padding-top:48px; padding-bottom:48px; }
   body.method-page .intro .label{ margin-bottom:18px; }
   body.method-page .lede{ max-width:24ch; font-size:clamp(28px, 4vw, 32px); line-height:1.12; }
   body.method-page .method-intro{ max-width:66ch; margin-top:18px; color:var(--muted); }
@@ -64,6 +63,23 @@
   body.method-page .history-disclosure .case-text{ padding:0 0 12px; }
   body.method-page .history-disclosure .case-text > p{ margin-top:6px; }
   body.method-page .history-disclosure .rows{ margin-top:0; }
+
+
+  body.method-page .workflow { padding-bottom:48px; }
+  body.method-page .workflow h2, body.method-page .choices h2, body.method-page .spec-example h2 { font-size:24px; line-height:1.2; margin-bottom:16px; }
+  body.method-page .steps { list-style:none; border-top:1px solid var(--line); }
+  body.method-page .steps > li { padding:24px 0; border-bottom:1px solid var(--line); }
+  body.method-page .steps h3 { font-size:20px; line-height:1.25; margin-bottom:8px; }
+  body.method-page .steps p, body.method-page .choices p, body.method-page .spec-example p { max-width:66ch; color:var(--muted); }
+  body.method-page .workflow a, body.method-page .choices a { display:inline-block; padding:10px 0; margin:-10px 0; }
+  body.method-page .workflow figure { max-width:720px; margin-top:24px; }
+  body.method-page .workflow figure img { display:block; width:100%; height:auto; }
+  body.method-page .workflow figcaption { display:block; margin-top:8px; color:var(--muted); font-size:13px; }
+  body.method-page .choices, body.method-page .spec-example { padding-bottom:48px; }
+  body.method-page .choices .row, body.method-page .spec-example .row { padding:16px 0; }
+  body.method-page .questions-disclosure { border-top:1px solid var(--line); padding-top:8px; }
+  body.method-page .questions-disclosure > summary { width:fit-content; min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--muted); font-size:13px; }
+  body.method-page a:focus-visible, body.method-page summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 
   /* where the data goes */
   .lanes{ list-style:none; border-top:1px solid var(--line); }
@@ -106,8 +122,10 @@
 </style>
 <script src="../assets/site.js" defer></script>
 <script src="../assets/motion.js" defer></script>
+<script src="../assets/sky3d.js" defer></script>
+<script src="../assets/toddler-scenes.js" defer></script>
 </head>
-<body class="method-page">
+<body class="method-page has-sky">
 
 <header class="top">
   <div class="wrap">
@@ -124,14 +142,76 @@
 
 <main>
 
-  <section class="wrap intro" aria-label="Introduction">
+  <section class="wrap intro" aria-label="Introduction" data-toddler="nap">
+    <div class="sky" aria-hidden="true"></div>
     <p class="label">How I work</p>
-    <h1 class="lede">Build with purpose. Verify.</h1>
-    <p class="method-intro">Enterprise HR experience. Applied to the apps I build.</p>
+    <h1 class="lede">Write the spec. Build. Check.</h1>
+    <p class="method-intro">I run a one-person studio. AI helps me plan, build and check the work; I own the decisions.</p>
+  </section>
+
+  <section class="wrap workflow" aria-labelledby="workflow-title">
+    <h2 id="workflow-title">From idea to result</h2>
+    <ol class="steps">
+      <li>
+        <h3>01 · Question the idea</h3>
+        <p>I use the <a class="link" href="../idea-clinic/">Idea clinic</a> to check what already exists, challenge the idea and choose a small test before building.</p>
+        <p>I can ask an LLM to open <a class="link" href="../idea-clinic/">Idea clinic</a>, complete the questionnaire and generate a critique prompt. It can then run the critique and read the result back to me. A WebMCP-compatible assistant can get the prompt directly from the page. I can also fill in the form myself and take the prompt to the AI I already use.</p>
+      </li>
+      <li>
+        <h3>02 · Write the spec</h3>
+        <p>I work from a written spec. I name who the work is for, the task, scope, constraints and what a passing result looks like. Significant changes get an intent, a plan and review; small edits stay small.</p>
+      </li>
+      <li>
+        <h3>03 · Build in Orca</h3>
+        <p>In <a class="link" href="https://www.onorca.dev/">Orca</a>, I give a builder a bounded brief and an isolated task branch or worktree. The brief says what can change and how to check it.</p>
+        <p>I create my own agents and workflows around the tasks I repeat.</p>
+        <figure>
+          <img src="../assets/workflow/orca.jpg" alt="Orca website demo showing a project workspace and a checkout page in its browser" width="1346" height="738" loading="lazy">
+          <figcaption><a class="link" href="https://www.onorca.dev/">Orca vendor-site demo imagery</a> · cropped screenshot</figcaption>
+        </figure>
+      </li>
+      <li>
+        <h3>04 · Check the result</h3>
+        <p>I review the diff and run relevant tests. For web work, I also check real browser paths with <a class="link" href="https://jevbrowsercontrol.com/">Jev Browser Control</a>: Jev clicks, types and scrolls while the main assistant defines the goal and checks the outcome.</p>
+        <figure>
+          <img src="../assets/workflow/jev.jpg" alt="Jev Browser Control website demo showing a completed Wikipedia search and a goal check" width="1267" height="614" loading="lazy">
+          <figcaption><a class="link" href="https://jevbrowsercontrol.com/">Jev vendor-site demo imagery</a> · cropped screenshot</figcaption>
+        </figure>
+      </li>
+      <li>
+        <h3>05 · Keep the context</h3>
+        <p><a class="link" href="../unlirice/">Unli Rice</a> retrieves decisions, guardrails and next steps through MCP. I check the repository for current technical facts.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap spec-example" aria-labelledby="spec-title">
+    <h2 id="spec-title">A small spec</h2>
+    <ul class="rows">
+      <li class="row"><span>Outcome</span><div><p>A reader can understand how I build.</p></div></li>
+      <li class="row"><span>Scope</span><div><p>Rewrite this page; keep the existing site navigation and privacy examples.</p></div></li>
+      <li class="row"><span>Checks</span><div><p>Links work, the page reads on mobile, and keyboard users can open the examples.</p></div></li>
+    </ul>
+  </section>
+
+  <section class="wrap choices" aria-labelledby="choices-title">
+    <h2 id="choices-title">My current choices</h2>
+    <p>I use stronger reasoning for uncertain decisions and smaller models for well-specified work. That keeps usage for the decisions that need it.</p>
+    <ul class="rows">
+      <li class="row"><span>Claude</span><div><p>Opus for planning and review; Sonnet or Haiku for scoped builds when I work in Claude.</p></div></li>
+      <li class="row"><span>Sol</span><div><p>Routine planning and review.</p></div></li>
+      <li class="row"><span>Astra</span><div><p>Complex architecture and unresolved tradeoffs.</p></div></li>
+      <li class="row"><span>Terra</span><div><p>Implementation from a bounded spec.</p></div></li>
+      <li class="row"><span>Luna</span><div><p>Small mechanical edits.</p></div></li>
+    </ul>
+    <p>I use a review bridge between Claude and Codex: the model that did not plan the work reviews it. A pre-mortem challenges the plan before the build; a post-mortem checks the finished changes against it. Findings and replies stay in a shared review document.</p>
   </section>
 
   <!-- ===================== Four questions ===================== -->
-  <section id="questions" aria-label="Four questions">
+  <section id="questions" aria-label="App privacy examples">
+    <details class="wrap questions-disclosure">
+    <summary>App privacy examples</summary>
+    <h2 class="label">Questions in the apps</h2>
 
     <article class="wrap case hold" id="purpose" aria-labelledby="q1">
       <div class="case-text">
@@ -221,15 +301,7 @@
       </details>
     </article>
 
-    <div class="wrap block question-source">
-      <ul class="rows">
-        <li class="row"><span>Where the questions come from</span>
-          <div>
-            <p>The <a class="link" href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">GDPR</a>, and for AI the <a class="link" href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3">EU AI Act</a>, which treats AI in hiring and worker decisions as high-risk.</p>
-          </div>
-        </li>
-      </ul>
-    </div>
+    </details>
   </section>
 
   <!-- ===================== Data lanes ===================== -->
@@ -325,8 +397,12 @@
     function openHashDetails(){
       if(!location.hash) return;
       var target=document.getElementById(decodeURIComponent(location.hash.slice(1)));
-      var details=target&&target.closest('details');
-      if(details) details.open=true;
+      if(target && target.id==='questions') target.querySelector('details').open=true;
+      var node=target;
+      while(node){
+        if(node.tagName==='DETAILS') node.open=true;
+        node=node.parentElement;
+      }
     }
     document.querySelectorAll('a[href^="#"]').forEach(function(link){
       link.addEventListener('click',function(){
