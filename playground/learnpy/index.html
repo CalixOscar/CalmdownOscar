@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A small, honest Python-shaped practice demo.">
+  <title>Learn Python — small practice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="output-card" aria-labelledby="output-heading"><div class="section-label"><span id="output-heading">Output</span><span class="simulation-label">demo · reload resets</span><button id="help-button" class="help" type="button" aria-label="Open help" aria-expanded="false" aria-controls="help-panel">!</button></div><pre id="output" class="output">(starter output)</pre></section>
+    <aside id="help-panel" class="help-panel" hidden><p>This is a small simulation, not a Python interpreter. Nothing is saved: reloading resets this practice. There is no account or sign-in.</p><p>It understands a few literals, names, assignments, <code>print</code>, <code>+</code> and <code>&gt;</code>. Other Python may be valid, but is outside this demo.</p><p><strong>Current hint</strong><br><span id="lesson-hint"></span></p><p><strong>Practice goals</strong><br><span id="lesson-goal"></span></p><button id="previous" class="previous" type="button">Previous lesson</button></aside>
+    <section class="code-card" aria-labelledby="code-heading"><div class="file-tab" id="code-heading">main.py</div><div class="editor"><pre id="line-numbers" class="line-numbers" aria-hidden="true"></pre><pre id="highlight" aria-hidden="true"></pre><textarea id="code" maxlength="4000" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="main.py code"></textarea></div></section>
+    <button id="next" class="next-arrow" type="button" aria-label="Next lesson" hidden>→</button>
+    <span id="complete-mark" class="complete-mark" aria-hidden="true" hidden></span>
+    <span id="live-status" class="sr-only" role="status" aria-live="polite"></span>
+  </main>
+  <script src="engine.js"></script><script src="app.js"></script>
+</body>
+</html>
