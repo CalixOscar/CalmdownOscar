@@ -85,7 +85,7 @@
       <div class="case-text">
         <p class="label">Mac</p>
         <h3 class="case-title" id="ur-title">Unli Rice</h3>
-        <p>Shared memory for Claude, ChatGPT, Cursor and other AI tools, and a To Do list of what’s still open.</p>
+        <p>Shared memory for Claude, ChatGPT, Cursor and other AI tools, and a Studio that shows where each project stands.</p>
         <dl class="facts">
           <div><dt>Price</dt><dd>Free, open source</dd></div>
           <div><dt>Connects</dt><dd>Over the Model Context Protocol (MCP)</dd></div>
@@ -96,25 +96,25 @@
       <div class="case-media">
         <figure>
           <div class="shot">
-            <img src="../assets/screens/unlirice-todo.jpg" alt="Unli Rice To Do screen with demo projects Recipe Box and Garden Planner: one piece of work saved only on this Mac, a next step written in the project’s notes, four follow-ups suggested by Claude, Codex and ChatGPT with Done and Fix with AI buttons, and finished work not yet merged" width="1600" height="1000" fetchpriority="high">
-            <span class="pin" style="left:13%; top:13.5%;" aria-hidden="true">1</span>
-            <span class="pin" style="left:13%; top:28.8%;" aria-hidden="true">2</span>
-            <span class="pin" style="left:13%; top:44.7%;" aria-hidden="true">3</span>
-            <span class="pin" style="left:13%; top:90.5%;" aria-hidden="true">4</span>
+            <img src="../assets/screens/unlirice-studio.jpg" alt="Unli Rice Studio with the demo project recipe-box in front: its card marked Needs you, seven lights from Idea to Post-mortem with five done, its three branches, and its four notes with who wrote them" width="1600" height="1000" fetchpriority="high">
+            <span class="pin" style="left:10%; top:42%;" aria-hidden="true">1</span>
+            <span class="pin" style="left:30%; top:14%;" aria-hidden="true">2</span>
+            <span class="pin" style="left:33.7%; top:47%;" aria-hidden="true">3</span>
+            <span class="pin" style="left:66.8%; top:62%;" aria-hidden="true">4</span>
           </div>
-          <figcaption><span>Unli Rice 1.3 with a demo vault, no real projects</span><span>Product screenshot</span></figcaption>
+          <figcaption><span>Unli Rice 1.5 with a demo vault, no real projects</span><span>Product screenshot</span></figcaption>
         </figure>
       </div>
       <div class="case-more">
         <ol class="pin-key">
-          <li><b aria-hidden="true">1</b><span><strong>Not backed up.</strong> Work in a granted project folder that exists only on this Mac.</span></li>
-          <li><b aria-hidden="true">2</b><span><strong>Next step.</strong> What the project’s own notes say should happen next.</span></li>
-          <li><b aria-hidden="true">3</b><span><strong>Suggested by AI.</strong> Follow-ups an assistant filed, with who suggested them and when.</span></li>
-          <li><b aria-hidden="true">4</b><span><strong>Not merged yet.</strong> Finished work that isn’t part of the main version.</span></li>
+          <li><b aria-hidden="true">1</b><span><strong>Needs you.</strong> The project has to-dos or flagged notes waiting on you.</span></li>
+          <li><b aria-hidden="true">2</b><span><strong>Lights.</strong> How far the project’s plan has come, from Idea to Post-mortem, read from its plan, approvals and reviews.</span></li>
+          <li><b aria-hidden="true">3</b><span><strong>Branches.</strong> Work that hasn’t come back to the main line yet, and how far back it left.</span></li>
+          <li><b aria-hidden="true">4</b><span><strong>Notes.</strong> The notes that belong to this project, and which assistant wrote them.</span></li>
         </ol>
         <ol class="notes" aria-label="How Unli Rice is built">
           <li><span class="n">01</span><div><b>Identity, intent and guardrails</b><p>A profile and house rules every connected assistant reads at the start of a session.</p></div></li>
-          <li><span class="n">02</span><div><b>Status from the work itself</b><p>Read from the folders you grant and the branches each repository already knows. It doesn’t fetch or count commits.</p></div></li>
+          <li><span class="n">02</span><div><b>Status from the work itself</b><p>Read from the folders you grant and the git history already on your Mac. It never fetches or changes anything.</p></div></li>
           <li><span class="n">03</span><div><b>Propose, never apply</b><p>Notes are append-only and conflicts are flagged for a person. It never edits another tool’s configuration; you paste a block yourself.</p></div></li>
         </ol>
       </div>
