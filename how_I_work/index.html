@@ -154,12 +154,12 @@
     <ol class="steps">
       <li>
         <h3>01 · Question the idea</h3>
-        <p>I start with the <a class="link" href="../idea-clinic/">Idea clinic</a> to check what already exists, challenge my assumptions and choose a small test before building.</p>
-        <p>I can fill in the questionnaire myself and take its critique prompt to the AI I already use, or ask an LLM to handle the whole process and read the findings back to me. An assistant that supports WebMCP can get the prompt directly from the page.</p>
+        <p>I start with the <a class="link" href="../idea-clinic/">Idea clinic</a>: what problem needs solving, who has it, and whether it needs software at all. I look for alternatives and distinguish a personal tool from an idea people might pay for.</p>
+        <p>Before building, I consider how the idea might succeed or fail and what evidence would change my mind. The clinic can prepare a prompt for an assistant; its WebMCP tool is designed to let a compatible browser agent retrieve it directly. I make the decision.</p>
       </li>
       <li>
         <h3>02 · Write the spec</h3>
-        <p>I work from a written spec. I name who the work is for, the task, scope, constraints and what a passing result looks like. Significant changes get an intent, a plan and review; small edits stay small.</p>
+        <p>I describe who the work is for, what it should do, its boundaries and what a passing result looks like. Then I choose whether it calls for an app, a website, a workflow or an agent, and plan how to make it. Significant changes get a written intent and an independent review of the plan.</p>
       </li>
       <li>
         <h3>03 · Build in Orca</h3>
@@ -172,7 +172,8 @@
       </li>
       <li>
         <h3>04 · Check the result</h3>
-        <p>I review the diff and run relevant tests. For web work, I also check real browser paths with <a class="link" href="https://jevbrowsercontrol.com/">Jev Browser Control</a>: Jev clicks, types and scrolls while the main assistant defines the goal and checks the outcome.</p>
+        <p>I review the changes and run relevant tests against the agreed behaviour. My guardrails call for a separate review agent before higher-risk merges. It is meant to check the change and tests, report evidence and identify what remains untested. I check those findings and whether the result still solves the original problem.</p>
+        <p>For web work, I also check real browser paths with <a class="link" href="https://jevbrowsercontrol.com/">Jev Browser Control</a>. After significant builds, an independent review looks at what changed and what can be learned.</p>
         <figure>
           <img src="../assets/workflow/jev.jpg" alt="Jev Browser Control website demo showing a completed Wikipedia search and a goal check" width="1267" height="614" loading="lazy">
           <figcaption><a class="link" href="https://jevbrowsercontrol.com/">Jev vendor-site demo imagery</a> · cropped screenshot</figcaption>
@@ -204,7 +205,7 @@
       <li class="row"><span>Terra</span><div><p>Implementation from a bounded spec.</p></div></li>
       <li class="row"><span>Luna</span><div><p>Small mechanical edits.</p></div></li>
     </ul>
-    <p>I use a review bridge between Claude and Codex: the model that did not plan the work reviews it. A pre-mortem challenges the plan before the build; a post-mortem checks the finished changes against it. Findings and replies stay in a shared review document.</p>
+    <p>I use a review bridge between Claude and Codex so another assistant can challenge a plan before the build and review the finished changes afterwards. Findings and replies stay in a shared review document. Different models can bring different perspectives; I remain responsible for the decisions.</p>
   </section>
 
   <!-- ===================== Four questions ===================== -->
