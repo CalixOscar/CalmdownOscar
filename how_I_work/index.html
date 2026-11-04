@@ -71,6 +71,8 @@
   body.method-page .steps > li { padding:24px 0; border-bottom:1px solid var(--line); }
   body.method-page .steps h3 { font-size:20px; line-height:1.25; margin-bottom:8px; }
   body.method-page .steps p, body.method-page .choices p, body.method-page .spec-example p { max-width:66ch; color:var(--muted); }
+  body.method-page .steps > li:first-child p + p,
+  body.method-page .steps > li:nth-child(4) p + p { margin-top:16px; }
   body.method-page .workflow a, body.method-page .choices a { display:inline-block; padding:10px 0; margin:-10px 0; }
   body.method-page .workflow figure { max-width:720px; margin-top:24px; }
   body.method-page .workflow figure img { display:block; width:100%; height:auto; }
@@ -149,13 +151,12 @@
     <p class="method-intro">I run a one-person studio. AI helps me plan, build and check the work; I own the decisions.</p>
   </section>
 
-  <section class="wrap workflow" aria-labelledby="workflow-title">
-    <h2 id="workflow-title">From idea to result</h2>
+  <section class="wrap workflow" aria-label="Workflow">
     <ol class="steps">
       <li>
         <h3>01 · Question the idea</h3>
         <p>I start with the <a class="link" href="../idea-clinic/">Idea clinic</a>: what problem needs solving, who has it, and whether it needs software at all. I look for alternatives and distinguish a personal tool from an idea people might pay for.</p>
-        <p>Before building, I consider how the idea might succeed or fail and what evidence would change my mind. The clinic can prepare a prompt for an assistant; its WebMCP tool is designed to let a compatible browser agent retrieve it directly. I make the decision.</p>
+        <p>Before building, I consider how the idea might succeed or fail and what evidence would change my mind. The clinic can prepare a prompt for an assistant; its WebMCP tool is designed to let a compatible browser agent retrieve it directly.</p>
       </li>
       <li>
         <h3>02 · Write the spec</h3>
