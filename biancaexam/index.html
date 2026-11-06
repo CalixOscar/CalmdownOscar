@@ -75,7 +75,10 @@ const TOPICS = [
   {id:'cd', n:'Confucianism & Daoism', e:'☯️'},
   {id:'ju', n:'Judaism', e:'✡️'},
   {id:'ch', n:'Christianity', e:'✝️'},
-  {id:'is', n:'Islam', e:'☪️'}
+  {id:'is', n:'Islam', e:'☪️'},
+  {id:'ph', n:'Philosophy', e:'🤔'},
+  {id:'rs', n:'Research (Chapter 4)', e:'📊'},
+  {id:'en', n:'English Writing', e:'✍️'}
 ];
 
 const C = [
@@ -269,7 +272,74 @@ const C = [
 ['is','The Muslim region created in 1989','ARMM'],
 ['is','Islam began in which place and time?','Arabia, in the 7th century'],
 ['is','Three big problems Islam faces today','Women\'s rights, extremism and refugees'],
-['is','The head cover worn by many Muslim women','Hijab','It depends on the person and culture.']
+['is','The head cover worn by many Muslim women','Hijab','It depends on the person and culture.'],
+
+// ---- PHILOSOPHY ----
+['ph','The word "philosophy" means…','Love of wisdom','Philo = love, sophia = wisdom.',['Fear of the unknown','Study of old books','Love of money']],
+['ph','Why do we study philosophy in daily life?','It helps us think carefully, ask "why" and make good choices'],
+['ph','"Fact or Bluff": a FACT is something that…','Is true and can be checked or proven','Fact = can prove it.',['Someone feels is true','Many people say','Sounds smart']],
+['ph','A philosophical question is…','A big "why" question with no quick yes-or-no answer','Example: What is a good life?'],
+['ph','Asking questions back and forth to find the truth','Socratic method (dialectic)','Named after Socrates.'],
+['ph','Which Greek thinker is famous for asking questions to find the truth?','Socrates'],
+['ph','Studying things the way we experience them','Phenomenology','Phenomenon = what you experience.'],
+['ph','Focusing on human freedom, choice and the meaning of life','Existentialism','Exist = you choose your own life.'],
+['ph','Judging an idea by whether it works in real life','Pragmatism','Pragmatic = practical.'],
+['ph','Finding the meaning of a text by interpreting it carefully','Hermeneutics'],
+['ph','Why do philosophers use different methods?','Each method is a different way to look for the truth'],
+['ph','Intersubjectivity means…','People sharing experiences and understanding each other','Inter = between. Between you and me.'],
+['ph','Why is intersubjectivity important?','It helps us understand, respect and connect with other people'],
+['ph','Treating a person as a whole person, not a thing (Martin Buber)','I-Thou relationship','I-Thou = respect. I-It = using someone.',['I-It relationship','I-Me relationship','I-We rule']],
+['ph','We understand ourselves better when we…','Talk and share with other people'],
+
+// ---- RESEARCH ----
+['rs','Chapter 4 of your research is about…','Presenting, analyzing and interpreting the data','Show it, study it, explain it.'],
+['rs','Chapters 1 to 5 in order','Problem, Literature, Methods, Data, Conclusions','Ch 4 = Data. Ch 5 = Summary, conclusions, recommendations.'],
+['rs','A sheet used to count the answers from the survey','Tally sheet','Tally = count with marks.'],
+['rs','Frequency (f) means…','How many times an answer was chosen'],
+['rs','Formula for percentage','f ÷ N × 100','f = frequency, N = total answers.'],
+['rs','20 of 50 students chose "Agree". What is the percentage?','40%','20 ÷ 50 = 0.4 → 40%.',['20%','25%','50%']],
+['rs','Formula for the weighted mean','Add up (frequency × score), then divide by N','Σfx ÷ N.'],
+['rs','5 students gave a score of 4 and 5 students gave a score of 2. What is the weighted mean?','3.0','(5×4 + 5×2) ÷ 10 = 30 ÷ 10.',['2.0','4.0','6.0']],
+['rs','Which graph is best to compare groups?','Bar graph'],
+['rs','Which graph is best to show parts of a whole?','Pie chart'],
+['rs','Which graph is best to show change over time?','Line graph'],
+['rs','What does a table do?','Shows the exact numbers in rows and columns'],
+['rs','"Interpretation" of data means…','Explaining what the numbers mean'],
+['rs','Why do we link the findings to the research questions?','To show we answered the problem of our study'],
+['rs','Data made of numbers is called…','Quantitative data'],
+['rs','On a 4-point scale, which number means "Strongly Agree"?','4','Check your group\'s scale for the ranges.',['1','2','3']],
+
+// ---- ENGLISH ----
+['en','The most important point of a paragraph','Main idea'],
+['en','One clear sentence that gives the main claim of the whole text','Thesis statement'],
+['en','Facts, examples and reasons that support the main idea','Supporting details'],
+['en','Where do you usually find the thesis statement?','At the end of the first paragraph (introduction)'],
+['en','The sentence that tells the main idea of one paragraph','Topic sentence','Often the first sentence.'],
+['en','How long was your paragraph assignment?','5 to 7 sentences'],
+['en','Writing skill: saying ideas clearly','Clarity'],
+['en','Writing skill: putting ideas in a logical order','Organization'],
+['en','Writing skill: every sentence is about ONE main idea','Unity','Unity = one idea.'],
+['en','Writing skill: ideas connect smoothly','Coherence','Coherence = flows together.'],
+['en','Writing skill: correct spelling, punctuation and capital letters','Mechanics'],
+['en','Improving your writing and fixing mistakes','Revising and editing'],
+['en','Putting someone\'s idea in your OWN words, with the same meaning','Paraphrasing','Para-phrase = say it another way.'],
+['en','Copying the exact words and putting them in quotation marks','Direct quotation','Quote = exact words in " ".'],
+['en','Do you need to credit the source when you paraphrase?','Yes, always','Same idea = still their idea.'],
+['en','Using someone else\'s words or ideas without giving credit','Plagiarism'],
+['en','A good paraphrase should…','Change the words and sentence shape, but keep the meaning'],
+['en','When should you use a direct quote?','When the exact words are special or important'],
+
+// ---- ISLAM (extra) ----
+['is','The six articles of faith','Allah, angels, holy books, prophets, Day of Judgment, divine decree (Qadar)','A-A-B-P-D-D.'],
+['is','Tawhid means…','The oneness of Allah'],
+['is','What happened in 610 CE?','Muhammad received the first revelation through Gabriel'],
+['is','Who were the first four caliphs?','Abu Bakr, Umar, Uthman and Ali','A-U-U-A.'],
+['is','Under the Abbasids, Baghdad became…','A great center of learning (math, medicine, astronomy)'],
+['is','Do Muslims worship Muhammad?','No. They worship Allah only. Muhammad is the last prophet'],
+['is','Why do Muslims fast in Ramadan?','To learn self-control, care for the poor and show devotion'],
+['is','Unfair fear or hate towards Muslims','Islamophobia'],
+['is','Where did Muhammad see his first visions?','Mount Hira'],
+['is','Islam is the ___ major one-God religion','Youngest','Started in the 7th century.',['Oldest','Biggest','Smallest']]
 ];
 
 /* ---------- SAMPLE EXAM (read-aloud by the reader; hidden behind the bookmark link) ----------
@@ -304,7 +374,22 @@ const SAMPLE=[
 ['Short answer','Name the Five Pillars of Islam. Say what ONE of them is.','Shahada, Salat, Zakat, Sawm, Hajj. Example: Zakat = giving to people in need.'],
 ['Short answer','Say the Four Noble Truths in your own words.','Life has suffering. Suffering has a cause. Suffering can end. The Eightfold Path leads to the end.'],
 ['Short answer','What did God promise Abraham?','Land, children (descendants) and blessing. This is the Abrahamic Covenant.'],
-['Short answer','Name two Confucian virtues and say what they mean.','Any two: Ren (kindness), Li (manners), Yi (fairness), Zhi (wisdom), Xin (honesty).']
+['Short answer','Name two Confucian virtues and say what they mean.','Any two: Ren (kindness), Li (manners), Yi (fairness), Zhi (wisdom), Xin (honesty).'],
+['Philosophy','The word "philosophy" means…','C. Love of wisdom',['A. Fear of questions','B. Study of rocks','C. Love of wisdom','D. Love of money']],
+['Philosophy','Which method asks questions back and forth to find the truth?','A. Socratic method',['A. Socratic method','B. Pragmatism','C. Tally sheet','D. Hermeneutics']],
+['Philosophy','True or False: a fact is something that can be checked or proven.','TRUE.'],
+['Philosophy','In your own words, what is intersubjectivity?','People sharing experiences and understanding each other. It helps us respect and connect.'],
+['Research','What is the formula for percentage?','f ÷ N × 100'],
+['Research','20 of 50 students chose "Agree". What is the percentage?','40%. (20 ÷ 50 × 100)'],
+['Research','5 students scored 4 and 5 students scored 2. What is the weighted mean?','3.0. (5×4 + 5×2 = 30, then 30 ÷ 10)'],
+['Research','Why do we use tables and graphs in Chapter 4?','To show the data clearly so we can explain what it means and answer our research questions.'],
+['English','The most important point of a paragraph is the…','Main idea'],
+['English','One clear sentence that gives the central claim of a text.','Thesis statement'],
+['English','True or False: paraphrasing means copying the exact words.','FALSE. Paraphrasing = your own words. Copying exact words in quotation marks = direct quotation.'],
+['English','Write ONE thesis statement about online learning.','Any clear claim. Example: "Online learning helps students learn at their own pace but needs strong self-discipline."'],
+['Islam','The oneness of Allah is called…','Tawhid'],
+['Islam','Name the first four caliphs.','Abu Bakr, Umar, Uthman and Ali'],
+['Islam','Why is the Hijra important?','Muhammad moved from Mecca to Medina in 622 CE. It formed the first Muslim community and starts the Islamic calendar.']
 ];
 
 let S=null; // sample-exam state
