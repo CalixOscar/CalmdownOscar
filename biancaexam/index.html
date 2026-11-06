@@ -58,6 +58,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .help{background:var(--card2);color:var(--accent);border:1px solid var(--line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px}
 .help[disabled]{opacity:.5}
 .opt.gone{visibility:hidden}
+.helpchip{color:var(--accent);font-size:14px;font-weight:700}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin:10px 0;font-weight:700}
+.toggle small{display:block;font-weight:500;color:var(--mute);font-size:13px}
+.toggle b{background:var(--line);color:var(--ink);border-radius:99px;padding:4px 14px;min-width:56px;text-align:center}
+.toggle.on{border-color:var(--good)}
+.toggle.on b{background:var(--good);color:#06281a}
 .pic{display:block;width:100%;border-radius:12px;margin-top:10px;background:#fff}
 #fb .fb{margin-top:6px}
 #opts .opt:last-child{margin-bottom:0}
@@ -421,7 +427,7 @@ function sampleEnd(){
 
 /* ---------- STATE ---------- */
 const KEY='bianca-exam-v1';
-let mem={st:{},best:0};
+let mem={st:{},best:0,help:false};
 try{ mem=Object.assign(mem,JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){} }
 
@@ -453,6 +459,7 @@ function home(){
       <div class="stat"><b>${all.bad}</b><span>weak spots</span></div>
       <div class="stat"><b>${mem.best}</b><span>best streak</span></div>
     </div>
+    <button class="toggle ${mem.help?'on':''}" data-a="togglehelp" role="switch" aria-checked="${mem.help}"><span>🆘 50:50 help<small>${mem.help?'ON: two wrong answers are hidden on every question':'OFF: all four answers shown'}</small></span><b>${mem.help?'ON':'OFF'}</b></button>
     <button class="big" data-a="smart">▶ Start a smart round<small>10 cards: weak spots first, then new ones</small></button>
     <button class="big alt" data-a="mock">📝 Mock exam<small>30 random questions across everything</small></button>
     ${all.bad?`<button class="big alt" data-a="weak">🎯 Fix my ${all.bad} weak spots</button>`:''}
@@ -488,14 +495,16 @@ function options(i){
 function question(){
   const i=R.queue[0], c=C[i], t=tname(c[0]);
   R.opts=options(i); R.answered=false; R.helped=false; R.hidden=[];
+  R.autoHelp=!!mem.help;
   const pct=Math.round(R.done/R.total*100);
   $.innerHTML=`
     <div class="top"><button class="x" data-a="home" aria-label="Quit">✕</button><div class="bar"><i style="width:${pct}%"></i></div></div>
-    <div class="hud"><span>🔥 ${R.streak} streak</span><button class="help" id="helpbtn" data-a="help" aria-label="50:50 help: remove two wrong answers">🆘 50:50</button><span>⭐ ${R.xp} XP</span></div>
+    <div class="hud"><span>🔥 ${R.streak} streak</span><span class="helpchip">${mem.help?'🆘 50:50 on':''}</span><span>⭐ ${R.xp} XP</span></div>
     <span class="chip">${t.e} ${esc(t.n)}</span>
     <div class="q">${esc(c[1])}</div>
     <div id="opts">${R.opts.map((o,k)=>`<button class="opt" data-a="pick" data-k="${k}">${esc(o)}</button>`).join('')}</div>
     <div id="fb"></div>`;
+  if(R.autoHelp) help();
 }
 function help(){
   if(!R||R.answered||R.helped) return;
@@ -505,12 +514,10 @@ function help(){
   R.hidden=shuffle(wrong).slice(0,2);
   const btns=[...document.querySelectorAll('.opt')];
   R.hidden.forEach(k=>{ if(btns[k]){ btns[k].classList.add('gone'); btns[k].disabled=true; } });
-  const hb=document.getElementById('helpbtn'); if(hb){ hb.disabled=true; hb.textContent='✓ used'; }
 }
 function pick(k){
   if(R.answered||(R.hidden&&R.hidden.includes(k))) return;
   R.answered=true;
-  const hb0=document.getElementById('helpbtn'); if(hb0) hb0.disabled=true;
   const i=R.queue[0], c=C[i], good=R.opts[k]===c[2];
   const btns=[...document.querySelectorAll('.opt')];
   btns.forEach((b,n)=>{b.disabled=true; if(R.opts[n]===c[2]) b.classList.add('right');});
@@ -567,7 +574,7 @@ $.addEventListener('click',e=>{
   const a=b.dataset.a;
   if(a==='pick') pick(+b.dataset.k);
   else if(a==='next') next();
-  else if(a==='help') help();
+  else if(a==='togglehelp'){ mem.help=!mem.help; save(); home(); }
   else if(a==='home') home();
   else if(a==='smart'){ const sc=lastScope&&lastScope.length?lastScope:allIdx(); startRound(smartPool(sc).slice(0,10),'smart',10); }
   else if(a==='topic'){ lastScope=C.map((c,i)=>c[0]===b.dataset.t?i:-1).filter(i=>i>=0); startRound(smartPool(lastScope).slice(0,10),'topic',10); }
