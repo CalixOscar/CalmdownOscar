@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#16122b">
+<link rel="manifest" href="/biancaexam/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/biancaexam/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bianca Quiz">
 <title>Bianca's World Religions Quiz</title>
 <style>
 :root{
@@ -564,6 +569,7 @@ document.addEventListener('keydown',e=>{
 });
 // smart-round button on the home screen is global; on finish it should keep the last scope
 const _home=home; home=function(){ lastScope=null; _home(); };
+try{ if('serviceWorker' in navigator) navigator.serviceWorker.register('/biancaexam/sw.js',{scope:'/biancaexam/'}); }catch(e){}
 if(location.hash==='#sample-exam') sampleStart(); else home();
 </script>
 </body>

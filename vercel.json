@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/biancaexam",
+      "destination": "/biancaexam/",
+      "permanent": false
+    },
+    {
       "source": "/playground/norsksti",
       "destination": "/playground/norsksti/",
       "permanent": false
