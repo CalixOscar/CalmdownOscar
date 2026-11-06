@@ -55,6 +55,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fb.good{border-left:6px solid var(--good)}
 .fb.bad{border-left:6px solid var(--bad)}
 .why{margin-top:6px;font-size:17px}
+.pic{display:block;width:100%;border-radius:12px;margin-top:10px;background:#fff}
 #fb .fb{margin-top:6px}
 #opts .opt:last-child{margin-bottom:0}
 .fb .h{color:var(--accent);margin-top:6px}
@@ -425,6 +426,8 @@ const $=document.getElementById('app');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const tname=id=>TOPICS.find(t=>t.id===id);
+const IMG_CARDS=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];/*IMG*/
+function imgFor(i){const c=C[i];const src=IMG_CARDS.includes(i)?`/biancaexam/img/c${i}.jpg`:`/biancaexam/img/t-${c[0]}.jpg`;return `<img class="pic" alt="" src="${src}" onerror="this.remove()">`;}
 
 let R=null; // current round
 
@@ -516,7 +519,7 @@ function pick(k){
   document.getElementById('fb').innerHTML=`
     <div class="fb ${good?'good':'bad'} pop">
       <b>${good?['Yes! ','Nailed it! ','Correct! ','Boom! '][Math.floor(Math.random()*4)]:'Not quite. '}</b>${good?'':`The answer is <b>${esc(c[2])}</b>.`}
-      <div class="why">${esc(c[5])}</div>${c[3]?`<div class="h">💡 ${esc(c[3])}</div>`:''}
+      <div class="why">${esc(c[5])}</div>${c[3]?`<div class="h">💡 ${esc(c[3])}</div>`:''}${imgFor(i)}
     </div>
     <button class="big" data-a="next">${last?'See my score':'Next'}</button>`;
   document.querySelector('[data-a=next]').focus({preventScroll:true});
