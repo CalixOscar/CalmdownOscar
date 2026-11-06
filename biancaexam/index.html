@@ -49,7 +49,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fb{border-radius:14px;padding:12px 14px;margin:12px 0;background:var(--card)}
 .fb.good{border-left:6px solid var(--good)}
 .fb.bad{border-left:6px solid var(--bad)}
-.why{margin-top:6px;font-size:16px}
+.why{margin-top:6px;font-size:17px}
+#fb .fb{margin-top:6px}
+#opts .opt:last-child{margin-bottom:0}
 .fb .h{color:var(--accent);margin-top:6px}
 .hud{display:flex;justify-content:space-between;color:var(--mute);font-size:14px;margin-bottom:4px}
 .pop{animation:pop .25s}
@@ -513,7 +515,7 @@ function pick(k){
     </div>
     <button class="big" data-a="next">${last?'See my score':'Next'}</button>`;
   document.querySelector('[data-a=next]').focus({preventScroll:true});
-  document.getElementById('fb').scrollIntoView({block:'nearest',behavior:'smooth'});
+  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:'smooth'}),60);
 }
 function next(){ if(R.queue.length) question(); else finish(); }
 function finish(){
