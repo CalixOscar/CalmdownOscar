@@ -1,5 +1,5 @@
 // Offline cache for PyLearn Quiz. Bump VERSION when the page changes.
-const VERSION = 'pyquiz-v1';
+const VERSION = 'pyquiz-v2';
 const FILES = ['/pyQuiz/', '/pyQuiz/manifest.webmanifest', '/pyQuiz/icon-192.png', '/pyQuiz/icon-512.png', '/pyQuiz/icon-maskable-512.png', '/pyQuiz/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
