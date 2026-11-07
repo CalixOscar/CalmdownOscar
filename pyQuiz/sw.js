@@ -1,5 +1,5 @@
 // Offline cache for PyLearn Quiz. Bump VERSION when the page changes.
-const VERSION = 'pyquiz-v2';
+const VERSION = 'pyquiz-v3';
 const FILES = ['/pyQuiz/', '/pyQuiz/manifest.webmanifest', '/pyQuiz/icon-192.png', '/pyQuiz/icon-512.png', '/pyQuiz/icon-maskable-512.png', '/pyQuiz/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -21,22 +21,22 @@ self.addEventListener('fetch', e => {
 
   if (req.mode === 'navigate') {
     // Network first (3 s), so online visits get the newest cards; cache when offline.
-    let done;
-    const finished = new Promise(r => { done = r; });
-    e.waitUntil(finished);
-    const network = fetch(req).then(async res => {
-      if (res.ok) {
+    // Only the quiz page itself is stored as the shell, and a failed cache write
+    // never throws away a good download.
+    const isShell = url.pathname === '/pyQuiz/' || url.pathname === '/pyQuiz/index.html';
+    const network = fetch(req);
+    e.waitUntil(network.then(async res => {
+      if (isShell && res.ok && (res.headers.get('Content-Type') || '').includes('text/html')) {
+        const copy = res.clone();
         const cache = await caches.open(VERSION);
-        await cache.put('/pyQuiz/', res.clone());
+        await cache.put('/pyQuiz/', copy);
       }
-      return res;
-    });
-    network.then(done, done);
+    }).catch(() => null));
     const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000));
     e.respondWith(
       Promise.race([network, timeout])
-        .then(res => { if (!res.ok) throw new Error('bad'); return res; })
-        .catch(async () => (await caches.match('/pyQuiz/')) || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } }))
+        .then(res => { if (isShell && !res.ok) throw new Error('bad'); return res; })
+        .catch(async () => (isShell && await caches.match('/pyQuiz/')) || (await caches.match(req)) || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } }))
     );
     return;
   }

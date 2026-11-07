@@ -72,9 +72,9 @@ Plus a new section on `/playground/` with short text, a link and a real screensh
   Chrome check: page renders, service worker activates, reload works with the
   network set offline, manifest parses, 50:50 hides two wrong options, no console errors.
 - [x] **build-light:** playground section, screenshot, intro/meta copy.
-- [ ] **planner:** merge to `main`, push (founder asked in session to put it live),
+- [x] **planner:** merge to `main`, push (founder asked in session to put it live),
   check live URLs, redirects, headers and the offline reload on the live site.
-- [ ] **planner:** Codex post-mortem in `docs/dialogue/pyquiz.md`.
+- [x] **planner:** Codex post-mortem in `docs/dialogue/pyquiz.md`.
 
 ## Risks
 

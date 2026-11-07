@@ -163,7 +163,7 @@ function home(){
   $.innerHTML=`
     <header style="display:flex;flex-direction:column;gap:6px">
       <p class="prompt-mark">&gt;&gt;&gt; import python</p>
-      <h1>PyLearn Quiz</h1>
+      <h1 tabindex="-1">PyLearn Quiz</h1>
       <p class="sub">Read the code, pick what Python does. Every code answer was checked by running it in Python.</p>
     </header>
     <div class="stats"><span><b>${known}</b>/${total} known</span><span>&middot;</span><span><b>${weak}</b> to practise</span></div>
@@ -174,7 +174,7 @@ function home(){
     </div>
     <div class="helprow">
       <button class="sw${mem.help?' on':''}" data-a="togglehelp" aria-pressed="${mem.help?'true':'false'}"><span class="knob" aria-hidden="true"></span><span>50:50 help</span></button>
-      <p class="small">Hides two wrong answers. Cards answered with help don't count as known.</p>
+      <p class="small">Hides two wrong answers. Cards answered with help don't move up to known.</p>
     </div>
     <p class="label">Topics</p>
     <div class="topics">${TOPICS.map(t=>{
@@ -246,7 +246,7 @@ function pick(k){
     <button class="big" data-a="next">${R.queue.length?'Next':'See my score'}</button>`;
   say(`${verdict} The answer is ${c.a}. ${c.why}`);
   document.querySelector('[data-a=next]').focus({preventScroll:true});
-  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:motion()}),60);
+  setTimeout(()=>{const f=document.getElementById('fb'); if(f&&f.isConnected) f.scrollIntoView({block:'end',behavior:motion()});},60);
 }
 function next(){R.queue.length?question():finish();}
 function finish(){
@@ -254,7 +254,7 @@ function finish(){
   const msg=pct>=90?'You read this code well.':pct>=70?'Solid. The missed cards will come back first next time.':'The missed cards will come back first next time.';
   const missed=R.missed;
   $.innerHTML=`
-    <div class="score">${right}/${n}</div>
+    <div class="score" tabindex="-1">${right}/${n}</div>
     <p class="center sub">right first time${helped?' &middot; with 50:50 help':''}</p>
     <p class="center">${msg}</p>
     ${missed.length?`<h2>Cards you missed</h2>${missed.map(c=>`<div class="miss">${editor(c.code)||`<b>${esc(c.q)}</b>`}<div class="out">${esc(c.a)}</div><p class="sub">${esc(c.why)}</p></div>`).join('')}
@@ -262,6 +262,7 @@ function finish(){
     <button class="big ${missed.length?'alt':''}" data-a="smart">Another round</button>
     <button class="big alt" data-a="home">Home</button>`;
   R={missed};
+  $.querySelector('.score').focus({preventScroll:true}); window.scrollTo(0,0);
   say(`Round finished. ${right} of ${n} right first time${helped?', with 50:50 help':''}.`);
 }
 function smartPool(cards){
@@ -272,7 +273,7 @@ $.addEventListener('click',e=>{
   const a=b.dataset.a;
   if(a==='pick') pick(+b.dataset.k);
   else if(a==='next') next();
-  else if(a==='home'){lastScope=null;home();}
+  else if(a==='home'){lastScope=null;home();$.querySelector('h1').focus({preventScroll:true});window.scrollTo(0,0);}
   else if(a==='smart') startRound(smartPool(lastScope||CARDS),10);
   else if(a==='topic'){lastScope=CARDS.filter(c=>c.t===b.dataset.t);startRound(smartPool(lastScope),10);}
   else if(a==='mock'){lastScope=null;startRound(shuffle(CARDS),20);}
@@ -288,12 +289,12 @@ $.addEventListener('click',e=>{
   }
 });
 document.addEventListener('keydown',e=>{
-  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  if(e.ctrlKey||e.metaKey||e.altKey||e.shiftKey) return;
   const t=e.target&&e.target.tagName;
   if(t==='INPUT'||t==='TEXTAREA') return;
   if(!R||!R.queue) return;
   if(!R.answered&&/^[1-4]$/.test(e.key)) pick(+e.key-1);
-  else if(R.answered&&(e.key==='Enter'||e.key===' ')&&document.activeElement?.dataset.a!=='next'){e.preventDefault();next();}
+  else if(R.answered&&(e.key==='Enter'||e.key===' ')&&!(document.activeElement&&document.activeElement.closest('button,a,input,textarea,select'))){e.preventDefault();next();}
 });
 
 function setOffline(v){

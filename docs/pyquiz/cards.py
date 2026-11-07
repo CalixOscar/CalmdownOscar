@@ -10,7 +10,7 @@
 #   mono  : True when the options are code/output (always True for out/err cards)
 # Running this file verifies every answer with real Python and writes the JSON deck.
 # Written for Python 3.9 and 3.13 alike: only exception class names are checked.
-import contextlib, io, json, sys
+import contextlib, io, json, re, sys
 
 TOPICS = [
     ("basics", "Print & variables"),
@@ -46,7 +46,7 @@ C = [
 ("basics", None, 'print("a", "b", sep="-")', "a-b", ["a b", "a - b", "ab"],
  "sep decides what print puts between the things. The normal gap is a space; here you swapped it for a dash.", "sep = what goes in between.", "out", True),
 ("basics", None, 'print(type(3.0))', "<class 'float'>", ["<class 'int'>", "float", "3.0"],
- "A number with a decimal point is a float. A whole number is an int.", "Decimal point = float.", "out", True),
+ "A number written with a decimal point is a float, even when it is a whole amount like 3.0. Written without one, like 3, it is an int.", "Decimal point = float.", "out", True),
 
 # ---------- Strings ----------
 ("strings", None, 'word = "python"\nprint(word[0])', "p", ["y", "python", "n"],
@@ -151,7 +151,7 @@ C = [
 ("tuples", None, 'print(sorted(set([3, 1, 3, 2])))', "[1, 2, 3]", ["[3, 1, 3, 2]", "[3, 1, 2]", "[1, 2, 3, 3]"],
  "set() drops the repeats, then sorted() gives back a list in order. Sets have no fixed order, so we sort before printing.", "", "out", True),
 ("tuples", None, 's = set()\ns.add("a")\nprint(s)', "{'a'}", ["['a']", "set()", "('a')"],
- "set() starts an empty set and .add() puts one item in. Sets print with curly brackets.", "{} with items = set.", "out", True),
+ "set() starts an empty set and .add() puts one item in. Sets print with curly brackets. (A dictionary uses curly brackets too, but with key: value pairs, and an empty {} is a dictionary.)", "Curly brackets, no colons = set.", "out", True),
 
 # ---------- If & True/False ----------
 ("logic", None, 'print(5 == 5.0)', "True", ["False", "5", "TypeError"],
@@ -167,7 +167,7 @@ C = [
 ("logic", "What's the difference between = and ==?", None, "= stores a value, == checks if two things are equal", ["They do the same thing", "== stores a value, = checks", "= is for numbers, == is for text"],
  "x = 5 puts 5 in x. x == 5 asks a question and answers True or False.", "One = sets, two == ask.", None, False),
 ("logic", None, 'print(0 or 5)', "5", ["0", "True", "False"],
- "or gives back the first side that counts as True. 0 counts as False, so you get 5.", "", "out", True),
+ "or gives back the first side that counts as True, or the last side if none do. 0 counts as False, so you get 5.", "", "out", True),
 ("logic", None, 'print(1 < 2 < 3)', "True", ["False", "2", "TypeError"],
  "Python reads this as 1 < 2 and 2 < 3, like in maths class.", "", "out", True),
 ("logic", None, 'x = 6\nif x > 5:\n    if x > 10:\n        print("huge")\n    else:\n        print("medium")', "medium", ["huge", "nothing", "medium\nhuge"],
@@ -236,7 +236,7 @@ C = [
 ("funcs", None, 'def add(a, b):\n    return a + b\n\ndef triple(a, b):\n    return add(a, b) * 3\n\nprint(triple(1, 2))', "9", ["3", "6", "123"],
  "triple calls add, which gives 3, then multiplies that by 3.", "", "out", True),
 ("funcs", None, 'def f():\n    return 1\n    print("never")\n\nprint(f())', "1", ["never\n1", "never", "None"],
- "return ends the function on the spot. The line after it never runs.", "", "out", True),
+ "return leaves the function right there, so the normal line after it never runs.", "", "out", True),
 ("funcs", 'You write def greet(name): and later call greet("Ann"). Which one is the argument?', None, '"Ann"', ["name", "greet", "def"],
  "The argument is the actual value you pass in when you call. The parameter (name) is the label inside the function that receives it.", "Parameter = slot, argument = what goes in.", None, True),
 
@@ -275,7 +275,7 @@ C = [
  "\"r\" only reads files that are already there. A missing file stops the program with FileNotFoundError.", "", None, False),
 ("files", "What does file.readlines() give you?", None, "A list with one string per line",
  ["One long string", "The number of lines", "Only the first line"],
- "Every line becomes one item in a list, and each item still has its newline at the end.", "", None, False),
+ "Every line becomes one item in a list. Each item keeps its line ending, except perhaps the last line if the file doesn't end with one.", "", None, False),
 ("files", 'Why would you open a file in "a" mode?', None, "To add new text to the end without erasing",
  ["To read the file faster", "To make a copy of the file", "To delete the old text first"],
  "\"a\" stands for append. New text goes after what is already there.", "a = add to the end.", None, False),
@@ -283,14 +283,14 @@ C = [
  ["Ann and Bob on two lines", "Ann Bob with a space", "Only Bob"],
  "write() adds exactly the text you give it and no newline. Write \"Ann\\n\" if you want a line break.", "write() adds no newline.", None, False),
 ("files", None, 'line = "Ann,30\\n"\nprint(line.strip().split(","))', "['Ann', '30']", ["['Ann', '30\\n']", "['Ann,30']", "Ann 30"],
- "A line read from a file ends with \\n. .strip() removes it, then .split(\",\") cuts the line into pieces.", "strip first, then split.", "out", True),
+ "Lines read from a file usually end with \\n. .strip() removes spaces and line endings from both ends, then .split(\",\") cuts the line into pieces.", "strip first, then split.", "out", True),
 ("files", None, 'line = "hello\\n"\nprint(len(line))', "6", ["5", "7", "1"],
  "The \\n at the end is one invisible character, so \"hello\" plus the newline is 6.", "", "out", True),
 ("files", None, 'text = "one\\ntwo\\nthree"\nprint(text.split("\\n"))', "['one', 'two', 'three']", ["['one\\ntwo\\nthree']", "one two three", "3"],
  "\\n marks the end of a line. Splitting on it gives one item per line, which is much like reading a file line by line.", "", "out", True),
 ]
 
-FORBIDDEN = ["open(", "import", "input(", "while True", "__"]
+FORBIDDEN = ["open(", "import", "input(", "whileTrue", "__"]  # matched with all whitespace removed
 MAX_OPT = 70
 MIN_PER_TOPIC = 7
 
@@ -341,9 +341,11 @@ for card in C:
             problem(cid, f"option longer than {MAX_OPT} chars: {o!r}")
     # code
     if check:
-        for bit in FORBIDDEN:
-            if bit in code:
-                problem(cid, f"code contains forbidden {bit!r}")
+        hits = [bit for bit in FORBIDDEN if bit in re.sub(r"\s+", "", code)]
+        for bit in hits:
+            problem(cid, f"code contains forbidden {bit!r}")
+        if hits:
+            continue  # never execute a snippet that failed the safety check
         got, err = run(code)
         if check == "out" and err:
             problem(cid, f"UNEXPECTED ERROR {err}")
