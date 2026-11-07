@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#eef2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10141b" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="/pyQuiz/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/pyQuiz/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PyQuiz">
+<title>PyLearn Quiz</title>
+<style>
+/* Layout: one narrow column, app-like. Code sits in a dark editor card in both themes; answers are mono where they are Python output. */
+:root{
+  --bg:#eef2f7; --surface:#ffffff; --ink:#16202f; --muted:#5a6578; --line:#d6dce7;
+  --accent:#2a56c6; --accent-ink:#ffffff; --accent-soft:#e3eafb;
+  --good:#1d7f47; --good-soft:#e2f4e9; --bad:#b83434; --bad-soft:#fbe6e6;
+  --code-bg:#1b2230; --code-ink:#dfe6f2; --code-kw:#ff9e64; --code-str:#9ece6a; --code-num:#7dcfff; --code-fn:#e0af68; --code-dim:#6b7690;
+  --f-display:ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --f-body:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --surface:#181e28; --ink:#e7ebf3; --muted:#9aa4b7; --line:#2a3242;
+  --accent:#7ea2ff; --accent-ink:#0d1220; --accent-soft:#1f2a45;
+  --good:#52c486; --good-soft:#15291e; --bad:#ff7d7d; --bad-soft:#331a1c;
+  --code-bg:#0b0f15; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --surface:#181e28; --ink:#e7ebf3; --muted:#9aa4b7; --line:#2a3242;
+  --accent:#7ea2ff; --accent-ink:#0d1220; --accent-soft:#1f2a45;
+  --good:#52c486; --good-soft:#15291e; --bad:#ff7d7d; --bad-soft:#331a1c;
+  --code-bg:#0b0f15; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+#app{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:2.1rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700}
+p{margin:0}
+.sub{color:var(--muted)}
+.prompt-mark{font-family:var(--f-mono);color:var(--accent);font-weight:600}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.big{display:block;width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:700;text-align:left;font-size:1.02rem}
+.big.alt{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.big small{display:block;font-weight:400;opacity:.8;font-size:.86rem}
+.big:disabled{opacity:.45;cursor:default}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink)}
+.label{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.topic{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);text-align:left}
+.topic span{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--good)}
+.reset{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:.88rem;align-self:flex-start;padding:4px 0}
+.top{display:flex;align-items:center;gap:12px}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);flex:none}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.hud{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.chip{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.q:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.small{color:var(--muted);font-size:.88rem}
+.helprow{display:flex;flex-direction:column;gap:6px}
+.sw{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);text-align:left;font-weight:700}
+.sw .knob{flex:none;position:relative;width:42px;height:24px;border-radius:12px;background:var(--line);transition:background .2s}
+.sw .knob::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--muted);transition:transform .2s}
+.sw.on{border-color:var(--accent)}
+.sw.on .knob{background:var(--accent)}
+.sw.on .knob::after{transform:translateX(18px);box-shadow:none}
+.q{font-family:var(--f-display);font-size:1.4rem;font-weight:700;line-height:1.2;text-wrap:balance}
+.editor{background:var(--code-bg);color:var(--code-ink);border-radius:12px;overflow:hidden;min-width:0}
+.editor .tab{font-family:var(--f-mono);font-size:.75rem;color:var(--code-dim);padding:8px 14px 0}
+.editor pre{margin:0;padding:8px 14px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:.95rem;line-height:1.6}
+.kw{color:var(--code-kw)} .st{color:var(--code-str)} .nu{color:var(--code-num)} .fn{color:var(--code-fn)}
+#opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);min-width:0}
+.opt .k{flex:none;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted);font-family:var(--f-mono)}
+.opt .v{min-width:0;overflow-wrap:anywhere}
+.opt.mono .v{font-family:var(--f-mono);font-size:.95rem;white-space:pre-wrap}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.gone{visibility:hidden}
+.opt:disabled{cursor:default}
+.fb{padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.fb.good{border-color:var(--good)} .fb.bad{border-color:var(--bad)}
+.fb .verdict{font-weight:700}
+.fb.good .verdict{color:var(--good)} .fb.bad .verdict{color:var(--bad)}
+.out{font-family:var(--f-mono);font-size:.92rem;white-space:pre-wrap;background:var(--code-bg);color:var(--code-ink);padding:8px 12px;border-radius:8px;overflow-x:auto}
+.hook{color:var(--muted);font-size:.95rem}
+.score{font-family:var(--f-display);font-size:4rem;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;line-height:1}
+.center{text-align:center}
+.miss{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.miss .editor pre{font-size:.85rem;padding-top:12px}
+.pop{animation:pop .25s ease-out}
+@keyframes pop{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}.sw .knob,.sw .knob::after{transition:none}}
+@media (max-width:420px){h1{font-size:1.8rem}.q{font-size:1.25rem}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<div id="say" class="sr" role="status"></div>
+
+<script>
+const TOPICS=[{"id":"basics","n":"Print & variables"},{"id":"strings","n":"Strings"},{"id":"numbers","n":"Numbers & maths"},{"id":"lists","n":"Lists"},{"id":"dicts","n":"Dictionaries"},{"id":"tuples","n":"Tuples & sets"},{"id":"logic","n":"If & True/False"},{"id":"loops","n":"Loops"},{"id":"iter","n":"Looping tools"},{"id":"funcs","n":"Functions"},{"id":"errors","n":"Errors"},{"id":"files","n":"Files & with"}];
+const CARDS=[{"id":"basics1","t":"basics","k":"out","q":"What does this print?","code":"print(\"Hi\" * 3)","a":"HiHiHi","w":["Hi 3","Hi Hi Hi","TypeError"],"why":"Multiplying a string repeats it. Python adds no spaces between the copies.","h":"Text times a number = copies.","mono":true},{"id":"basics2","t":"basics","k":"out","q":"What does this print?","code":"x = 5\nx = x + 2\nprint(x)","a":"7","w":["5","52","x"],"why":"The right side is worked out first (5 + 2), then the result is stored back in x.","h":"","mono":true},{"id":"basics3","t":"basics","k":"out","q":"What does this print?","code":"print(\"2\" + \"3\")","a":"23","w":["5","2 + 3","TypeError"],"why":"The quotes make these text, not numbers. + glues text together.","h":"Quotes mean text.","mono":true},{"id":"basics4","t":"basics","k":"out","q":"What does this print?","code":"a = 1\nb = a\na = 9\nprint(b)","a":"1","w":["9","10","a"],"why":"b got the value 1 when it was created. Changing a afterwards doesn't touch b.","h":"","mono":true},{"id":"basics5","t":"basics","k":"out","q":"What does this print?","code":"print(\"Hello\", \"Peter\")","a":"Hello Peter","w":["HelloPeter","Hello,Peter","Hello"],"why":"print puts a space between each thing you give it, separated by commas.","h":"Commas in print become spaces.","mono":true},{"id":"basics6","t":"basics","k":"out","q":"What does this print?","code":"name = \"Ada\"\nprint(f\"Hi {name}!\")","a":"Hi Ada!","w":["Hi {name}!","Hi name!","fHi Ada!"],"why":"The f before the quotes makes an f-string: anything in {curly brackets} is replaced by its value.","h":"f = fill in the blanks.","mono":true},{"id":"basics7","t":"basics","k":"concept","q":"Which of these is NOT allowed as a variable name?","code":"","a":"2nd_place","w":["second_place","_place","place2"],"why":"Variable names can't start with a digit. Letters, digits and _ are fine after the first character.","h":"Names start with a letter or _.","mono":true},{"id":"basics8","t":"basics","k":"out","q":"What does this print?","code":"print(\"a\", \"b\", sep=\"-\")","a":"a-b","w":["a b","a - b","ab"],"why":"sep decides what print puts between the things. The normal gap is a space; here you swapped it for a dash.","h":"sep = what goes in between.","mono":true},{"id":"basics9","t":"basics","k":"out","q":"What does this print?","code":"print(type(3.0))","a":"<class 'float'>","w":["<class 'int'>","float","3.0"],"why":"A number with a decimal point is a float. A whole number is an int.","h":"Decimal point = float.","mono":true},{"id":"strings1","t":"strings","k":"out","q":"What does this print?","code":"word = \"python\"\nprint(word[0])","a":"p","w":["y","python","n"],"why":"Python counts positions from 0, so [0] is the first letter.","h":"Counting starts at zero.","mono":true},{"id":"strings2","t":"strings","k":"out","q":"What does this print?","code":"word = \"python\"\nprint(word[-1])","a":"n","w":["p","o","IndexError"],"why":"Negative positions count from the end. [-1] is the last letter.","h":"-1 = last one.","mono":true},{"id":"strings3","t":"strings","k":"out","q":"What does this print?","code":"print(len(\"hello world\"))","a":"11","w":["10","2","5"],"why":"len counts every character, and the space counts too: 5 + 1 + 5.","h":"Spaces are characters.","mono":true},{"id":"strings4","t":"strings","k":"out","q":"What does this print?","code":"print(\"Bob\".upper())","a":"BOB","w":["bob","Bob","B"],"why":".upper() gives back a copy of the text in capitals.","h":"","mono":true},{"id":"strings5","t":"strings","k":"out","q":"What does this print?","code":"word = \"python\"\nprint(word[1:4])","a":"yth","w":["pyth","ytho","yt"],"why":"A slice [1:4] starts at position 1 and stops just before position 4: y, t, h.","h":"Slices stop before the end number.","mono":true},{"id":"strings6","t":"strings","k":"out","q":"What does this print?","code":"s = \"a,b,c\"\nprint(s.split(\",\"))","a":"['a', 'b', 'c']","w":["abc","['a,b,c']","a b c"],"why":".split(\",\") cuts the text at every comma and gives back a list of the pieces.","h":"","mono":true},{"id":"strings7","t":"strings","k":"out","q":"What does this print?","code":"print(\"cat\" in \"concatenate\")","a":"True","w":["False","cat","3"],"why":"in checks whether one piece of text appears inside another: con-CAT-enate.","h":"","mono":true},{"id":"strings8","t":"strings","k":"out","q":"What does this print?","code":"print(\"  hi  \".strip() + \"!\")","a":"hi!","w":["  hi  !","hi !"," hi !"],"why":".strip() removes the spaces from both ends of the text, so only hi is left before the !.","h":"strip = trim the edges.","mono":true},{"id":"strings9","t":"strings","k":"out","q":"What does this print?","code":"print(\"a-b-c\".replace(\"-\", \"+\"))","a":"a+b+c","w":["a+b-c","a-b-c","a b c"],"why":".replace(old, new) swaps every match for the new piece and gives back a new text.","h":"","mono":true},{"id":"strings10","t":"strings","k":"err","q":"What happens when this runs?","code":"s = \"cat\"\ns[0] = \"b\"","a":"TypeError","w":["bat","IndexError","NameError"],"why":"Text can't be changed in place. To get \"bat\" you build a new text, for example \"b\" + s[1:].","h":"Strings can't be edited, only replaced.","mono":true},{"id":"numbers1","t":"numbers","k":"out","q":"What does this print?","code":"print(7 / 2)","a":"3.5","w":["3","4","3.0"],"why":"A single / always gives a decimal answer in Python 3.","h":"","mono":true},{"id":"numbers2","t":"numbers","k":"out","q":"What does this print?","code":"print(7 // 2)","a":"3","w":["3.5","4","1"],"why":"// divides and rounds down to the next whole number below: 3.5 becomes 3. (With negative numbers it still rounds down, so -3.5 becomes -4.)","h":"Double slash = round down.","mono":true},{"id":"numbers3","t":"numbers","k":"out","q":"What does this print?","code":"print(7 % 2)","a":"1","w":["3","3.5","0"],"why":"% gives the remainder: 7 = 2 x 3, with 1 left over.","h":"% = what's left over.","mono":true},{"id":"numbers4","t":"numbers","k":"out","q":"What does this print?","code":"print(2 ** 3)","a":"8","w":["6","5","9"],"why":"** means \"to the power of\": 2 x 2 x 2.","h":"","mono":true},{"id":"numbers5","t":"numbers","k":"out","q":"What does this print?","code":"print(2 + 3 * 4)","a":"14","w":["20","24","9"],"why":"Multiplication happens before addition, like on a calculator: 3 x 4 = 12, then + 2.","h":"","mono":true},{"id":"numbers6","t":"numbers","k":"out","q":"What does this print?","code":"print(int(\"4\") + 1)","a":"5","w":["41","TypeError","4"],"why":"int() turns the text \"4\" into the number 4, so + now adds.","h":"","mono":true},{"id":"numbers7","t":"numbers","k":"out","q":"What does this print?","code":"print(round(2.567, 1))","a":"2.6","w":["2.5","3","2.57"],"why":"round(number, 1) keeps one digit after the decimal point.","h":"","mono":true},{"id":"numbers8","t":"numbers","k":"out","q":"What does this print?","code":"print(int(3.9))","a":"3","w":["4","3.9","3.0"],"why":"int() chops off the decimal part. It does not round up.","h":"int chops, round rounds.","mono":true},{"id":"numbers9","t":"numbers","k":"out","q":"What does this print?","code":"print(-7 // 2)","a":"-4","w":["-3","-3.5","4"],"why":"// always rounds down to the lower number. The lower whole number next to -3.5 is -4, not -3.","h":"// always goes down.","mono":true},{"id":"lists1","t":"lists","k":"out","q":"What does this print?","code":"nums = [10, 20, 30]\nprint(nums[1])","a":"20","w":["10","30","[10, 20]"],"why":"Lists count from 0 too: [0] is 10, [1] is 20.","h":"","mono":true},{"id":"lists2","t":"lists","k":"out","q":"What does this print?","code":"nums = [1, 2]\nnums.append(3)\nprint(nums)","a":"[1, 2, 3]","w":["[3, 1, 2]","[1, 2]","3"],"why":".append() adds one item to the end of the list.","h":"","mono":true},{"id":"lists3","t":"lists","k":"out","q":"What does this print?","code":"print(len([1, [2, 3], 4]))","a":"3","w":["4","2","1"],"why":"The inner list [2, 3] counts as one item. The outer list holds 3 things.","h":"","mono":true},{"id":"lists4","t":"lists","k":"out","q":"What does this print?","code":"nums = [3, 1, 2]\nnums.sort()\nprint(nums)","a":"[1, 2, 3]","w":["[3, 2, 1]","[3, 1, 2]","None"],"why":".sort() puts the list in order, smallest first, and changes the list itself.","h":"","mono":true},{"id":"lists5","t":"lists","k":"out","q":"What does this print?","code":"a = [1, 2]\nb = a\nb.append(3)\nprint(a)","a":"[1, 2, 3]","w":["[1, 2]","[1, 2, 3, 3]","[3]"],"why":"b = a doesn't copy the list. a and b are two labels on the same list, so a change through b shows up in a.","h":"Two labels, one box.","mono":true},{"id":"lists6","t":"lists","k":"out","q":"What does this print?","code":"nums = [5, 6, 7, 8]\nprint(nums[1:3])","a":"[6, 7]","w":["[6, 7, 8]","[5, 6, 7]","[7, 8]"],"why":"Slices work on lists like on text: start at 1, stop before 3.","h":"","mono":true},{"id":"lists7","t":"lists","k":"out","q":"What does this print?","code":"nums = [1, 2, 3]\nprint(nums.pop())","a":"3","w":["1","[1, 2]","None"],"why":".pop() takes the last item off the list and hands it back to you.","h":"","mono":true},{"id":"lists8","t":"lists","k":"out","q":"What does this print?","code":"nums = [1, 3]\nnums.insert(1, 2)\nprint(nums)","a":"[1, 2, 3]","w":["[1, 3, 2]","[2, 1, 3]","[1, 3]"],"why":".insert(1, 2) puts 2 at position 1 and pushes the rest along.","h":"insert(where, what).","mono":true},{"id":"lists9","t":"lists","k":"out","q":"What does this print?","code":"nums = [3, 1, 2]\nprint(nums.sort())","a":"None","w":["[1, 2, 3]","[3, 1, 2]","TypeError"],"why":".sort() changes the list but gives back nothing (None). If you want the sorted list as a result, use sorted(nums).","h":"sort() changes it, sorted() gives a new one.","mono":true},{"id":"lists10","t":"lists","k":"out","q":"What does this print?","code":"print([0] * 3)","a":"[0, 0, 0]","w":["[0]","[3]","[0, 3]"],"why":"Multiplying a list repeats its items, just like multiplying text.","h":"","mono":true},{"id":"dicts1","t":"dicts","k":"out","q":"What does this print?","code":"ages = {\"Ann\": 30, \"Bo\": 25}\nprint(ages[\"Bo\"])","a":"25","w":["Bo","30","KeyError"],"why":"A dictionary looks things up by key. The key \"Bo\" gives its value, 25.","h":"","mono":true},{"id":"dicts2","t":"dicts","k":"out","q":"What does this print?","code":"ages = {\"Ann\": 30}\nages[\"Cy\"] = 40\nprint(len(ages))","a":"2","w":["1","3","40"],"why":"Assigning to a new key adds it. Now there are two pairs.","h":"","mono":true},{"id":"dicts3","t":"dicts","k":"out","q":"What does this print?","code":"ages = {\"Ann\": 30}\nprint(ages.get(\"Zed\", 0))","a":"0","w":["None","KeyError","Zed"],"why":".get(key, default) gives the default when the key isn't there, instead of crashing.","h":"","mono":true},{"id":"dicts4","t":"dicts","k":"concept","q":"What does a dictionary store?","code":"","a":"Pairs of keys and values","w":["Only numbers, in order","Words in alphabetical order","Definitions of Python commands"],"why":"A dictionary links each key (like a name) to a value (like an age), so you can look values up by key.","h":"Like a phone book: name → number.","mono":false},{"id":"dicts5","t":"dicts","k":"out","q":"What does this print?","code":"ages = {\"Ann\": 30}\nprint(30 in ages)","a":"False","w":["True","30","KeyError"],"why":"in on a dictionary checks the keys, not the values. 30 is a value; the only key is \"Ann\".","h":"in looks at keys.","mono":true},{"id":"dicts6","t":"dicts","k":"out","q":"What does this print?","code":"d = {\"x\": 1}\nd[\"x\"] = 5\nprint(d)","a":"{'x': 5}","w":["{'x': 1}","{'x': 1, 'x': 5}","{'x': 6}"],"why":"A key can only appear once. Assigning to an existing key replaces its value.","h":"","mono":true},{"id":"dicts7","t":"dicts","k":"out","q":"What does this print?","code":"d = {\"a\": 1, \"b\": 2}\ndel d[\"a\"]\nprint(d)","a":"{'b': 2}","w":["{'a': 1}","{'a': 1, 'b': 2}","{}"],"why":"del removes that key and its value from the dictionary. Only \"b\" is left.","h":"","mono":true},{"id":"dicts8","t":"dicts","k":"out","q":"What does this print?","code":"print({\"a\": 1}.get(\"z\"))","a":"None","w":["0","KeyError","z"],"why":".get with no default gives back None when the key is missing. That is the \"nothing\" value.","h":"","mono":true},{"id":"dicts9","t":"dicts","k":"err","q":"What happens when this runs?","code":"ages = {\"Ann\": 30}\nprint(ages[\"Bo\"])","a":"KeyError","w":["None","0","IndexError"],"why":"Square brackets crash when the key isn't there. Use .get() if the key might be missing.","h":"[ ] crashes, .get() doesn't.","mono":true},{"id":"tuples1","t":"tuples","k":"out","q":"What does this print?","code":"a, b = 1, 2\nprint(b)","a":"2","w":["1","(1, 2)","3"],"why":"Python hands the values out in order: a gets 1, b gets 2.","h":"","mono":true},{"id":"tuples2","t":"tuples","k":"out","q":"What does this print?","code":"a = 1\nb = 2\na, b = b, a\nprint(a, b)","a":"2 1","w":["1 2","2 2","1 1"],"why":"The right side is worked out first, as the pair (2, 1), then handed to a and b. That swaps them with no third variable.","h":"Swap in one line.","mono":true},{"id":"tuples3","t":"tuples","k":"out","q":"What does this print?","code":"t = (4, 5, 6)\nprint(t[1])","a":"5","w":["4","6","(4, 5)"],"why":"Tuples count from 0 like lists, so [1] is the second item.","h":"","mono":true},{"id":"tuples4","t":"tuples","k":"err","q":"What happens when this runs?","code":"t = (1, 2, 3)\nt[0] = 9","a":"TypeError","w":["IndexError","NameError","(9, 2, 3)"],"why":"A tuple can't be changed after it's made. A list can.","h":"Tuples are locked.","mono":true},{"id":"tuples5","t":"tuples","k":"concept","q":"What can you do with a list that you can't do with a tuple?","code":"","a":"Change its items after it is made","w":["Look up items by position","Count its items with len","Loop over it with for"],"why":"A tuple is fixed once it's made. A list can grow, shrink and have items replaced. Reading, len and loops work on both.","h":"List = editable, tuple = locked.","mono":false},{"id":"tuples6","t":"tuples","k":"out","q":"What does this print?","code":"print(len(set([1, 1, 2])))","a":"2","w":["3","1","[1, 2]"],"why":"A set keeps each value only once, so 1, 1, 2 becomes just 1 and 2.","h":"Sets drop duplicates.","mono":true},{"id":"tuples7","t":"tuples","k":"out","q":"What does this print?","code":"print(2 in {1, 2})","a":"True","w":["False","2","{1, 2}"],"why":"in asks whether the value is inside the set. 2 is there.","h":"","mono":true},{"id":"tuples8","t":"tuples","k":"out","q":"What does this print?","code":"print(sorted(set([3, 1, 3, 2])))","a":"[1, 2, 3]","w":["[3, 1, 3, 2]","[3, 1, 2]","[1, 2, 3, 3]"],"why":"set() drops the repeats, then sorted() gives back a list in order. Sets have no fixed order, so we sort before printing.","h":"","mono":true},{"id":"tuples9","t":"tuples","k":"out","q":"What does this print?","code":"s = set()\ns.add(\"a\")\nprint(s)","a":"{'a'}","w":["['a']","set()","('a')"],"why":"set() starts an empty set and .add() puts one item in. Sets print with curly brackets.","h":"{} with items = set.","mono":true},{"id":"logic1","t":"logic","k":"out","q":"What does this print?","code":"print(5 == 5.0)","a":"True","w":["False","5","TypeError"],"why":"== compares values. 5 and 5.0 are the same amount.","h":"","mono":true},{"id":"logic2","t":"logic","k":"out","q":"What does this print?","code":"x = 7\nif x > 5:\n    print(\"big\")\nelse:\n    print(\"small\")","a":"big","w":["small","big\nsmall","7"],"why":"7 > 5 is True, so only the indented line under if runs.","h":"","mono":true},{"id":"logic3","t":"logic","k":"out","q":"What does this print?","code":"x = 3\nif x > 5:\n    print(\"A\")\nelif x > 2:\n    print(\"B\")\nelse:\n    print(\"C\")","a":"B","w":["A","C","B\nC"],"why":"Python checks each condition in order and runs only the first one that's True.","h":"Only one branch ever runs.","mono":true},{"id":"logic4","t":"logic","k":"out","q":"What does this print?","code":"print(True and False)","a":"False","w":["True","None","True False"],"why":"With True and False, and only gives True when both sides are True. Python stops at the first side that is False.","h":"","mono":true},{"id":"logic5","t":"logic","k":"out","q":"What does this print?","code":"print(bool(\"\"))","a":"False","w":["True","None","\"\""],"why":"Empty things (\"\", 0, [], {}) count as False. Anything with content counts as True.","h":"Empty = False.","mono":true},{"id":"logic6","t":"logic","k":"concept","q":"What's the difference between = and ==?","code":"","a":"= stores a value, == checks if two things are equal","w":["They do the same thing","== stores a value, = checks","= is for numbers, == is for text"],"why":"x = 5 puts 5 in x. x == 5 asks a question and answers True or False.","h":"One = sets, two == ask.","mono":false},{"id":"logic7","t":"logic","k":"out","q":"What does this print?","code":"print(0 or 5)","a":"5","w":["0","True","False"],"why":"or gives back the first side that counts as True. 0 counts as False, so you get 5.","h":"","mono":true},{"id":"logic8","t":"logic","k":"out","q":"What does this print?","code":"print(1 < 2 < 3)","a":"True","w":["False","2","TypeError"],"why":"Python reads this as 1 < 2 and 2 < 3, like in maths class.","h":"","mono":true},{"id":"logic9","t":"logic","k":"out","q":"What does this print?","code":"x = 6\nif x > 5:\n    if x > 10:\n        print(\"huge\")\n    else:\n        print(\"medium\")","a":"medium","w":["huge","nothing","medium\nhuge"],"why":"x > 5 is True, so we go inside. Then x > 10 is False, so the else line runs.","h":"","mono":true},{"id":"logic10","t":"logic","k":"concept","q":"How do you check whether x holds None (no value)?","code":"","a":"x is None","w":["x = None","x == 0","x is empty"],"why":"None means \"no value\". x is None asks the question; x = None would store it instead.","h":"is None = is it nothing?","mono":true},{"id":"loops1","t":"loops","k":"out","q":"What does this print?","code":"for i in range(3):\n    print(i)","a":"0\n1\n2","w":["1\n2\n3","0\n1\n2\n3","3"],"why":"range(3) gives 0, 1, 2: three numbers, starting at 0 and stopping before 3.","h":"range stops before the number.","mono":true},{"id":"loops2","t":"loops","k":"out","q":"What does this print?","code":"total = 0\nfor n in [1, 2, 3]:\n    total += n\nprint(total)","a":"6","w":["3","0","123"],"why":"total += n adds each number in turn: 0 + 1 + 2 + 3. The print is outside the loop, so it runs once.","h":"","mono":true},{"id":"loops3","t":"loops","k":"out","q":"What does this print?","code":"n = 3\nwhile n > 0:\n    n -= 1\nprint(n)","a":"0","w":["1","3","-1"],"why":"The loop keeps going while n > 0. It stops as soon as n reaches 0.","h":"","mono":true},{"id":"loops4","t":"loops","k":"out","q":"What does this print?","code":"print(list(range(2, 8, 2)))","a":"[2, 4, 6]","w":["[2, 4, 6, 8]","[2, 8]","[4, 6, 8]"],"why":"range(start, stop, step): start at 2, go up by 2, stop before 8.","h":"","mono":true},{"id":"loops5","t":"loops","k":"out","q":"What does this print?","code":"for ch in \"hi\":\n    print(ch * 2)","a":"hh\nii","w":["hihi","h\ni","hhii"],"why":"Looping over text gives one letter at a time. Each print goes on its own line.","h":"","mono":true},{"id":"loops6","t":"loops","k":"out","q":"What does this print?","code":"for n in range(5):\n    if n == 3:\n        break\n    print(n)","a":"0\n1\n2","w":["0\n1\n2\n3","0\n1\n2\n3\n4","3"],"why":"break leaves the loop immediately, before 3 is printed.","h":"break = leave now.","mono":true},{"id":"loops7","t":"loops","k":"out","q":"What does this print?","code":"for n in range(4):\n    if n == 2:\n        continue\n    print(n)","a":"0\n1\n3","w":["0\n1","0\n1\n2\n3","2"],"why":"continue skips the rest of this pass and jumps to the next one. Only the 2 is skipped; the loop carries on.","h":"continue = skip this one.","mono":true},{"id":"loops8","t":"loops","k":"out","q":"What does this print?","code":"count = 0\nfor i in range(3):\n    for j in range(2):\n        count += 1\nprint(count)","a":"6","w":["5","3","2"],"why":"The inner loop runs 2 times for every pass of the outer loop. 3 passes x 2 = 6.","h":"Loop in a loop = multiply.","mono":true},{"id":"loops9","t":"loops","k":"out","q":"What does this print?","code":"print(list(range(3, 0, -1)))","a":"[3, 2, 1]","w":["[3, 2, 1, 0]","[2, 1, 0]","[0, 1, 2, 3]"],"why":"A step of -1 counts down. It still stops before the end number, so 0 isn't included.","h":"","mono":true},{"id":"loops10","t":"loops","k":"out","q":"What does this print?","code":"s = \"\"\nfor ch in \"abc\":\n    s = ch + s\nprint(s)","a":"cba","w":["abc","a","aabbcc"],"why":"Each new letter is stuck on the front of s: a, then ba, then cba.","h":"","mono":true},{"id":"iter1","t":"iter","k":"out","q":"What does this print?","code":"d = {\"a\": 1, \"b\": 2}\nfor k, v in d.items():\n    print(k, v)","a":"a 1\nb 2","w":["a\nb","1\n2","(a, 1)\n(b, 2)"],"why":".items() hands you each key and value together, so the loop can use both names.","h":"items = key and value.","mono":true},{"id":"iter2","t":"iter","k":"out","q":"What does this print?","code":"for i, c in enumerate([\"x\", \"y\"], start=1):\n    print(i, c)","a":"1 x\n2 y","w":["0 x\n1 y","x 1\ny 2","1\n2"],"why":"enumerate numbers the items for you. start=1 makes it count from 1 instead of 0.","h":"","mono":true},{"id":"iter3","t":"iter","k":"out","q":"What does this print?","code":"print(list(zip([1, 2], [\"a\", \"b\"])))","a":"[(1, 'a'), (2, 'b')]","w":["[1, 2, 'a', 'b']","[[1, 2], ['a', 'b']]","[(1, 2), ('a', 'b')]"],"why":"zip pairs up the lists item by item: first with first, second with second.","h":"zip = like a zipper.","mono":true},{"id":"iter4","t":"iter","k":"out","q":"What does this print?","code":"print([x * 2 for x in [1, 2, 3]])","a":"[2, 4, 6]","w":["[1, 2, 3, 1, 2, 3]","[2, 4]","[1, 4, 9]"],"why":"A list comprehension is a loop in one line: take each x, double it, collect the results in a new list.","h":"","mono":true},{"id":"iter5","t":"iter","k":"out","q":"What does this print?","code":"print([n for n in range(6) if n % 2 == 0])","a":"[0, 2, 4]","w":["[2, 4]","[1, 3, 5]","[0, 2, 4, 6]"],"why":"The if at the end filters: only numbers with no remainder when divided by 2 are kept. 0 counts as even.","h":"","mono":true},{"id":"iter6","t":"iter","k":"out","q":"What does this print?","code":"print(len(range(2, 10, 2)))","a":"4","w":["5","8","10"],"why":"range(2, 10, 2) is 2, 4, 6, 8. That is 4 numbers.","h":"","mono":true},{"id":"iter7","t":"iter","k":"concept","q":"What does enumerate(items) give you on each pass of a loop?","code":"","a":"A position number and the item","w":["Only the item","Only the position number","The items in reverse order"],"why":"Each pass gives a pair: the position (0, 1, 2...) and the item at that position. You usually write for i, item in enumerate(items).","h":"enumerate = counter + item.","mono":false},{"id":"iter8","t":"iter","k":"out","q":"What does this print?","code":"for k in {\"a\": 1, \"b\": 2}:\n    print(k)","a":"a\nb","w":["1\n2","a 1\nb 2","a\n1\nb\n2"],"why":"Looping straight over a dictionary gives you the keys. Use .items() if you want the values too.","h":"Loop on a dict = keys.","mono":true},{"id":"iter9","t":"iter","k":"out","q":"What does this print?","code":"print(sum([n * n for n in [1, 2, 3]]))","a":"14","w":["6","36","9"],"why":"The comprehension squares each number to make [1, 4, 9], and sum adds them up: 14.","h":"","mono":true},{"id":"funcs1","t":"funcs","k":"out","q":"What does this print?","code":"def double(x):\n    return x * 2\n\nprint(double(4))","a":"8","w":["4","44","None"],"why":"double(4) runs the function with x = 4 and gives back 4 * 2.","h":"","mono":true},{"id":"funcs2","t":"funcs","k":"out","q":"What does this print?","code":"def greet():\n    print(\"hi\")\n\nresult = greet()\nprint(result)","a":"hi\nNone","w":["hi","None","hi\nhi"],"why":"greet() prints hi, but it has no return, so it gives back None, which the second print shows.","h":"No return = None.","mono":true},{"id":"funcs3","t":"funcs","k":"out","q":"What does this print?","code":"def add(a, b=10):\n    return a + b\n\nprint(add(5))","a":"15","w":["5","TypeError","510"],"why":"b=10 is a default. If you don't pass b, it uses 10.","h":"","mono":true},{"id":"funcs4","t":"funcs","k":"concept","q":"What does return do inside a function?","code":"","a":"Sends a value back and ends the function","w":["Prints the value on screen","Starts the function again","Saves the value to a file"],"why":"return hands a value back to whoever called the function and leaves it. The normal lines after it don't run.","h":"return = hand back.","mono":false},{"id":"funcs5","t":"funcs","k":"out","q":"What does this print?","code":"def lo_hi(a, b):\n    return min(a, b), max(a, b)\n\nprint(lo_hi(9, 4))","a":"(4, 9)","w":["(9, 4)","4","[4, 9]"],"why":"A function can return several values at once. They come back together as a tuple, smaller one first here.","h":"","mono":true},{"id":"funcs6","t":"funcs","k":"out","q":"What does this print?","code":"def gap(w, h):\n    return w - h\n\nprint(gap(h=1, w=5))","a":"4","w":["-4","6","TypeError"],"why":"With names (keyword arguments) the order doesn't matter. w is 5 and h is 1, so 5 - 1.","h":"Names beat order.","mono":true},{"id":"funcs7","t":"funcs","k":"err","q":"What happens when this runs?","code":"def f():\n    total = 5\n\nf()\nprint(total)","a":"NameError","w":["5","None","0"],"why":"A variable made inside a function only lives inside it. Outside, Python has never heard of total.","h":"Inside variables stay inside.","mono":true},{"id":"funcs8","t":"funcs","k":"out","q":"What does this print?","code":"def add(a, b):\n    return a + b\n\ndef triple(a, b):\n    return add(a, b) * 3\n\nprint(triple(1, 2))","a":"9","w":["3","6","123"],"why":"triple calls add, which gives 3, then multiplies that by 3.","h":"","mono":true},{"id":"funcs9","t":"funcs","k":"out","q":"What does this print?","code":"def f():\n    return 1\n    print(\"never\")\n\nprint(f())","a":"1","w":["never\n1","never","None"],"why":"return ends the function on the spot. The line after it never runs.","h":"","mono":true},{"id":"funcs10","t":"funcs","k":"concept","q":"You write def greet(name): and later call greet(\"Ann\"). Which one is the argument?","code":"","a":"\"Ann\"","w":["name","greet","def"],"why":"The argument is the actual value you pass in when you call. The parameter (name) is the label inside the function that receives it.","h":"Parameter = slot, argument = what goes in.","mono":true},{"id":"errors1","t":"errors","k":"err","q":"What happens when this runs?","code":"print(\"Age: \" + 30)","a":"TypeError","w":["Age: 30","Age 30","SyntaxError"],"why":"You can't + text and a number. Fix it with str(30) or an f-string: f\"Age: {30}\".","h":"Text + number = TypeError.","mono":true},{"id":"errors2","t":"errors","k":"err","q":"What happens when this runs?","code":"nums = [1, 2, 3]\nprint(nums[3])","a":"IndexError","w":["3","None","KeyError"],"why":"The positions are 0, 1, 2. There is no position 3.","h":"","mono":true},{"id":"errors3","t":"errors","k":"err","q":"What happens when this runs?","code":"print(score)","a":"NameError","w":["0","None","score"],"why":"score was never given a value, so Python doesn't know the name.","h":"","mono":true},{"id":"errors4","t":"errors","k":"err","q":"What happens when this runs?","code":"print(10 / 0)","a":"ZeroDivisionError","w":["0","inf","10"],"why":"Dividing by zero isn't allowed in Python, so it stops with an error.","h":"","mono":true},{"id":"errors5","t":"errors","k":"err","q":"What happens when this runs?","code":"int(\"five\")","a":"ValueError","w":["5","TypeError","NameError"],"why":"\"five\" is text, which int() accepts, but it isn't written as a whole number, so the value is wrong.","h":"","mono":true},{"id":"errors6","t":"errors","k":"err","q":"What happens when this runs?","code":"x = 5\nx.append(1)","a":"AttributeError","w":["TypeError","NameError","[5, 1]"],"why":"A number has no .append. That command belongs to lists, so Python says the thing has no such attribute.","h":"","mono":true},{"id":"errors7","t":"errors","k":"err","q":"What happens when this runs?","code":"print(len(5))","a":"TypeError","w":["1","0","ValueError"],"why":"len needs something with a length, like text or a list. A plain number has none, so it's the wrong type.","h":"","mono":true},{"id":"errors8","t":"errors","k":"out","q":"What does this print?","code":"try:\n    print(10 / 0)\nexcept ZeroDivisionError:\n    print(\"oops\")","a":"oops","w":["ZeroDivisionError","inf","Nothing is printed"],"why":"The error happens inside try, so Python jumps to the matching except and runs that instead. The program carries on.","h":"try = catch the fall.","mono":true},{"id":"errors9","t":"errors","k":"err","q":"What happens when this runs?","code":"int(\"3.5\")","a":"ValueError","w":["3","4","TypeError"],"why":"int() can't read a decimal point in text. It's a text value it can't turn into a whole number.","h":"","mono":true},{"id":"errors10","t":"errors","k":"concept","q":"The last line of an error message starts with KeyError. What does that name tell you?","code":"","a":"What kind of problem happened","w":["Which line to fix first","How many errors there were","Which file crashed"],"why":"The name at the start of the last line is the type of problem. The lines above it show where it happened.","h":"Read the last line first.","mono":false},{"id":"files1","t":"files","k":"concept","q":"What does opening a file with \"w\" do if the file already exists?","code":"","a":"Erases what was in it and starts empty","w":["Adds new text at the end","Gives an error","Opens it without changing it"],"why":"\"w\" means write from scratch, so the old contents are wiped as soon as you open it. Use \"a\" to keep them.","h":"w = wipe and write.","mono":false},{"id":"files2","t":"files","k":"concept","q":"What does the with statement guarantee when you open a file?","code":"","a":"The file is closed when the block ends","w":["The file is created if missing","The file is read in one go","Other apps can't touch the file"],"why":"with closes the file for you when the indented block finishes, even if something goes wrong inside.","h":"with = closes itself.","mono":false},{"id":"files3","t":"files","k":"concept","q":"What happens if you open \"data.txt\" in \"r\" mode and it does not exist?","code":"","a":"FileNotFoundError","w":["An empty file is created","It gives back an empty string","Python waits until the file appears"],"why":"\"r\" only reads files that are already there. A missing file stops the program with FileNotFoundError.","h":"","mono":false},{"id":"files4","t":"files","k":"concept","q":"What does file.readlines() give you?","code":"","a":"A list with one string per line","w":["One long string","The number of lines","Only the first line"],"why":"Every line becomes one item in a list, and each item still has its newline at the end.","h":"","mono":false},{"id":"files5","t":"files","k":"concept","q":"Why would you open a file in \"a\" mode?","code":"","a":"To add new text to the end without erasing","w":["To read the file faster","To make a copy of the file","To delete the old text first"],"why":"\"a\" stands for append. New text goes after what is already there.","h":"a = add to the end.","mono":false},{"id":"files6","t":"files","k":"concept","q":"You call f.write(\"Ann\") and then f.write(\"Bob\"). What is in the file?","code":"","a":"AnnBob on one line","w":["Ann and Bob on two lines","Ann Bob with a space","Only Bob"],"why":"write() adds exactly the text you give it and no newline. Write \"Ann\\n\" if you want a line break.","h":"write() adds no newline.","mono":false},{"id":"files7","t":"files","k":"out","q":"What does this print?","code":"line = \"Ann,30\\n\"\nprint(line.strip().split(\",\"))","a":"['Ann', '30']","w":["['Ann', '30\\n']","['Ann,30']","Ann 30"],"why":"A line read from a file ends with \\n. .strip() removes it, then .split(\",\") cuts the line into pieces.","h":"strip first, then split.","mono":true},{"id":"files8","t":"files","k":"out","q":"What does this print?","code":"line = \"hello\\n\"\nprint(len(line))","a":"6","w":["5","7","1"],"why":"The \\n at the end is one invisible character, so \"hello\" plus the newline is 6.","h":"","mono":true},{"id":"files9","t":"files","k":"out","q":"What does this print?","code":"text = \"one\\ntwo\\nthree\"\nprint(text.split(\"\\n\"))","a":"['one', 'two', 'three']","w":["['one\\ntwo\\nthree']","one two three","3"],"why":"\\n marks the end of a line. Splitting on it gives one item per line, which is much like reading a file line by line.","h":"","mono":true}];
+const KEY='pylearn-quiz-v1';
+const $=document.getElementById('app');
+const SAY=document.getElementById('say');
+let saveOk=true, offlineReady=false;
+let mem=load(), R=null, lastScope=null, resetArmed=false;
+
+function load(){
+  const d=()=>({st:{},help:false});
+  try{
+    const m=JSON.parse(localStorage.getItem(KEY));
+    if(!m||typeof m!=='object'||Array.isArray(m)) return d();
+    if(!m.st||typeof m.st!=='object'||Array.isArray(m.st)) return d();
+    const st={};
+    for(const k of Object.keys(m.st)){ if(m.st[k]==='o'||m.st[k]==='x') st[k]=m.st[k]; }
+    return {st,help:m.help===true};
+  }catch(e){}
+  return d();
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(mem));saveOk=true;}catch(e){saveOk=false;}
+  return saveOk;
+}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const tname=id=>TOPICS.find(t=>t.id===id).n;
+const motion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+const say=t=>{SAY.textContent='';setTimeout(()=>{SAY.textContent=t;},30);};
+
+function hl(code){
+  const re=/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(\d+(?:\.\d+)?)\b|\b(def|return|if|elif|else|for|while|in|is|and|or|not|break|continue|try|except|finally|with|as|del|True|False|None)\b|\b(print|len|range|int|str|float|list|dict|set|tuple|round|bool|sum|min|max|abs|sorted|zip|enumerate|type)\b(?=\()/g;
+  let out='',last=0,m;
+  while((m=re.exec(code))){
+    out+=esc(code.slice(last,m.index));
+    const cls=m[1]?'st':m[2]?'nu':m[3]?'kw':'fn';
+    out+=`<span class="${cls}">${esc(m[0])}</span>`; last=re.lastIndex;
+  }
+  return out+esc(code.slice(last));
+}
+const editor=code=>code?`<div class="editor"><div class="tab">main.py</div><pre>${hl(code)}</pre></div>`:'';
+const offText=()=>offlineReady?'Ready to use offline.':'Open once with internet to use it offline.';
+
+function home(){
+  R=null; resetArmed=false;
+  const total=CARDS.length, known=CARDS.filter(c=>mem.st[c.id]==='o').length, weak=CARDS.filter(c=>mem.st[c.id]==='x').length;
+  $.innerHTML=`
+    <header style="display:flex;flex-direction:column;gap:6px">
+      <p class="prompt-mark">&gt;&gt;&gt; import python</p>
+      <h1>PyLearn Quiz</h1>
+      <p class="sub">Read the code, pick what Python does. Every code answer was checked by running it in Python.</p>
+    </header>
+    <div class="stats"><span><b>${known}</b>/${total} known</span><span>&middot;</span><span><b>${weak}</b> to practise</span></div>
+    <button class="big" data-a="smart">Smart round<small>10 cards: weak ones first, then new ones</small></button>
+    <div class="row">
+      <button class="big alt" data-a="weak" ${weak?'':'disabled'}>Weak cards<small>${weak?`${Math.min(weak,10)} you missed`:'none yet'}</small></button>
+      <button class="big alt" data-a="mock">Mock test<small>20 random cards</small></button>
+    </div>
+    <div class="helprow">
+      <button class="sw${mem.help?' on':''}" data-a="togglehelp" aria-pressed="${mem.help?'true':'false'}"><span class="knob" aria-hidden="true"></span><span>50:50 help</span></button>
+      <p class="small">Hides two wrong answers. Cards answered with help don't count as known.</p>
+    </div>
+    <p class="label">Topics</p>
+    <div class="topics">${TOPICS.map(t=>{
+      const ids=CARDS.filter(c=>c.t===t.id), k=ids.filter(c=>mem.st[c.id]==='o').length;
+      return `<button class="topic" data-a="topic" data-t="${t.id}"><b>${esc(t.n)}</b><span>${k}/${ids.length} known</span><div class="meter"><i style="width:${Math.round(k/ids.length*100)}%"></i></div></button>`;
+    }).join('')}</div>
+    <button class="reset" data-a="reset">Reset progress</button>
+    ${saveOk?'':'<p class="small">Progress can\'t be saved in this browser, so it lasts for this visit only.</p>'}
+    <p class="small" id="off">${offText()}</p>`;
+}
+
+function startRound(cards,size){
+  const q=cards.slice(0,size);
+  if(!q.length) return home();
+  R={queue:q,total:q.length,done:0,first:{},missed:[],help:mem.help,hidden:new Set()};
+  question();
+}
+function question(){
+  const c=R.queue[0];
+  R.opts=shuffle([c.a,...c.w]); R.answered=false; R.hidden=new Set();
+  if(R.help){
+    const wrong=R.opts.map((o,k)=>k).filter(k=>R.opts[k]!==c.a);
+    shuffle(wrong).slice(0,2).forEach(k=>R.hidden.add(k));
+  }
+  const pct=Math.round(R.done/R.total*100);
+  $.innerHTML=`
+    <div class="top"><button class="x" data-a="home" aria-label="Quit round">✕</button><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div class="hud"><span>${R.done}/${R.total}</span>${R.help?'<span>with 50:50 help</span>':''}</div>
+    <span class="chip">${esc(tname(c.t))}</span>
+    <h2 class="q" id="qtext" tabindex="-1">${esc(c.q)}</h2>
+    ${editor(c.code)}
+    <div id="opts" role="group" aria-labelledby="qtext">${R.opts.map((o,k)=>{
+      const g=R.hidden.has(k);
+      return `<button class="opt ${c.mono?'mono':''}${g?' gone':''}" data-a="pick" data-k="${k}"${g?' disabled aria-hidden="true" tabindex="-1"':''}><span class="k">${k+1}</span><span class="v">${esc(o)}</span></button>`;
+    }).join('')}</div>
+    <div id="fb"></div>`;
+  document.getElementById('qtext').focus({preventScroll:true});
+}
+function pick(k){
+  if(!R||!R.opts||R.answered) return;
+  if(!(k>=0&&k<R.opts.length)||R.hidden.has(k)) return;
+  R.answered=true;
+  const c=R.queue[0], good=R.opts[k]===c.a, firstTime=!(c.id in R.first), assisted=R.help;
+  const btns=[...document.querySelectorAll('.opt')];
+  btns.forEach((b,n)=>{b.disabled=true;if(R.opts[n]===c.a)b.classList.add('right');});
+  if(firstTime) R.first[c.id]=good;
+  R.queue.shift();
+  if(good){
+    R.done++;
+    if(!assisted) mem.st[c.id]=firstTime?'o':(mem.st[c.id]||'x');
+  }else{
+    btns[k].classList.add('wrong');
+    try{navigator.vibrate&&navigator.vibrate(60);}catch(e){}
+    mem.st[c.id]='x';
+    if(!R.missed.includes(c)) R.missed.push(c);
+    R.queue.splice(Math.min(3,R.queue.length),0,c); // comes back in a few cards
+  }
+  save();
+  const isErr=c.k==='err';
+  const shown=c.code&&c.mono?`<div class="label">${isErr?'Python stops with':'Python prints'}</div><div class="out">${esc(c.a)}</div>`:'';
+  const verdict=good?['Correct.','Yes, that\'s it.','Right.','Nailed it.'][Math.floor(Math.random()*4)]:'Not quite. This card comes back in a moment.';
+  document.getElementById('fb').innerHTML=`
+    <div class="fb ${good?'good':'bad'} pop">
+      <span class="verdict">${verdict}</span>
+      ${shown}
+      <p>${esc(c.why)}</p>
+      ${c.h?`<p class="hook">Remember: ${esc(c.h)}</p>`:''}
+    </div>
+    <button class="big" data-a="next">${R.queue.length?'Next':'See my score'}</button>`;
+  say(`${verdict} The answer is ${c.a}. ${c.why}`);
+  document.querySelector('[data-a=next]').focus({preventScroll:true});
+  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:motion()}),60);
+}
+function next(){R.queue.length?question():finish();}
+function finish(){
+  const n=R.total, helped=R.help, right=Object.values(R.first).filter(Boolean).length, pct=Math.round(right/n*100);
+  const msg=pct>=90?'You read this code well.':pct>=70?'Solid. The missed cards will come back first next time.':'The missed cards will come back first next time.';
+  const missed=R.missed;
+  $.innerHTML=`
+    <div class="score">${right}/${n}</div>
+    <p class="center sub">right first time${helped?' &middot; with 50:50 help':''}</p>
+    <p class="center">${msg}</p>
+    ${missed.length?`<h2>Cards you missed</h2>${missed.map(c=>`<div class="miss">${editor(c.code)||`<b>${esc(c.q)}</b>`}<div class="out">${esc(c.a)}</div><p class="sub">${esc(c.why)}</p></div>`).join('')}
+      <button class="big" data-a="retry">Retry the ones I missed</button>`:'<p class="center">No misses this round.</p>'}
+    <button class="big ${missed.length?'alt':''}" data-a="smart">Another round</button>
+    <button class="big alt" data-a="home">Home</button>`;
+  R={missed};
+  say(`Round finished. ${right} of ${n} right first time${helped?', with 50:50 help':''}.`);
+}
+function smartPool(cards){
+  return [...shuffle(cards.filter(c=>mem.st[c.id]==='x')),...shuffle(cards.filter(c=>!mem.st[c.id])),...shuffle(cards.filter(c=>mem.st[c.id]==='o'))];
+}
+$.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]'); if(!b) return;
+  const a=b.dataset.a;
+  if(a==='pick') pick(+b.dataset.k);
+  else if(a==='next') next();
+  else if(a==='home'){lastScope=null;home();}
+  else if(a==='smart') startRound(smartPool(lastScope||CARDS),10);
+  else if(a==='topic'){lastScope=CARDS.filter(c=>c.t===b.dataset.t);startRound(smartPool(lastScope),10);}
+  else if(a==='mock'){lastScope=null;startRound(shuffle(CARDS),20);}
+  else if(a==='weak'){lastScope=null;startRound(shuffle(CARDS.filter(c=>mem.st[c.id]==='x')),10);}
+  else if(a==='retry') startRound(shuffle(R.missed),10);
+  else if(a==='togglehelp'){
+    mem.help=!mem.help; b.setAttribute('aria-pressed',mem.help?'true':'false'); b.classList.toggle('on',mem.help);
+    if(!save()) home();
+  }
+  else if(a==='reset'){
+    if(!resetArmed){resetArmed=true;b.textContent='Tap again to erase all progress';return;}
+    mem={st:{},help:mem.help};save();home();
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  const t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA') return;
+  if(!R||!R.queue) return;
+  if(!R.answered&&/^[1-4]$/.test(e.key)) pick(+e.key-1);
+  else if(R.answered&&(e.key==='Enter'||e.key===' ')&&document.activeElement?.dataset.a!=='next'){e.preventDefault();next();}
+});
+
+function setOffline(v){
+  offlineReady=v;
+  const el=document.getElementById('off'); if(el) el.textContent=offText();
+}
+async function checkOffline(){
+  try{
+    if(!('serviceWorker' in navigator)||!window.caches) return setOffline(false);
+    await navigator.serviceWorker.ready;
+    setOffline(!!(await caches.match('/pyQuiz/')));
+  }catch(e){setOffline(false);}
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/pyQuiz/sw.js',{scope:'/pyQuiz/'}).then(checkOffline).catch(()=>setOffline(false));
+  navigator.serviceWorker.addEventListener('controllerchange',checkOffline);
+}
+home();
+checkOffline();
+</script>
+</body>
+</html>

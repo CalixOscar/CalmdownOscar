@@ -358,7 +358,9 @@ for card in C:
             problem(cid, f"WRONG ANSWER {a!r}, real: {real!r}")
         if real in w:
             problem(cid, "a wrong option equals the real result")
-    out.append({"id": cid, "t": t, "q": q or ("What does this print?" if check == "out" else "What happens when this runs?"),
+    kind = check if check in ("out", "err") else "concept"
+    out.append({"id": cid, "t": t, "k": kind,
+                "q": q or ("What does this print?" if kind == "out" else "What happens when this runs?"),
                 "code": code or "", "a": a, "w": w, "why": why, "h": hook, "mono": mono})
 
 for tid, name in TOPICS:

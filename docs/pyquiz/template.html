@@ -1,8 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#eef2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10141b" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="/pyQuiz/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/pyQuiz/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PyQuiz">
 <title>PyLearn Quiz</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 /* Layout: one narrow column, app-like. Code sits in a dark editor card in both themes; answers are mono where they are Python output. */
 :root{
@@ -10,9 +19,9 @@
   --accent:#2a56c6; --accent-ink:#ffffff; --accent-soft:#e3eafb;
   --good:#1d7f47; --good-soft:#e2f4e9; --bad:#b83434; --bad-soft:#fbe6e6;
   --code-bg:#1b2230; --code-ink:#dfe6f2; --code-kw:#ff9e64; --code-str:#9ece6a; --code-num:#7dcfff; --code-fn:#e0af68; --code-dim:#6b7690;
-  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
-  --f-body:"Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --f-display:ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --f-body:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#10141b; --surface:#181e28; --ink:#e7ebf3; --muted:#9aa4b7; --line:#2a3242;
@@ -26,9 +35,10 @@
   --good:#52c486; --good-soft:#15291e; --bad:#ff7d7d; --bad-soft:#331a1c;
   --code-bg:#0b0f15; color-scheme:dark;
 }
+*{box-sizing:border-box}
 html,body{min-height:100%}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
 #app{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
 h1{font-size:2.1rem;font-weight:800;letter-spacing:-.01em}
@@ -58,6 +68,16 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
 .hud{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
 .chip{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.q:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.small{color:var(--muted);font-size:.88rem}
+.helprow{display:flex;flex-direction:column;gap:6px}
+.sw{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);text-align:left;font-weight:700}
+.sw .knob{flex:none;position:relative;width:42px;height:24px;border-radius:12px;background:var(--line);transition:background .2s}
+.sw .knob::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--muted);transition:transform .2s}
+.sw.on{border-color:var(--accent)}
+.sw.on .knob{background:var(--accent)}
+.sw.on .knob::after{transform:translateX(18px);box-shadow:none}
 .q{font-family:var(--f-display);font-size:1.4rem;font-weight:700;line-height:1.2;text-wrap:balance}
 .editor{background:var(--code-bg);color:var(--code-ink);border-radius:12px;overflow:hidden;min-width:0}
 .editor .tab{font-family:var(--f-mono);font-size:.75rem;color:var(--code-dim);padding:8px 14px 0}
@@ -84,30 +104,47 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .miss .editor pre{font-size:.85rem;padding-top:12px}
 .pop{animation:pop .25s ease-out}
 @keyframes pop{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}.sw .knob,.sw .knob::after{transition:none}}
 @media (max-width:420px){h1{font-size:1.8rem}.q{font-size:1.25rem}.row{grid-template-columns:1fr}}
 </style>
-
-<main id="app" aria-live="polite"></main>
+</head>
+<body>
+<main id="app"></main>
+<div id="say" class="sr" role="status"></div>
 
 <script>
-const TOPICS=[
-  {id:'basics',n:'Print & variables'},{id:'strings',n:'Strings'},{id:'numbers',n:'Numbers & maths'},
-  {id:'lists',n:'Lists'},{id:'dicts',n:'Dictionaries'},{id:'logic',n:'If & True/False'},
-  {id:'loops',n:'Loops'},{id:'funcs',n:'Functions'},{id:'errors',n:'Errors'}];
+const TOPICS=/*TOPICS*/[];
 const CARDS=/*CARDS*/[];
 const KEY='pylearn-quiz-v1';
 const $=document.getElementById('app');
+const SAY=document.getElementById('say');
+let saveOk=true, offlineReady=false;
 let mem=load(), R=null, lastScope=null, resetArmed=false;
 
-function load(){try{const m=JSON.parse(localStorage.getItem(KEY));if(m&&m.st)return m;}catch(e){}return{st:{},best:0};}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+function load(){
+  const d=()=>({st:{},help:false});
+  try{
+    const m=JSON.parse(localStorage.getItem(KEY));
+    if(!m||typeof m!=='object'||Array.isArray(m)) return d();
+    if(!m.st||typeof m.st!=='object'||Array.isArray(m.st)) return d();
+    const st={};
+    for(const k of Object.keys(m.st)){ if(m.st[k]==='o'||m.st[k]==='x') st[k]=m.st[k]; }
+    return {st,help:m.help===true};
+  }catch(e){}
+  return d();
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(mem));saveOk=true;}catch(e){saveOk=false;}
+  return saveOk;
+}
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const tname=id=>TOPICS.find(t=>t.id===id).n;
+const motion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+const say=t=>{SAY.textContent='';setTimeout(()=>{SAY.textContent=t;},30);};
 
 function hl(code){
-  const re=/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(\d+(?:\.\d+)?)\b|\b(def|return|if|elif|else|for|while|in|and|or|not|break|True|False|None)\b|\b(print|len|range|int|str|list|round|bool)\b(?=\()/g;
+  const re=/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(\d+(?:\.\d+)?)\b|\b(def|return|if|elif|else|for|while|in|is|and|or|not|break|continue|try|except|finally|with|as|del|True|False|None)\b|\b(print|len|range|int|str|float|list|dict|set|tuple|round|bool|sum|min|max|abs|sorted|zip|enumerate|type)\b(?=\()/g;
   let out='',last=0,m;
   while((m=re.exec(code))){
     out+=esc(code.slice(last,m.index));
@@ -117,6 +154,7 @@ function hl(code){
   return out+esc(code.slice(last));
 }
 const editor=code=>code?`<div class="editor"><div class="tab">main.py</div><pre>${hl(code)}</pre></div>`:'';
+const offText=()=>offlineReady?'Ready to use offline.':'Open once with internet to use it offline.';
 
 function home(){
   R=null; resetArmed=false;
@@ -125,88 +163,105 @@ function home(){
     <header style="display:flex;flex-direction:column;gap:6px">
       <p class="prompt-mark">&gt;&gt;&gt; import python</p>
       <h1>PyLearn Quiz</h1>
-      <p class="sub">Read the code, pick what Python does. Every answer here was checked by running it in real Python.</p>
+      <p class="sub">Read the code, pick what Python does. Every code answer was checked by running it in Python.</p>
     </header>
-    <div class="stats"><span><b>${known}</b>/${total} known</span><span><b>${weak}</b> to practise</span><span>best streak <b>${mem.best}</b></span></div>
+    <div class="stats"><span><b>${known}</b>/${total} known</span><span>&middot;</span><span><b>${weak}</b> to practise</span></div>
     <button class="big" data-a="smart">Smart round<small>10 cards: weak ones first, then new ones</small></button>
     <div class="row">
       <button class="big alt" data-a="weak" ${weak?'':'disabled'}>Weak cards<small>${weak?`${Math.min(weak,10)} you missed`:'none yet'}</small></button>
       <button class="big alt" data-a="mock">Mock test<small>20 random cards</small></button>
+    </div>
+    <div class="helprow">
+      <button class="sw${mem.help?' on':''}" data-a="togglehelp" aria-pressed="${mem.help?'true':'false'}"><span class="knob" aria-hidden="true"></span><span>50:50 help</span></button>
+      <p class="small">Hides two wrong answers. Cards answered with help don't count as known.</p>
     </div>
     <p class="label">Topics</p>
     <div class="topics">${TOPICS.map(t=>{
       const ids=CARDS.filter(c=>c.t===t.id), k=ids.filter(c=>mem.st[c.id]==='o').length;
       return `<button class="topic" data-a="topic" data-t="${t.id}"><b>${esc(t.n)}</b><span>${k}/${ids.length} known</span><div class="meter"><i style="width:${Math.round(k/ids.length*100)}%"></i></div></button>`;
     }).join('')}</div>
-    <button class="reset" data-a="reset">Reset progress</button>`;
+    <button class="reset" data-a="reset">Reset progress</button>
+    ${saveOk?'':'<p class="small">Progress can\'t be saved in this browser, so it lasts for this visit only.</p>'}
+    <p class="small" id="off">${offText()}</p>`;
 }
 
 function startRound(cards,size){
   const q=cards.slice(0,size);
   if(!q.length) return home();
-  R={queue:q,total:q.length,done:0,streak:0,xp:0,first:{},missed:[]};
+  R={queue:q,total:q.length,done:0,first:{},missed:[],help:mem.help,hidden:new Set()};
   question();
 }
 function question(){
   const c=R.queue[0];
-  R.opts=shuffle([c.a,...c.w]); R.answered=false;
+  R.opts=shuffle([c.a,...c.w]); R.answered=false; R.hidden=new Set();
+  if(R.help){
+    const wrong=R.opts.map((o,k)=>k).filter(k=>R.opts[k]!==c.a);
+    shuffle(wrong).slice(0,2).forEach(k=>R.hidden.add(k));
+  }
   const pct=Math.round(R.done/R.total*100);
   $.innerHTML=`
     <div class="top"><button class="x" data-a="home" aria-label="Quit round">✕</button><div class="bar"><i style="width:${pct}%"></i></div></div>
-    <div class="hud"><span>streak ${R.streak}</span><span>${R.done}/${R.total}</span><span>${R.xp} XP</span></div>
+    <div class="hud"><span>${R.done}/${R.total}</span>${R.help?'<span>with 50:50 help</span>':''}</div>
     <span class="chip">${esc(tname(c.t))}</span>
-    <div class="q">${esc(c.q)}</div>
+    <h2 class="q" id="qtext" tabindex="-1">${esc(c.q)}</h2>
     ${editor(c.code)}
-    <div id="opts">${R.opts.map((o,k)=>`<button class="opt ${c.mono?'mono':''}" data-a="pick" data-k="${k}"><span class="k">${k+1}</span><span class="v">${esc(o)}</span></button>`).join('')}</div>
+    <div id="opts" role="group" aria-labelledby="qtext">${R.opts.map((o,k)=>{
+      const g=R.hidden.has(k);
+      return `<button class="opt ${c.mono?'mono':''}${g?' gone':''}" data-a="pick" data-k="${k}"${g?' disabled aria-hidden="true" tabindex="-1"':''}><span class="k">${k+1}</span><span class="v">${esc(o)}</span></button>`;
+    }).join('')}</div>
     <div id="fb"></div>`;
+  document.getElementById('qtext').focus({preventScroll:true});
 }
 function pick(k){
-  if(!R||R.answered) return;
+  if(!R||!R.opts||R.answered) return;
+  if(!(k>=0&&k<R.opts.length)||R.hidden.has(k)) return;
   R.answered=true;
-  const c=R.queue[0], good=R.opts[k]===c.a, firstTime=!(c.id in R.first);
+  const c=R.queue[0], good=R.opts[k]===c.a, firstTime=!(c.id in R.first), assisted=R.help;
   const btns=[...document.querySelectorAll('.opt')];
   btns.forEach((b,n)=>{b.disabled=true;if(R.opts[n]===c.a)b.classList.add('right');});
   if(firstTime) R.first[c.id]=good;
   R.queue.shift();
   if(good){
-    R.streak++; R.xp+=10+Math.min(R.streak,10); R.done++;
-    if(R.streak>mem.best) mem.best=R.streak;
-    mem.st[c.id]=firstTime?'o':(mem.st[c.id]||'x');
+    R.done++;
+    if(!assisted) mem.st[c.id]=firstTime?'o':(mem.st[c.id]||'x');
   }else{
     btns[k].classList.add('wrong');
     try{navigator.vibrate&&navigator.vibrate(60);}catch(e){}
-    R.streak=0; mem.st[c.id]='x';
+    mem.st[c.id]='x';
     if(!R.missed.includes(c)) R.missed.push(c);
     R.queue.splice(Math.min(3,R.queue.length),0,c); // comes back in a few cards
   }
   save();
-  const isErr=c.q.startsWith('What happens');
+  const isErr=c.k==='err';
   const shown=c.code&&c.mono?`<div class="label">${isErr?'Python stops with':'Python prints'}</div><div class="out">${esc(c.a)}</div>`:'';
+  const verdict=good?['Correct.','Yes, that\'s it.','Right.','Nailed it.'][Math.floor(Math.random()*4)]:'Not quite. This card comes back in a moment.';
   document.getElementById('fb').innerHTML=`
     <div class="fb ${good?'good':'bad'} pop">
-      <span class="verdict">${good?['Correct.','Yes, that\'s it.','Right.','Nailed it.'][Math.floor(Math.random()*4)]:'Not quite. This card comes back in a moment.'}</span>
+      <span class="verdict">${verdict}</span>
       ${shown}
       <p>${esc(c.why)}</p>
       ${c.h?`<p class="hook">Remember: ${esc(c.h)}</p>`:''}
     </div>
     <button class="big" data-a="next">${R.queue.length?'Next':'See my score'}</button>`;
+  say(`${verdict} The answer is ${c.a}. ${c.why}`);
   document.querySelector('[data-a=next]').focus({preventScroll:true});
-  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:'smooth'}),60);
+  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:motion()}),60);
 }
 function next(){R.queue.length?question():finish();}
 function finish(){
-  const n=R.total, right=Object.values(R.first).filter(Boolean).length, pct=Math.round(right/n*100);
-  const msg=pct>=90?'Excellent. You read Python well.':pct>=70?'Strong. One more round will lock it in.':pct>=50?'Getting there. The missed cards will come back first next time.':'Good start. Repetition is what makes it stick.';
+  const n=R.total, helped=R.help, right=Object.values(R.first).filter(Boolean).length, pct=Math.round(right/n*100);
+  const msg=pct>=90?'You read this code well.':pct>=70?'Solid. The missed cards will come back first next time.':'The missed cards will come back first next time.';
   const missed=R.missed;
   $.innerHTML=`
     <div class="score">${right}/${n}</div>
-    <p class="center sub">right first time · ${R.xp} XP · best streak ${mem.best}</p>
+    <p class="center sub">right first time${helped?' &middot; with 50:50 help':''}</p>
     <p class="center">${msg}</p>
     ${missed.length?`<h2>Cards you missed</h2>${missed.map(c=>`<div class="miss">${editor(c.code)||`<b>${esc(c.q)}</b>`}<div class="out">${esc(c.a)}</div><p class="sub">${esc(c.why)}</p></div>`).join('')}
       <button class="big" data-a="retry">Retry the ones I missed</button>`:'<p class="center">No misses this round.</p>'}
     <button class="big ${missed.length?'alt':''}" data-a="smart">Another round</button>
     <button class="big alt" data-a="home">Home</button>`;
   R={missed};
+  say(`Round finished. ${right} of ${n} right first time${helped?', with 50:50 help':''}.`);
 }
 function smartPool(cards){
   return [...shuffle(cards.filter(c=>mem.st[c.id]==='x')),...shuffle(cards.filter(c=>!mem.st[c.id])),...shuffle(cards.filter(c=>mem.st[c.id]==='o'))];
@@ -222,15 +277,41 @@ $.addEventListener('click',e=>{
   else if(a==='mock'){lastScope=null;startRound(shuffle(CARDS),20);}
   else if(a==='weak'){lastScope=null;startRound(shuffle(CARDS.filter(c=>mem.st[c.id]==='x')),10);}
   else if(a==='retry') startRound(shuffle(R.missed),10);
+  else if(a==='togglehelp'){
+    mem.help=!mem.help; b.setAttribute('aria-pressed',mem.help?'true':'false'); b.classList.toggle('on',mem.help);
+    if(!save()) home();
+  }
   else if(a==='reset'){
     if(!resetArmed){resetArmed=true;b.textContent='Tap again to erase all progress';return;}
-    mem={st:{},best:0};save();home();
+    mem={st:{},help:mem.help};save();home();
   }
 });
 document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  const t=e.target&&e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA') return;
   if(!R||!R.queue) return;
   if(!R.answered&&/^[1-4]$/.test(e.key)) pick(+e.key-1);
   else if(R.answered&&(e.key==='Enter'||e.key===' ')&&document.activeElement?.dataset.a!=='next'){e.preventDefault();next();}
 });
+
+function setOffline(v){
+  offlineReady=v;
+  const el=document.getElementById('off'); if(el) el.textContent=offText();
+}
+async function checkOffline(){
+  try{
+    if(!('serviceWorker' in navigator)||!window.caches) return setOffline(false);
+    await navigator.serviceWorker.ready;
+    setOffline(!!(await caches.match('/pyQuiz/')));
+  }catch(e){setOffline(false);}
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/pyQuiz/sw.js',{scope:'/pyQuiz/'}).then(checkOffline).catch(()=>setOffline(false));
+  navigator.serviceWorker.addEventListener('controllerchange',checkOffline);
+}
 home();
+checkOffline();
 </script>
+</body>
+</html>

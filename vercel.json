@@ -7,6 +7,21 @@
       "permanent": false
     },
     {
+      "source": "/pyQuiz",
+      "destination": "/pyQuiz/",
+      "permanent": false
+    },
+    {
+      "source": "/pyquiz",
+      "destination": "/pyQuiz/",
+      "permanent": false
+    },
+    {
+      "source": "/pyquiz/",
+      "destination": "/pyQuiz/",
+      "permanent": false
+    },
+    {
       "source": "/playground/norsksti",
       "destination": "/playground/norsksti/",
       "permanent": false
