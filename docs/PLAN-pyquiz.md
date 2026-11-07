@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-07
 **Intent:** `docs/intent/INTENT-004-pyquiz.md`
-**Status:** Draft, awaiting Codex pre-mortem (`docs/dialogue/pyquiz.md`).
+**Status:** Settled after Codex pre-mortem; see `docs/dialogue/pyquiz.md` for the 11 findings and responses.
 **Tier:** 2, light (founder's choice in session): plan → Codex pre-mortem → revise →
 build in-house → deploy → Codex post-mortem.
 **Branch:** `feat/pyquiz` in worktree `.worktrees/pyquiz`, from `main` at `17fb2cc`.
@@ -38,10 +38,11 @@ Plus a new section on `/playground/` with short text, a link and a real screensh
   wrapped in try/catch; works without it. Reset needs a second tap (no `confirm()`).
 - **50:50 helper:** saved on/off toggle on the home screen, default off (same as
   Bianca's `mem.help`). When on, two wrong options hide on each question. A card
-  answered with help earns less XP and is not marked "known".
-- **Counters:** an in-round run counter and XP stay (Bianca has them). No daily
-  streaks, reminders, notifications or anything that rewards coming back on a
-  schedule, per the studio "no engagement bait" rule. Reviewer: challenge this.
+  answered correctly with help keeps its previous state (never promoted to
+  known); an assisted miss marks it weak; help is fixed per round and results say
+  "with 50:50 help". Hidden options are unfocusable, aria-hidden and unpickable.
+- **No streaks or XP** (studio rule, pre-mortem 4): a round shows a progress bar and
+  its first-try score only. No reminders or notifications.
 - **Fonts:** system stacks only. The root CSP (`font-src 'self'`) blocks Google Fonts
   and the web overlay says system or self-hosted fonts.
 - **CSP/headers:** `/pyQuiz/` falls under the existing root rule
@@ -49,10 +50,12 @@ Plus a new section on `/playground/` with short text, a link and a real screensh
   `'self'` only. No change needed. `noindex` meta, as Bianca.
 - **Routing:** folder `pyQuiz/` (Vercel paths are case-sensitive). Redirects
   `/pyQuiz` → `/pyQuiz/`, `/pyquiz` and `/pyquiz/` → `/pyQuiz/` (non-permanent).
-- **Service worker:** `VERSION` constant, precache `/pyQuiz/`, manifest and icons on
-  install; delete old caches on activate; cache-first with background refresh for
-  same-origin GETs under `/pyQuiz/`; navigations map to `/pyQuiz/`. Registered with
-  scope `/pyQuiz/`. Same pattern as Bianca's `sw.js`.
+- **Service worker:** `VERSION = 'pyquiz-vN'`; precache `/pyQuiz/`, manifest and all
+  icons (incl. maskable); activate deletes only `pyquiz-*` caches that are not
+  current; navigations network-first (3 s timeout) then cached `/pyQuiz/`; other
+  same-origin GETs under `/pyQuiz/` cache-first with refresh in `waitUntil`.
+  Home shows offline readiness truthfully. Bianca's `sw.js` cleanup narrowed to
+  `biancaexam-*` (pre-mortem 1).
 - **Icons:** 192, 512, maskable 512, apple-touch 180, generated locally (PIL) from a
   simple `>>>` mark. No third-party assets.
 - **Playground:** one section in the existing `split` pattern after Norsksti: label,
@@ -62,7 +65,7 @@ Plus a new section on `/playground/` with short text, a link and a real screensh
 
 ## Steps
 
-- [ ] **build:** extend `docs/pyquiz/cards.py` to ~110 cards across 12 topics; verifier passes.
+- [x] **build:** extend `docs/pyquiz/cards.py` to ~110 cards across 12 topics; verifier passes. (114 cards, 99 executed)
 - [ ] **build:** `pyQuiz/` files (index.html from template + 50:50 toggle, sw.js,
   manifest, icons), `docs/pyquiz/build.py`, redirects in `vercel.json`.
 - [ ] **planner:** review diffs; run verifier and build; serve locally; headless
