@@ -66,12 +66,12 @@ Plus a new section on `/playground/` with short text, a link and a real screensh
 ## Steps
 
 - [x] **build:** extend `docs/pyquiz/cards.py` to ~110 cards across 12 topics; verifier passes. (114 cards, 99 executed)
-- [ ] **build:** `pyQuiz/` files (index.html from template + 50:50 toggle, sw.js,
+- [x] **build:** `pyQuiz/` files (index.html from template + 50:50 toggle, sw.js,
   manifest, icons), `docs/pyquiz/build.py`, redirects in `vercel.json`.
-- [ ] **planner:** review diffs; run verifier and build; serve locally; headless
+- [x] **planner:** review diffs; run verifier and build; serve locally; headless
   Chrome check: page renders, service worker activates, reload works with the
   network set offline, manifest parses, 50:50 hides two wrong options, no console errors.
-- [ ] **build-light:** playground section, screenshot, intro/meta copy.
+- [x] **build-light:** playground section, screenshot, intro/meta copy.
 - [ ] **planner:** merge to `main`, push (founder asked in session to put it live),
   check live URLs, redirects, headers and the offline reload on the live site.
 - [ ] **planner:** Codex post-mortem in `docs/dialogue/pyquiz.md`.
