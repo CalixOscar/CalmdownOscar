@@ -1,0 +1,236 @@
+<title>PyLearn Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow column, app-like. Code sits in a dark editor card in both themes; answers are mono where they are Python output. */
+:root{
+  --bg:#eef2f7; --surface:#ffffff; --ink:#16202f; --muted:#5a6578; --line:#d6dce7;
+  --accent:#2a56c6; --accent-ink:#ffffff; --accent-soft:#e3eafb;
+  --good:#1d7f47; --good-soft:#e2f4e9; --bad:#b83434; --bad-soft:#fbe6e6;
+  --code-bg:#1b2230; --code-ink:#dfe6f2; --code-kw:#ff9e64; --code-str:#9ece6a; --code-num:#7dcfff; --code-fn:#e0af68; --code-dim:#6b7690;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --surface:#181e28; --ink:#e7ebf3; --muted:#9aa4b7; --line:#2a3242;
+  --accent:#7ea2ff; --accent-ink:#0d1220; --accent-soft:#1f2a45;
+  --good:#52c486; --good-soft:#15291e; --bad:#ff7d7d; --bad-soft:#331a1c;
+  --code-bg:#0b0f15; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --surface:#181e28; --ink:#e7ebf3; --muted:#9aa4b7; --line:#2a3242;
+  --accent:#7ea2ff; --accent-ink:#0d1220; --accent-soft:#1f2a45;
+  --good:#52c486; --good-soft:#15291e; --bad:#ff7d7d; --bad-soft:#331a1c;
+  --code-bg:#0b0f15; color-scheme:dark;
+}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+#app{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:2.1rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700}
+p{margin:0}
+.sub{color:var(--muted)}
+.prompt-mark{font-family:var(--f-mono);color:var(--accent);font-weight:600}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.big{display:block;width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:700;text-align:left;font-size:1.02rem}
+.big.alt{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.big small{display:block;font-weight:400;opacity:.8;font-size:.86rem}
+.big:disabled{opacity:.45;cursor:default}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink)}
+.label{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.topic{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);text-align:left}
+.topic span{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--good)}
+.reset{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:.88rem;align-self:flex-start;padding:4px 0}
+.top{display:flex;align-items:center;gap:12px}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);flex:none}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.hud{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums}
+.chip{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.q{font-family:var(--f-display);font-size:1.4rem;font-weight:700;line-height:1.2;text-wrap:balance}
+.editor{background:var(--code-bg);color:var(--code-ink);border-radius:12px;overflow:hidden;min-width:0}
+.editor .tab{font-family:var(--f-mono);font-size:.75rem;color:var(--code-dim);padding:8px 14px 0}
+.editor pre{margin:0;padding:8px 14px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:.95rem;line-height:1.6}
+.kw{color:var(--code-kw)} .st{color:var(--code-str)} .nu{color:var(--code-num)} .fn{color:var(--code-fn)}
+#opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);min-width:0}
+.opt .k{flex:none;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted);font-family:var(--f-mono)}
+.opt .v{min-width:0;overflow-wrap:anywhere}
+.opt.mono .v{font-family:var(--f-mono);font-size:.95rem;white-space:pre-wrap}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.gone{visibility:hidden}
+.opt:disabled{cursor:default}
+.fb{padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.fb.good{border-color:var(--good)} .fb.bad{border-color:var(--bad)}
+.fb .verdict{font-weight:700}
+.fb.good .verdict{color:var(--good)} .fb.bad .verdict{color:var(--bad)}
+.out{font-family:var(--f-mono);font-size:.92rem;white-space:pre-wrap;background:var(--code-bg);color:var(--code-ink);padding:8px 12px;border-radius:8px;overflow-x:auto}
+.hook{color:var(--muted);font-size:.95rem}
+.score{font-family:var(--f-display);font-size:4rem;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;line-height:1}
+.center{text-align:center}
+.miss{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.miss .editor pre{font-size:.85rem;padding-top:12px}
+.pop{animation:pop .25s ease-out}
+@keyframes pop{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
+@media (max-width:420px){h1{font-size:1.8rem}.q{font-size:1.25rem}.row{grid-template-columns:1fr}}
+</style>
+
+<main id="app" aria-live="polite"></main>
+
+<script>
+const TOPICS=[
+  {id:'basics',n:'Print & variables'},{id:'strings',n:'Strings'},{id:'numbers',n:'Numbers & maths'},
+  {id:'lists',n:'Lists'},{id:'dicts',n:'Dictionaries'},{id:'logic',n:'If & True/False'},
+  {id:'loops',n:'Loops'},{id:'funcs',n:'Functions'},{id:'errors',n:'Errors'}];
+const CARDS=/*CARDS*/[];
+const KEY='pylearn-quiz-v1';
+const $=document.getElementById('app');
+let mem=load(), R=null, lastScope=null, resetArmed=false;
+
+function load(){try{const m=JSON.parse(localStorage.getItem(KEY));if(m&&m.st)return m;}catch(e){}return{st:{},best:0};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const tname=id=>TOPICS.find(t=>t.id===id).n;
+
+function hl(code){
+  const re=/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(\d+(?:\.\d+)?)\b|\b(def|return|if|elif|else|for|while|in|and|or|not|break|True|False|None)\b|\b(print|len|range|int|str|list|round|bool)\b(?=\()/g;
+  let out='',last=0,m;
+  while((m=re.exec(code))){
+    out+=esc(code.slice(last,m.index));
+    const cls=m[1]?'st':m[2]?'nu':m[3]?'kw':'fn';
+    out+=`<span class="${cls}">${esc(m[0])}</span>`; last=re.lastIndex;
+  }
+  return out+esc(code.slice(last));
+}
+const editor=code=>code?`<div class="editor"><div class="tab">main.py</div><pre>${hl(code)}</pre></div>`:'';
+
+function home(){
+  R=null; resetArmed=false;
+  const total=CARDS.length, known=CARDS.filter(c=>mem.st[c.id]==='o').length, weak=CARDS.filter(c=>mem.st[c.id]==='x').length;
+  $.innerHTML=`
+    <header style="display:flex;flex-direction:column;gap:6px">
+      <p class="prompt-mark">&gt;&gt;&gt; import python</p>
+      <h1>PyLearn Quiz</h1>
+      <p class="sub">Read the code, pick what Python does. Every answer here was checked by running it in real Python.</p>
+    </header>
+    <div class="stats"><span><b>${known}</b>/${total} known</span><span><b>${weak}</b> to practise</span><span>best streak <b>${mem.best}</b></span></div>
+    <button class="big" data-a="smart">Smart round<small>10 cards: weak ones first, then new ones</small></button>
+    <div class="row">
+      <button class="big alt" data-a="weak" ${weak?'':'disabled'}>Weak cards<small>${weak?`${Math.min(weak,10)} you missed`:'none yet'}</small></button>
+      <button class="big alt" data-a="mock">Mock test<small>20 random cards</small></button>
+    </div>
+    <p class="label">Topics</p>
+    <div class="topics">${TOPICS.map(t=>{
+      const ids=CARDS.filter(c=>c.t===t.id), k=ids.filter(c=>mem.st[c.id]==='o').length;
+      return `<button class="topic" data-a="topic" data-t="${t.id}"><b>${esc(t.n)}</b><span>${k}/${ids.length} known</span><div class="meter"><i style="width:${Math.round(k/ids.length*100)}%"></i></div></button>`;
+    }).join('')}</div>
+    <button class="reset" data-a="reset">Reset progress</button>`;
+}
+
+function startRound(cards,size){
+  const q=cards.slice(0,size);
+  if(!q.length) return home();
+  R={queue:q,total:q.length,done:0,streak:0,xp:0,first:{},missed:[]};
+  question();
+}
+function question(){
+  const c=R.queue[0];
+  R.opts=shuffle([c.a,...c.w]); R.answered=false;
+  const pct=Math.round(R.done/R.total*100);
+  $.innerHTML=`
+    <div class="top"><button class="x" data-a="home" aria-label="Quit round">✕</button><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <div class="hud"><span>streak ${R.streak}</span><span>${R.done}/${R.total}</span><span>${R.xp} XP</span></div>
+    <span class="chip">${esc(tname(c.t))}</span>
+    <div class="q">${esc(c.q)}</div>
+    ${editor(c.code)}
+    <div id="opts">${R.opts.map((o,k)=>`<button class="opt ${c.mono?'mono':''}" data-a="pick" data-k="${k}"><span class="k">${k+1}</span><span class="v">${esc(o)}</span></button>`).join('')}</div>
+    <div id="fb"></div>`;
+}
+function pick(k){
+  if(!R||R.answered) return;
+  R.answered=true;
+  const c=R.queue[0], good=R.opts[k]===c.a, firstTime=!(c.id in R.first);
+  const btns=[...document.querySelectorAll('.opt')];
+  btns.forEach((b,n)=>{b.disabled=true;if(R.opts[n]===c.a)b.classList.add('right');});
+  if(firstTime) R.first[c.id]=good;
+  R.queue.shift();
+  if(good){
+    R.streak++; R.xp+=10+Math.min(R.streak,10); R.done++;
+    if(R.streak>mem.best) mem.best=R.streak;
+    mem.st[c.id]=firstTime?'o':(mem.st[c.id]||'x');
+  }else{
+    btns[k].classList.add('wrong');
+    try{navigator.vibrate&&navigator.vibrate(60);}catch(e){}
+    R.streak=0; mem.st[c.id]='x';
+    if(!R.missed.includes(c)) R.missed.push(c);
+    R.queue.splice(Math.min(3,R.queue.length),0,c); // comes back in a few cards
+  }
+  save();
+  const isErr=c.q.startsWith('What happens');
+  const shown=c.code&&c.mono?`<div class="label">${isErr?'Python stops with':'Python prints'}</div><div class="out">${esc(c.a)}</div>`:'';
+  document.getElementById('fb').innerHTML=`
+    <div class="fb ${good?'good':'bad'} pop">
+      <span class="verdict">${good?['Correct.','Yes, that\'s it.','Right.','Nailed it.'][Math.floor(Math.random()*4)]:'Not quite. This card comes back in a moment.'}</span>
+      ${shown}
+      <p>${esc(c.why)}</p>
+      ${c.h?`<p class="hook">Remember: ${esc(c.h)}</p>`:''}
+    </div>
+    <button class="big" data-a="next">${R.queue.length?'Next':'See my score'}</button>`;
+  document.querySelector('[data-a=next]').focus({preventScroll:true});
+  setTimeout(()=>document.getElementById('fb').scrollIntoView({block:'end',behavior:'smooth'}),60);
+}
+function next(){R.queue.length?question():finish();}
+function finish(){
+  const n=R.total, right=Object.values(R.first).filter(Boolean).length, pct=Math.round(right/n*100);
+  const msg=pct>=90?'Excellent. You read Python well.':pct>=70?'Strong. One more round will lock it in.':pct>=50?'Getting there. The missed cards will come back first next time.':'Good start. Repetition is what makes it stick.';
+  const missed=R.missed;
+  $.innerHTML=`
+    <div class="score">${right}/${n}</div>
+    <p class="center sub">right first time · ${R.xp} XP · best streak ${mem.best}</p>
+    <p class="center">${msg}</p>
+    ${missed.length?`<h2>Cards you missed</h2>${missed.map(c=>`<div class="miss">${editor(c.code)||`<b>${esc(c.q)}</b>`}<div class="out">${esc(c.a)}</div><p class="sub">${esc(c.why)}</p></div>`).join('')}
+      <button class="big" data-a="retry">Retry the ones I missed</button>`:'<p class="center">No misses this round.</p>'}
+    <button class="big ${missed.length?'alt':''}" data-a="smart">Another round</button>
+    <button class="big alt" data-a="home">Home</button>`;
+  R={missed};
+}
+function smartPool(cards){
+  return [...shuffle(cards.filter(c=>mem.st[c.id]==='x')),...shuffle(cards.filter(c=>!mem.st[c.id])),...shuffle(cards.filter(c=>mem.st[c.id]==='o'))];
+}
+$.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]'); if(!b) return;
+  const a=b.dataset.a;
+  if(a==='pick') pick(+b.dataset.k);
+  else if(a==='next') next();
+  else if(a==='home'){lastScope=null;home();}
+  else if(a==='smart') startRound(smartPool(lastScope||CARDS),10);
+  else if(a==='topic'){lastScope=CARDS.filter(c=>c.t===b.dataset.t);startRound(smartPool(lastScope),10);}
+  else if(a==='mock'){lastScope=null;startRound(shuffle(CARDS),20);}
+  else if(a==='weak'){lastScope=null;startRound(shuffle(CARDS.filter(c=>mem.st[c.id]==='x')),10);}
+  else if(a==='retry') startRound(shuffle(R.missed),10);
+  else if(a==='reset'){
+    if(!resetArmed){resetArmed=true;b.textContent='Tap again to erase all progress';return;}
+    mem={st:{},best:0};save();home();
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(!R||!R.queue) return;
+  if(!R.answered&&/^[1-4]$/.test(e.key)) pick(+e.key-1);
+  else if(R.answered&&(e.key==='Enter'||e.key===' ')&&document.activeElement?.dataset.a!=='next'){e.preventDefault();next();}
+});
+home();
+</script>
