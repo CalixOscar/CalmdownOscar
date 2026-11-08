@@ -174,6 +174,7 @@
       <li>
         <h3>04 · Check the result</h3>
         <p>I review the changes and run relevant tests against the agreed behaviour. My guardrails call for a separate review agent before higher-risk merges. It is meant to check the change and tests, report evidence and identify what remains untested. I check those findings and whether the result still solves the original problem.</p>
+        <p>Most of my active repositories also run automated checks on GitHub: a scan for leaked secrets on every change, and tests on a clean machine where a project's tests can run there. Some iOS app tests aren't covered yet. A clean machine has already caught a test that passed only because of how my own Mac was set up.</p>
         <p>For web work, I also check real browser paths with <a class="link" href="https://jevbrowsercontrol.com/">Jev Browser Control</a>. After significant builds, an independent review looks at what changed and what can be learned.</p>
         <figure>
           <img src="../assets/workflow/jev.jpg" alt="Jev Browser Control website demo showing a completed Wikipedia search and a goal check" width="1267" height="614" loading="lazy">
