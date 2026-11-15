@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fffaf2">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icons/tinda.png">
+<title>Tinda — Isang link para sa menu mo today</title>
+<meta name="description" content="Para sa home sellers: isang link para sa menu mo today. Buyers order nang walang app o login, bayad diretso sa GCash o Maya mo, may prep tally ka na. 14 days libre.">
+<meta property="og:title" content="Tinda — Isang link para sa menu mo today">
+<meta property="og:description" content="Buyers order nang walang app o login. Bayad diretso sa GCash o Maya mo. 14 days libre, tapos &#8369;59/month.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.calmdownoscar.com/tinda/start/">
+<meta property="og:image" content="https://www.calmdownoscar.com/tinda/start/tinda-post.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<meta property="og:image:alt" content="Tinda: Isang link para sa menu mo today, with an example menu picture.">
+<link rel="canonical" href="https://www.calmdownoscar.com/tinda/start/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+/* Seller-facing install page. It uses Tinda's own app colours, not the studio's dark theme,
+   so sellers land on the same look as the app they are about to open. */
+:root{
+  --bg:#fffaf2; --tint:#fbf1e4; --surface:#ffffff; --text:#1f1a14; --muted:#6b6258;
+  --border:#e8dccb; --accent:#b4451f; --accent-hover:#9c3a19; --accent-soft:#fbe5dc; --accent-text:#ffffff;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#1a1511; --tint:#231c16; --surface:#262019; --text:#f3ebe0; --muted:#b3a696;
+  --border:#3a3027; --accent:#e0794f; --accent-hover:#ea8d66; --accent-soft:#3b2419; --accent-text:#1a1511; color-scheme:dark }}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(28px,env(safe-area-inset-top,0px));padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
+main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.brand img{width:36px;height:36px;border-radius:9px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(34px,9vw,46px);line-height:1.04;letter-spacing:-.03em;margin:8px 0 10px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{color:var(--muted)}
+.cta{display:flex;align-items:center;justify-content:center;min-height:60px;border-radius:16px;background:var(--accent);color:var(--accent-text);
+  font-size:20px;font-weight:700;text-decoration:none;padding:14px 20px}
+.cta:hover{background:var(--accent-hover)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--text);outline-offset:3px}
+.under{text-align:center;font-size:14px;color:var(--muted);margin-top:10px}
+.warn{background:var(--accent-soft);border-radius:14px;padding:14px 16px;font-size:15px}
+.warn b{display:block;margin-bottom:2px}
+.install{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px}
+.install h2{font-size:20px;margin-bottom:12px}
+.tabs{display:flex;gap:6px;background:var(--tint);border-radius:12px;padding:4px;margin-bottom:14px}
+.tabs button{flex:1;font:inherit;font-size:15px;font-weight:600;border:0;border-radius:9px;padding:10px;min-height:44px;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgb(0 0 0/.12)}
+ol{padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+ol li{display:flex;gap:12px;align-items:flex-start;counter-increment:s}
+ol li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:15px;display:grid;place-items:center}
+.why{display:flex;flex-direction:column;gap:10px;padding:0;list-style:none}
+.why li{display:flex;gap:10px}
+.why li::before{content:"✓";color:var(--accent);font-weight:700}
+.why b{margin-right:4px}
+.price{font-size:15px;color:var(--muted);margin-top:12px}
+.shot{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--border)}
+.links{display:flex;flex-direction:column;border-top:1px solid var(--border)}
+.links a{display:flex;justify-content:space-between;align-items:center;min-height:52px;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);font-weight:600}
+.links a span{color:var(--muted);font-weight:400}
+.foot{font-size:13px;color:var(--muted);text-align:center}
+.foot a{color:inherit}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand"><img src="/assets/icons/tinda.png" alt="" width="36" height="36">Tinda</div>
+
+  <header>
+    <p class="tag">Para sa home sellers</p>
+    <h1>Isang link para sa <em>menu mo today.</em></h1>
+    <p class="lead">Buyers order nang walang app o login. Bayad diretso sa GCash o Maya mo. May prep tally ka na agad.</p>
+  </header>
+
+  <div>
+    <a class="cta" href="https://tinda.calmdownoscar.com/seller">Buksan ang Tinda →</a>
+    <p class="under">14 days libre · email lang ang kailangan</p>
+  </div>
+
+  <div class="warn"><b>Nasa Messenger o Facebook ka ba?</b>Tap ang ⋯ sa taas, tapos <strong>Open in browser</strong> (Chrome o Safari). Hindi ma-install ang app sa loob ng Messenger.</div>
+
+  <section class="install" aria-labelledby="ih">
+    <h2 id="ih">I-install sa phone (30 seconds)</h2>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="t-and" aria-selected="true" aria-controls="p-and">Android</button>
+      <button type="button" role="tab" id="t-ios" aria-selected="false" aria-controls="p-ios">iPhone</button>
+    </div>
+    <ol id="p-and" role="tabpanel" aria-labelledby="t-and">
+      <li><span>Tap <strong>Buksan ang Tinda</strong> sa itaas. Bubukas sa Chrome.</span></li>
+      <li><span>Mag-sign in gamit ang email mo. May code na ipapadala.</span></li>
+      <li><span>Tap ang <strong>⋮</strong> menu, tapos <strong>Add to Home screen</strong>.</span></li>
+    </ol>
+    <ol id="p-ios" role="tabpanel" aria-labelledby="t-ios" hidden>
+      <li><span>Tap <strong>Buksan ang Tinda</strong> sa itaas. Bubukas sa Safari.</span></li>
+      <li><span>Mag-sign in gamit ang email mo. May code na ipapadala.</span></li>
+      <li><span>Tap ang <strong>Share</strong> button, tapos <strong>Add to Home Screen</strong>.</span></li>
+    </ol>
+  </section>
+
+  <section aria-label="Bakit Tinda">
+    <ul class="why">
+      <li><span><b>Order agad.</b>Walang app at login para sa buyers.</span></li>
+      <li><span><b>Bayad sa QR mo.</b>Hindi hinahawakan ng Tinda ang pera.</span></li>
+      <li><span><b>May prep tally.</b>Alam mo kung ilan ang lulutuin.</span></li>
+    </ul>
+    <p class="price">&#8369;59/month pagkatapos ng 14 days, o &#8369;590/year. Walang commission. Cancel anytime.</p>
+  </section>
+
+  <img class="shot" src="/tinda/start/tinda-post.webp" width="1080" height="1350" loading="lazy" alt="Halimbawa ng menu picture na makikita ng buyers mo">
+
+  <nav class="links" aria-label="Tulong">
+    <a href="https://tinda.calmdownoscar.com/guide">Paano gamitin <span>Guide →</span></a>
+    <a href="https://tinda.calmdownoscar.com/faq">Mga tanong <span>FAQ →</span></a>
+    <a href="https://tinda.calmdownoscar.com/terms">Terms <span>→</span></a>
+  </nav>
+
+  <p class="foot">Gawa ng <a href="/">calmdownoscar</a> · <a href="/tinda/">Tungkol sa Tinda</a> · <a href="/tinda/privacy.html">Privacy</a></p>
+</main>
+
+<script>
+(function(){
+  var tabs=[["t-and","p-and"],["t-ios","p-ios"]];
+  function pick(id){tabs.forEach(function(t){var on=t[0]===id;document.getElementById(t[0]).setAttribute("aria-selected",String(on));document.getElementById(t[1]).hidden=!on})}
+  tabs.forEach(function(t){document.getElementById(t[0]).addEventListener("click",function(){pick(t[0])})});
+  if(/iPhone|iPad|iPod/.test(navigator.userAgent))pick("t-ios");
+})();
+</script>
+</body>
+</html>

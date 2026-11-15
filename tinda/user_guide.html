@@ -27,6 +27,13 @@
 <style>
   .prose figure img{ max-width:360px; border:1px solid var(--line-hi); }
   .prose figure.wide img{ max-width:100%; }
+  .prose pre{ max-width:100%; overflow-x:auto; white-space:pre-wrap; }
+  @media (max-width:960px){
+    .doc-side{ position:static; order:0; }
+    .doc-side > .label{ display:block; }
+    .doc-side .toc{ display:block; }
+    .doc-side .toc a{ min-height:44px; }
+  }
 </style>
 <script src="../assets/site.js" defer></script>
 <script src="../assets/motion.js" defer></script>
@@ -51,13 +58,14 @@
   <section class="wrap intro" aria-label="Introduction">
     <div class="app-id"><img src="../assets/icons/tinda.png" alt="" width="44" height="44"><p class="label">Tinda · User guide</p></div>
     <h1 class="lede">How to use Tinda</h1>
-    <p class="by">Last updated: 12 November 2026. Tinda gives you one link for today&rsquo;s list. Buyers order from it without an app or an account, pay you straight to your own GCash or Maya QR, and you see one tally of what to prepare. The always-current version is the <a href="https://tinda.calmdownoscar.com/guide">live guide</a>.</p>
+    <p class="by">Last updated: 15 November 2026. Tinda gives you one link for today&rsquo;s list. Buyers order from it without an app or an account, pay you straight to your own GCash or Maya QR, and you see one tally of what to prepare. The always-current version is the <a href="https://tinda.calmdownoscar.com/guide">live guide</a>.</p>
   </section>
 
   <div class="wrap doc">
     <aside class="doc-side" aria-label="On this page">
       <p class="label">Contents</p>
       <ol class="toc">
+        <li><a href="#before">Before you start</a></li>
         <li><a href="#setup">Sign in and set up your shop</a></li>
         <li><a href="#qr">Add your payment QR</a></li>
         <li><a href="#post">Post today&rsquo;s list</a></li>
@@ -67,98 +75,106 @@
         <li><a href="#tally">See what to prepare</a></li>
         <li><a href="#trial">Your free trial</a></li>
         <li><a href="#install">Install Tinda on your phone</a></li>
+        <li><a href="#help">Troubleshooting</a></li>
       </ol>
       <div class="links"><a class="link in" href="./">Tinda</a><a class="link" href="https://tinda.calmdownoscar.com/">Open Tinda</a><a class="link" href="https://tinda.calmdownoscar.com/guide">Live guide</a><a class="link in" href="privacy.html">Privacy policy</a></div>
     </aside>
     <article class="prose">
+<section id="before">
+<h2>Before you start</h2>
+<p>Have your email or Google account, your shop name, and a picture of your own receiving QR ready. Use your phone&rsquo;s browser and keep an internet connection while you set up.</p>
+</section>
 <section id="setup">
 <h2>1. Sign in and set up your shop</h2>
-<ul>
-<li>Sign in with Google or with a 6-digit code sent to your email.</li>
-<li>Pick your shop name and your shop link, for example <code>tinda.calmdownoscar.com/aling-nena</code>. Your shop link can&rsquo;t be changed later.</li>
-<li>Add how buyers can reach you: a Messenger link or your mobile number. This is optional.</li>
-</ul>
-<figure>
-<img src="../assets/screens/tinda-checklist.webp" alt="Sample screen: the checklist a seller sees after setting up a shop" width="700" height="1020" loading="lazy">
-<figcaption class="note-sm">Sample: your checklist after you set up your shop</figcaption>
-</figure>
+<ol>
+<li>Open <a href="https://tinda.calmdownoscar.com/">Tinda</a> on your phone and tap <strong>Start selling — 14 days free</strong>. Tap <strong>Continue with Google</strong>, or enter your email, tap <strong>Email me a 6-digit code</strong> and enter the code sent to you.</li>
+<li>Enter your shop name and choose your shop link, for example <code>tinda.calmdownoscar.com/aling-nena</code>. Check the link carefully: it cannot be changed later.</li>
+<li>Add a Messenger link or mobile number if you want buyers to be able to contact you. Read the terms and house rules, tick the agreement box, then tap <strong>Create my shop</strong>.</li>
+</ol>
 </section>
 <section id="qr">
 <h2>2. Add your payment QR</h2>
-<ul>
-<li>Save your GCash or Maya QR from the app as a picture, then upload it on the list page.</li>
-<li>Buyers see your QR only after they reserve an order.</li>
-<li>To change it, upload a new one. It replaces the old one.</li>
-</ul>
+<ol>
+<li>Save a picture of the GCash, Maya or bank QR that receives payments into <em>your</em> account.</li>
+<li>Open <strong>Today&rsquo;s list</strong> and scroll to <strong>3. Payment</strong>. Tap <strong>Choose QR picture</strong>, choose your saved picture and wait for <strong>QR saved &#10003;</strong>. You can manage and name up to five QRs from the payment page.</li>
+<li>Optionally add your GCash mobile number as a backup if a QR does not scan. Buyers see these details after they order.</li>
+</ol>
+<p>Use your own receiving QR here. The QR under <strong>Plan and payment</strong> is for paying Tinda&rsquo;s fee; it is not the QR your buyers should pay.</p>
 </section>
 <section id="post">
-<h2>3. Post today&rsquo;s list</h2>
-<ul>
-<li>Paste the list you&rsquo;d normally post in the group chat. Tinda reads the items and prices. Check them, fix anything it got wrong, and set how many of each you have (optional).</li>
-<li>Set the time orders close.</li>
-<li>Tap <strong>Publish</strong>. Your list is live.</li>
-<li>Tomorrow, tap <strong>Copy yesterday&rsquo;s list</strong> on your home page and change only what&rsquo;s different.</li>
-</ul>
-<figure>
-<img src="../assets/screens/tinda-buyer-list.webp" alt="Sample screen: the list page a buyer opens, with today&rsquo;s items and prices" width="700" height="1020" loading="lazy">
-<figcaption class="note-sm">Sample: the list page your buyers open</figcaption>
-</figure>
+<h2>3. Make today&rsquo;s list</h2>
+<ol>
+<li>On your shop page, tap <strong>Today&rsquo;s list</strong>.</li>
+<li>Under <strong>Your items</strong>, paste one item and its price per line, for example:
+<pre>Rice 1 kg 60
+Toilet paper 4 rolls 50
+Adobo 90</pre>
+Tap <strong>Read my post</strong>. You can also tap <strong>or type items</strong> to enter them one by one.</li>
+<li>Check every name and price. Add any line Tinda could not read. Tick <strong>Heading</strong> only for a section title such as &ldquo;Drinks&rdquo;, not for a product. You can optionally set stock limits or hide an item.</li>
+<li>Under <strong>Orders and delivery</strong>, set <strong>Stop taking orders at</strong> to a time still ahead today and choose how long to <strong>Hold unpaid orders for</strong>. If you deliver, tick <strong>I deliver</strong> and add delivery times.</li>
+<li>Optional: turn on <strong>Keep my list up</strong> to copy the list each night with remaining stock. It stops 30 days after your latest manual publish, or if your plan expires. Check the date shown in Tinda; publish an updated list to extend or restart it.</li>
+<li>Under <strong>Payment</strong>, check your receiving QR. Under <strong>Photo of your products (optional)</strong>, you can add one shop photo to the menu image. This is not a separate photo for each item.</li>
+<li>Tap <strong>See what buyers will see</strong> and check the result. Tap it again after making changes. If you are not ready, tap <strong>Save for later</strong>; your draft stays private. When ready, tap <strong>Publish</strong>. After changes to a published list, tap <strong>Update list</strong>.</li>
+</ol>
+<p>Tomorrow, tap <strong>Copy yesterday&rsquo;s list</strong> on your shop page, change what is different and publish, or use <strong>Keep my list up</strong>.</p>
 </section>
 <section id="share">
-<h2>4. Share the link</h2>
-<ul>
-<li>After you publish, tap <strong>Copy link</strong> or <strong>Share&hellip;</strong> and paste it in your group chat. The chat shows a picture of your list with today&rsquo;s items and prices.</li>
-<li><strong>Save square image</strong> gives you the same picture to post as a photo.</li>
-<li>If you change the list, tap <strong>Update list</strong>. The next time the link is shared, the picture shows the change. A preview already posted in the chat stays as it was.</li>
-</ul>
+<h2>4. Save your menu image and share the link</h2>
+<ol>
+<li>After publishing, open the sharing options and tap <strong>Save menu image</strong>. The picture includes your list and prices. It can grow to show up to 50 rows, including headings.</li>
+<li>Look for the downloaded picture in your phone&rsquo;s Downloads or Files as well as Photos. If the picture opens instead of downloading, use your browser&rsquo;s image menu to save it; the steps vary by phone and browser.</li>
+<li>Tap <strong>Copy link</strong>. Open Facebook, Messenger or Viber, tap the app&rsquo;s photo button and attach the saved picture to your post or message, then touch and hold in the text area and tap Paste to add the clickable link. Send or post both so buyers can open the link and order.</li>
+<li>On supported phones, you can also tap <strong>Share&hellip;</strong> to choose where to share the link.</li>
+</ol>
+<p><a href="https://tinda.calmdownoscar.com/og/sample?size=square">See an example saved menu image</a>.</p>
+<p>A chat link preview shows only up to six rows, or four when your shop photo is included. Share the link even with the saved picture so buyers can see the full list and order.</p>
+<p>After editing, tap <strong>Update list</strong>, save a new menu image and post it again. Pictures already posted do not change, and a chat service may keep an older cached preview.</p>
 <figure class="wide">
-<img src="../assets/screens/tinda-preview.webp" alt="Sample chat preview card for Aling Nena&rsquo;s Kusina showing today&rsquo;s items and prices" width="1200" height="630" loading="lazy">
-<figcaption class="note-sm">Sample: the preview card in Messenger</figcaption>
+<img src="../assets/screens/tinda-preview.webp" alt="Example chat preview card for Aling Nena&rsquo;s Kusina showing items and prices" width="1200" height="630" loading="lazy">
+<figcaption class="note-sm">Example: a chat link preview. Your list and appearance will differ.</figcaption>
 </figure>
 </section>
 <section id="confirm">
 <h2>5. Confirm payments</h2>
-<ul>
-<li>When a buyer orders, their items are held for them for a short time while they pay you.</li>
-<li>After paying, the buyer enters their GCash or Maya reference number. Open <strong>Orders</strong>, check your GCash or Maya app for that payment, then tap <strong>Paid &#10003;</strong>.</li>
-<li>If you can&rsquo;t find the payment, tap <strong>Can&rsquo;t find it</strong>. The buyer can check the number and enter it again, up to 3 tries in all.</li>
-<li>Tapped <strong>Paid &#10003;</strong> by mistake? Tap <strong>Undo</strong> within 10 minutes.</li>
-<li>If no reference comes in on time, the order ends by itself and the items go back on the list.</li>
-</ul>
-<figure>
-<img src="../assets/screens/tinda-confirm.webp" alt="Sample screen: an order from Maria Santos with a payment reference, and buttons to confirm, say it can&rsquo;t be found, or cancel" width="700" height="748" loading="lazy">
-<figcaption class="note-sm">Sample: an order waiting for you to confirm payment</figcaption>
-</figure>
+<ol>
+<li>Open <strong>Orders</strong>. An unpaid order holds its items for a limited time while the buyer pays.</li>
+<li>When a buyer sends a reference number, check the payment in your own GCash, Maya or bank app. If it arrived, tap <strong>Paid &#10003;</strong>.</li>
+<li>If you cannot find it, tap <strong>Can&rsquo;t find it</strong> so the buyer can check and enter the number again, up to three tries in all. If you tapped paid by mistake, tap <strong>Undo</strong> within 10 minutes.</li>
+<li>If no reference arrives in time, the order ends and the items return to the list.</li>
+</ol>
 </section>
 <section id="chat">
 <h2>6. Orders from chat or in person</h2>
-<ul>
-<li>On <strong>Orders</strong>, add an order yourself for anyone who messaged you instead of using the link. It counts toward your stock and your tally the same way.</li>
-</ul>
+<ol><li>Open <strong>Orders</strong> and tap <strong>Add an order from chat</strong> for a buyer who contacted you directly. Enter their order and details, then tap <strong>Add order</strong>. It counts toward stock and the tally.</li></ol>
 </section>
 <section id="tally">
 <h2>7. See what to prepare</h2>
-<ul>
-<li><strong>Tally</strong> shows how many of each item to prepare, split into pickups and deliveries.</li>
-</ul>
-<figure>
-<img src="../assets/screens/tinda-tally.webp" alt="Sample screen: the tally showing how many of each item to prepare, split into pickups and deliveries" width="700" height="990" loading="lazy">
-<figcaption class="note-sm">Sample: your tally</figcaption>
-</figure>
+<ol><li>Open <strong>Orders</strong> and look at the <strong>Tally</strong> to see how many of each item to prepare, including pickup and delivery counts.</li></ol>
 </section>
 <section id="trial">
 <h2>8. Your free trial</h2>
-<ul>
-<li>Your first 14 days are free. After that, Tinda is &#8369;59 a month or &#8369;590 a year (2 months free). To pay, open Plan and payment on your shop page, pay our QR with GCash or Maya, and type the reference number. We check it, usually within a day. Nothing renews by itself: to stop, just don&rsquo;t pay again. If you change your mind, ask within 7 days of paying and we&rsquo;ll refund you in full.</li>
-</ul>
+<ol>
+<li>Your first 14 days are free. After that, Tinda costs &#8369;59 a month or &#8369;590 a year.</li>
+<li>To pay, open <strong>Plan and payment</strong> on your shop page. Pay Tinda&rsquo;s QR with GCash or Maya, then send the reference number there. We check it, usually within a day.</li>
+<li>Nothing renews by itself. To stop, do not pay again. If you change your mind, ask within 7 days of paying for a full refund.</li>
+</ol>
 </section>
 <section id="install">
-<h2>Install Tinda on your phone</h2>
+<h2>9. Install Tinda on your phone</h2>
+<ol>
+<li>On Android, open your seller home in Chrome, tap the &#8942; menu, then <strong>Add to Home screen</strong>.</li>
+<li>On iPhone, open your seller home in Safari, tap Share, then <strong>Add to Home Screen</strong>.</li>
+</ol>
+<h3 id="help">Troubleshooting</h3>
 <ul>
-<li><strong>Android (Chrome):</strong> open your seller home, tap the &#8942; menu, then <strong>Add to Home screen</strong>.</li>
-<li><strong>iPhone (Safari):</strong> open your seller home, tap Share, then <strong>Add to Home Screen</strong>.</li>
+<li><strong>An item is missing:</strong> check for lines Tinda could not read and add them, or tap <strong>Add item</strong>. Update the published list.</li>
+<li><strong>A price is missing or wrong:</strong> edit the price on the item, then update the published list.</li>
+<li><strong>A product looks like a title:</strong> untick <strong>Heading</strong> for that product and check its price.</li>
+<li><strong>Publish is off:</strong> read the message below the button and fix each item it names, such as a missing QR or a closing time that has passed.</li>
+<li><strong>Cannot find the image:</strong> check Downloads or Files. If it opened in the browser, use the image menu to save it.</li>
+<li><strong>No orders:</strong> check that you published, shared the clickable link, and that the list is still open. Ask a buyer to open the link to check it.</li>
 </ul>
-<p>Questions? See the <a href="https://tinda.calmdownoscar.com/faq">FAQ</a>.</p>
+<p>More questions? See the <a href="https://tinda.calmdownoscar.com/faq">FAQ</a> or the <a href="https://tinda.calmdownoscar.com/guide">live guide</a>.</p>
 </section>
     </article>
   </div>
